@@ -10,12 +10,11 @@ public class childDistance : MonoBehaviour
 
     private void Start()
     {
-        children = GameObject.FindGameObjectsWithTag("Child");
-        closestChild = children[0].transform;
     }
 
     private void Update()
     {
+        children = GameObject.FindGameObjectsWithTag("Child");
         Vector3 closestOffset = closestChild.transform.position - transform.position;
         dist = closestOffset.sqrMagnitude;
 
