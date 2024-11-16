@@ -10,6 +10,8 @@ public class childDistance : MonoBehaviour
 
     private void Start()
     {
+        children = GameObject.FindGameObjectsWithTag("Child");
+        closestChild = children[0].transform;
     }
 
     private void Update()
