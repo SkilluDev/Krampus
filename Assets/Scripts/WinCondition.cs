@@ -20,13 +20,13 @@ public class WinCondition : MonoBehaviour
     //private Detection _Detection; //Not sure where it will be relevant
     //private Player _PlayerScritpt; //Needs to be changed to appropiate class for handling Player
 
-    //private UIManager _uiManager; //Needs to be changed to appropiate class for handling Player
+    private UIManager _uiManager; //Needs to be changed to appropiate class for handling Player
 
     // Start is called before the first frame update
     void Start()
     {
         _isGameOver = false;
-        _ChildrenList = GameObject.Find("Children_List").GetComponent<ChildList>(); //find obj. get comp.
+        _ChildrenList = GameObject.Find("Child_List").GetComponent<ChildList>(); //find obj. get comp.
         if (_ChildrenList == null)
         {
             Debug.LogError("The ChildrenList (which is Children List) is NULL.");
@@ -43,19 +43,20 @@ public class WinCondition : MonoBehaviour
         {
             Debug.LogError("The Detection (which is PLayer) is NULL.");
         }
-
+        */
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         if (_uiManager == null)
         {
             Debug.LogError("The UI Manager (which is canvas) is NULL.");
         }
-        */
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         _TimeLimit -= Time.deltaTime;
+        _uiManager.UpdateTime(_TimeLimit);
         if (_TimeLimit <= 0.0f)
         {
             GameOver(LostGameCase.TimeRunOut);
