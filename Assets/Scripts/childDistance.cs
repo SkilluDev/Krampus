@@ -30,6 +30,6 @@ public class childDistance : MonoBehaviour
             }
         }
 
-        Debug.Log(Mathf.Sqrt(dist));
+        //Debug.Log(Mathf.Sqrt(dist));
     }
 }
