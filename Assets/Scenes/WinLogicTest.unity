@@ -537,6 +537,7 @@ MonoBehaviour:
   _isGameOver: 0
   _TimeLimit: 60
   _score: 0
+  _uiManager: {fileID: 1141716255}
 --- !u!4 &823730883
 Transform:
   m_ObjectHideFlags: 0
@@ -989,14 +990,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1141716250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 196893d14d2c4a34e8ce9032330061f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 6856f4fe790179d4089625190cdb1fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _naugthyChildrenList: {fileID: 0}
   _scoreText: {fileID: 1163157983}
   _timeText: {fileID: 858687045}
   _gameOverText: {fileID: 1848585823}
   _gameWonText: {fileID: 1636396424}
-  _WinCondition: {fileID: 0}
+  _WinCondition: {fileID: 823730882}
 --- !u!1 &1163157982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1415,8 +1417,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc35118c8a9edb49bb25cd2323391f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: []
+  childTemplate: {fileID: 0}
   materials: []
-  objectsToChange: []
+  goodChildrenCountMax: 0
 --- !u!1 &2009001427
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
+    private Text _naugthyChildrenList;
+    [SerializeField]
     private Text _scoreText;
     [SerializeField]
     private Text _timeText;
@@ -39,6 +41,33 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateTime(float time)
     {
-        _timeText.text = "Score: " + time.ToString();
+        _timeText.text = "Time: " + time.ToString();
+    }
+    public void ActivateGameOverScreen(WinCondition.LostGameCase lostGameCase)
+    {
+        _gameOverText.gameObject.SetActive(true);
+        switch (lostGameCase)
+        {
+            case WinCondition.LostGameCase.TimeRunOut:
+                _gameOverText.text = "You run out off time!";
+                break;
+            case WinCondition.LostGameCase.TooManyWrongChildren:
+                _gameOverText.text= "You ate the wrong children!";
+                break;
+            case WinCondition.LostGameCase.DetectedByParents:
+                _gameOverText.text = "You have been detected by human race!";
+                break;
+            default:
+                _gameOverText.text = "You have made an error!";
+                break;
+        }
+    }
+    public void ActivateGameWonScreen()
+    {
+        _gameWonText.gameObject.SetActive(true);
+    }
+    public void ActivateNaughtyChildrenList()
+    {
+        _naugthyChildrenList.gameObject.SetActive(true);
     }
 }
