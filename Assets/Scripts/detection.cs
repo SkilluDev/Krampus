@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class detection : MonoBehaviour
@@ -29,8 +30,11 @@ public class detection : MonoBehaviour
 
         if (currentDist <= alertDistance || ((krampusController.isRunning) && currentDist <= alertDistance * runningMultiplier))
         {
-
-            isAlerted = true;
+            if (!Physics.Raycast(transform.position,(krampus.transform.position - transform.position).normalized,alertDistance*runningMultiplier,1<<6)) { 
+                isAlerted = true;
+                
+            }
+            
 
         }
 

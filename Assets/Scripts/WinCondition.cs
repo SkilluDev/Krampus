@@ -16,7 +16,7 @@ public class WinCondition : MonoBehaviour
     [SerializeField] private bool _isGameOver;
     [SerializeField] private float _TimeLimit; //Czas rundy
     [SerializeField] private int _score;
-    private ChildList _ChildrenList; //Needs to be changed to ChildrenListManager appropiate class
+  //  private ChildList _ChildrenList; //Needs to be changed to ChildrenListManager appropiate class
     //private Detection _Detection; //Not sure where it will be relevant
     //private Player _PlayerScritpt; //Needs to be changed to appropiate class for handling Player
 
@@ -26,11 +26,11 @@ public class WinCondition : MonoBehaviour
     void Start()
     {
         _isGameOver = false;
-        _ChildrenList = GameObject.Find("Children_List").GetComponent<ChildList>(); //find obj. get comp.
-        if (_ChildrenList == null)
+     //   _ChildrenList = GameObject.Find("Children_List").GetComponent<ChildList>(); //find obj. get comp.
+      /*  if (_ChildrenList == null)
         {
             Debug.LogError("The ChildrenList (which is Children List) is NULL.");
-        }
+        }*/
         /*
         _Detection = GameObject.Find("Player").GetComponent<Detection>(); //find obj. get comp.
         if (_Detection == null)
