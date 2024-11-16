@@ -20,7 +20,7 @@ public class ProgressiveMusic : MonoBehaviour
         distanceToClosest = Mathf.Sqrt(closestDist.dist);
         if (distanceToClosest < minDistance)
         {
-            transform.GetChild(0).GetComponent<AudioSource>().volume = (minDistance - distanceToClosest)/10;
+            transform.GetChild(0).GetComponent<AudioSource>().volume = (minDistance - distanceToClosest)/20;
         }
         else
         {
