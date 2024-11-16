@@ -28,8 +28,33 @@ public class ChildContoller : MonoBehaviour
     void runAway(){
         Vector3 offset = transform.position - krampus.transform.position;
         float distance = offset.magnitude;
-        if(distance>runDistance) return;
+        if(distance>runDistance) {runToParent(); return;}
         Vector3 runDestination = transform.position + offset;
         navMeshAgent.SetDestination(runDestination);
+    }
+
+    void runToParent(){
+        var parents = GameObject.FindGameObjectsWithTag("Parent");
+        if(parents.Length == 0) {
+            Debug.Log("No parents on map");
+            return;
+        }
+
+        float dist = float.PositiveInfinity;
+        Vector3 closestParent = new Vector3();
+
+        foreach (GameObject parent in parents)
+        {
+            Vector3 parentPosition = parent.transform.position;
+            Vector3 offset = parentPosition - transform.position;
+            float sqrLen = offset.sqrMagnitude;
+
+            if (sqrLen < dist)
+            {
+                dist = sqrLen;
+                closestParent = parentPosition;
+            }
+        }
+        navMeshAgent.SetDestination(closestParent);
     }
 }
