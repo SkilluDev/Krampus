@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class ChildList : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    public Material[] Materials;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
