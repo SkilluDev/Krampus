@@ -9,7 +9,7 @@ public class Child : MonoBehaviour
 
     private void Start()
     {
-        transform.GetChild(8).GetComponent<Renderer>().material = mat;
+        transform.GetChild(0).GetChild(8).GetComponent<Renderer>().material = mat;
     }
 
     public void Die() { }
