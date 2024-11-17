@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class characterController : MonoBehaviour
 {
-
     public Rigidbody rigidBody;
     private GameObject camera;
     
@@ -20,6 +19,12 @@ public class characterController : MonoBehaviour
     private float zMovement;
     public bool shouldKrampusMove = true;
 
+    float stepWaitTime = 0.2f;
+    float runWaitTime = 0.1f;
+
+    float timer;
+    float timer2;
+    float timer3;
 
     Animator animator;
 
@@ -45,17 +50,58 @@ public class characterController : MonoBehaviour
         }
         else isRunning = false;
 
-        
+        if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
+        {
+            if (!isRunning)
+            {
+                timer += Time.deltaTime;
+                timer2 += Time.deltaTime;
+
+                if (timer >= 0.541f)
+                {
+                    SoundManager.PlaySound("windup2");
+                    timer = 0;
+                }
+
+             /*   if (timer2 >= 0.541f * 2)
+                {
+                    SoundManager.PlaySound("step2");
+                    timer2 = 0;
+                }*/
+
+            }
+            else
+            {
+                timer3 += Time.deltaTime;
+                timer += Time.deltaTime;
+                if (timer >= 0.43f)
+                {
+                    SoundManager.PlaySound("windup2");
+                    timer = 0;
+                }
+              /*  if (timer3 >= 0.86f)
+                {
+                    SoundManager.PlaySound("step2");
+                    timer3 = 0;
+                }*/
+            }
+        }
+        else
+        {
+           /* timer3 = 0.43f;
+            timer2 = 0.541f; */
+            timer = 0;
+        }
 
     }
 
     void FixedUpdate()
     {
-        Vector3 rawinput = new Vector3(xMovement, 0, zMovement) * speedMultiplier * (isRunning ? runningMultiplier : 1)*(shouldKrampusMove?1:0);
+        Vector3 rawinput = new Vector3(xMovement, 0, zMovement) * speedMultiplier * (isRunning ? runningMultiplier : 1) * (shouldKrampusMove ? 1 : 0);
         Vector3 skewedInput = matrix.MultiplyPoint3x4(rawinput);
 
         rigidBody.velocity = skewedInput;
         Debug.Log(skewedInput.magnitude);
-        animator.SetFloat("Speed", (skewedInput.magnitude/(speedMultiplier*runningMultiplier)));
+        animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
     }
 }
