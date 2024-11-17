@@ -9,25 +9,29 @@ public class interaction : MonoBehaviour
     public LayerMask tonguable;
     private LineRenderer lineRenderer;
     private GameObject child;
+    private TrailRenderer trail;
     
     void Start()
     {
         cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         lineRenderer = gameObject.GetComponent<LineRenderer>();
+        trail=gameObject.transform.GetChild(2).gameObject.GetComponent<TrailRenderer>();
+        Debug.Log(trail);
+
     }
 
 
 
     void Update()
     {
-        Vector3 worldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 5));
+        Vector3 worldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 4));
         Vector3 upray = new Vector3(worldPosition.x, transform.position.y, worldPosition.z);
         Vector3 dir = ( upray - transform.position ).normalized;
         
-        //Debug.DrawLine(transform.position, worldPosition);
-        //Debug.DrawLine(worldPosition, upray);
-        Debug.DrawLine(transform.position, upray);
-        Debug.DrawRay(transform.position, dir);
+        Debug.DrawLine(transform.position, worldPosition, Color.green);
+        Debug.DrawLine(worldPosition, upray, Color.red);
+        Debug.DrawLine(transform.position, upray, Color.blue);
+        Debug.DrawRay(transform.position, dir, Color.yellow);
 
         RaycastHit hit;
 
@@ -37,9 +41,12 @@ public class interaction : MonoBehaviour
             {
                 //Vector3.Lerp(hit.rigidbody.position, transform.position, 0.5f);
                 child = hit.transform.gameObject;
-                
+                trail.enabled = true;
+                trail.gameObject.transform.position = child.transform.position;
                 float time = 1f;
                 DOTween.To(()=>hit.rigidbody.position,(x)=>hit.rigidbody.position=x, transform.position, time).SetEase(Ease.InOutExpo);
+                DOTween.To(()=>trail.transform.position,(x)=>trail.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
+                
                 StartCoroutine(UpdateLineRenderer());
                 StartCoroutine(StopUpdateLineRenderer(time));
             }
@@ -52,6 +59,8 @@ public class interaction : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         lineRenderer.enabled = false;
+        trail.enabled = false;
+        Debug.Log(trail);
         StopCoroutine(UpdateLineRenderer());
         yield break;
     }
