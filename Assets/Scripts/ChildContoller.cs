@@ -8,6 +8,7 @@ public class ChildContoller : MonoBehaviour
     private detection detection;
     private Vector3 initialPosition;
     [SerializeField] private WinCondition winCondition;
+    private Animator animator;
 
     private enum State{
         Panicing,
@@ -23,6 +24,7 @@ public class ChildContoller : MonoBehaviour
         detection = GetComponent<detection>();
         initialPosition = transform.position;
         winCondition = GameObject.Find("Win Condition").GetComponent<WinCondition>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -74,5 +76,25 @@ public class ChildContoller : MonoBehaviour
 
     void StateChanged(){
         Debug.Log(state);
+        switch (state) 
+        {
+            case State.Stopped:
+                int i = Random.RandomRange(0,3);
+                float value = i / 2;
+                Debug.Log(i);
+
+                animator.SetFloat("Idle", i);
+                break;
+
+            case State.Running:
+                animator.SetTrigger("Move");
+                animator.SetBool("Running", true);
+                break;
+            case State.Walking:
+                animator.SetTrigger("Move");
+                animator.SetBool("Running", false);
+                break;
+
+        }
     }
 }

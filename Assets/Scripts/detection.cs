@@ -35,7 +35,7 @@ public class detection : MonoBehaviour
             Vector3 krampusPosition = krampus.transform.position;
             if (!Physics.Raycast(transform.position,(krampusPosition - transform.position).normalized,alertDistance*runningMultiplier,1<<6)) { 
                 isAlerted = true;
-                if (isAlerted && gameObject.tag == "Parent") { SceneManager.LoadScene("UI Test"); }
+                if (isAlerted && gameObject.tag == "Parent") { SceneManager.LoadScene("UITest"); }
                 krampusEncounerPosition = krampusPosition;
             }
             
