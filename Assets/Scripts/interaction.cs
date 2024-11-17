@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class interaction : MonoBehaviour
 {
+    private static readonly int CurrentlyEating = Animator.StringToHash("CurrentlyEating");
     [SerializeField] Camera cam;
+    [SerializeField] Animator animator;
     public float tongueLength;
     public LayerMask tonguable;
     private LineRenderer lineRenderer;
@@ -46,7 +48,9 @@ public class interaction : MonoBehaviour
                     trail.enabled = true;
                     trail.gameObject.transform.position = child.transform.position;
                     float time = 1f;
-                    DOTween.To(()=>hit.rigidbody.position,(x)=>hit.rigidbody.position=x, transform.position, time).SetEase(Ease.InOutExpo);
+                    animator.SetTrigger(CurrentlyEating);
+                    animator.SetTrigger(CurrentlyEating);
+                    DOTween.To(()=>hit.transform.position,(x)=>hit.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
                     DOTween.To(()=>trail.transform.position,(x)=>trail.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
                 
                     StartCoroutine(UpdateLineRenderer());
