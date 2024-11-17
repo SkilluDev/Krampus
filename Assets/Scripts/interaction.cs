@@ -25,13 +25,15 @@ public class interaction : MonoBehaviour
         //Debug.DrawLine(transform.position, worldPosition);
         //Debug.DrawLine(worldPosition, upray);
         Debug.DrawLine(transform.position, upray);
-        Debug.DrawRay(transform.position, dir);   
+        Debug.DrawRay(transform.position, dir);
+
+        RaycastHit hit;
 
         if (Input.GetButtonDown("Fire1"))
         {
-            if (Physics.Raycast(transform.position, dir, tongueLength, tonguable))
+            if (Physics.Raycast(transform.position, dir, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir, out hit, tongueLength, 1<<6))
             {
-                Debug.Log("yeah");
+                hit.rigidbody.MovePosition(transform.position);
             }
            
         }
