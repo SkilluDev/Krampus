@@ -5,29 +5,26 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField]
-    private Text _naugthyChildrenList;
-    [SerializeField]
-    private Text _scoreText;
-    [SerializeField]
-    private Text _timeText;
-    [SerializeField]
-    private Text _gameOverText;
-    [SerializeField]
-    private Text _gameWonText;
-    [SerializeField]
-    private WinCondition _WinCondition;
+    [SerializeField] private Text naughtyChildrenList;
+    [SerializeField] private Text scoreText;
+    [SerializeField] private Text timeText;
+    [SerializeField] private Text gameOverText;
+    [SerializeField] private Text gameWonText;
+    [SerializeField] private WinCondition winCondition;
     // Start is called before the first frame update
     void Start()
     {
-        _scoreText.text="Score: "+0;
-        _timeText.text = "Time limit: --.--";
-        _gameOverText.gameObject.SetActive(false);
-        _WinCondition = GameObject.Find("Win_Condition").GetComponent<WinCondition>();
-        if (_WinCondition == null)
+        scoreText.text="Score: "+0;
+        timeText.text = "Time limit: --.--";
+        gameOverText.gameObject.SetActive(false);
+        //GameFind to slow - changed to Serialized Field
+        //winCondition = GameObject.Find("Win_Condition").GetComponent<WinCondition>();
+        /*
+        if (winCondition == null)
         {
             Debug.LogError("The Win Condition is NULL.");
         }
+        */
     }
 
     // Update is called once per frame
@@ -37,37 +34,37 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateScore(int score)
     {
-        _scoreText.text = "Score: " + score.ToString();
+        scoreText.text = "Score: " + score.ToString();
     }
     public void UpdateTime(float time)
     {
-        _timeText.text = "Time: " + time.ToString();
+        timeText.text = "Time: " + time.ToString();
     }
     public void ActivateGameOverScreen(WinCondition.LostGameCase lostGameCase)
     {
-        _gameOverText.gameObject.SetActive(true);
+        gameOverText.gameObject.SetActive(true);
         switch (lostGameCase)
         {
             case WinCondition.LostGameCase.TimeRunOut:
-                _gameOverText.text = "You run out off time!";
+                gameOverText.text = "You run out off time!";
                 break;
             case WinCondition.LostGameCase.TooManyWrongChildren:
-                _gameOverText.text= "You ate the wrong children!";
+                gameOverText.text= "You ate the wrong children!";
                 break;
             case WinCondition.LostGameCase.DetectedByParents:
-                _gameOverText.text = "You have been detected by human race!";
+                gameOverText.text = "You have been detected by human race!";
                 break;
             default:
-                _gameOverText.text = "You have made an error!";
+                gameOverText.text = "You have made an error!";
                 break;
         }
     }
     public void ActivateGameWonScreen()
     {
-        _gameWonText.gameObject.SetActive(true);
+        gameWonText.gameObject.SetActive(true);
     }
     public void ActivateNaughtyChildrenList()
     {
-        _naugthyChildrenList.gameObject.SetActive(true);
+        naughtyChildrenList.gameObject.SetActive(true);
     }
 }
