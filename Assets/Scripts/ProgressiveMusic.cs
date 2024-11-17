@@ -11,6 +11,7 @@ public class ProgressiveMusic : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.PlaySound("windup1");
         closestDist = GameObject.Find("Player").GetComponent<childDistance>();
         transform.GetChild(0).GetComponent<AudioSource>().volume = 0;
     }
