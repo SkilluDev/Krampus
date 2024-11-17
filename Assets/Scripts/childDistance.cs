@@ -22,12 +22,15 @@ public class childDistance : MonoBehaviour
 
         foreach (GameObject child in children)
         {
-            Vector3 offset = child.transform.position - transform.position;
-            float sqrLen = offset.sqrMagnitude;
-
-            if (sqrLen < dist)
+            if (child.GetComponent<Child>().isBad == true)
             {
-                closestChild = child.transform;
+                Vector3 offset = child.transform.position - transform.position;
+                float sqrLen = offset.sqrMagnitude;
+
+                if (sqrLen < dist)
+                {
+                    closestChild = child.transform;
+                }
             }
         }
 
