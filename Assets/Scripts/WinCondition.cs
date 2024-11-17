@@ -40,11 +40,14 @@ public class WinCondition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeLimit -= Time.deltaTime;
-        uiManager.UpdateTime(timeLimit);
-        if (timeLimit <= 0.0f)
+        if (!isGamePaused)
         {
-            GameOver(LostGameCase.TimeRunOut);
+            timeLimit -= Time.deltaTime;
+            uiManager.UpdateTime(timeLimit);
+            if (timeLimit <= 0.0f)
+            {
+                GameOver(LostGameCase.TimeRunOut);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.R) && isGameOver) //if the game is over, you can reload game with R key
@@ -81,17 +84,24 @@ public class WinCondition : MonoBehaviour
         }
         public void GamePauseToggle()
         {
-            if (!isGamePaused)
+            if (!isGamePaused)  //Instead of Time Scale we are just deactivating Movement Scritps
             {
-                Time.timeScale = 0;
+                //Time.timeScale = 0;
                 AudioListener.pause = true;
                 isGamePaused = true;
+                uiManager.ActivateSettingsMenu();
             }
             else
             {
-                Time.timeScale = 1;
+                //Time.timeScale = 1;
                 AudioListener.pause = false;
                 isGamePaused = false;
+                uiManager.DeactivateSettingsMenu();
             }
+        }
+
+        public bool isGamePausedValue()
+        {
+            return isGamePaused;
         }
 }
