@@ -13,7 +13,6 @@ public class ChildContoller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SoundManager.PlaySound("windup1");
         krampus = GameObject.FindWithTag("Player");
         rigidBody = GetComponent<Rigidbody>();
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
