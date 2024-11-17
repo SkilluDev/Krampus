@@ -7,6 +7,7 @@ public class characterController : MonoBehaviour
 {
     public Rigidbody rigidBody;
     private GameObject camera;
+    [SerializeField] private WinCondition winCondition;
     
     public float speedMultiplier;
     public float runningMultiplier = 2;
@@ -40,68 +41,79 @@ public class characterController : MonoBehaviour
 
     void Update()
     {
-
-        xMovement = Input.GetAxis("Horizontal");
-        zMovement = Input.GetAxis("Vertical");
-
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (!winCondition.isGamePausedValue())
         {
-            isRunning = true;
-        }
-        else isRunning = false;
+            xMovement = Input.GetAxis("Horizontal");
+            zMovement = Input.GetAxis("Vertical");
 
-        if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
-        {
-            if (!isRunning)
+            if (Input.GetKey(KeyCode.LeftShift))
             {
-                timer += Time.deltaTime;
-                timer2 += Time.deltaTime;
+                isRunning = true;
+            }
+            else isRunning = false;
 
-                if (timer >= 0.541f)
+            if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
+            {
+                if (!isRunning)
                 {
-                    SoundManager.PlaySound("windup2");
-                    timer = 0;
+                    timer += Time.deltaTime;
+                    timer2 += Time.deltaTime;
+
+                    if (timer >= 0.541f)
+                    {
+                        SoundManager.PlaySound("windup2");
+                        timer = 0;
+                    }
+
+                    /*   if (timer2 >= 0.541f * 2)
+                       {
+                           SoundManager.PlaySound("step2");
+                           timer2 = 0;
+                       }*/
+
                 }
-
-             /*   if (timer2 >= 0.541f * 2)
+                else
                 {
-                    SoundManager.PlaySound("step2");
-                    timer2 = 0;
-                }*/
-
+                    timer3 += Time.deltaTime;
+                    timer += Time.deltaTime;
+                    if (timer >= 0.43f)
+                    {
+                        SoundManager.PlaySound("windup2");
+                        timer = 0;
+                    }
+                    /*  if (timer3 >= 0.86f)
+                      {
+                          SoundManager.PlaySound("step2");
+                          timer3 = 0;
+                      }*/
+                }
             }
             else
             {
-                timer3 += Time.deltaTime;
-                timer += Time.deltaTime;
-                if (timer >= 0.43f)
-                {
-                    SoundManager.PlaySound("windup2");
-                    timer = 0;
-                }
-              /*  if (timer3 >= 0.86f)
-                {
-                    SoundManager.PlaySound("step2");
-                    timer3 = 0;
-                }*/
+                /* timer3 = 0.43f;
+                 timer2 = 0.541f; */
+                timer = 0;
             }
         }
-        else
-        {
-           /* timer3 = 0.43f;
-            timer2 = 0.541f; */
-            timer = 0;
-        }
-
     }
 
     void FixedUpdate()
     {
-        Vector3 rawinput = new Vector3(xMovement, 0, zMovement) * speedMultiplier * (isRunning ? runningMultiplier : 1) * (shouldKrampusMove ? 1 : 0);
-        Vector3 skewedInput = matrix.MultiplyPoint3x4(rawinput);
+        if (!winCondition.isGamePausedValue())
+        {
+            Vector3 rawinput = new Vector3(xMovement, 0, zMovement) * speedMultiplier *
+                               (isRunning ? runningMultiplier : 1) * (shouldKrampusMove ? 1 : 0);
+            Vector3 skewedInput = matrix.MultiplyPoint3x4(rawinput);
 
+<<<<<<< Updated upstream
         rigidBody.velocity = skewedInput;
 //        Debug.Log(skewedInput.magnitude);
         animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
+=======
+            rigidBody.velocity = skewedInput;
+            Debug.Log(skewedInput.magnitude);
+            animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
+        }
+>>>>>>> Stashed changes
     }
 }
