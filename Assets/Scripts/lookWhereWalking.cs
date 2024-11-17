@@ -17,11 +17,13 @@ public class lookWhereWalking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        destination = Quaternion.LookRotation(parentRigid.velocity);
-        transform.rotation = (Quaternion.Slerp(transform.rotation, destination,timeCount));
-        timeCount = timeCount + Time.deltaTime;
-        if (timeCount >= 1) { 
-            timeCount = 0;
+        if (parentRigid.velocity != new Vector3(0, 0, 0)) {
+            destination = Quaternion.LookRotation(parentRigid.velocity);
+            transform.rotation = (Quaternion.Slerp(transform.rotation, destination, timeCount));
+            timeCount = timeCount + Time.deltaTime;
+            if (timeCount >= 1) {
+                timeCount = 0;
+            }
         }
     }
 }
