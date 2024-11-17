@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class detection : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class detection : MonoBehaviour
     public float runningMultiplier = 2;
     float currentDist = 999;
     characterController krampusController;
+    public GameObject krampusLose;
 
     void Start()
     {
@@ -35,12 +37,24 @@ public class detection : MonoBehaviour
             Vector3 krampusPosition = krampus.transform.position;
             if (!Physics.Raycast(transform.position,(krampusPosition - transform.position).normalized,alertDistance*runningMultiplier,1<<6)) { 
                 isAlerted = true;
-                if (isAlerted && gameObject.tag == "Parent") { SceneManager.LoadScene("UITest"); }
+                if (isAlerted && gameObject.tag == "Parent")
+                {
+                    StartCoroutine(Lose());
+                }
                 krampusEncounerPosition = krampusPosition;
             }
             
 
         }
+        
+    }
 
+    IEnumerator Lose()
+    {
+        GameObject canvas = GameObject.Find("Canvas");
+        krampusLose=canvas.transform.Find("GameOverTexture").gameObject;
+        krampusLose.SetActive(true);
+        yield return new WaitForSeconds(5);
+        SceneManager.LoadScene("UITest");
     }
 }
