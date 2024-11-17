@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using DG.Tweening;
 using UnityEngine;
 
 public class interaction : MonoBehaviour
@@ -33,8 +31,8 @@ public class interaction : MonoBehaviour
         {
             if (Physics.Raycast(transform.position, dir, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir,(hit.rigidbody.position - transform.position).magnitude, 1<<6))
             {
-                Vector3.Lerp(hit.rigidbody.position, transform.position, 0.5f);
-
+                //Vector3.Lerp(hit.rigidbody.position, transform.position, 0.5f);
+                DOTween.To(()=>hit.rigidbody.position,(x)=>hit.rigidbody.position=x, transform.position, 0.5f).SetEase(Ease.InOutExpo);
             }
 
         }
