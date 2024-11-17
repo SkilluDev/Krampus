@@ -20,9 +20,14 @@ public class characterController : MonoBehaviour
     private float zMovement;
     public bool shouldKrampusMove = true;
 
+
+    Animator animator;
+
     void Start() 
     {
          rigidBody = GetComponent<Rigidbody>();
+
+        animator = GetComponentInChildren<Animator>();
 
         camera = GameObject.FindWithTag("MainCamera");
          matrix = Matrix4x4.Rotate(Quaternion.Euler(0, camera.transform.localEulerAngles.y, 0));
@@ -40,6 +45,8 @@ public class characterController : MonoBehaviour
         }
         else isRunning = false;
 
+        
+
     }
 
     void FixedUpdate()
@@ -48,6 +55,7 @@ public class characterController : MonoBehaviour
         Vector3 skewedInput = matrix.MultiplyPoint3x4(rawinput);
 
         rigidBody.velocity = skewedInput;
-
+        Debug.Log(skewedInput.magnitude);
+        animator.SetFloat("Speed", (skewedInput.magnitude/(speedMultiplier*runningMultiplier)));
     }
 }
