@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class interaction : MonoBehaviour
 {
-    public Camera cam;
+    [SerializeField] Camera cam;
     public float tongueLength;
     public LayerMask tonguable;
     private LineRenderer lineRenderer;
@@ -21,7 +21,6 @@ public class interaction : MonoBehaviour
     
     void Start()
     {
-        cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         lineRenderer = gameObject.GetComponent<LineRenderer>();
         trail=gameObject.transform.GetChild(2).gameObject.GetComponent<TrailRenderer>();
         Debug.Log(trail);
@@ -38,6 +37,7 @@ public class interaction : MonoBehaviour
             
             if (Physics.Raycast(ray, out hitData, 1000))
             {
+                Debug.Log(hitData.transform.name);
                 dir = ( hitData.transform.position - transform.position ).normalized;
                 
                 if (Physics.Raycast(transform.position, dir, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir,(hit.rigidbody.position - transform.position).magnitude, 1<<6))
