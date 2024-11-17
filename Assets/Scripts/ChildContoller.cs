@@ -9,6 +9,7 @@ public class ChildContoller : MonoBehaviour
     private UnityEngine.AI.NavMeshAgent navMeshAgent;
     private detection detection;
     public float runDistance = 30;
+    
 
     // Start is called before the first frame update
     void Start()
