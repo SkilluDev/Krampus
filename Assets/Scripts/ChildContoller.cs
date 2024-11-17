@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class ChildContoller : MonoBehaviour
 {
-    private GameObject krampus;
-    private Rigidbody rigidBody;
     private UnityEngine.AI.NavMeshAgent navMeshAgent;
     private detection detection;
-    public float runDistance = 30;
 
     // Start is called before the first frame update
     void Start()
     {
-        krampus = GameObject.FindWithTag("Player");
-        rigidBody = GetComponent<Rigidbody>();
+        SoundManager.PlaySound("windup1");
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         detection = GetComponent<detection>();
     }
@@ -22,18 +18,10 @@ public class ChildContoller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(detection.isAlerted) runAway();
+        if(detection.isAlerted) RunToParent();
     }
 
-    void runAway(){
-        Vector3 offset = transform.position - krampus.transform.position;
-        float distance = offset.magnitude;
-        if(distance>runDistance) {runToParent(); return;}
-        Vector3 runDestination = transform.position + offset;
-        navMeshAgent.SetDestination(runDestination);
-    }
-
-    void runToParent(){
+    void RunToParent(){
         var parents = GameObject.FindGameObjectsWithTag("Parent");
         if(parents.Length == 0) {
             Debug.Log("No parents on map");

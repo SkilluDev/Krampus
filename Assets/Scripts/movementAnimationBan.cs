@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class movementAnimationBan : MonoBehaviour
 {
-    private GameObject krampus;
     characterController krampusController;
 
     Animation anim;
@@ -12,16 +11,25 @@ public class movementAnimationBan : MonoBehaviour
 
     void Start()
     {
-        krampus = GameObject.FindWithTag("Player");
-        krampusController = krampus.GetComponent<characterController>();
+        krampusController = GetComponentInParent<characterController>();
 
         anim = GetComponent<Animation>();
     }
 
     void Update()
     {
-        foreach (string animName in bannedAnimName) {
-            krampusController.shouldKrampusMove = !(anim.IsPlaying(animName)); 
+        int howManyPlaying = 0;
+        foreach (string animName in bannedAnimName)
+        {
+            if (anim.IsPlaying(animName)) { 
+                howManyPlaying++;
+            }
+
         }
+        if (howManyPlaying > 0)
+        {
+            krampusController.shouldKrampusMove = false;
+        }
+        else { krampusController.shouldKrampusMove = true; }
     }
 }
