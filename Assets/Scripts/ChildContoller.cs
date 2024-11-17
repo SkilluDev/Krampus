@@ -7,6 +7,14 @@ public class ChildContoller : MonoBehaviour
     private UnityEngine.AI.NavMeshAgent navMeshAgent;
     private detection detection;
     private Vector3 initialPosition;
+
+    private enum State{
+        Panicing,
+        Stopped,
+        Walking,
+        Running,
+    }
+    private State state;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,8 +29,20 @@ public class ChildContoller : MonoBehaviour
     {
         if(detection.isAlerted) RunToParent();
         else navMeshAgent.SetDestination(initialPosition);
+        UpdateState();
     }
 
+    void UpdateState(){
+        State newState;
+        bool moving = navMeshAgent.velocity.sqrMagnitude > 0;
+        if(detection.isAlerted && moving) newState = State.Running;
+        else if (detection.isAlerted) newState = State.Panicing;
+        else if (moving) newState = State.Walking;
+        else newState = State.Stopped;
+        if(newState==state) return;
+        state = newState;
+        StateChanged();
+    }
     void RunToParent(){
         var parents = GameObject.FindGameObjectsWithTag("Parent");
         if(parents.Length == 0) {
@@ -46,5 +66,9 @@ public class ChildContoller : MonoBehaviour
             }
         }
         navMeshAgent.SetDestination(closestParent);
+    }
+
+    void StateChanged(){
+        Debug.Log(state);
     }
 }
