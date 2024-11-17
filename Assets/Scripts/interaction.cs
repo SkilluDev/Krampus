@@ -31,11 +31,12 @@ public class interaction : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            if (Physics.Raycast(transform.position, dir, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir, out hit, tongueLength, 1<<6))
+            if (Physics.Raycast(transform.position, dir, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir,(hit.rigidbody.position - transform.position).magnitude, 1<<6))
             {
-                hit.rigidbody.MovePosition(transform.position);
+                Vector3.Lerp(hit.rigidbody.position, transform.position, 0.5f);
+
             }
-           
+
         }
 
     }
