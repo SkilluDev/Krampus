@@ -46,7 +46,14 @@ public class characterController : MonoBehaviour
             xMovement = Input.GetAxis("Horizontal");
             zMovement = Input.GetAxis("Vertical");
 
+<<<<<<< Updated upstream
             if (Input.GetKey(KeyCode.LeftShift))
+=======
+        if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
+        {
+           // timer2 = 0;
+            if (!isRunning)
+>>>>>>> Stashed changes
             {
                 isRunning = true;
             }
@@ -72,6 +79,7 @@ public class characterController : MonoBehaviour
                        }*/
 
                 }
+<<<<<<< Updated upstream
                 else
                 {
                     timer3 += Time.deltaTime;
@@ -95,6 +103,33 @@ public class characterController : MonoBehaviour
                 timer = 0;
             }
         }
+=======
+            }
+            else
+            {
+                timer3 += Time.deltaTime;
+                timer += Time.deltaTime;
+                if (timer >= 0.43f)
+                {
+                    SoundManager.PlaySound("windup2");
+                    timer = 0;
+                }
+            }
+        }
+        else
+        {
+            /* timer3 = 0.43f;*/
+          /*  timer2 += Time.deltaTime;
+            if (timer2 >= 1f)
+            {
+                SoundManager.PlaySound("windup2");
+                timer2 = 0;
+            }*/
+
+            timer = 0;
+        }
+
+>>>>>>> Stashed changes
     }
 
     void FixedUpdate()
