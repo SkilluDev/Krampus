@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class interaction : MonoBehaviour
 {
     public Camera cam;
     public float tongueLength;
+    public LayerMask tonguable;
     
     void Start()
     {
@@ -13,16 +15,26 @@ public class interaction : MonoBehaviour
     }
 
 
+
     void Update()
     {
         Vector3 worldPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 5));
-        Debug.DrawLine(transform.position,worldPosition);
+        Vector3 upray = new Vector3(worldPosition.x, transform.position.y, worldPosition.z);
+        Vector3 dir = ( upray - transform.position ).normalized;
         
-        
+        //Debug.DrawLine(transform.position, worldPosition);
+        //Debug.DrawLine(worldPosition, upray);
+        Debug.DrawLine(transform.position, upray);
+        Debug.DrawRay(transform.position, dir);
+
+        RaycastHit hit;
 
         if (Input.GetButtonDown("Fire1"))
         {
-            Debug.Log("yeah");
+            if (Physics.Raycast(transform.position, dir, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir, out hit, tongueLength, 1<<6))
+            {
+                hit.rigidbody.MovePosition(transform.position);
+            }
            
         }
 
