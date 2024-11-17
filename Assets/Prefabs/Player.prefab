@@ -81,6 +81,7 @@ MonoBehaviour:
   speedMultiplier: 3.5
   runningMultiplier: 2
   isRunning: 0
+  shouldKrampusMove: 1
 --- !u!136 &6955118070064715465
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -232,7 +233,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
