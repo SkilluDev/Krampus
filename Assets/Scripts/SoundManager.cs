@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static AudioClip windup1, windup2;
+    static AudioSource src;
+
+    private void Start()
     {
-        
+        src = GetComponent<AudioSource>();
+        windup1 = Resources.Load<AudioClip>("Clips/windup1");
     }
 
-    // Update is called once per frame
-    void Update()
+    public static void PlaySound(string clipName)
     {
-        
+        switch (clipName)
+        {
+            case "windup1":
+                src.PlayOneShot(windup1);
+                break;
+        }
     }
 }
