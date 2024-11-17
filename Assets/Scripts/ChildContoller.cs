@@ -22,6 +22,7 @@ public class ChildContoller : MonoBehaviour
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         detection = GetComponent<detection>();
         initialPosition = transform.position;
+        winCondition = GameObject.Find("Win Condition").GetComponent<WinCondition>();
     }
 
     // Update is called once per frame

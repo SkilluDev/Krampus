@@ -8,12 +8,12 @@ public class characterController : MonoBehaviour
     public Rigidbody rigidBody;
     private GameObject camera;
     [SerializeField] private WinCondition winCondition;
-    
+
     public float speedMultiplier;
     public float runningMultiplier = 2;
 
     public bool isRunning;
-    
+
     private Matrix4x4 matrix;
 
     private float xMovement;
@@ -29,14 +29,15 @@ public class characterController : MonoBehaviour
 
     Animator animator;
 
-    void Start() 
+    void Start()
     {
-         rigidBody = GetComponent<Rigidbody>();
+        rigidBody = GetComponent<Rigidbody>();
 
         animator = GetComponentInChildren<Animator>();
+        winCondition = GameObject.Find("Win Condition").GetComponent<WinCondition>();
 
         camera = GameObject.FindWithTag("MainCamera");
-         matrix = Matrix4x4.Rotate(Quaternion.Euler(0, camera.transform.localEulerAngles.y, 0));
+        matrix = Matrix4x4.Rotate(Quaternion.Euler(0, camera.transform.localEulerAngles.y, 0));
     }
 
     void Update()
@@ -46,90 +47,70 @@ public class characterController : MonoBehaviour
             xMovement = Input.GetAxis("Horizontal");
             zMovement = Input.GetAxis("Vertical");
 
-<<<<<<< Updated upstream
             if (Input.GetKey(KeyCode.LeftShift))
-=======
-        if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
-        {
-           // timer2 = 0;
-            if (!isRunning)
->>>>>>> Stashed changes
-            {
-                isRunning = true;
-            }
-            else isRunning = false;
-
-            if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
-            {
-                if (!isRunning)
+                if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
                 {
-                    timer += Time.deltaTime;
-                    timer2 += Time.deltaTime;
-
-                    if (timer >= 0.541f)
+                    // timer2 = 0;
+                    if (!isRunning)
                     {
-                        SoundManager.PlaySound("windup2");
+                        isRunning = true;
+                    }
+                    else isRunning = false;
+
+                    if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
+                    {
+                        if (!isRunning)
+                        {
+                            timer += Time.deltaTime;
+                            timer2 += Time.deltaTime;
+
+                            if (timer >= 0.541f)
+                            {
+                                SoundManager.PlaySound("windup2");
+                                timer = 0;
+                            }
+
+                            /*   if (timer2 >= 0.541f * 2)
+                               {
+                                   SoundManager.PlaySound("step2");
+                                   timer2 = 0;
+                               }*/
+
+                        }
+                        else
+                        {
+                            timer3 += Time.deltaTime;
+                            timer += Time.deltaTime;
+                            if (timer >= 0.43f)
+                            {
+                                SoundManager.PlaySound("windup2");
+                                timer = 0;
+                            }
+                            /*  if (timer3 >= 0.86f)
+                              {
+                                  SoundManager.PlaySound("step2");
+                                  timer3 = 0;
+                              }*/
+                        }
+                    }
+                    else
+                    {
+                        /* timer3 = 0.43f;
+                         timer2 = 0.541f; */
                         timer = 0;
                     }
-
-                    /*   if (timer2 >= 0.541f * 2)
-                       {
-                           SoundManager.PlaySound("step2");
-                           timer2 = 0;
-                       }*/
-
                 }
-<<<<<<< Updated upstream
-                else
-                {
-                    timer3 += Time.deltaTime;
-                    timer += Time.deltaTime;
-                    if (timer >= 0.43f)
-                    {
-                        SoundManager.PlaySound("windup2");
-                        timer = 0;
-                    }
-                    /*  if (timer3 >= 0.86f)
-                      {
-                          SoundManager.PlaySound("step2");
-                          timer3 = 0;
-                      }*/
-                }
-            }
-            else
-            {
-                /* timer3 = 0.43f;
-                 timer2 = 0.541f; */
-                timer = 0;
-            }
-        }
-=======
-            }
-            else
-            {
-                timer3 += Time.deltaTime;
-                timer += Time.deltaTime;
-                if (timer >= 0.43f)
-                {
-                    SoundManager.PlaySound("windup2");
-                    timer = 0;
-                }
-            }
         }
         else
         {
-            /* timer3 = 0.43f;*/
-          /*  timer2 += Time.deltaTime;
-            if (timer2 >= 1f)
+            timer3 += Time.deltaTime;
+            timer += Time.deltaTime;
+            if (timer >= 0.43f)
             {
                 SoundManager.PlaySound("windup2");
-                timer2 = 0;
-            }*/
-
-            timer = 0;
+                timer = 0;
+            }
         }
-
->>>>>>> Stashed changes
     }
 
     void FixedUpdate()

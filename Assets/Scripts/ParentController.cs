@@ -12,11 +12,14 @@ public class ParentController : MonoBehaviour
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        winCondition = GameObject.Find("Win Condition").GetComponent<WinCondition>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (winCondition.isGamePausedValue())  return;
         var children = GameObject.FindGameObjectsWithTag("Child");
         foreach(GameObject child in children){
