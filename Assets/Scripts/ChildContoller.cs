@@ -6,19 +6,21 @@ public class ChildContoller : MonoBehaviour
 {
     private UnityEngine.AI.NavMeshAgent navMeshAgent;
     private detection detection;
-
+    private Vector3 initialPosition;
     // Start is called before the first frame update
     void Start()
     {
         SoundManager.PlaySound("windup1");
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         detection = GetComponent<detection>();
+        initialPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
         if(detection.isAlerted) RunToParent();
+        else navMeshAgent.SetDestination(initialPosition);
     }
 
     void RunToParent(){
