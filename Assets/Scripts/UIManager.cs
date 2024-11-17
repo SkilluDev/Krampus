@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private Text naughtyChildrenList;
+    [SerializeField] private GameObject naughtyChildrenList;
+    [SerializeField] private Text naughtyChildrenListText;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text timeText;
     [SerializeField] private GameObject gameOverTexture;
@@ -80,6 +81,11 @@ public class UIManager : MonoBehaviour
     public void ActivateNaughtyChildrenList()
     {
         naughtyChildrenList.gameObject.SetActive(true);
+    }
+
+    public void UpdateChildrenList(string listaDzieci)
+    {
+        naughtyChildrenListText.text = "These children were very naughty this year: "+ listaDzieci;
     }
     /*
     public void ActivateStartMenu()
