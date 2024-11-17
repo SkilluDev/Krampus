@@ -7,6 +7,7 @@ public class ChildContoller : MonoBehaviour
     private UnityEngine.AI.NavMeshAgent navMeshAgent;
     private detection detection;
     private Vector3 initialPosition;
+    [SerializeField] private WinCondition winCondition;
 
     private enum State{
         Panicing,
@@ -26,9 +27,12 @@ public class ChildContoller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(detection.isAlerted) RunToParent();
-        else navMeshAgent.SetDestination(initialPosition);
-        UpdateState();
+        if (!winCondition.isGamePausedValue())
+        {
+            if (detection.isAlerted) RunToParent();
+            else navMeshAgent.SetDestination(initialPosition);
+            UpdateState();
+        }
     }
 
     void UpdateState(){

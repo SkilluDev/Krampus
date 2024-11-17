@@ -21,6 +21,9 @@ public class interaction : MonoBehaviour
     
     RaycastHit hit;
     
+    public static int goodChildrenEatCount=0;
+    public static int badChildrenEatCount=0;
+    
     void Start()
     {
         lineRenderer = gameObject.GetComponent<LineRenderer>();
@@ -45,6 +48,14 @@ public class interaction : MonoBehaviour
                 if (Physics.Raycast(transform.position, dir, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir,(hit.rigidbody.position - transform.position).magnitude, 1<<6))
                 {
                     child = hit.transform.gameObject;
+                    if (child.gameObject.GetComponent<Child>().isBad)
+                    {
+                        badChildrenEatCount++;
+                    }
+                    else
+                    {
+                        goodChildrenEatCount++;
+                    }
                     trail.enabled = true;
                     trail.gameObject.transform.position = child.transform.position;
                     float time = 1f;
@@ -52,7 +63,7 @@ public class interaction : MonoBehaviour
                     animator.SetTrigger(CurrentlyEating);
                     DOTween.To(()=>hit.transform.position,(x)=>hit.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
                     DOTween.To(()=>trail.transform.position,(x)=>trail.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
-                
+                    
                     StartCoroutine(UpdateLineRenderer());
                     StartCoroutine(StopUpdateLineRenderer(time));
                 }
@@ -70,6 +81,7 @@ public class interaction : MonoBehaviour
         lineRenderer.enabled = false;
         trail.enabled = false;
         Debug.Log(trail);
+        child.SetActive(false);
         StopCoroutine(UpdateLineRenderer());
         yield break;
     }

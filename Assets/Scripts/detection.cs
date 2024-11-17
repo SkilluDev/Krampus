@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class detection : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class detection : MonoBehaviour
             Vector3 krampusPosition = krampus.transform.position;
             if (!Physics.Raycast(transform.position,(krampusPosition - transform.position).normalized,alertDistance*runningMultiplier,1<<6)) { 
                 isAlerted = true;
+                if (isAlerted && gameObject.tag == "Parent") { SceneManager.LoadScene("UI Test"); }
                 krampusEncounerPosition = krampusPosition;
             }
             

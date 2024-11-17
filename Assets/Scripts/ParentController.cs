@@ -7,6 +7,7 @@ public class ParentController : MonoBehaviour
 {
     public float distance = 30;
     private NavMeshAgent navMeshAgent;
+    [SerializeField] private WinCondition winCondition;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +17,7 @@ public class ParentController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (winCondition.isGamePausedValue())  return;
         var children = GameObject.FindGameObjectsWithTag("Child");
         foreach(GameObject child in children){
             detection detection = child.GetComponent<detection>();
