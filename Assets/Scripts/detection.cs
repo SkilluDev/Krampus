@@ -7,6 +7,7 @@ public class detection : MonoBehaviour
 {
     private GameObject krampus;
     public bool isAlerted = false;
+    public Vector3 krampusEncounerPosition;
     public float alertDistance = 30;
     public float runningMultiplier = 2;
     float currentDist = 999;
@@ -30,9 +31,10 @@ public class detection : MonoBehaviour
 
         if (currentDist <= alertDistance || ((krampusController.isRunning) && currentDist <= alertDistance * runningMultiplier))
         {
-            if (!Physics.Raycast(transform.position,(krampus.transform.position - transform.position).normalized,alertDistance*runningMultiplier,1<<6)) { 
+            Vector3 krampusPosition = krampus.transform.position;
+            if (!Physics.Raycast(transform.position,(krampusPosition - transform.position).normalized,alertDistance*runningMultiplier,1<<6)) { 
                 isAlerted = true;
-                
+                krampusEncounerPosition = krampusPosition;
             }
             
 

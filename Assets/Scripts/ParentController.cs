@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ParentController : MonoBehaviour
 {
     public float distance = 30;
+    private NavMeshAgent navMeshAgent;
     // Start is called before the first frame update
     void Start()
     {
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -21,6 +24,7 @@ public class ParentController : MonoBehaviour
             var sqrDistanceToChild = Vector3.SqrMagnitude(vector);
             if (sqrDistanceToChild <= distance && !Physics.Raycast(transform.position, vector.normalized, distance*30,1<<6)) { 
                 detection.isAlerted = false;
+                navMeshAgent.SetDestination(detection.krampusEncounerPosition);
             }
         }
     }
