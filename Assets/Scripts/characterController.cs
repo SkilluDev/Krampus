@@ -105,15 +105,9 @@ public class characterController : MonoBehaviour
                                (isRunning ? runningMultiplier : 1) * (shouldKrampusMove ? 1 : 0);
             Vector3 skewedInput = matrix.MultiplyPoint3x4(rawinput);
 
-<<<<<<< Updated upstream
-        rigidBody.velocity = skewedInput;
-//        Debug.Log(skewedInput.magnitude);
-        animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
-=======
             rigidBody.velocity = skewedInput;
             Debug.Log(skewedInput.magnitude);
             animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
         }
->>>>>>> Stashed changes
     }
 }
