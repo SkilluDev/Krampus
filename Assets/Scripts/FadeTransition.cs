@@ -11,32 +11,48 @@ public class FadeTransition : MonoBehaviour
     private void Start()
     {
         // Fade in when the scene starts
-        StartCoroutine(FadeIn());
+        if (fadeImage != null) // Check if fadeImage is assigned
+        {
+            StartCoroutine(FadeIn());
+        }
+        else
+        {
+            Debug.LogError("fadeImage is not assigned in the inspector!");
+        }
     }
 
     public void LoadSceneWithFade(string sceneName)
     {
         // Trigger fade out and load the next scene
-        StartCoroutine(FadeOut(sceneName));
+        if (fadeImage != null)
+        {
+            StartCoroutine(FadeOut(sceneName));
+        }
+        else
+        {
+            Debug.LogError("fadeImage is not assigned in the inspector!");
+        }
     }
 
     private IEnumerator FadeIn()
     {
-        // Gradually decrease the alpha of the image to make it transparent
         Color color = fadeImage.color;
+        color.a = 1;
+        fadeImage.color = color;
+
         for (float t = fadeDuration; t > 0; t -= Time.deltaTime)
         {
             color.a = t / fadeDuration;
             fadeImage.color = color;
             yield return null;
         }
+
         color.a = 0;
         fadeImage.color = color; // Ensure it's fully transparent
     }
 
     private IEnumerator FadeOut(string sceneName)
     {
-        // Gradually increase the alpha of the image to make it opaque
         Color color = fadeImage.color;
         for (float t = 0; t < fadeDuration; t += Time.deltaTime)
         {
@@ -44,6 +60,7 @@ public class FadeTransition : MonoBehaviour
             fadeImage.color = color;
             yield return null;
         }
+
         color.a = 1;
         fadeImage.color = color; // Ensure it's fully opaque
 
