@@ -117,12 +117,12 @@ public class characterController : MonoBehaviour
     {
         if (!winCondition.isGamePausedValue())
         {
-            Vector3 rawinput = new Vector3(xMovement, 0, zMovement) * speedMultiplier *
+            Vector3 rawinput = new Vector3(xMovement, 0, zMovement).normalized * speedMultiplier *
                                (isRunning ? runningMultiplier : 1) * (shouldKrampusMove ? 1 : 0);
             Vector3 skewedInput = matrix.MultiplyPoint3x4(rawinput);
 
             rigidBody.velocity = skewedInput;
-            Debug.Log(skewedInput.magnitude);
+            //Debug.Log(skewedInput.magnitude);
             animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
         }
     }
