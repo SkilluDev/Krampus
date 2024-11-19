@@ -48,7 +48,14 @@ public class characterController : MonoBehaviour
             zMovement = Input.GetAxis("Vertical");
 
             if (Input.GetKey(KeyCode.LeftShift))
-                if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
+            {
+                isRunning = true;
+            }
+            else
+            {
+                isRunning = false;
+            }
+                /*if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
                 {
                     // timer2 = 0;
                     if (!isRunning)
@@ -74,7 +81,7 @@ public class characterController : MonoBehaviour
                                {
                                    SoundManager.PlaySound("step2");
                                    timer2 = 0;
-                               }*/
+                               }#1#
 
                         }
                         else
@@ -90,26 +97,26 @@ public class characterController : MonoBehaviour
                               {
                                   SoundManager.PlaySound("step2");
                                   timer3 = 0;
-                              }*/
+                              }#1#
                         }
                     }
                     else
                     {
                         /* timer3 = 0.43f;
-                         timer2 = 0.541f; */
+                         timer2 = 0.541f; #1#
                         timer = 0;
                     }
-                }
+                }*/
         }
         else
         {
-            timer3 += Time.deltaTime;
+            /*timer3 += Time.deltaTime;
             timer += Time.deltaTime;
             if (timer >= 0.43f)
             {
                 SoundManager.PlaySound("windup2");
                 timer = 0;
-            }
+            }*/
         }
     }
 
