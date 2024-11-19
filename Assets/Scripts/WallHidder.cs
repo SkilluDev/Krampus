@@ -8,7 +8,7 @@ using static Unity.VisualScripting.Member;
 public class WallHidder : MonoBehaviour
 {
 
-    public MeshRenderer wallStored;
+    public List< MeshRenderer> wallsStored = new List<MeshRenderer>();
     [SerializeField] float disapearanceSpeed;
     [SerializeField] float minAlphaPrec = 50;
     [SerializeField] float range = 200f;
@@ -24,42 +24,57 @@ public class WallHidder : MonoBehaviour
         Vector3 direction = (Camera.main.transform.position - fromPosition).normalized;
 
 
-
+        MeshRenderer wallHit = null;
 
         if (Physics.Raycast(transform.position, direction, out hit, range, LayerMask.GetMask("Wall")))
         {
-           
-            Debug.DrawRay(transform.position, direction, Color.yellow);
-            MeshRenderer wall = hit.transform.gameObject.GetComponent<MeshRenderer>();
-            if (wall != null)
-            {
-                if(wallStored == null) { wallStored = wall; }
-                Debug.Log(wall);
-                if (wall != wallStored )
-                {
-                    Color color2 = wallStored.materials[1].color;
-                    color2.a = 1;
-                    wallStored.materials[1].color = color2;
-                    wallStored = wall;
-                    
-                }
 
-                Color color = wallStored.materials[1].color;
-                Debug.Log (color.a);
-                if (color.a > (minAlphaPrec/100))
+            Debug.DrawRay(transform.position, direction, Color.yellow);
+            wallHit = hit.transform.gameObject.GetComponent<MeshRenderer>();
+            if (wallsStored.Contains(wallHit))
+            {
+                Color color = wallHit.materials[1].color;
+                if (color.a > (minAlphaPrec / 100))
                 {
-                    color.a -= disapearanceSpeed/100 * Time.deltaTime;
-                    wallStored.materials[1].color = color;
+                    color.a -= disapearanceSpeed / 100 * Time.deltaTime;
+                    wallHit.materials[1].color = color;
                 }
             }
+            else
+            {
+                wallsStored.Add(wallHit);
+            }
+        }
+
+            for(int i = 0; i < wallsStored.Count; i++)
+            {
+                MeshRenderer wall = wallsStored[i];
+
+            
+                if (wall != null)
+                {
+                    if (wallHit == wall) continue;
+                }
+                
+                
+                Color color = wall.materials[1].color;
+                if (color.a < 1)
+                {
+                    color.a += disapearanceSpeed / 100 * Time.deltaTime;
+                    wall.materials[1].color = color;
+                }
+                else 
+                {
+                    wallsStored.Remove(wall);
+                    i--;
+                }
+                
+
+            }
+           
 
         }
         
-        if(hit.collider == null)
-        {
-            Color color2 = wallStored.materials[1].color;
-            color2.a = 1;
-            wallStored.materials[1].color = color2;
-        }
+       
     }
-}
+
