@@ -92,14 +92,6 @@ public class characterController : MonoBehaviour
                     currentState = State.walking;
                 }
             }
-            
-            if (previousState != currentState)
-            {
-                timerWindUp1 = 0;
-                timerWindUp2 = -windUpSpeed;
-                timerStep1 = 0;
-                timerStep2 = -stepSpeed;
-            }
 
             switch (currentState)
             {
@@ -127,17 +119,23 @@ public class characterController : MonoBehaviour
                     
                     break;
             }
+            
+            if (previousState != currentState)
+            {
+                timerWindUp1 = 0;
+                timerWindUp2 = -windUpSpeed;
+                timerStep1 = 0;
+                timerStep2 = -stepSpeed;
+            }
+            
             //winding up sounds playing
             if (timerWindUp1 >= windUpSpeed)
             {
-                Debug.Log("w1 speed "+windUpSpeed+" timer:"+timerWindUp1);
                 SoundManager.PlaySound("windup1");
                 timerWindUp1 = -windUpSpeed;
             }
             if (timerWindUp2 >= windUpSpeed)
             {
-                Debug.Log("w2 speed "+windUpSpeed+" timer:"+timerWindUp2);
-
                 SoundManager.PlaySound("windup2");
                 timerWindUp2 = -windUpSpeed;
             }
