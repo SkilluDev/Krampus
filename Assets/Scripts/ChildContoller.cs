@@ -75,13 +75,12 @@ public class ChildContoller : MonoBehaviour
     }
 
     void StateChanged(){
-        Debug.Log(state);
+        
         switch (state) 
         {
             case State.Stopped:
                 int i = Random.RandomRange(0,3);
                 float value = i / 2;
-                Debug.Log(i);
 
                 animator.SetFloat("Idle", i);
                 break;

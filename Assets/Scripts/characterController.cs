@@ -20,17 +20,40 @@ public class characterController : MonoBehaviour
     private float zMovement;
     public bool shouldKrampusMove = true;
 
-    float stepWaitTime = 0.2f;
-    float runWaitTime = 0.1f;
+    float stepRunSpeed = 1f;
+    float stepWalkSpeed = 0.5f;
 
-    float timer;
-    float timer2;
-    float timer3;
+    readonly float windUpRunSpeed = 0.41f;
+    readonly float windUpWalkSpeed = 0.5f;
+    readonly float windUpIdleSpeed = 1.041f;
+
+    float timerWindUp1;
+    float timerWindUp2;
+    
+    float timerStep1;
+    float timerStep2;
+    
+    float windUpSpeed;
+    float stepSpeed;
+
+    enum State
+    {
+        running,walking,idle
+    }
+
+    private State currentState = State.idle;
+    private State previousState = State.idle;
 
     Animator animator;
 
     void Start()
     {
+        timerWindUp1 = 0f;
+        timerWindUp2 = -windUpIdleSpeed;
+        
+        timerStep1 = 0f;
+        timerStep2 = 0f;
+        
         rigidBody = GetComponent<Rigidbody>();
 
         animator = GetComponentInChildren<Animator>();
@@ -42,81 +65,97 @@ public class characterController : MonoBehaviour
 
     void Update()
     {
+        previousState = currentState;
         if (!winCondition.isGamePausedValue())
         {
             xMovement = Input.GetAxis("Horizontal");
             zMovement = Input.GetAxis("Vertical");
-
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                isRunning = true;
+            
+            timerWindUp1 += Time.deltaTime;
+            timerWindUp2 += Time.deltaTime;
+            
+            timerStep1 += Time.deltaTime;
+            timerStep2 += Time.deltaTime;
+            
+            if (rigidBody.velocity.x == 0 && rigidBody.velocity.z == 0) 
+            { 
+                currentState = State.idle;
             }
             else
             {
-                isRunning = false;
-            }
-                /*if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
+                if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    // timer2 = 0;
-                    if (!isRunning)
-                    {
-                        isRunning = true;
-                    }
-                    else isRunning = false;
-
-                    if (rigidBody.velocity.x != 0 || rigidBody.velocity.y != 0)
-                    {
-                        if (!isRunning)
-                        {
-                            timer += Time.deltaTime;
-                            timer2 += Time.deltaTime;
-
-                            if (timer >= 0.541f)
-                            {
-                                SoundManager.PlaySound("windup2");
-                                timer = 0;
-                            }
-
-                            /*   if (timer2 >= 0.541f * 2)
-                               {
-                                   SoundManager.PlaySound("step2");
-                                   timer2 = 0;
-                               }#1#
-
-                        }
-                        else
-                        {
-                            timer3 += Time.deltaTime;
-                            timer += Time.deltaTime;
-                            if (timer >= 0.43f)
-                            {
-                                SoundManager.PlaySound("windup2");
-                                timer = 0;
-                            }
-                            /*  if (timer3 >= 0.86f)
-                              {
-                                  SoundManager.PlaySound("step2");
-                                  timer3 = 0;
-                              }#1#
-                        }
-                    }
-                    else
-                    {
-                        /* timer3 = 0.43f;
-                         timer2 = 0.541f; #1#
-                        timer = 0;
-                    }
-                }*/
-        }
-        else
-        {
-            /*timer3 += Time.deltaTime;
-            timer += Time.deltaTime;
-            if (timer >= 0.43f)
+                    currentState = State.running;
+                }
+                else
+                {
+                    currentState = State.walking;
+                }
+            }
+            
+            if (previousState != currentState)
             {
+                timerWindUp1 = 0;
+                timerWindUp2 = -windUpSpeed;
+                timerStep1 = 0;
+                timerStep2 = -stepSpeed;
+            }
+
+            switch (currentState)
+            {
+                case State.running:
+                    isRunning = true;
+                    
+                    windUpSpeed = windUpRunSpeed;
+                    stepSpeed = stepRunSpeed;
+                    
+                    break;
+                case State.walking:
+                    isRunning = false;
+                    
+                    windUpSpeed = windUpWalkSpeed;
+                    stepSpeed = stepWalkSpeed;
+                    
+                    break;
+                case State.idle:
+                    isRunning = false;
+                    
+                    windUpSpeed = 1.041f;
+                    stepSpeed = int.MaxValue;
+                    timerStep1 = 0;
+                    timerStep2 = 0;
+                    
+                    break;
+            }
+            //winding up sounds playing
+            if (timerWindUp1 >= windUpSpeed)
+            {
+                Debug.Log("w1 speed "+windUpSpeed+" timer:"+timerWindUp1);
+                SoundManager.PlaySound("windup1");
+                timerWindUp1 = -windUpSpeed;
+            }
+            if (timerWindUp2 >= windUpSpeed)
+            {
+                Debug.Log("w2 speed "+windUpSpeed+" timer:"+timerWindUp2);
+
                 SoundManager.PlaySound("windup2");
-                timer = 0;
-            }*/
+                timerWindUp2 = -windUpSpeed;
+            }
+            //steps sounds playing
+            if (timerStep1 >= stepSpeed)
+            {
+                Debug.Log("step1");
+                SoundManager.PlaySound("step1");
+                timerStep1 = -stepSpeed;
+            }
+            if (timerStep2 >= stepSpeed)
+            {
+                Debug.Log("step2");
+                SoundManager.PlaySound("step2");
+                timerStep2 = -stepSpeed;
+            }
+            
+            
         }
     }
 
