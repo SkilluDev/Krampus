@@ -142,15 +142,11 @@ public class characterController : MonoBehaviour
             //steps sounds playing
             if (timerStep1 >= stepSpeed)
             {
-                Debug.Log("s1 speed "+stepSpeed+" timer:"+timerStep1);
-
                 SoundManager.PlaySound("step1");
                 timerStep1 = -stepSpeed;
             }
             if (timerStep2 >= stepSpeed)
             {
-                Debug.Log("s2 speed "+stepSpeed+" timer:"+timerStep2);
-
                 SoundManager.PlaySound("step2");
                 timerStep2 = -stepSpeed;
             }
