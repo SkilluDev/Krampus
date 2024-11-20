@@ -81,8 +81,8 @@ public class interaction : MonoBehaviour
         lineRenderer.enabled = false;
         trail.enabled = false;
         Debug.Log(trail);
-        child.SetActive(false);
         StopCoroutine(UpdateLineRenderer());
+        Destroy(child);
         yield break;
     }
 
@@ -91,6 +91,10 @@ public class interaction : MonoBehaviour
         lineRenderer.enabled = true;
         while (true)
         {
+            if (!child)
+            {
+                yield break;
+            }
             lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, child.transform.position);
             yield return new WaitForEndOfFrame();
