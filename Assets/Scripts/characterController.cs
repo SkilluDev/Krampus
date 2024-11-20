@@ -164,7 +164,6 @@ public class characterController : MonoBehaviour
             Vector3 skewedInput = matrix.MultiplyPoint3x4(rawinput);
 
             rigidBody.velocity = skewedInput;
-           // Debug.Log(skewedInput.magnitude);
             animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
         }
     }

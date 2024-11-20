@@ -20,7 +20,8 @@ public class interaction : MonoBehaviour
     Vector3 dir;
     
     RaycastHit hit;
-    
+    private float completionRadius = 1f;
+
     public static int goodChildrenEatCount=0;
     public static int badChildrenEatCount=0;
     
@@ -61,9 +62,22 @@ public class interaction : MonoBehaviour
                     float time = 1f;
                     animator.SetTrigger(CurrentlyEating);
                     animator.SetTrigger(CurrentlyEating);
-                    DOTween.To(()=>hit.transform.position,(x)=>hit.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
-                    DOTween.To(()=>trail.transform.position,(x)=>trail.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
-                    
+                    Tweener childMove = DOTween.To(()=>hit.transform.position,(x)=>hit.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
+                    Tweener trailMove = DOTween.To(()=>trail.transform.position,(x)=>trail.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
+                    childMove.OnUpdate(delegate () {
+                        // if the tween isn't close enough to the target, set the end position to the target again
+                        if(Vector3.Distance(hit.transform.position, transform.position) > completionRadius)
+                        {
+                            Debug.Log("bruh");
+                            childMove.ChangeEndValue(transform.position, true);
+                        }
+                    });
+                    trailMove.OnUpdate(delegate () {
+                        // if the tween isn't close enough to the target, set the end position to the target again
+                        if(Vector3.Distance(trail.transform.position, transform.position) > completionRadius) {
+                            trailMove.ChangeEndValue(transform.position, true);
+                        }
+                    });
                     StartCoroutine(UpdateLineRenderer());
                     StartCoroutine(StopUpdateLineRenderer(time));
                 }
@@ -80,7 +94,6 @@ public class interaction : MonoBehaviour
         yield return new WaitForSeconds(time);
         lineRenderer.enabled = false;
         trail.enabled = false;
-        Debug.Log(trail);
         StopCoroutine(UpdateLineRenderer());
         Destroy(child);
         yield break;
@@ -100,4 +113,7 @@ public class interaction : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
+    
+    
+    
 }
