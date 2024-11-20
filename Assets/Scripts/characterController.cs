@@ -20,7 +20,7 @@ public class characterController : MonoBehaviour
     private float zMovement;
     public bool shouldKrampusMove = true;
 
-    float stepRunSpeed = 1f;
+    float stepRunSpeed = 0.416f;
     float stepWalkSpeed = 0.5f;
 
     readonly float windUpRunSpeed = 0.41f;
@@ -142,13 +142,15 @@ public class characterController : MonoBehaviour
             //steps sounds playing
             if (timerStep1 >= stepSpeed)
             {
-                Debug.Log("step1");
+                Debug.Log("s1 speed "+stepSpeed+" timer:"+timerStep1);
+
                 SoundManager.PlaySound("step1");
                 timerStep1 = -stepSpeed;
             }
             if (timerStep2 >= stepSpeed)
             {
-                Debug.Log("step2");
+                Debug.Log("s2 speed "+stepSpeed+" timer:"+timerStep2);
+
                 SoundManager.PlaySound("step2");
                 timerStep2 = -stepSpeed;
             }
