@@ -62,33 +62,18 @@ public class interaction : MonoBehaviour
                     float time = 1f;
                     animator.SetTrigger(CurrentlyEating);
                     animator.SetTrigger(CurrentlyEating);
-                    Tweener childMove = DOTween.To(()=>hit.transform.position,(x)=>hit.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
-                    Tweener trailMove = DOTween.To(()=>trail.transform.position,(x)=>trail.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
-                    childMove.OnUpdate(delegate () {
-                        // if the tween isn't close enough to the target, set the end position to the target again
-                        if(Vector3.Distance(hit.transform.position, transform.position) > completionRadius)
-                        {
-                            Debug.Log("bruh");
-                            childMove.ChangeEndValue(transform.position, true);
-                        }
-                    });
-                    trailMove.OnUpdate(delegate () {
-                        // if the tween isn't close enough to the target, set the end position to the target again
-                        if(Vector3.Distance(trail.transform.position, transform.position) > completionRadius) {
-                            trailMove.ChangeEndValue(transform.position, true);
-                        }
-                    });
+                    hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
+                    trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
+                    /*Tweener childMove = DOTween.To(()=>hit.transform.position,(x)=>hit.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
+                    Tweener trailMove = DOTween.To(()=>trail.transform.position,(x)=>trail.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);*/
                     StartCoroutine(UpdateLineRenderer());
                     StartCoroutine(StopUpdateLineRenderer(time));
                 }
             }
-            
-            
-
         }
 
     }
-
+    
     IEnumerator StopUpdateLineRenderer(float time)
     {
         yield return new WaitForSeconds(time);
