@@ -20,8 +20,9 @@ public class characterController : MonoBehaviour
     private float zMovement;
     public bool shouldKrampusMove = true;
 
-    float stepRunSpeed = 0.416f;
-    float stepWalkSpeed = 0.5f;
+    readonly float stepRunSpeed = 0.416f;
+    readonly float stepWalkSpeed = 0.5f;
+    readonly float stepIdleSpeed = float.MaxValue;
 
     readonly float windUpRunSpeed = 0.41f;
     readonly float windUpWalkSpeed = 0.5f;
@@ -112,8 +113,8 @@ public class characterController : MonoBehaviour
                 case State.idle:
                     isRunning = false;
                     
-                    windUpSpeed = 1.041f;
-                    stepSpeed = int.MaxValue;
+                    windUpSpeed = windUpIdleSpeed;
+                    stepSpeed = stepIdleSpeed;
                     timerStep1 = 0;
                     timerStep2 = 0;
                     
