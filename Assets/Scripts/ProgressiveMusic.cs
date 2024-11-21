@@ -7,12 +7,16 @@ public class ProgressiveMusic : MonoBehaviour
     public float minDistance;
     childDistance closestDist;
 
+    AudioSource childTrack;
+    public float resetSpeed = 1;
+
     float distanceToClosest;
 
     private void Start()
     {
         closestDist = GameObject.Find("Player").GetComponent<childDistance>();
-        transform.GetChild(0).GetComponent<AudioSource>().volume = 0;
+        childTrack = transform.GetChild(0).GetComponent<AudioSource>();
+        childTrack.volume = 0;
     }
 
     private void Update()
@@ -20,11 +24,12 @@ public class ProgressiveMusic : MonoBehaviour
         distanceToClosest = Mathf.Sqrt(closestDist.dist);
         if (distanceToClosest < minDistance)
         {
-            transform.GetChild(0).GetComponent<AudioSource>().volume = (minDistance - distanceToClosest)/20;
+            childTrack.volume = (minDistance - distanceToClosest)/20;
         }
         else
-        {
-            transform.GetChild(0).GetComponent<AudioSource>().volume = 0;
+        {   if(childTrack.volume > 0){
+                childTrack.volume -= Time.deltaTime*resetSpeed;
+            }
         }
     }
 }

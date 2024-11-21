@@ -18,6 +18,8 @@ public class PostProcessDistance : MonoBehaviour
     public float maxVignette = 0.4f;
     public float maxChroma = 1f;
 
+    public float resetSpeed = 1f;
+
     float distanceToClosest;
 
     private void Start()
@@ -82,8 +84,8 @@ public class PostProcessDistance : MonoBehaviour
         }
         else
         {
-            ChangeVignette(vignetteIntensity);
-            ChangeAberration(abberIntensity);
+            resetVignetteToDefault(vignetteIntensity);
+            resetAberrToDefault(abberIntensity);
         }
     }
 
@@ -104,6 +106,33 @@ public class PostProcessDistance : MonoBehaviour
         if (aberration != null)
         {
             aberration.intensity.value = intensity;
+        }
+        else
+        {
+            Debug.Log("Abber is null.");
+        }
+    }
+
+    public void resetVignetteToDefault(float intensity)
+    {
+        if (vignette != null)
+        {
+            if(vignette.intensity.value > intensity){
+                vignette.intensity.value -= Time.deltaTime*resetSpeed;
+            }
+        }
+        else
+        {
+            Debug.Log("Vignette is null.");
+        }
+    }
+    public void resetAberrToDefault(float intensity)
+    {
+        if (aberration != null)
+        {
+            if(aberration.intensity.value > intensity){
+                aberration.intensity.value -= Time.deltaTime*resetSpeed;
+            }
         }
         else
         {
