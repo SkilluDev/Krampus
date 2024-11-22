@@ -40,12 +40,12 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        UpdateScore();
     }
 
-    public void UpdateScore(int score)
+    public void UpdateScore()
     {
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = "Score: " + WinCondition.GetScore();
     }
 
     public void UpdateTime(float time)

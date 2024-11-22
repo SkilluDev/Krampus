@@ -16,7 +16,7 @@ public class WinCondition : MonoBehaviour
     [SerializeField] private bool isGamePaused; //Flag to check if Game is Paused
     [SerializeField] private bool isGameOver; //Game is Over - either Won or Lost
     [SerializeField] private float timeLimit; //Czas rundy
-    [SerializeField] private int score;
+    private static int score;
     //private ChildList _ChildrenList; //Needs to be changed to ChildrenListManager appropiate class
     //private Detection _Detection; //Not sure where it will be relevant
     //private Player _PlayerScritpt; //Needs to be changed to appropiate class for handling Player
@@ -27,14 +27,7 @@ public class WinCondition : MonoBehaviour
     {
         isGameOver = false;
         isGamePaused = false;
-        //Not using GameFind -> Serialized Field through Editor will be faster
-        /*
-        _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-        if (_uiManager == null)
-        {
-            Debug.LogError("The UI Manager (which is canvas) is NULL.");
-        }
-        */
+        
     }
 
     // Update is called once per frame
@@ -76,11 +69,19 @@ public class WinCondition : MonoBehaviour
             //Do other staff, that needs to happen , like Show Score
         }
         
-        public void AddScore(int points)
+        public static void AddScore(int points)
         {
             score += points;
-            uiManager.UpdateScore(score);
-            //communicate with ui
+        }
+        
+        public static void SubtractScore(int points)
+        {
+            score -= points;
+        }
+
+        public static int GetScore()
+        {
+            return score;
         }
         public void GamePauseToggle()
         {

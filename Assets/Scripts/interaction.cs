@@ -52,10 +52,12 @@ public class interaction : MonoBehaviour
                     if (child.gameObject.GetComponent<Child>().isBad)
                     {
                         badChildrenEatCount++;
+                        WinCondition.AddScore(10);
                     }
                     else
                     {
                         goodChildrenEatCount++;
+                        WinCondition.SubtractScore(20);
                     }
                     trail.enabled = true;
                     trail.gameObject.transform.position = child.transform.position;
