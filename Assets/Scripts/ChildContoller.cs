@@ -74,6 +74,12 @@ public class ChildContoller : MonoBehaviour
         navMeshAgent.SetDestination(closestParent);
     }
 
+    public void Eat() 
+    {
+
+        animator.SetTrigger("Die");
+    }
+
     void StateChanged(){
         
         switch (state) 

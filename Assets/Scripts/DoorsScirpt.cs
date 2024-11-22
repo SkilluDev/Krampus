@@ -6,6 +6,7 @@ public class DoorsScirpt : MonoBehaviour
 {
     Animator animator;
     bool isOpen = false;
+    [SerializeField] bool checkZInstead = false;
 
     private void Start()
     {
@@ -28,8 +29,8 @@ public class DoorsScirpt : MonoBehaviour
 
     void OpenDoor(Vector3 direction) 
     {
-
-        if (direction.x < 0)
+        
+        if (checkZInstead? direction.z >= 0: direction.x < 0)
         {
             animator.SetTrigger("Open");
         } else { animator.SetTrigger("Open2"); }

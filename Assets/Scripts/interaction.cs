@@ -9,6 +9,7 @@ public class interaction : MonoBehaviour
     [SerializeField] Camera cam;
     [SerializeField] Animator animator;
     public float tongueLength;
+    [SerializeField] Transform tonguePosition;
     public LayerMask tonguable;
     private LineRenderer lineRenderer;
     private GameObject child;
@@ -49,21 +50,12 @@ public class interaction : MonoBehaviour
                 if (Physics.Raycast(transform.position, dir, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir,(hit.rigidbody.position - transform.position).magnitude, 1<<6))
                 {
                     child = hit.transform.gameObject;
-                    if (child.gameObject.GetComponent<Child>().isBad)
-                    {
-                        badChildrenEatCount++;
-                        WinCondition.AddScore(10);
-                    }
-                    else
-                    {
-                        goodChildrenEatCount++;
-                        WinCondition.SubtractScore(20);
-                    }
+                    child.GetComponent<ChildContoller>().Eat();
                     trail.enabled = true;
                     trail.gameObject.transform.position = child.transform.position;
-                    float time = 1f;
-                    animator.SetTrigger(CurrentlyEating);
-                    animator.SetTrigger(CurrentlyEating);
+                    float time = 1.5f;
+                    animator.SetTrigger("Eat");
+                    
                     hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
                     trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
                     /*Tweener childMove = DOTween.To(()=>hit.transform.position,(x)=>hit.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
@@ -78,11 +70,15 @@ public class interaction : MonoBehaviour
     
     IEnumerator StopUpdateLineRenderer(float time)
     {
+
+        GetComponent<characterController>().shouldKrampusMove = false;
         yield return new WaitForSeconds(time);
         lineRenderer.enabled = false;
         trail.enabled = false;
         StopCoroutine(UpdateLineRenderer());
         Destroy(child);
+        GetComponent<characterController>().shouldKrampusMove = true;
+        GrandPoints();
         yield break;
     }
 
@@ -95,9 +91,23 @@ public class interaction : MonoBehaviour
             {
                 yield break;
             }
-            lineRenderer.SetPosition(0, transform.position);
+            lineRenderer.SetPosition(0, tonguePosition.position);
             lineRenderer.SetPosition(1, child.transform.position);
             yield return new WaitForEndOfFrame();
+        }
+    }
+
+    void GrandPoints() 
+    {
+        if (child.gameObject.GetComponent<Child>().isBad)
+        {
+            badChildrenEatCount++;
+            WinCondition.AddScore(10);
+        }
+        else
+        {
+            goodChildrenEatCount++;
+            WinCondition.SubtractScore(20);
         }
     }
     
