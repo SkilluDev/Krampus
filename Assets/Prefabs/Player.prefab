@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1631801307601905626}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: -1.74, y: 2.99, z: -2.26}
+  m_LocalPosition: {x: -2.5, y: 3.8, z: -2.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -69,7 +69,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -153,7 +153,6 @@ GameObject:
   - component: {fileID: 8539697249060526139}
   - component: {fileID: 2641260778869611360}
   - component: {fileID: 2271371493784180808}
-  - component: {fileID: 3583006642802007301}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -400,22 +399,6 @@ MonoBehaviour:
   disapearanceSpeed: 240
   minAlphaPrec: 5
   range: 400
---- !u!208 &3583006642802007301
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3083306166600181781}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!1 &5275404733121756850
 GameObject:
   m_ObjectHideFlags: 0
