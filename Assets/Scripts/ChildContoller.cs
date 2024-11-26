@@ -9,6 +9,7 @@ public class ChildContoller : MonoBehaviour
     private Vector3 initialPosition;
     [SerializeField] private WinCondition winCondition;
     private Animator animator;
+    public float speed;
 
     private enum State{
         Panicing,
@@ -25,6 +26,7 @@ public class ChildContoller : MonoBehaviour
         initialPosition = transform.position;
         winCondition = GameObject.Find("Win Condition").GetComponent<WinCondition>();
         animator = GetComponentInChildren<Animator>();
+        speed = navMeshAgent.speed;
     }
 
     // Update is called once per frame
@@ -94,10 +96,14 @@ public class ChildContoller : MonoBehaviour
             case State.Running:
                 animator.SetTrigger("Move");
                 animator.SetBool("Running", true);
+                navMeshAgent.speed = speed;
+                
                 break;
             case State.Walking:
                 animator.SetTrigger("Move");
                 animator.SetBool("Running", false);
+                navMeshAgent.speed = speed/2;
+                
                 break;
 
         }
