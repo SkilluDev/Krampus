@@ -48,7 +48,7 @@ public class interaction : MonoBehaviour
                 Vector3 realPoint = new Vector3(hitData.point.x, 2, hitData.point.z);
                 dir = ( realPoint - transform.position );
                 Debug.DrawRay(transform.position, dir, Color.red,5f);
-                if (Physics.Raycast(transform.position, dir.normalized, out hit , tongueLength, LayerMask.GetMask("Wall","Child")))
+                if (Physics.Raycast(transform.position, dir.normalized, out hit , tongueLength, LayerMask.GetMask("Wall","Child","Door")))
                 {
                     Debug.Log(hit.transform.name);
                     Debug.Log(hit.transform.gameObject.layer);
