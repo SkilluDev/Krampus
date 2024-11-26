@@ -15,6 +15,8 @@ public class interaction : MonoBehaviour
     private GameObject child;
     private TrailRenderer trail;
 
+    private bool canTongue = true;
+
     Ray ray;
     RaycastHit hitData;
     Vector3 dir;
@@ -30,7 +32,6 @@ public class interaction : MonoBehaviour
     {
         lineRenderer = gameObject.GetComponent<LineRenderer>();
         trail=gameObject.transform.GetChild(2).gameObject.GetComponent<TrailRenderer>();
-        Debug.Log(trail);
 
     }
 
@@ -44,10 +45,11 @@ public class interaction : MonoBehaviour
             
             if (Physics.Raycast(ray, out hitData, 1000))
             {
-                Debug.Log(hitData.transform.name);
-                dir = ( hitData.transform.position - transform.position ).normalized;
-                
-                if (Physics.Raycast(transform.position, dir, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir,(hit.rigidbody.position - transform.position).magnitude, 1<<6))
+                Debug.Log(hitData.point+hitData.transform.name);
+                Vector3 realPoint = new Vector3(hitData.point.x, 2, hitData.point.z);
+                dir = ( realPoint - transform.position );
+                Debug.DrawRay(transform.position, dir, Color.red,5f);
+                if (Physics.Raycast(transform.position, dir.normalized, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir.normalized,(hit.rigidbody.position - transform.position).magnitude, 1<<6))
                 {
                     child = hit.transform.gameObject;
                     child.GetComponent<ChildContoller>().Eat();
@@ -95,6 +97,13 @@ public class interaction : MonoBehaviour
             lineRenderer.SetPosition(1, child.transform.position);
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    IEnumerator TongueTimeout(float waitTime)
+    {
+        canTongue = false;
+        yield return new WaitForSeconds(waitTime);
+        canTongue = true;
     }
 
     void GrandPoints() 
