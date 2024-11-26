@@ -27,6 +27,8 @@ public class interaction : MonoBehaviour
 
     public static int goodChildrenEatCount=0;
     public static int badChildrenEatCount=0;
+
+    private GameObject empty;
     
     void Start()
     {
@@ -39,7 +41,7 @@ public class interaction : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && canTongue)
         {
             ray = cam.ScreenPointToRay(Input.mousePosition);
             
@@ -66,13 +68,43 @@ public class interaction : MonoBehaviour
                         StartCoroutine(UpdateLineRenderer());
                         StartCoroutine(StopUpdateLineRenderer(time));
                     }
+                    else
+                    {
+                        float time = 0.2f;
+                        empty = new GameObject();
+                        empty.transform.position = tonguePosition.position;
+                        StartCoroutine(EmptyTongueOut(time));
+                        StartCoroutine(EmptyTongueIn(time));
+                    }
                     
                 }
             }
         }
 
     }
-    
+
+    IEnumerator EmptyTongueOut(float time)
+    {
+        empty.transform.DOMove(hit.point, time).SetEase(Ease.OutCubic);
+        lineRenderer.enabled = true;
+        canTongue = false;
+        while (true)
+        {
+            lineRenderer.SetPosition(0, tonguePosition.position);
+            lineRenderer.SetPosition(1, empty.transform.position);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+    IEnumerator EmptyTongueIn(float time)
+    {
+        yield return new WaitForSeconds(time);
+        empty.transform.DOMove(tonguePosition.position, time).SetEase(Ease.OutCubic);
+        yield return new WaitForSeconds(time);
+        StopCoroutine(EmptyTongueOut(time));
+        lineRenderer.enabled = false;
+        canTongue = true;
+        
+    }
     IEnumerator StopUpdateLineRenderer(float time)
     {
 
@@ -82,6 +114,7 @@ public class interaction : MonoBehaviour
         trail.enabled = false;
         StopCoroutine(UpdateLineRenderer());
         Destroy(child);
+        canTongue = true;
         GetComponent<characterController>().shouldKrampusMove = true;
         GrandPoints();
         yield break;
@@ -90,25 +123,18 @@ public class interaction : MonoBehaviour
     IEnumerator UpdateLineRenderer()
     {
         lineRenderer.enabled = true;
+        canTongue = false;
         while (true)
         {
             if (!child)
             {
                 yield break;
             }
-            lineRenderer.SetPosition(0, tonguePosition.position+Vector3.up*0.5f);
+            lineRenderer.SetPosition(0, tonguePosition.position);
             lineRenderer.SetPosition(1, child.transform.position+Vector3.up*1.5f);
             yield return new WaitForEndOfFrame();
         }
     }
-
-    IEnumerator TongueTimeout(float waitTime)
-    {
-        canTongue = false;
-        yield return new WaitForSeconds(waitTime);
-        canTongue = true;
-    }
-
     void GrandPoints() 
     {
         if (child.gameObject.GetComponent<Child>().isBad)
