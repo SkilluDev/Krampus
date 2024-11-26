@@ -7,7 +7,6 @@ public class ChildContoller : MonoBehaviour
     private UnityEngine.AI.NavMeshAgent navMeshAgent;
     private detection detection;
     private Vector3 initialPosition;
-    [SerializeField] private WinCondition winCondition;
     private Animator animator;
     public float speed;
     public bool isDummy = false;
@@ -25,7 +24,6 @@ public class ChildContoller : MonoBehaviour
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         detection = GetComponent<detection>();
         initialPosition = transform.position;
-        winCondition = GameObject.Find("Win Condition").GetComponent<WinCondition>();
         animator = GetComponentInChildren<Animator>();
         speed = navMeshAgent.speed;
     }
@@ -33,7 +31,7 @@ public class ChildContoller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!winCondition.isGamePausedValue() && !isDummy)
+        if (!WinCondition.Instance.isGamePausedValue() && !isDummy)
         {
             if (detection.isAlerted) RunToParent();
             else navMeshAgent.SetDestination(initialPosition);

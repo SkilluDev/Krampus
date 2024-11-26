@@ -7,6 +7,20 @@ using UnityEngine.Serialization;
 
 public class WinCondition : MonoBehaviour
 {
+    public static WinCondition Instance { get; private set; }
+
+    private void Awake() 
+    { 
+        // If there is an instance, and it's not me, delete myself.
+        if (Instance != null && Instance != this) 
+        { 
+            Destroy(this); 
+        } 
+        else 
+        { 
+            Instance = this; 
+        } 
+    }
     public enum LostGameCase
     {
         TimeRunOut,         //Is handleded by WinCondition
@@ -16,7 +30,7 @@ public class WinCondition : MonoBehaviour
     [SerializeField] private bool isGamePaused; //Flag to check if Game is Paused
     [SerializeField] private bool isGameOver; //Game is Over - either Won or Lost
     [SerializeField] private float timeLimit; //Czas rundy
-    private static int score;
+    private int score;
     //private ChildList _ChildrenList; //Needs to be changed to ChildrenListManager appropiate class
     //private Detection _Detection; //Not sure where it will be relevant
     //private Player _PlayerScritpt; //Needs to be changed to appropiate class for handling Player
@@ -59,6 +73,7 @@ public class WinCondition : MonoBehaviour
         {
             isGameOver = true;
             uiManager.ActivateGameOverScreen(lostGameCase);
+            StartCoroutine(AutoQuit());
             //Do other staff, like show the Score that you managed to get
         }
         
@@ -66,20 +81,21 @@ public class WinCondition : MonoBehaviour
         {
             isGameOver = true;
             uiManager.ActivateGameWonScreen();
+            StartCoroutine(AutoQuit());
             //Do other staff, that needs to happen , like Show Score
         }
         
-        public static void AddScore(int points)
+        public void AddScore(int points)
         {
             score += points;
         }
         
-        public static void SubtractScore(int points)
+        public void SubtractScore(int points)
         {
             score -= points;
         }
 
-        public static int GetScore()
+        public int GetScore()
         {
             return score;
         }
@@ -104,5 +120,11 @@ public class WinCondition : MonoBehaviour
         public bool isGamePausedValue()
         {
             return isGamePaused;
+        }
+        
+        IEnumerator AutoQuit()
+        {
+            yield return new WaitForSeconds(5);
+            SceneManager.LoadScene("UITest");
         }
 }

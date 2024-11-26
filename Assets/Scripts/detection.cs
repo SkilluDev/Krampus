@@ -39,7 +39,7 @@ public class detection : MonoBehaviour
                 isAlerted = true;
                 if (isAlerted && gameObject.tag == "Parent")
                 {
-                    StartCoroutine(Lose());
+                    WinCondition.Instance.GameOver(WinCondition.LostGameCase.DetectedByParents);
                 }
                 krampusEncounerPosition = krampusPosition;
             }
@@ -49,12 +49,5 @@ public class detection : MonoBehaviour
         
     }
 
-    IEnumerator Lose()
-    {
-        GameObject canvas = GameObject.Find("Canvas");
-        krampusLose=canvas.transform.Find("GameOverTexture").gameObject;
-        krampusLose.SetActive(true);
-        yield return new WaitForSeconds(5);
-        SceneManager.LoadScene("UITest");
-    }
+    
 }

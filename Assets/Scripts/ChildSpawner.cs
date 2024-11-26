@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
+
 public class ChildSpawner : MonoBehaviour
 {
 
@@ -62,9 +65,10 @@ public class ChildSpawner : MonoBehaviour
             CreateChild(point, materials[mat], isBad);
         }
 
-        Child newChild = CreateChild(spawnPoint.position, materials[(goodColor-1)% materials.Length], true);
+        Child newChild = CreateChild(spawnPoint.position, materials[Math.Abs(goodColor-1)%materials.Length], true);
         Destroy(newChild.GetComponent<Rigidbody>());
         newChild.GetComponent<ChildContoller>().isDummy = true;
+        Debug.Log(newChild.name+": Empty child");
         //Destroy(newChild.GetComponent<NavMeshAgent>());
         //Destroy(newChild.GetComponent<ChildContoller>());
         badChildrenCount++;

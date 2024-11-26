@@ -23,12 +23,12 @@ public class interaction : MonoBehaviour
     
     RaycastHit hit;
 
-    public WinCondition winCondition;
-
     public static int goodChildrenEatCount=0;
     public static int badChildrenEatCount=0;
 
     private GameObject empty;
+
+    private Vector3 tonguePoint;
     
     void Start()
     {
@@ -73,10 +73,20 @@ public class interaction : MonoBehaviour
                         float time = 0.2f;
                         empty = new GameObject();
                         empty.transform.position = tonguePosition.position;
+                        tonguePoint = hit.point;
                         StartCoroutine(EmptyTongueOut(time));
                         StartCoroutine(EmptyTongueIn(time));
                     }
                     
+                }
+                else
+                {
+                    float time = 0.2f;
+                    empty = new GameObject();
+                    empty.transform.position = tonguePosition.position;
+                    tonguePoint = transform.position+dir.normalized*tongueLength;
+                    StartCoroutine(EmptyTongueOut(time));
+                    StartCoroutine(EmptyTongueIn(time));
                 }
             }
         }
@@ -85,7 +95,7 @@ public class interaction : MonoBehaviour
 
     IEnumerator EmptyTongueOut(float time)
     {
-        empty.transform.DOMove(hit.point, time).SetEase(Ease.OutCubic);
+        empty.transform.DOMove(tonguePoint, time).SetEase(Ease.OutCubic);
         lineRenderer.enabled = true;
         canTongue = false;
         while (true)
@@ -140,17 +150,17 @@ public class interaction : MonoBehaviour
         if (child.gameObject.GetComponent<Child>().isBad)
         {
             badChildrenEatCount++;
-            WinCondition.AddScore(10);
+            WinCondition.Instance.AddScore(10);
         }
         else
         {
             goodChildrenEatCount++;
-            WinCondition.SubtractScore(20);
+            WinCondition.Instance.SubtractScore(20);
         }
 
         if (badChildrenEatCount == ChildSpawner.badChildrenCount)
         {
-            winCondition.GameWon();
+            WinCondition.Instance.GameWon();
         }
     }
     

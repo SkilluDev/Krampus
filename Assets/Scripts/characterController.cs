@@ -7,7 +7,6 @@ public class characterController : MonoBehaviour
 {
     public Rigidbody rigidBody;
     private GameObject camera;
-    [SerializeField] private WinCondition winCondition;
 
     public float speedMultiplier;
     public float runningMultiplier = 2;
@@ -58,7 +57,6 @@ public class characterController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
 
         animator = GetComponentInChildren<Animator>();
-        winCondition = GameObject.Find("Win Condition").GetComponent<WinCondition>();
 
         camera = GameObject.FindWithTag("MainCamera");
         matrix = Matrix4x4.Rotate(Quaternion.Euler(0, camera.transform.localEulerAngles.y, 0));
@@ -67,7 +65,7 @@ public class characterController : MonoBehaviour
     void Update()
     {
         previousState = currentState;
-        if (!winCondition.isGamePausedValue())
+        if (!WinCondition.Instance.isGamePausedValue())
         {
             xMovement = Input.GetAxis("Horizontal");
             zMovement = Input.GetAxis("Vertical");
@@ -158,7 +156,7 @@ public class characterController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!winCondition.isGamePausedValue())
+        if (!WinCondition.Instance.isGamePausedValue())
         {
             Vector3 rawinput = new Vector3(xMovement, 0, zMovement).normalized * speedMultiplier *
                                (isRunning ? runningMultiplier : 1) * (shouldKrampusMove ? 1 : 0);

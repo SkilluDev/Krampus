@@ -21,7 +21,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider sliderMaster;
     [SerializeField] private Slider sliderMusic;
     [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] private WinCondition winCondition;
 
     // Start is called before the first frame update
     void Start()
@@ -30,14 +29,6 @@ public class UIManager : MonoBehaviour
         timeText.text = "Time limit: --.--";
         naughtyChildrenLeftText.text = "Naughty Children Left: 0";
         gameOverTexture.gameObject.SetActive(false);
-        //GameFind to slow - changed to Serialized Field
-        //winCondition = GameObject.Find("Win_Condition").GetComponent<WinCondition>();
-        /*
-        if (winCondition == null)
-        {
-            Debug.LogError("The Win Condition is NULL.");
-        }
-        */
     }
 
     // Update is called once per frame
@@ -54,7 +45,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateScore()
     {
-        scoreText.text = "Score: " + WinCondition.GetScore();
+        scoreText.text = "Score: " + WinCondition.Instance.GetScore();
     }
 
     public void UpdateTime(float time)
