@@ -50,21 +50,21 @@ public class interaction : MonoBehaviour
                 Debug.DrawRay(transform.position, dir, Color.red,5f);
                 if (Physics.Raycast(transform.position, dir.normalized, out hit , tongueLength))
                 {
-                    if (hit.collider.gameObject.layer != tonguable)
+                    if (hit.collider.gameObject.layer == tonguable)
                     {
-                        
-                    }
-                    child = hit.transform.gameObject;
-                    child.GetComponent<ChildContoller>().Eat();
-                    trail.enabled = true;
-                    trail.gameObject.transform.position = child.transform.position;
-                    float time = 1.5f;
-                    animator.SetTrigger("Eat");
+                        child = hit.transform.gameObject;
+                        child.GetComponent<ChildContoller>().Eat();
+                        trail.enabled = true;
+                        trail.gameObject.transform.position = child.transform.position;
+                        float time = 1.5f;
+                        animator.SetTrigger("Eat");
                     
-                    hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
-                    trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
-                    StartCoroutine(UpdateLineRenderer());
-                    StartCoroutine(StopUpdateLineRenderer(time));
+                        hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
+                        trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
+                        StartCoroutine(UpdateLineRenderer());
+                        StartCoroutine(StopUpdateLineRenderer(time));
+                    }
+                    
                 }
             }
         }
