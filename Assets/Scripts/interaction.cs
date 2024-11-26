@@ -43,14 +43,16 @@ public class interaction : MonoBehaviour
         {
             ray = cam.ScreenPointToRay(Input.mousePosition);
             
-            if (Physics.Raycast(ray, out hitData, 1000))
+            if (Physics.Raycast(ray, out hitData, 1000,LayerMask.GetMask("MapCollider", "Child")))
             {
                 Vector3 realPoint = new Vector3(hitData.point.x, 2, hitData.point.z);
                 dir = ( realPoint - transform.position );
                 Debug.DrawRay(transform.position, dir, Color.red,5f);
-                if (Physics.Raycast(transform.position, dir.normalized, out hit , tongueLength))
+                if (Physics.Raycast(transform.position, dir.normalized, out hit , tongueLength, LayerMask.GetMask("Wall","Child")))
                 {
-                    if (hit.collider.gameObject.layer == tonguable)
+                    Debug.Log(hit.transform.name);
+                    Debug.Log(hit.transform.gameObject.layer);
+                    if (hit.transform.gameObject.layer == 7)
                     {
                         child = hit.transform.gameObject;
                         child.GetComponent<ChildContoller>().Eat();
@@ -94,8 +96,8 @@ public class interaction : MonoBehaviour
             {
                 yield break;
             }
-            lineRenderer.SetPosition(0, tonguePosition.position);
-            lineRenderer.SetPosition(1, child.transform.position);
+            lineRenderer.SetPosition(0, tonguePosition.position+Vector3.up*0.5f);
+            lineRenderer.SetPosition(1, child.transform.position+Vector3.up*1.5f);
             yield return new WaitForEndOfFrame();
         }
     }
