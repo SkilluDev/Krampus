@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject naughtyChildrenList;
     [SerializeField] private Text naughtyChildrenListText;
+    [SerializeField] private TextMeshProUGUI naughtyChildrenLeftText;
     [SerializeField] private Text scoreText;
     [SerializeField] private Text timeText;
     [SerializeField] private GameObject gameOverTexture;
@@ -26,6 +28,7 @@ public class UIManager : MonoBehaviour
     {
         scoreText.text = "Score: " + 0;
         timeText.text = "Time limit: --.--";
+        naughtyChildrenLeftText.text = "Naughty Children Left: 0";
         gameOverTexture.gameObject.SetActive(false);
         //GameFind to slow - changed to Serialized Field
         //winCondition = GameObject.Find("Win_Condition").GetComponent<WinCondition>();
@@ -41,6 +44,12 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         UpdateScore();
+        UpdateNaughtlyCount();
+    }
+
+    private void UpdateNaughtlyCount()
+    {
+        naughtyChildrenLeftText.text = "Naughty Children Left: " + (ChildSpawner.badChildrenCount-interaction.badChildrenEatCount);
     }
 
     public void UpdateScore()

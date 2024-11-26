@@ -17,11 +17,11 @@ public class interaction : MonoBehaviour
 
     Ray ray;
     RaycastHit hitData;
-    Vector3 testWorldPosition;
     Vector3 dir;
     
     RaycastHit hit;
-    private float completionRadius = 1f;
+
+    public WinCondition winCondition;
 
     public static int goodChildrenEatCount=0;
     public static int badChildrenEatCount=0;
@@ -108,6 +108,11 @@ public class interaction : MonoBehaviour
         {
             goodChildrenEatCount++;
             WinCondition.SubtractScore(20);
+        }
+
+        if (badChildrenEatCount == ChildSpawner.badChildrenCount)
+        {
+            winCondition.GameWon();
         }
     }
     
