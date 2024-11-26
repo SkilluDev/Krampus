@@ -45,12 +45,15 @@ public class interaction : MonoBehaviour
             
             if (Physics.Raycast(ray, out hitData, 1000))
             {
-                Debug.Log(hitData.point+hitData.transform.name);
                 Vector3 realPoint = new Vector3(hitData.point.x, 2, hitData.point.z);
                 dir = ( realPoint - transform.position );
                 Debug.DrawRay(transform.position, dir, Color.red,5f);
-                if (Physics.Raycast(transform.position, dir.normalized, out hit , tongueLength, tonguable) && !Physics.Raycast(transform.position, dir.normalized,(hit.rigidbody.position - transform.position).magnitude, 1<<6))
+                if (Physics.Raycast(transform.position, dir.normalized, out hit , tongueLength))
                 {
+                    if (hit.collider.gameObject.layer != tonguable)
+                    {
+                        
+                    }
                     child = hit.transform.gameObject;
                     child.GetComponent<ChildContoller>().Eat();
                     trail.enabled = true;
@@ -60,8 +63,6 @@ public class interaction : MonoBehaviour
                     
                     hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
                     trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
-                    /*Tweener childMove = DOTween.To(()=>hit.transform.position,(x)=>hit.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);
-                    Tweener trailMove = DOTween.To(()=>trail.transform.position,(x)=>trail.transform.position=x, transform.position, time).SetEase(Ease.InOutExpo);*/
                     StartCoroutine(UpdateLineRenderer());
                     StartCoroutine(StopUpdateLineRenderer(time));
                 }
