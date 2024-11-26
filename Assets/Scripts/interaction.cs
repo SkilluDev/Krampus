@@ -58,7 +58,7 @@ public class interaction : MonoBehaviour
                         child.GetComponent<ChildContoller>().Eat();
                         trail.enabled = true;
                         trail.gameObject.transform.position = child.transform.position;
-                        float time = 1.5f;
+                        float time = 0.75f;
                         animator.SetTrigger("Eat");
                     
                         hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
