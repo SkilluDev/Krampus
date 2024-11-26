@@ -5,13 +5,14 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 public class ChildSpawner : MonoBehaviour
 {
-    public Transform[] spawnPoint;
 
     private Vector3[] randomSpawnPoints;
 
     public GameObject childTemplate;
 
     public Material[] materials;
+    
+    public Transform spawnPoint;
 
     public static int goodChildrenCount;
     public static int badChildrenCount;
@@ -60,14 +61,22 @@ public class ChildSpawner : MonoBehaviour
             }
             CreateChild(point, materials[mat], isBad);
         }
+
+        Child newChild = CreateChild(spawnPoint.position, materials[(goodColor-1)% materials.Length], true);
+        Destroy(newChild.GetComponent<Rigidbody>());
+        newChild.GetComponent<ChildContoller>().isDummy = true;
+        //Destroy(newChild.GetComponent<NavMeshAgent>());
+        //Destroy(newChild.GetComponent<ChildContoller>());
+        badChildrenCount++;
         GameObject.Find("shirttext").GetComponent<Text>().text = goodChildrenText;
     }
 
-    void CreateChild(Vector3 spawn, Material material, bool isBad)
+    Child CreateChild(Vector3 spawn, Material material, bool isBad)
     {
         Child newChild = Instantiate(childTemplate, spawn, Quaternion.identity).GetComponent<Child>();
         newChild.mat = material;
         newChild.isBad = isBad;
+        return newChild;
     }
     
     Vector3 RandomPoint(Vector3 center, float range) {

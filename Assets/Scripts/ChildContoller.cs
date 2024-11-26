@@ -10,6 +10,7 @@ public class ChildContoller : MonoBehaviour
     [SerializeField] private WinCondition winCondition;
     private Animator animator;
     public float speed;
+    public bool isDummy = false;
 
     private enum State{
         Panicing,
@@ -32,7 +33,7 @@ public class ChildContoller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!winCondition.isGamePausedValue())
+        if (!winCondition.isGamePausedValue() && !isDummy)
         {
             if (detection.isAlerted) RunToParent();
             else navMeshAgent.SetDestination(initialPosition);
