@@ -7,6 +7,7 @@ public class Child : MonoBehaviour
     public bool isBad;
     public Material mat;
     [SerializeField] ParticleSystem confirmEatingParticle;
+    [SerializeField] ParticleSystem confirmEatingParticleMistake;
 
 
     private void Start()
@@ -23,6 +24,10 @@ public class Child : MonoBehaviour
         {
             Instantiate(confirmEatingParticle, transform.position, Quaternion.identity);
 
+        }
+        else 
+        {
+            Instantiate(confirmEatingParticleMistake, transform.position, Quaternion.identity);
         }
         
 
