@@ -13,6 +13,7 @@ public class characterController : MonoBehaviour
 
     public bool isRunning;
 
+    bool isDead = false;
     private Matrix4x4 matrix;
 
     private float xMovement;
@@ -164,6 +165,16 @@ public class characterController : MonoBehaviour
 
             rigidBody.velocity = skewedInput;
             animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
+        }
+    }
+
+    public void Die() 
+    {
+        if (!isDead)
+        {
+            animator.SetTrigger("Death");
+            isDead = true;
+            shouldKrampusMove = false;
         }
     }
 }

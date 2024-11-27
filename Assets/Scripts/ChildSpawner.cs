@@ -44,6 +44,10 @@ public class ChildSpawner : MonoBehaviour
         {
             goodChildrenText = "red shirts";
         }
+        else if (goodColor == 3)
+        {
+            goodChildrenText = "yellow shirts";
+        }
         randomSpawnPoints = new Vector3[spawnPointCount];
         for (int i = 0; i < spawnPointCount; i++)
         {

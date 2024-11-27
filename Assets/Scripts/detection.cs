@@ -44,6 +44,7 @@ public class detection : MonoBehaviour
                 if (isAlerted && gameObject.tag == "Parent")
                 {
                     WinCondition.Instance.GameOver(WinCondition.LostGameCase.DetectedByParents);
+                    
                 }
                 krampusEncounerPosition = krampusPosition;
             }

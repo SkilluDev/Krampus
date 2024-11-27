@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -22,6 +23,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider sliderMusic;
     [SerializeField] private AudioMixer audioMixer;
 
+
+
+    [SerializeField] private GameObject tutrialInfo;
+    bool inTutorial;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +36,12 @@ public class UIManager : MonoBehaviour
         timeText.text = "Time limit: --.--";
         naughtyChildrenLeftText.text = "Naughty Children Left: 0";
         gameOverTexture.gameObject.SetActive(false);
+
+
+        tutrialInfo.gameObject.SetActive(true);
+        Time.timeScale = 0;
+        inTutorial = true;
+
     }
 
     // Update is called once per frame
@@ -36,6 +49,16 @@ public class UIManager : MonoBehaviour
     {
         UpdateScore();
         UpdateNaughtlyCount();
+
+        if (inTutorial) 
+        {
+            if(Input.GetKeyUp(KeyCode.G)) 
+            {
+                tutrialInfo.gameObject.SetActive(false);
+                Time.timeScale = 1;
+                inTutorial = false;
+            }
+        }
     }
 
     private void UpdateNaughtlyCount()

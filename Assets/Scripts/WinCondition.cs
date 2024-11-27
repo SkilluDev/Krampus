@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using static WinCondition;
 
 public class WinCondition : MonoBehaviour
 {
@@ -71,11 +72,26 @@ public class WinCondition : MonoBehaviour
 
         public void GameOver(LostGameCase lostGameCase)
         {
-            isGameOver = true;
-            uiManager.ActivateGameOverScreen(lostGameCase);
-            StartCoroutine(AutoQuit());
+
+        StartCoroutine(GameOverAnimation( lostGameCase));
             //Do other staff, like show the Score that you managed to get
         }
+        IEnumerator GameOverAnimation(LostGameCase lostGameCase) 
+        {
+            isGameOver = true;
+            characterController characterController = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<characterController>();
+
+            if (characterController != null)
+            {
+                characterController.Die();
+            }
+        yield return new WaitForSeconds(3);
+            uiManager.ActivateGameOverScreen(lostGameCase);
+            StartCoroutine(AutoQuit());
+            
+           
+
+    }
         
         public void GameWon()
         {
