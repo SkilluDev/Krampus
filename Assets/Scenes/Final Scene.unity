@@ -22060,7 +22060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   offset: {x: 0.01, y: 0, z: 0.01}
-  smoothSpeed: 0.01
+  smoothSpeed: 0.03
 --- !u!114 &774287628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33543,9 +33543,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
         type: 3}
+      propertyPath: materials.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
       propertyPath: spawnPoint.Array.size
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0b73b3cee1e363e46aa4fdf97e235296, type: 2}
     - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
         type: 3}
       propertyPath: spawnPoint.Array.data[0]
@@ -48273,7 +48283,7 @@ PrefabInstance:
     - target: {fileID: 1003165501530414725, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: tongueLength
-      value: 10
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1003165501530414725, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -48293,7 +48303,7 @@ PrefabInstance:
     - target: {fileID: 3415448039321906015, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_Radius
-      value: 0.61
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
