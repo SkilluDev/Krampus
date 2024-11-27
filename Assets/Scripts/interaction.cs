@@ -33,7 +33,8 @@ public class interaction : MonoBehaviour
     void Start()
     {
         lineRenderer = gameObject.GetComponent<LineRenderer>();
-        trail=gameObject.transform.GetChild(2).gameObject.GetComponent<TrailRenderer>();
+        trail=GetComponentInChildren<TrailRenderer>();
+        cam = Camera.main.GetComponent<Camera>();
 
     }
 
