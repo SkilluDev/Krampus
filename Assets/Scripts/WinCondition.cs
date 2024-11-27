@@ -95,6 +95,11 @@ public class WinCondition : MonoBehaviour
             score -= points;
         }
 
+        public void SubtractTime(int seconds)
+        {
+            timeLimit -= seconds;
+        }
+
         public int GetScore()
         {
             return score;

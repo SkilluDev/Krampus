@@ -8,11 +8,13 @@ public class Child : MonoBehaviour
     public Material mat;
     [SerializeField] ParticleSystem confirmEatingParticle;
     [SerializeField] ParticleSystem confirmEatingParticleMistake;
+    public WinCondition WinCon;
 
 
     private void Start()
     {
         transform.GetChild(0).GetChild(8).GetComponent<Renderer>().material = mat;
+        WinCon = GameObject.Find("Win Condition").GetComponent<WinCondition>();
     }
 
     public void Die() { }
@@ -20,14 +22,11 @@ public class Child : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (isBad)
+        Instantiate(confirmEatingParticle, transform.position, Quaternion.identity);
+        
+        if (!isBad)
         {
-            Instantiate(confirmEatingParticle, transform.position, Quaternion.identity);
-
-        }
-        else 
-        {
-            Instantiate(confirmEatingParticleMistake, transform.position, Quaternion.identity);
+            WinCon.SubtractTime(15);
         }
         
 

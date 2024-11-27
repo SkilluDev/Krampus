@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2897545938166288194}
   - component: {fileID: 1384997049344360062}
   - component: {fileID: 7834078867251888883}
-  - component: {fileID: -9195453636904773662}
   m_Layer: 0
   m_Name: BadEatingParticle
   m_TagString: Untagged
@@ -42,9 +41,9 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2823477592739585820}
   serializedVersion: 8
-  lengthInSec: 1
+  lengthInSec: 3
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 2
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -223,7 +222,7 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.8773585, g: 0.5326918, b: 0.21106264, a: 1}
+      minColor: {r: 0.61635214, g: 0.069049194, b: 0, a: 1}
       maxColor: {r: 0.16981131, g: 0.13857244, b: 0.13857244, a: 1}
       maxGradient:
         serializedVersion: 2
@@ -4890,15 +4889,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &-9195453636904773662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2823477592739585820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb72dbca0607c6642a71cfda74e2d9a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
