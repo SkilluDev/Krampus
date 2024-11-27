@@ -15,7 +15,7 @@ public class detection : MonoBehaviour
     float currentDist = 999;
     characterController krampusController;
     public GameObject krampusLose;
-
+    private bool lastStateAlerted = false;
     void Start()
     {
         krampus = GameObject.FindWithTag("Player");
@@ -26,7 +26,11 @@ public class detection : MonoBehaviour
     private void Update()
     {
         currentDist = Vector3.SqrMagnitude(krampus.transform.position - gameObject.transform.position);
-        
+        if (isAlerted != lastStateAlerted)
+        {
+            Debug.Log("Changed state from "+lastStateAlerted+" to "+isAlerted);
+            lastStateAlerted = isAlerted;
+        }
     }
 
     void FixedUpdate()
