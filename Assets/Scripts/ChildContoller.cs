@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ChildContoller : MonoBehaviour
 {
@@ -34,7 +35,10 @@ public class ChildContoller : MonoBehaviour
         if (!WinCondition.Instance.isGamePausedValue() && !isDummy)
         {
             if (detection.isAlerted) RunToParent();
-            else navMeshAgent.SetDestination(initialPosition);
+            else
+            {
+                navMeshAgent.SetDestination(initialPosition);
+            }
             UpdateState();
         }
     }
@@ -72,7 +76,11 @@ public class ChildContoller : MonoBehaviour
                 closestParent = parentPosition;
             }
         }
-        navMeshAgent.SetDestination(closestParent);
+        //Debug.Log("previous navmesh dest: "+navMeshAgent.destination);
+        //Debug.Log("this should be closest parents dest:" +closestParent);
+        NavMesh.SamplePosition(closestParent, out NavMeshHit closestNavHit, dist, NavMesh.AllAreas);
+        navMeshAgent.SetDestination(closestNavHit.position);
+        //Debug.Log("new navmesh dest: "+navMeshAgent.destination);
     }
 
     public void Eat() 
