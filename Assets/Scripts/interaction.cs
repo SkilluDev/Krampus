@@ -43,14 +43,29 @@ public class interaction : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1") && canTongue)
         {
-            ray = cam.ScreenPointToRay(Input.mousePosition);
+            StartCoroutine(ShootThoungh());
+        }
+    }
+
+    IEnumerator ShootThoungh() 
+    {
+        GetComponent<characterController>().shouldKrampusMove = false;
+        animator.SetBool("hasHit", false);
+        canTongue = false;
+        animator.SetTrigger("Shoot");
+        yield return new WaitForSeconds(0.4f);
             
-            if (Physics.Raycast(ray, out hitData, 1000,LayerMask.GetMask("MapCollider", "Child")))
+
+
+            ray = cam.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child")))
             {
+
                 Vector3 realPoint = new Vector3(hitData.point.x, 2, hitData.point.z);
-                dir = ( realPoint - transform.position );
-                Debug.DrawRay(transform.position, dir, Color.red,5f);
-                if (Physics.Raycast(transform.position, dir.normalized, out hit , tongueLength, LayerMask.GetMask("Wall","Child","Door")))
+                dir = (realPoint - transform.position);
+                Debug.DrawRay(transform.position, dir, Color.red, 5f);
+                if (Physics.Raycast(transform.position, dir.normalized, out hit, tongueLength, LayerMask.GetMask("Wall", "Child", "Door")))
                 {
                     Debug.Log(hit.transform.name);
                     Debug.Log(hit.transform.gameObject.layer);
@@ -61,8 +76,8 @@ public class interaction : MonoBehaviour
                         trail.enabled = true;
                         trail.gameObject.transform.position = child.transform.position;
                         float time = 0.75f;
-                        animator.SetTrigger("Eat");
-                    
+                    animator.SetBool("hasHit", true);
+
                         hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
                         trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
                         StartCoroutine(UpdateLineRenderer());
@@ -77,21 +92,23 @@ public class interaction : MonoBehaviour
                         StartCoroutine(EmptyTongueOut(time));
                         StartCoroutine(EmptyTongueIn(time));
                     }
-                    
+
                 }
                 else
                 {
-                    float time = 0.2f;
+                animator.SetBool("hasHit", false);
+                float time = 0.2f;
                     empty = new GameObject();
                     empty.transform.position = tonguePosition.position;
-                    tonguePoint = transform.position+dir.normalized*tongueLength;
+                    tonguePoint = transform.position + dir.normalized * tongueLength;
                     StartCoroutine(EmptyTongueOut(time));
                     StartCoroutine(EmptyTongueIn(time));
                 }
             }
-        }
-
+        animator.SetTrigger("nextAction");
     }
+
+    
 
     IEnumerator EmptyTongueOut(float time)
     {
@@ -113,12 +130,13 @@ public class interaction : MonoBehaviour
         StopCoroutine(EmptyTongueOut(time));
         lineRenderer.enabled = false;
         canTongue = true;
-        
+        GetComponent<characterController>().shouldKrampusMove = true;
+
     }
     IEnumerator StopUpdateLineRenderer(float time)
     {
 
-        GetComponent<characterController>().shouldKrampusMove = false;
+       
         yield return new WaitForSeconds(time);
         lineRenderer.enabled = false;
         trail.enabled = false;
