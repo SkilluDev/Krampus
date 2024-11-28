@@ -12,6 +12,7 @@ public class ChildContoller : MonoBehaviour
     public float speed;
     public bool isDummy = false;
 
+    public bool logState = false;
     private enum State{
         Panicing,
         Stopped,
@@ -19,13 +20,14 @@ public class ChildContoller : MonoBehaviour
         Running,
     }
     private State state;
+    private State previousState;
     // Start is called before the first frame update
     void Start()
     {
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         //if(!isDummy) ResetChildDestination();
         initialPosition = transform.position;
-        //navMeshAgent.stoppingDistance = 0.1f;
+        navMeshAgent.stoppingDistance = 0.1f;
         detection = GetComponent<detection>();
         animator = GetComponentInChildren<Animator>();
         speed = navMeshAgent.speed;
@@ -34,6 +36,11 @@ public class ChildContoller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (logState && state != previousState)
+        {
+            previousState = state;
+            Debug.Log(state);
+        }
         if (!WinCondition.Instance.isGamePausedValue() && !isDummy)
         {
             if (detection.isAlerted) RunToParent();
@@ -97,7 +104,7 @@ public class ChildContoller : MonoBehaviour
         {
             case State.Stopped:
                 int i = Random.RandomRange(0,3);
-                animator.SetTrigger("Stop");
+                animator.SetBool("Stop", true);
                 float value = i / 2;
 
                 animator.SetFloat("Idle", i);
@@ -106,12 +113,14 @@ public class ChildContoller : MonoBehaviour
             case State.Running:
                 animator.SetTrigger("Move");
                 animator.SetBool("Running", true);
+                animator.SetBool("Stop", false);
                 navMeshAgent.speed = speed;
                 
                 break;
             case State.Walking:
                 animator.SetTrigger("Move");
                 animator.SetBool("Running", false);
+                animator.SetBool("Stop", false);
                 navMeshAgent.speed = speed/2;
                 
                 break;

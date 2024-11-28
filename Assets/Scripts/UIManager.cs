@@ -78,8 +78,10 @@ public class UIManager : MonoBehaviour
 
     public void ActivateGameOverScreen(WinCondition.LostGameCase lostGameCase)
     {
+        foreach (Transform child in transform)
+            child.gameObject.SetActive(false);
         gameOverTexture.gameObject.SetActive(true);
-        switch (lostGameCase)
+        /*switch (lostGameCase)
         {
             case WinCondition.LostGameCase.TimeRunOut:
                 gameOverText.text = "You ran out of time!";
@@ -93,11 +95,13 @@ public class UIManager : MonoBehaviour
             default:
                 gameOverText.text = "You have made an error!";
                 break;
-        }
+        }*/
     }
 
     public void ActivateGameWonScreen()
     {
+        foreach (Transform child in transform)
+            child.gameObject.SetActive(false);
         gameWonTexture.gameObject.SetActive(true);
     }
 
