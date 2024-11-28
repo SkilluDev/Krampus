@@ -24,9 +24,15 @@ public class detection : MonoBehaviour
 
     private NavMeshAgent navMeshAgent;
 
+
+    [SerializeField] bool KeepAgroForWhile  = false;
+    [SerializeField] float agroKeep = 3;
+
+    bool wasChasingKrampus = false;
+
     private 
     void Start()
-    {
+    {   
         krampus = GameObject.FindWithTag("Player");
         krampusController = krampus.GetComponent<characterController>();
         
@@ -48,22 +54,45 @@ public class detection : MonoBehaviour
 
         if (currentDist <= alertDistance || ((krampusController.isRunning) && currentDist <= alertDistance * runningMultiplier))
         {
+            wasChasingKrampus = true;
             Vector3 krampusPosition = krampus.transform.position;
-            if (!Physics.Raycast(transform.position,(krampusPosition - transform.position).normalized,alertDistance*runningMultiplier,1<<6)) { 
+            if (!Physics.Raycast(transform.position, (krampusPosition - transform.position).normalized, alertDistance * runningMultiplier, 1 << 6))
+            {
                 isAlerted = true;
                 if (isAlerted && gameObject.tag == "Parent")
                 {
-                    if(!chaseDetection)WinCondition.Instance.GameOver(WinCondition.LostGameCase.DetectedByParents);
-                    
+                    if (!chaseDetection) WinCondition.Instance.GameOver(WinCondition.LostGameCase.DetectedByParents);
+
                 }
                 krampusEncounerPosition = krampusPosition;
             }
-            
-            if(chaseDetection && isAlerted) navMeshAgent.SetDestination(krampusPosition);
+
+            if (chaseDetection && isAlerted) navMeshAgent.SetDestination(krampusPosition);
+        }
+        else if (KeepAgroForWhile)
+        {
+
+            if (wasChasingKrampus)
+            {
+                navMeshAgent.SetDestination(krampus.transform.position);
+                wasChasingKrampus = false;
+            }
         }
         
         
+
+        
     }
+
+    IEnumerator KeepingAgro() 
+    {
+        while (true) 
+        {
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+    
 
     
 }

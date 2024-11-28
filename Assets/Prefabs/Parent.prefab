@@ -70,10 +70,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 9
-  m_Acceleration: 7
+  m_Speed: 7
+  m_Acceleration: 20
   avoidancePriority: 50
-  m_AngularSpeed: 150
+  m_AngularSpeed: 500
   m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -113,6 +113,8 @@ MonoBehaviour:
   alertDistance: 5
   runningMultiplier: 1
   krampusLose: {fileID: 0}
+  KeepAgroForWhile: 0
+  agroKeep: 3
 --- !u!114 &3804484053084258229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,9 +130,11 @@ MonoBehaviour:
   krampusEncounerPosition: {x: 0, y: 0, z: 0}
   isAlerted: 0
   chaseDetection: 1
-  alertDistance: 20
+  alertDistance: 50
   runningMultiplier: 3
   krampusLose: {fileID: 0}
+  KeepAgroForWhile: 0
+  agroKeep: 3
 --- !u!1001 &3714708568245153133
 PrefabInstance:
   m_ObjectHideFlags: 0
