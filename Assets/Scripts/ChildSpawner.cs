@@ -44,7 +44,7 @@ public class ChildSpawner : MonoBehaviour
         {
             goodChildrenText = "red shirts";
         }
-        else if (goodColor == 3)
+        else if (goodColor == 4)
         {
             goodChildrenText = "yellow shirts";
         }
