@@ -33685,6 +33685,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1425749485}
+    - targetCorrespondingSourceObject: {fileID: -3472521944009091907, guid: f96484180f65c234b98bec58afad89b2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1425749487}
     - targetCorrespondingSourceObject: {fileID: 2739454971068623568, guid: f96484180f65c234b98bec58afad89b2,
         type: 3}
       insertIndex: -1
@@ -46538,6 +46542,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1425749487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425749482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d228b56d820d041ae5b07c894d06e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popUp: {fileID: 6583553431511503014, guid: 55e0643fcbb31b1409fc756428f3c009, type: 3}
 --- !u!4 &1429445847 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bcb9357bcce38a048bd4be7f1a9fc8fc,
@@ -53350,7 +53367,7 @@ PrefabInstance:
     - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_Parameters.numCapVertices
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -53365,7 +53382,7 @@ PrefabInstance:
     - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[2].time
-      value: 0.9960746
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -53380,7 +53397,7 @@ PrefabInstance:
     - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[2].value
-      value: 0.008477405
+      value: 0.11440392
       objectReference: {fileID: 0}
     - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -63837,6 +63854,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5411021788035343781, guid: 8a7dc6c44093a3c4e9bb62d3e427086c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6323668360723697828, guid: 8a7dc6c44093a3c4e9bb62d3e427086c,
         type: 3}
