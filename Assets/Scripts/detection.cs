@@ -59,7 +59,7 @@ public class detection : MonoBehaviour
                 krampusEncounerPosition = krampusPosition;
             }
             
-            if(chaseDetection && isAlerted) navMeshAgent.SetDestination(krampus.transform.position);
+            if(chaseDetection && isAlerted) navMeshAgent.SetDestination(krampusPosition);
         }
         
         
