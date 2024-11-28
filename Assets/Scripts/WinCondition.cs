@@ -85,7 +85,7 @@ public class WinCondition : MonoBehaviour
             {
                 characterController.Die();
             }
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
             uiManager.ActivateGameOverScreen(lostGameCase);
             StartCoroutine(AutoQuit());
             
@@ -111,9 +111,10 @@ public class WinCondition : MonoBehaviour
             score -= points;
         }
 
-        public void SubtractTime(int seconds)
+        public void SubtractTime(float seconds)
         {
-            timeLimit -= seconds;
+            timeLimit = timeLimit - seconds;
+            //Debug.Log("Subtracted time: "+ seconds);
         }
 
         public int GetScore()
@@ -145,7 +146,7 @@ public class WinCondition : MonoBehaviour
         
         IEnumerator AutoQuit()
         {
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(4);
             SceneManager.LoadScene("UITest");
         }
 }

@@ -73,7 +73,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTime(float time)
     {
-        timeText.text = "Time: " + time.ToString();
+        timeText.text = "Time: " + ((int)time).ToString();
     }
 
     public void ActivateGameOverScreen(WinCondition.LostGameCase lostGameCase)
@@ -82,13 +82,13 @@ public class UIManager : MonoBehaviour
         switch (lostGameCase)
         {
             case WinCondition.LostGameCase.TimeRunOut:
-                gameOverText.text = "You run out off time!";
+                gameOverText.text = "You ran out of time!";
                 break;
             case WinCondition.LostGameCase.TooManyWrongChildren:
                 gameOverText.text = "You ate the wrong children!";
                 break;
             case WinCondition.LostGameCase.DetectedByParents:
-                gameOverText.text = "You have been detected by human race!";
+                gameOverText.text = "You have been caught by nuns!";
                 break;
             default:
                 gameOverText.text = "You have made an error!";
