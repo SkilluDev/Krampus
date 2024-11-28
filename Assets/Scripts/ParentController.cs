@@ -8,11 +8,17 @@ public class ParentController : MonoBehaviour
     public float distance = 30;
     private NavMeshAgent navMeshAgent;
     private detection[] parentDetections;
+
+
+
+    private Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         parentDetections = GetComponents<detection>();
+        animator = GetComponentInChildren<Animator>();
 
     }
 
@@ -35,6 +41,8 @@ public class ParentController : MonoBehaviour
                 }
                 
             }
+            
         }
+        animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
     }
 }

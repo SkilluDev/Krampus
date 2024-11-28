@@ -174,6 +174,7 @@ public class characterController : MonoBehaviour
         {
             animator.SetTrigger("Death");
             isDead = true;
+            rigidBody.velocity = Vector3.zero;
             shouldKrampusMove = false;
         }
     }
