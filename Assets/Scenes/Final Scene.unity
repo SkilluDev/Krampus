@@ -16584,6 +16584,74 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.06314197, y: 0.019999996, z: 0.047096323}
   m_Center: {x: 0, y: 0, z: 0.023548162}
+--- !u!1 &520328826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 520328829}
+  - component: {fileID: 520328828}
+  - component: {fileID: 520328827}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &520328827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520328826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &520328828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520328826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &520328829
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520328826}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &520910959
 GameObject:
   m_ObjectHideFlags: 0
@@ -53279,6 +53347,61 @@ PrefabInstance:
       propertyPath: runningMultiplier
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.numCapVertices
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time
+      value: 0.86499447
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[2].time
+      value: 0.9960746
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0.3059399
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].value
+      value: 0.22141784
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[2].value
+      value: 0.008477405
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].inSlope
+      value: -0.011802405
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].outSlope
+      value: -0.011802405
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539697249060526139, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -66483,3 +66606,4 @@ SceneRoots:
   - {fileID: 1212573918}
   - {fileID: 774287631}
   - {fileID: 1073995218}
+  - {fileID: 520328829}

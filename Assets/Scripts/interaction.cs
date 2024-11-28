@@ -85,14 +85,23 @@ public class interaction : MonoBehaviour
                         child.GetComponent<ChildContoller>().Eat();
                         trail.enabled = true;
                         trail.gameObject.transform.position = child.transform.position;
-                        float time = 0.75f;
+                        float time = 0.85f;
                     animator.SetBool("hasHit", true);
-                   
-                    hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
-                        trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
-                  
+
                     StartCoroutine(UpdateLineRenderer());
-                        StartCoroutine(StopUpdateLineRenderer(time));
+                    StartCoroutine(StopUpdateLineRenderer(time));
+
+                    trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InQuad);
+
+
+                    
+
+                    hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InQuad);
+                   
+                  
+                   
+
+
                     }
                     else
                     {
@@ -100,6 +109,7 @@ public class interaction : MonoBehaviour
                         empty = new GameObject();
                         empty.transform.position = tonguePosition.position;
                         tonguePoint = hit.point;
+                        Destroy(empty,3);
                    
                     StartCoroutine(EmptyTongueOut(time));
                         StartCoroutine(EmptyTongueIn(time));
@@ -165,6 +175,10 @@ public class interaction : MonoBehaviour
     {
         lineRenderer.enabled = true;
         canTongue = false;
+
+
+       
+
         while (true)
         {
             if (!child)
