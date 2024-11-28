@@ -176,21 +176,18 @@ public class interaction : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
     }
-    void GrandPoints() 
-    {
-        if (child.gameObject.GetComponent<Child>().isBad)
-        {
+    void GrandPoints() {
+        if (child.gameObject.GetComponent<Child>().isBad) {
             badChildrenEatCount++;
             WinCondition.Instance.AddScore(10);
-        }
-        else
-        {
+            WinCondition.Instance.SubtractTime(-10);
+        } else {
             goodChildrenEatCount++;
             WinCondition.Instance.SubtractScore(20);
+            WinCondition.Instance.SubtractTime(15);
         }
 
-        if (badChildrenEatCount == ChildSpawner.badChildrenCount)
-        {
+        if (badChildrenEatCount == ChildSpawner.badChildrenCount) {
             WinCondition.Instance.GameWon();
         }
     }
