@@ -4,23 +4,33 @@ using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class detection : MonoBehaviour
 {
     private GameObject krampus;
-    public bool isAlerted = false;
     public Vector3 krampusEncounerPosition;
+    characterController krampusController;
+
+    public bool isAlerted = false;
+    public bool chaseDetection = false;
+    
     public float alertDistance = 30;
     public float runningMultiplier = 2;
     float currentDist = 999;
-    characterController krampusController;
+    
     public GameObject krampusLose;
     private bool lastStateAlerted = false;
+
+    private NavMeshAgent navMeshAgent;
+
+    private 
     void Start()
     {
         krampus = GameObject.FindWithTag("Player");
         krampusController = krampus.GetComponent<characterController>();
         
+        navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
 
     private void Update()
@@ -43,7 +53,8 @@ public class detection : MonoBehaviour
                 isAlerted = true;
                 if (isAlerted && gameObject.tag == "Parent")
                 {
-                    WinCondition.Instance.GameOver(WinCondition.LostGameCase.DetectedByParents);
+                    if(!chaseDetection)WinCondition.Instance.GameOver(WinCondition.LostGameCase.DetectedByParents);
+                    else navMeshAgent.SetDestination(krampusPosition);
                     
                 }
                 krampusEncounerPosition = krampusPosition;

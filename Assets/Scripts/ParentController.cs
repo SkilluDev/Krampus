@@ -7,10 +7,12 @@ public class ParentController : MonoBehaviour
 {
     public float distance = 30;
     private NavMeshAgent navMeshAgent;
+    private detection[] parentDetections;
     // Start is called before the first frame update
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        parentDetections = GetComponents<detection>();
 
     }
 
@@ -25,9 +27,13 @@ public class ParentController : MonoBehaviour
             if(!detection.isAlerted) continue;
             var vector = child.transform.position - transform.position;
             var sqrDistanceToChild = Vector3.SqrMagnitude(vector);
-            if (sqrDistanceToChild <= distance && !Physics.Raycast(transform.position, vector.normalized, distance*30,1<<6)) { 
+            if (sqrDistanceToChild <= distance && !Physics.Raycast(transform.position, vector.normalized, distance,1<<6)) { 
                 detection.isAlerted = false;
-                navMeshAgent.SetDestination(detection.krampusEncounerPosition);
+                if (!parentDetections[1].isAlerted)
+                {
+                    navMeshAgent.SetDestination(detection.krampusEncounerPosition);
+                }
+                
             }
         }
     }
