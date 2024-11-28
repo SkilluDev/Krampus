@@ -54,14 +54,14 @@ public class detection : MonoBehaviour
                 if (isAlerted && gameObject.tag == "Parent")
                 {
                     if(!chaseDetection)WinCondition.Instance.GameOver(WinCondition.LostGameCase.DetectedByParents);
-                    else navMeshAgent.SetDestination(krampusPosition);
                     
                 }
                 krampusEncounerPosition = krampusPosition;
             }
             
-
+            if(chaseDetection && isAlerted) navMeshAgent.SetDestination(krampus.transform.position);
         }
+        
         
     }
 
