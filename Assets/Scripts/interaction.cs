@@ -15,6 +15,8 @@ public class interaction : MonoBehaviour
     private GameObject child;
     private TrailRenderer trail;
 
+    public GameObject model;
+    
     private bool canTongue = true;
 
     Ray ray;
@@ -50,11 +52,15 @@ public class interaction : MonoBehaviour
 
     IEnumerator ShootThoungh() 
     {
+
+
+       
+
         GetComponent<characterController>().shouldKrampusMove = false;
         animator.SetBool("hasHit", false);
         canTongue = false;
         animator.SetTrigger("Shoot");
-        yield return new WaitForSeconds(0.4f);
+       
             
 
 
@@ -62,9 +68,12 @@ public class interaction : MonoBehaviour
 
             if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child")))
             {
-
                 Vector3 realPoint = new Vector3(hitData.point.x, 2, hitData.point.z);
                 dir = (realPoint - transform.position);
+                RotatePlayer(dir);
+            yield return new WaitForSeconds(0.4f);
+               
+
                 Debug.DrawRay(transform.position, dir, Color.red, 5f);
                 if (Physics.Raycast(transform.position, dir.normalized, out hit, tongueLength, LayerMask.GetMask("Wall", "Child", "Door")))
                 {
@@ -78,10 +87,11 @@ public class interaction : MonoBehaviour
                         trail.gameObject.transform.position = child.transform.position;
                         float time = 0.75f;
                     animator.SetBool("hasHit", true);
-
-                        hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
+                   
+                    hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
                         trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.OutSine);
-                        StartCoroutine(UpdateLineRenderer());
+                  
+                    StartCoroutine(UpdateLineRenderer());
                         StartCoroutine(StopUpdateLineRenderer(time));
                     }
                     else
@@ -90,7 +100,8 @@ public class interaction : MonoBehaviour
                         empty = new GameObject();
                         empty.transform.position = tonguePosition.position;
                         tonguePoint = hit.point;
-                        StartCoroutine(EmptyTongueOut(time));
+                   
+                    StartCoroutine(EmptyTongueOut(time));
                         StartCoroutine(EmptyTongueIn(time));
                     }
 
@@ -102,7 +113,8 @@ public class interaction : MonoBehaviour
                     empty = new GameObject();
                     empty.transform.position = tonguePosition.position;
                     tonguePoint = transform.position + dir.normalized * tongueLength;
-                    StartCoroutine(EmptyTongueOut(time));
+               
+                StartCoroutine(EmptyTongueOut(time));
                     StartCoroutine(EmptyTongueIn(time));
                 }
             }
@@ -182,7 +194,15 @@ public class interaction : MonoBehaviour
             WinCondition.Instance.GameWon();
         }
     }
-    
-    
-    
+
+
+    void RotatePlayer(Vector3 dir) 
+    {
+        Debug.Log(dir);
+        Quaternion rot = Quaternion.LookRotation(new Vector3(dir.x,dir.y,dir.z));
+        
+        model.transform.rotation = Quaternion.Euler(0,rot.eulerAngles.y,0);
+
+
+    }
 }
