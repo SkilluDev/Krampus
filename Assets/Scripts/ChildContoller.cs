@@ -104,7 +104,7 @@ public class ChildContoller : MonoBehaviour
         {
             case State.Stopped:
                 int i = Random.RandomRange(0,3);
-                animator.SetTrigger("Stop");
+                animator.SetBool("Stop", true);
                 float value = i / 2;
 
                 animator.SetFloat("Idle", i);
@@ -113,12 +113,14 @@ public class ChildContoller : MonoBehaviour
             case State.Running:
                 animator.SetTrigger("Move");
                 animator.SetBool("Running", true);
+                animator.SetBool("Stop", false);
                 navMeshAgent.speed = speed;
                 
                 break;
             case State.Walking:
                 animator.SetTrigger("Move");
                 animator.SetBool("Running", false);
+                animator.SetBool("Stop", false);
                 navMeshAgent.speed = speed/2;
                 
                 break;
