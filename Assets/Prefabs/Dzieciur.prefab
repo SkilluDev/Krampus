@@ -56,7 +56,6 @@ MonoBehaviour:
     type: 3}
   confirmEatingParticleMistake: {fileID: 1384997049344360062, guid: 717695ed3c4262b49af23d378b834f80,
     type: 3}
-  WinCon: {fileID: 0}
 --- !u!114 &1728035515363293638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,8 +82,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 138d1a78759f02540a6d8846552542c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAlerted: 0
   krampusEncounerPosition: {x: 0, y: 0, z: 0}
+  isAlerted: 0
+  chaseDetection: 0
   alertDistance: 200
   runningMultiplier: 1.5
   krampusLose: {fileID: 0}

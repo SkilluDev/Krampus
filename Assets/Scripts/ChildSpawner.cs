@@ -67,6 +67,8 @@ public class ChildSpawner : MonoBehaviour
                 badChildrenCount++;
             }
             CreateChild(point, materials[mat], isBad);
+            /*Child tempChild = CreateChild(point, materials[mat], isBad);
+            tempChild.GetComponent<ChildContoller>().ResetChildDestination();*/
         }
 
         Child newChild = CreateChild(spawnPoint.position, materials[Math.Abs(goodColor-1)%materials.Length], true);

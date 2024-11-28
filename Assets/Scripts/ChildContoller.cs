@@ -23,8 +23,10 @@ public class ChildContoller : MonoBehaviour
     void Start()
     {
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        detection = GetComponent<detection>();
+        //if(!isDummy) ResetChildDestination();
         initialPosition = transform.position;
+        //navMeshAgent.stoppingDistance = 0.1f;
+        detection = GetComponent<detection>();
         animator = GetComponentInChildren<Animator>();
         speed = navMeshAgent.speed;
     }
@@ -95,6 +97,7 @@ public class ChildContoller : MonoBehaviour
         {
             case State.Stopped:
                 int i = Random.RandomRange(0,3);
+                animator.SetTrigger("Stop");
                 float value = i / 2;
 
                 animator.SetFloat("Idle", i);
@@ -114,5 +117,15 @@ public class ChildContoller : MonoBehaviour
                 break;
 
         }
+    }
+
+    public void ResetChildDestination()
+    {
+        Vector3 pos = gameObject.transform.position;
+        Vector3 destination = navMeshAgent.destination;
+        Vector3 direction = pos - destination;
+        Debug.Log(direction);
+        destination += direction.normalized * 1.5f;
+        navMeshAgent.SetDestination(destination);
     }
 }
