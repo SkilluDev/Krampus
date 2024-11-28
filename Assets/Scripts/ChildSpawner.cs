@@ -17,8 +17,8 @@ public class ChildSpawner : MonoBehaviour
     
     public Transform spawnPoint;
 
-    public static int goodChildrenCount;
-    public static int badChildrenCount;
+    public  int goodChildrenCount;
+    public  int badChildrenCount;
     
     [SerializeField] int spawnPointCount = 30;
 
@@ -26,6 +26,8 @@ public class ChildSpawner : MonoBehaviour
 
     private void Start()
     {
+        badChildrenCount = 0;
+        goodChildrenCount = 0;
         
         int goodColor = Random.Range(0, materials.Length);
         if (goodColor == 0)
@@ -79,6 +81,8 @@ public class ChildSpawner : MonoBehaviour
         //Destroy(newChild.GetComponent<ChildContoller>());
         badChildrenCount++;
         GameObject.Find("shirttext").GetComponent<Text>().text = goodChildrenText;
+
+        WinCondition.Instance.SetChildCount(badChildrenCount);
     }
 
     Child CreateChild(Vector3 spawn, Material material, bool isBad)

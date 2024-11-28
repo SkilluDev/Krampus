@@ -10,6 +10,13 @@ public class WinCondition : MonoBehaviour
 {
     public static WinCondition Instance { get; private set; }
 
+
+    public int badChildrenOnStart;
+    public int badChildrenCount;
+
+    [SerializeField] UIManager manager;
+    
+
     private void Awake() 
     { 
         // If there is an instance, and it's not me, delete myself.
@@ -42,6 +49,7 @@ public class WinCondition : MonoBehaviour
     {
         isGameOver = false;
         isGamePaused = false;
+       
         
     }
 
@@ -149,4 +157,31 @@ public class WinCondition : MonoBehaviour
             yield return new WaitForSeconds(4);
             SceneManager.LoadScene("UITest");
         }
+
+
+    //FunctionAboutEatingChildren
+
+
+    public int getBadChildrenCount() 
+    {
+        return badChildrenCount;
+    }
+
+    public void SetChildCount(int count) {
+        badChildrenOnStart = count;
+        badChildrenCount = badChildrenOnStart;
+
+        uiManager.UpdateNaughtlyCount(badChildrenCount);
+    }
+
+   public void badChildEaten() 
+    {
+        badChildrenCount--;
+
+       uiManager.UpdateNaughtlyCount(badChildrenCount);
+        if (badChildrenCount <= 0) 
+        {
+            GameWon();
+        }
+    }
 }

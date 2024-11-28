@@ -48,7 +48,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         UpdateScore();
-        UpdateNaughtlyCount();
+        
 
         if (inTutorial) 
         {
@@ -61,9 +61,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void UpdateNaughtlyCount()
+    public void UpdateNaughtlyCount(int count)
     {
-        naughtyChildrenLeftText.text = "Naughty Children Left: " + (ChildSpawner.badChildrenCount-interaction.badChildrenEatCount);
+        naughtyChildrenLeftText.text = "Naughty Children Left: " + (count);
     }
 
     public void UpdateScore()

@@ -179,6 +179,7 @@ public class interaction : MonoBehaviour
     void GrandPoints() {
         if (child.gameObject.GetComponent<Child>().isBad) {
             badChildrenEatCount++;
+            WinCondition.Instance.badChildEaten();
             WinCondition.Instance.AddScore(10);
             WinCondition.Instance.SubtractTime(-10);
         } else {
@@ -187,9 +188,6 @@ public class interaction : MonoBehaviour
             WinCondition.Instance.SubtractTime(15);
         }
 
-        if (badChildrenEatCount == ChildSpawner.badChildrenCount) {
-            WinCondition.Instance.GameWon();
-        }
     }
 
 
