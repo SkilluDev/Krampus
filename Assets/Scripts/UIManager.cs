@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private Slider sliderMaster;
     [SerializeField] private Slider sliderMusic;
+    [SerializeField] private Slider sliderSFX;
     [SerializeField] private AudioMixer audioMixer;
 
 
@@ -41,7 +42,6 @@ public class UIManager : MonoBehaviour
         tutrialInfo.gameObject.SetActive(true);
         Time.timeScale = 0;
         inTutorial = true;
-
     }
 
     // Update is called once per frame
@@ -128,8 +128,9 @@ public class UIManager : MonoBehaviour
     public void ActivateSettingsMenu()
     {
         settingsMenu.gameObject.SetActive(true);
-        sliderMaster.value = GetVolumeFromMixer("Master");
-        sliderMusic.value = GetVolumeFromMixer("Music");
+        sliderMaster.value = Mathf.Pow(10,GetVolumeFromMixer("MasterVolume")/20); //Reversed values from SetFloat in volumeUpdate()
+        sliderMusic.value = Mathf.Pow(10, GetVolumeFromMixer("MusicVolume")/20);
+        sliderSFX.value = Mathf.Pow(10, GetVolumeFromMixer("SFXVolume")/20);
     }
     public void DeactivateSettingsMenu()
     {
@@ -150,9 +151,22 @@ public class UIManager : MonoBehaviour
             return 0f;
         }
     }
+    public void MasterVolumeChanged()
+    {
+        audioMixer.SetFloat("MasterVolume", Mathf.Log10(sliderMaster.value) * 20);
+    }
+    public void MusicVolumeChanged()
+    {
+        audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderMusic.value) * 20);
+    }
+    public void SFXVolumeChanged()
+    {
+        audioMixer.SetFloat("SFXVolume", Mathf.Log10(sliderSFX.value) * 20);
+    }
     public void volumeUpdate()
     {
-        audioMixer.SetFloat("Master", sliderMaster.value);
-        audioMixer.SetFloat("Music", sliderMusic.value);
+        audioMixer.SetFloat("MasterVolume", Mathf.Log10(sliderMaster.value)*20); //Changed to Log10 to adjust better than linear
+        audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderMusic.value)*20);
+        audioMixer.SetFloat("SFXVolume", Mathf.Log10(sliderSFX.value)*20);
     }
 }
