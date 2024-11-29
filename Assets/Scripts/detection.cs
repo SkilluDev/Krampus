@@ -52,12 +52,14 @@ public class detection : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (currentDist <= alertDistance || ((krampusController.isRunning) && currentDist <= alertDistance * runningMultiplier))
+        if (currentDist <= alertDistance || ((krampusController.isRunning) && currentDist <= alertDistance * runningMultiplier))    
         {
+            
             wasChasingKrampus = true;
             Vector3 krampusPosition = krampus.transform.position;
-            if (!Physics.Raycast(transform.position, (krampusPosition - transform.position).normalized, alertDistance * runningMultiplier, 1 << 6))
+            if (!Physics.Raycast(transform.position, (krampusPosition - transform.position).normalized, Vector3.Distance(transform.position,krampusPosition), LayerMask.GetMask("Wall")))
             {
+                Debug.DrawLine(transform.position, (krampusPosition - transform.position).normalized * 100f);
                 isAlerted = true;
                 if (isAlerted && gameObject.tag == "Parent")
                 {

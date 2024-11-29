@@ -17,6 +17,7 @@ public class ChildContoller : MonoBehaviour
         Panicing,
         Stopped,
         Walking,
+        Hiding,
         Running,
     }
     private State state;
@@ -84,13 +85,24 @@ public class ChildContoller : MonoBehaviour
                 dist = sqrLen;
                 closestParent = parentPosition;
             }
+
+            
         }
-        //Debug.Log("previous navmesh dest: "+navMeshAgent.destination);
-        //Debug.Log("this should be closest parents dest:" +closestParent);
-        NavMesh.SamplePosition(closestParent, out NavMeshHit closestNavHit, dist, NavMesh.AllAreas);
-        navMeshAgent.SetDestination(closestNavHit.position);
-        //Debug.Log("new navmesh dest: "+navMeshAgent.destination);
+
+        SetDestination(closestParent);
     }
+
+
+
+    void RunToRandomPlace() 
+    {
+    
+    
+    }
+
+
+
+
 
     public void Eat() 
     {
@@ -124,6 +136,14 @@ public class ChildContoller : MonoBehaviour
                 navMeshAgent.speed = speed/2;
                 
                 break;
+            case State.Hiding:
+
+
+
+
+                break;
+
+         
 
         }
     }
@@ -137,4 +157,18 @@ public class ChildContoller : MonoBehaviour
         destination += direction.normalized * 1.5f;
         navMeshAgent.SetDestination(destination);
     }
+
+
+
+
+    void SetDestination(Vector3 destination) 
+    {
+
+        NavMesh.SamplePosition(destination, out NavMeshHit closestNavHit, 1000, NavMesh.AllAreas);
+        navMeshAgent.SetDestination(closestNavHit.position);
+    }
+
+
+
+  
 }

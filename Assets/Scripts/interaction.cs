@@ -89,17 +89,33 @@ public class interaction : MonoBehaviour
                     Debug.Log(hit.transform.gameObject.layer);
 
                      Collider[] cols = Physics.OverlapSphere(hit.point, lolipopRadius, LayerMask.GetMask("Child"));
-               
 
 
-                    if (cols.Length > 0)
-                    {
 
-                        RotatePlayer(dir);
-                         child = cols[0].gameObject;
+                if (cols.Length > 0)
+                {
+
+
+
+
+                    RotatePlayer(dir);
+                    child = cols[0].gameObject;
+                    if (Physics.Raycast(transform.position, (child.transform.position - transform.position).normalized, Vector3.Distance(transform.position, child.transform.position), LayerMask.GetMask("Wall")))
+                        {
+                        animator.SetBool("hasHit", false);
+                        float time = 0.2f;
+                        empty = new GameObject();
+                        empty.transform.position = tonguePosition.position;
+                        tonguePoint = transform.position + dir.normalized * tongueLength;
+
+                        StartCoroutine(EmptyTongueOut(time));
+                        StartCoroutine(EmptyTongueIn(time));
+
+                    }   
+                    else {
                         Debug.Log(child.transform.name);
                         Debug.Log(child.transform.gameObject.layer);
-                         child.GetComponent<ChildContoller>().Eat();
+                        child.GetComponent<ChildContoller>().Eat();
                         trail.enabled = true;
                         trail.gameObject.transform.position = child.transform.position;
                         float time = 0.85f;
@@ -107,19 +123,20 @@ public class interaction : MonoBehaviour
 
 
 
-                    StartCoroutine(UpdateLineRenderer());
-                    StartCoroutine(StopUpdateLineRenderer(time));
+                        StartCoroutine(UpdateLineRenderer());
+                        StartCoroutine(StopUpdateLineRenderer(time));
 
-                    lineRenderer.enabled = true;
-                    trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
+                        lineRenderer.enabled = true;
+                        trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
 
                         child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
                     }
-                
+                }
+
                 else
                 {
 
-                    Debug.Log("I am eating your mom");  
+                    Debug.Log("I am eating your mom");
                     float time = 0.2f;
                     empty = new GameObject();
                     empty.transform.position = tonguePosition.position;
