@@ -46,6 +46,7 @@ public class ChildSpawner : MonoBehaviour
         else if (goodColor == 3)
         {
             goodChildrenText = "red shirts";
+            
         }
         else if (goodColor == 4)
         {
@@ -82,6 +83,7 @@ public class ChildSpawner : MonoBehaviour
         //Destroy(newChild.GetComponent<ChildContoller>());
         badChildrenCount++;
         GameObject.Find("shirttext").GetComponent<Text>().text = goodChildrenText;
+        GameObject.Find("shirttext").GetComponent<Text>().color = colors[goodColor];
 
         WinCondition.Instance.SetChildCount(badChildrenCount);
     }

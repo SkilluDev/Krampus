@@ -59,7 +59,7 @@ public class detection : MonoBehaviour
             Vector3 krampusPosition = krampus.transform.position;
             if (!Physics.Raycast(transform.position, (krampusPosition - transform.position).normalized, Vector3.Distance(transform.position,krampusPosition), LayerMask.GetMask("Wall")))
             {
-                Debug.DrawLine(transform.position, (krampusPosition - transform.position).normalized * 100f);
+                Debug.DrawLine(transform.position, transform.position+ (krampusPosition - transform.position).normalized * Vector3.Distance(transform.position, krampusPosition));
                 isAlerted = true;
                 if (isAlerted && gameObject.tag == "Parent")
                 {
