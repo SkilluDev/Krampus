@@ -35,6 +35,7 @@ public class PopUpImage : MonoBehaviour
         if (counter >= panels.Length - 1)
         {
             PopupEnd();
+            return;
         }
         panels[++counter].SetActive(true);
 
