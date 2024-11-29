@@ -13,6 +13,7 @@ public class interaction : MonoBehaviour
     public float tongueLength;
     [SerializeField] Transform tonguePosition;
  
+
     private LineRenderer lineRenderer;
     private GameObject child;
     private TrailRenderer trail;
@@ -98,20 +99,21 @@ public class interaction : MonoBehaviour
                          child = cols[0].gameObject;
                         Debug.Log(child.transform.name);
                         Debug.Log(child.transform.gameObject.layer);
-                    child.GetComponent<ChildContoller>().Eat();
+                         child.GetComponent<ChildContoller>().Eat();
                         trail.enabled = true;
                         trail.gameObject.transform.position = child.transform.position;
                         float time = 0.85f;
                         animator.SetBool("hasHit", true);
 
-                    
 
-                         StartCoroutine(UpdateLineRenderer());
-                        StartCoroutine(StopUpdateLineRenderer(time));
 
-                        trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InQuad);
+                    StartCoroutine(UpdateLineRenderer());
+                    StartCoroutine(StopUpdateLineRenderer(time));
 
-                        child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InQuad);
+                    lineRenderer.enabled = true;
+                    trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
+
+                        child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
                     }
                 
                 else
@@ -181,6 +183,7 @@ public class interaction : MonoBehaviour
         trail.enabled = false;
         StopCoroutine(UpdateLineRenderer());
         Destroy(child);
+        Camera.main.GetComponent<CameraFollow>().Shake();
         canTongue = true;
         if(!GetComponent<characterController>().isDead)
             GetComponent<characterController>().shouldKrampusMove = true;
@@ -193,8 +196,8 @@ public class interaction : MonoBehaviour
         lineRenderer.enabled = true;
         canTongue = false;
 
+      
 
-       
 
         while (true)
         {
