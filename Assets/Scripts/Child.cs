@@ -5,6 +5,8 @@ using UnityEngine;
 public class Child : MonoBehaviour {
     public bool isBad;
     public Material mat;
+
+    public MeshRenderer ring;
     [SerializeField] ParticleSystem confirmEatingParticle;
     [SerializeField] ParticleSystem confirmEatingParticleMistake;
 

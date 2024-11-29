@@ -12,7 +12,7 @@ public class interaction : MonoBehaviour
     [SerializeField] Animator animator;
     public float tongueLength;
     [SerializeField] Transform tonguePosition;
-    public LayerMask tonguable;
+ 
     private LineRenderer lineRenderer;
     private GameObject child;
     private TrailRenderer trail;
@@ -20,6 +20,10 @@ public class interaction : MonoBehaviour
     public GameObject model;
     
     private bool canTongue = true;
+
+    [SerializeField] float lolipopRadius = 2f;
+
+
 
     Ray ray;
     RaycastHit hitData;
@@ -74,7 +78,7 @@ public class interaction : MonoBehaviour
                 Vector3 realPoint = new Vector3(hitData.point.x, 2, hitData.point.z);
                 dir = (realPoint - transform.position);
                 RotatePlayer(dir);
-            yield return new WaitForSeconds(0.4f);
+                yield return new WaitForSeconds(0.4f);
                
 
                 Debug.DrawRay(transform.position, dir, Color.red, 5f);
@@ -82,41 +86,47 @@ public class interaction : MonoBehaviour
                 {
                     Debug.Log(hit.transform.name);
                     Debug.Log(hit.transform.gameObject.layer);
-                    if (hit.transform.gameObject.layer == 7)
+
+                     Collider[] cols = Physics.OverlapSphere(hit.point, lolipopRadius, LayerMask.GetMask("Child"));
+               
+
+
+                    if (cols.Length > 0)
                     {
-                        child = hit.transform.gameObject;
-                        child.GetComponent<ChildContoller>().Eat();
+
+                        RotatePlayer(dir);
+                         child = cols[0].gameObject;
+                        Debug.Log(child.transform.name);
+                        Debug.Log(child.transform.gameObject.layer);
+                    child.GetComponent<ChildContoller>().Eat();
                         trail.enabled = true;
                         trail.gameObject.transform.position = child.transform.position;
                         float time = 0.85f;
-                    animator.SetBool("hasHit", true);
-
-                    StartCoroutine(UpdateLineRenderer());
-                    StartCoroutine(StopUpdateLineRenderer(time));
-
-                    trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InQuad);
-
+                        animator.SetBool("hasHit", true);
 
                     
 
-                    hit.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InQuad);
-                   
-                  
-                   
+                         StartCoroutine(UpdateLineRenderer());
+                        StartCoroutine(StopUpdateLineRenderer(time));
 
+                        trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InQuad);
 
+                        child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InQuad);
                     }
-                    else
-                    {
-                        float time = 0.2f;
-                        empty = new GameObject();
-                        empty.transform.position = tonguePosition.position;
-                        tonguePoint = hit.point;
-                        Destroy(empty,3);
-                   
+                
+                else
+                {
+
+                    Debug.Log("I am eating your mom");  
+                    float time = 0.2f;
+                    empty = new GameObject();
+                    empty.transform.position = tonguePosition.position;
+                    tonguePoint = hit.point;
+                    Destroy(empty, 3);
+
                     StartCoroutine(EmptyTongueOut(time));
-                        StartCoroutine(EmptyTongueIn(time));
-                    }
+                    StartCoroutine(EmptyTongueIn(time));
+                }
 
                 }
                 else
@@ -133,6 +143,8 @@ public class interaction : MonoBehaviour
             }
         animator.SetTrigger("nextAction");
     }
+
+    
 
     
 
@@ -219,4 +231,5 @@ public class interaction : MonoBehaviour
 
 
     }
+    
 }

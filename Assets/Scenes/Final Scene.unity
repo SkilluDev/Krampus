@@ -325,6 +325,124 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.039999984, y: 0.0028544194, z: 0.03999999}
   m_Center: {x: -0.009999955, y: 0.008572728, z: 0.019999996}
+--- !u!1 &21374225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 21374226}
+  - component: {fileID: 21374228}
+  - component: {fileID: 21374227}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &21374226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21374225}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.8500774, y: -0, z: -0, w: 0.5266578}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1238699885}
+  m_LocalEulerAnglesHint: {x: 116.44, y: 0, z: 0}
+--- !u!114 &21374227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21374225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+--- !u!108 &21374228
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21374225}
+  m_Enabled: 1
+  serializedVersion: 10
+  m_Type: 2
+  m_Shape: 0
+  m_Color: {r: 0.6037736, g: 0.39008886, b: 0.031327877, a: 1}
+  m_Intensity: 30
+  m_Range: 34.19
+  m_SpotAngle: 82.82913
+  m_InnerSpotAngle: 74.63122
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1 &21474191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1428,7 +1546,7 @@ MonoBehaviour:
   - {fileID: 544889348}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1 &63994284 stripped
 GameObject:
@@ -3803,7 +3921,7 @@ MonoBehaviour:
   - {fileID: 842730348}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!54 &111843501
 Rigidbody:
@@ -4971,7 +5089,7 @@ MonoBehaviour:
   - {fileID: 852352671}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1001 &141523867
 PrefabInstance:
@@ -7082,7 +7200,7 @@ MonoBehaviour:
   - {fileID: 1631069900}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!4 &207724015 stripped
 Transform:
@@ -9094,7 +9212,7 @@ MonoBehaviour:
   - {fileID: 2044284662}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!65 &267895757
 BoxCollider:
@@ -10019,7 +10137,7 @@ MonoBehaviour:
   - {fileID: 279371999}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!54 &303078537
 Rigidbody:
@@ -11708,7 +11826,7 @@ MonoBehaviour:
   - {fileID: 85017211}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!65 &365125953
 BoxCollider:
@@ -14310,7 +14428,7 @@ MonoBehaviour:
   - {fileID: 1727821912}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1 &431356228 stripped
 GameObject:
@@ -15279,7 +15397,7 @@ GameObject:
   m_Component:
   - component: {fileID: 457661785}
   m_Layer: 0
-  m_Name: Room7
+  m_Name: PosRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20626,7 +20744,7 @@ MonoBehaviour:
   - {fileID: 593110351}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1 &619664432 stripped
 GameObject:
@@ -20655,7 +20773,7 @@ MonoBehaviour:
   - {fileID: 1077884866}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!54 &619664435
 Rigidbody:
@@ -21762,7 +21880,7 @@ MonoBehaviour:
   - {fileID: 1138382766}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1001 &653643446
 PrefabInstance:
@@ -26131,7 +26249,7 @@ MonoBehaviour:
   - {fileID: 1859097539}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!65 &841146882
 BoxCollider:
@@ -29293,7 +29411,7 @@ MonoBehaviour:
   - {fileID: 740292680}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1001 &945957356
 PrefabInstance:
@@ -30153,7 +30271,7 @@ MonoBehaviour:
   - {fileID: 569765001}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1 &975175946
 GameObject:
@@ -30724,7 +30842,7 @@ MonoBehaviour:
   - {fileID: 1890688966}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1001 &989851550
 PrefabInstance:
@@ -32790,7 +32908,7 @@ MonoBehaviour:
   - {fileID: 1215409176}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1001 &1066347720
 PrefabInstance:
@@ -35319,7 +35437,7 @@ MonoBehaviour:
   - {fileID: 1073995223}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!65 &1073995230
 BoxCollider:
@@ -37936,7 +38054,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1138553547}
   m_Layer: 0
-  m_Name: Room2
+  m_Name: PosRoom2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39051,6 +39169,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
         type: 3}
+      propertyPath: colors.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
       propertyPath: goodChildrenCountMax
       value: 6
       objectReference: {fileID: 0}
@@ -39063,6 +39186,81 @@ PrefabInstance:
         type: 3}
       propertyPath: spawnPoint.Array.size
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[0].b
+      value: 0.21537916
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[0].g
+      value: 0.8301887
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[0].r
+      value: 0.3367296
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[1].b
+      value: 0.8867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[1].g
+      value: 0.6789771
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[1].r
+      value: 0.08784264
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[2].b
+      value: 0.7264151
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[2].g
+      value: 0.10622107
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[2].r
+      value: 0.437247
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[3].b
+      value: 0.23887502
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[3].g
+      value: 0.25738162
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[3].r
+      value: 0.8301887
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[4].b
+      value: 0.11035956
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[4].g
+      value: 0.6860192
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
+        type: 3}
+      propertyPath: colors.Array.data[4].r
+      value: 0.754717
       objectReference: {fileID: 0}
     - target: {fileID: 8584141677558882871, guid: b74b89ea9ccd04b81943e8ff3c1f2cc2,
         type: 3}
@@ -40636,6 +40834,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1779963039}
   m_SourcePrefab: {fileID: 100100000, guid: 812384cec0d0c0748a9a375c6df32f4b, type: 3}
+--- !u!4 &1238699885 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3791225250053437918, guid: 1370af54edd30564086e0f4717044a13,
+    type: 3}
+  m_PrefabInstance: {fileID: 1679602161}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1239502561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43273,7 +43477,7 @@ MonoBehaviour:
   - {fileID: 686920238}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1 &1318788019 stripped
 GameObject:
@@ -43335,7 +43539,7 @@ MonoBehaviour:
   - {fileID: 643409553}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!54 &1319521720
 Rigidbody:
@@ -47269,7 +47473,7 @@ MonoBehaviour:
   - {fileID: 365125955}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!54 &1425749485
 Rigidbody:
@@ -53946,6 +54150,11 @@ PrefabInstance:
       propertyPath: winCondition
       value: 
       objectReference: {fileID: 1257245909}
+    - target: {fileID: 1003165501530414725, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: lolipopRadius
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3083306166600181781, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_Name
@@ -53960,6 +54169,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Radius
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791225250053437918, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.266
       objectReference: {fileID: 0}
     - target: {fileID: 8224823071369345117, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -54101,6 +54315,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 650765025}
+    - targetCorrespondingSourceObject: {fileID: 3791225250053437918, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 21374226}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3083306166600181781, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -56784,7 +57002,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1751727462}
   m_Layer: 0
-  m_Name: Room4
+  m_Name: PosRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57863,7 +58081,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1779542426}
   m_Layer: 0
-  m_Name: Room3
+  m_Name: PosRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60337,7 +60555,7 @@ MonoBehaviour:
   - {fileID: 2022251163}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!65 &1868850914
 BoxCollider:
@@ -60960,7 +61178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1914290652}
   m_Layer: 0
-  m_Name: Room1
+  m_Name: PosRoom1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66358,7 +66576,7 @@ MonoBehaviour:
   - {fileID: 566477891}
   playerIsInsideTheRoom: 0
   globalAlpha: 1
-  minAlpha: 0.1
+  minAlpha: 0.05
   alphaSpeed: 160
 --- !u!1 &2120834829
 GameObject:
@@ -66816,7 +67034,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2135343217}
   m_Layer: 0
-  m_Name: Room5
+  m_Name: PosRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
