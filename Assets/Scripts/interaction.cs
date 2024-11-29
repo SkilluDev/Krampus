@@ -44,7 +44,7 @@ public class interaction : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && canTongue)
+        if (Input.GetButtonDown("Fire1") && canTongue && GetComponent<characterController>().shouldKrampusMove)
         {
             StartCoroutine(ShootThoungh());
         }
@@ -153,7 +153,8 @@ public class interaction : MonoBehaviour
         StopCoroutine(EmptyTongueOut(time));
         lineRenderer.enabled = false;
         canTongue = true;
-        GetComponent<characterController>().shouldKrampusMove = true;
+        if (!GetComponent<characterController>().isDead)
+            GetComponent<characterController>().shouldKrampusMove = true;
 
     }
     IEnumerator StopUpdateLineRenderer(float time)
@@ -166,7 +167,8 @@ public class interaction : MonoBehaviour
         StopCoroutine(UpdateLineRenderer());
         Destroy(child);
         canTongue = true;
-        GetComponent<characterController>().shouldKrampusMove = true;
+        if(!GetComponent<characterController>().isDead)
+            GetComponent<characterController>().shouldKrampusMove = true;
         GrandPoints();
         yield break;
     }

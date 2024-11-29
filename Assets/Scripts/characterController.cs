@@ -13,7 +13,7 @@ public class characterController : MonoBehaviour
 
     public bool isRunning;
 
-    bool isDead = false;
+    public bool isDead = false;
     private Matrix4x4 matrix;
 
     private float xMovement;
@@ -65,6 +65,7 @@ public class characterController : MonoBehaviour
 
     void Update()
     {
+        
         previousState = currentState;
         if (!WinCondition.Instance.isGamePausedValue())
         {
