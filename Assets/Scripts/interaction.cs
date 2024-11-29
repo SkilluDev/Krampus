@@ -60,87 +60,78 @@ public class interaction : MonoBehaviour
 
     IEnumerator ShootThoungh() 
     {
-
-
-       
-
         GetComponent<characterController>().shouldKrampusMove = false;
         animator.SetBool("hasHit", false);
         canTongue = false;
         animator.SetTrigger("Shoot");
-       
-            
-
-
-            ray = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child")))
+        ray = cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child")))
+        {
+            Vector3 realPoint = new Vector3(hitData.point.x, 1f, hitData.point.z);
+            dir = (realPoint - transform.position);
+            RotatePlayer(dir);
+            yield return new WaitForSeconds(0.4f);
+            Debug.DrawRay(transform.position+Vector3.up, dir, Color.red, 5f);
+            if (Physics.Raycast(transform.position+Vector3.up, dir.normalized, out hit, tongueLength, LayerMask.GetMask("Wall", "Child", "Door")))
             {
-                Vector3 realPoint = new Vector3(hitData.point.x, 2, hitData.point.z);
-                dir = (realPoint - transform.position);
-                RotatePlayer(dir);
-                yield return new WaitForSeconds(0.4f);
-                Debug.DrawRay(transform.position, dir, Color.red, 5f);
-                if (Physics.Raycast(transform.position, dir.normalized, out hit, tongueLength, LayerMask.GetMask("Wall", "Child", "Door")))
-                {
-                    Debug.Log(hit.transform.name);
-                    Debug.Log(hit.transform.gameObject.layer);
-                    Collider[] cols = Physics.OverlapSphere(hit.point, lolipopRadius, LayerMask.GetMask("Child"));
-                    if (cols.Length > 0)
-                    { 
-                        RotatePlayer(dir);
-                        child = cols[0].gameObject;
-                        if (Physics.Raycast(transform.position, (child.transform.position - transform.position).normalized, Vector3.Distance(transform.position, child.transform.position), LayerMask.GetMask("Wall")))
-                        {
-                            animator.SetBool("hasHit", false);
-                            float time = 0.2f;
-                            empty = new GameObject();
-                            empty.transform.position = tonguePosition.position;
-                            tonguePoint = transform.position + dir.normalized * tongueLength;
-
-                            StartCoroutine(EmptyTongueOut(time));
-                            StartCoroutine(EmptyTongueIn(time));
-
-                        } else 
-                        {
-                            Debug.Log(child.transform.name);
-                            Debug.Log(child.transform.gameObject.layer);
-                            child.GetComponent<ChildContoller>().Eat();
-                            trail.enabled = true;
-                            trail.gameObject.transform.position = child.transform.position;
-                            float time = 0.85f;
-                            animator.SetBool("hasHit", true);
-                            StartCoroutine(UpdateLineRenderer());
-                            StartCoroutine(StopUpdateLineRenderer(time));
-                            lineRenderer.enabled = true;
-                            trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
-                            child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
-                        }
-                    } else
+                Debug.Log(hit.transform.name);
+                Debug.Log(hit.transform.gameObject.layer);
+                Collider[] cols = Physics.OverlapSphere(hit.point, lolipopRadius, LayerMask.GetMask("Child"));
+                if (cols.Length > 0)
+                { 
+                    RotatePlayer(dir);
+                    child = cols[0].gameObject;
+                    if (Physics.Raycast(transform.position, (child.transform.position - transform.position).normalized, Vector3.Distance(transform.position, child.transform.position), LayerMask.GetMask("Wall")))
                     {
-
-                        Debug.Log("I am eating your mom");
+                        animator.SetBool("hasHit", false);
                         float time = 0.2f;
                         empty = new GameObject();
                         empty.transform.position = tonguePosition.position;
-                        tonguePoint = hit.point;
-                        Destroy(empty, 3);
+                        tonguePoint = transform.position + dir.normalized * tongueLength;
 
                         StartCoroutine(EmptyTongueOut(time));
                         StartCoroutine(EmptyTongueIn(time));
-                    }
 
+                    } else 
+                    {
+                        Debug.Log(child.transform.name);
+                        Debug.Log(child.transform.gameObject.layer);
+                        child.GetComponent<ChildContoller>().Eat();
+                        trail.enabled = true;
+                        trail.gameObject.transform.position = child.transform.position;
+                        float time = 0.85f;
+                        animator.SetBool("hasHit", true);
+                        StartCoroutine(UpdateLineRenderer());
+                        StartCoroutine(StopUpdateLineRenderer(time));
+                        lineRenderer.enabled = true;
+                        trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
+                        child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
+                    }
                 } else
                 {
-                    animator.SetBool("hasHit", false);
+
+                    Debug.Log("I am eating your mom");
                     float time = 0.2f;
                     empty = new GameObject();
                     empty.transform.position = tonguePosition.position;
-                    tonguePoint = transform.position + dir.normalized * tongueLength;
+                    tonguePoint = hit.point;
+                    Destroy(empty, 3);
+
                     StartCoroutine(EmptyTongueOut(time));
                     StartCoroutine(EmptyTongueIn(time));
                 }
+
+            } else
+            {
+                animator.SetBool("hasHit", false);
+                float time = 0.2f;
+                empty = new GameObject();
+                empty.transform.position = tonguePosition.position;
+                tonguePoint = transform.position + dir.normalized * tongueLength;
+                StartCoroutine(EmptyTongueOut(time));
+                StartCoroutine(EmptyTongueIn(time));
             }
+        }
         animator.SetTrigger("nextAction");
     }
 
