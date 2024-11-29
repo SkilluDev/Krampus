@@ -13,14 +13,14 @@ public class ChildContoller : MonoBehaviour
     public bool isDummy = false;
 
     public bool logState = false;
-    private enum State{
+    public enum State{
         Panicing,
         Stopped,
         Walking,
         Hiding,
         Running,
     }
-    private State state;
+    public  State state;
     private State previousState;
     // Start is called before the first frame update
     void Start()
@@ -28,7 +28,7 @@ public class ChildContoller : MonoBehaviour
         navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         //if(!isDummy) ResetChildDestination();
         initialPosition = transform.position;
-        navMeshAgent.stoppingDistance = 0.1f;
+        navMeshAgent.stoppingDistance = 1f;
         detection = GetComponent<detection>();
         animator = GetComponentInChildren<Animator>();
         speed = navMeshAgent.speed;
@@ -44,25 +44,29 @@ public class ChildContoller : MonoBehaviour
         }
         if (!WinCondition.Instance.isGamePausedValue() && !isDummy)
         {
-            if (detection.isAlerted) RunToParent();
-            else
+            if (detection.isAlerted) UpdateState(State.Running);
+            else if(state == State.Hiding)
             {
-                navMeshAgent.SetDestination(initialPosition);
+                if (destinationReached()) 
+                {
+                    UpdateState(State.Stopped);
+                }
             }
-            UpdateState();
+           
         }
     }
 
-    void UpdateState(){
-        State newState;
-        bool moving = navMeshAgent.velocity.sqrMagnitude > 0;
-        if(detection.isAlerted && moving) newState = State.Running;
-        else if (detection.isAlerted) newState = State.Panicing;
-        else if (moving) newState = State.Walking;
-        else newState = State.Stopped;
-        if(newState==state) return;
-        state = newState;
-        StateChanged();
+    void UpdateState(State newState){
+
+        if (newState == state) return;
+        
+
+            state = newState;
+
+            StateChanged();
+            
+        
+        
     }
     void RunToParent(){
         var parents = GameObject.FindGameObjectsWithTag("Parent");
@@ -92,14 +96,14 @@ public class ChildContoller : MonoBehaviour
         SetDestination(closestParent);
     }
 
-
-
     void RunToRandomPlace() 
     {
-    
+        SetDestination(RandomPoint(transform.position, 100f));
     
     }
 
+
+    
 
 
 
@@ -118,7 +122,7 @@ public class ChildContoller : MonoBehaviour
                 int i = Random.RandomRange(0,3);
                 animator.SetBool("Stop", true);
                 float value = i / 2;
-
+                navMeshAgent.Stop();
                 animator.SetFloat("Idle", i);
                 break;
 
@@ -127,6 +131,7 @@ public class ChildContoller : MonoBehaviour
                 animator.SetBool("Running", true);
                 animator.SetBool("Stop", false);
                 navMeshAgent.speed = speed;
+                RunToParent();
                 
                 break;
             case State.Walking:
@@ -137,7 +142,11 @@ public class ChildContoller : MonoBehaviour
                 
                 break;
             case State.Hiding:
-
+                animator.SetTrigger("Move");
+                animator.SetBool("Running", true);
+                animator.SetBool("Stop", false);
+                navMeshAgent.speed = speed;
+                RunToRandomPlace();
 
 
 
@@ -169,6 +178,43 @@ public class ChildContoller : MonoBehaviour
     }
 
 
+   public  void Calming() 
+    {
+        UpdateState(State.Hiding);   
+        detection.isAlerted = false;
+    }
 
-  
+
+    Vector3 RandomPoint(Vector3 center, float range)
+    {
+        Vector3 result;
+        while (true)
+        {
+            Vector2 point = Random.insideUnitCircle;
+            Vector3 randomPoint = center + new Vector3(point.x, 0, point.y) * range;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                result = hit.position;
+                return result;
+            }
+        }
+    }
+
+
+    bool destinationReached() 
+    {
+        if (!navMeshAgent.pathPending)
+        {
+            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+            {
+                if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
+                {
+                    return true;
+                }
+            }
+        }
+       return false;
+    }
+
 }
