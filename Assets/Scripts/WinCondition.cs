@@ -68,7 +68,7 @@ public class WinCondition : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
         {
-                SceneManager.LoadScene("Final Scene"); //current game scene
+                SceneManager.LoadScene("UITest"); //Goes Back to First Scene
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)||Input.GetKeyDown(KeyCode.P)) //Pause Game
