@@ -70,6 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   isDummy: 0
+  logState: 0
 --- !u!114 &6714015927594874412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,6 +89,8 @@ MonoBehaviour:
   alertDistance: 200
   runningMultiplier: 1.5
   krampusLose: {fileID: 0}
+  KeepAgroForWhile: 0
+  agroKeep: 3
 --- !u!195 &2456492068911860168
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -156,7 +159,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 5
   m_Height: 13
   m_Direction: 1
   m_Center: {x: 0, y: 6.152721, z: 0}
