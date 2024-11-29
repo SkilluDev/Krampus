@@ -80,83 +80,64 @@ public class interaction : MonoBehaviour
                 dir = (realPoint - transform.position);
                 RotatePlayer(dir);
                 yield return new WaitForSeconds(0.4f);
-               
-
                 Debug.DrawRay(transform.position, dir, Color.red, 5f);
                 if (Physics.Raycast(transform.position, dir.normalized, out hit, tongueLength, LayerMask.GetMask("Wall", "Child", "Door")))
                 {
                     Debug.Log(hit.transform.name);
                     Debug.Log(hit.transform.gameObject.layer);
-
-                     Collider[] cols = Physics.OverlapSphere(hit.point, lolipopRadius, LayerMask.GetMask("Child"));
-
-
-
-                if (cols.Length > 0)
-                {
-
-
-
-
-                    RotatePlayer(dir);
-                    child = cols[0].gameObject;
-                    if (Physics.Raycast(transform.position, (child.transform.position - transform.position).normalized, Vector3.Distance(transform.position, child.transform.position), LayerMask.GetMask("Wall")))
+                    Collider[] cols = Physics.OverlapSphere(hit.point, lolipopRadius, LayerMask.GetMask("Child"));
+                    if (cols.Length > 0)
+                    { 
+                        RotatePlayer(dir);
+                        child = cols[0].gameObject;
+                        if (Physics.Raycast(transform.position, (child.transform.position - transform.position).normalized, Vector3.Distance(transform.position, child.transform.position), LayerMask.GetMask("Wall")))
                         {
-                        animator.SetBool("hasHit", false);
+                            animator.SetBool("hasHit", false);
+                            float time = 0.2f;
+                            empty = new GameObject();
+                            empty.transform.position = tonguePosition.position;
+                            tonguePoint = transform.position + dir.normalized * tongueLength;
+
+                            StartCoroutine(EmptyTongueOut(time));
+                            StartCoroutine(EmptyTongueIn(time));
+
+                        } else 
+                        {
+                            Debug.Log(child.transform.name);
+                            Debug.Log(child.transform.gameObject.layer);
+                            child.GetComponent<ChildContoller>().Eat();
+                            trail.enabled = true;
+                            trail.gameObject.transform.position = child.transform.position;
+                            float time = 0.85f;
+                            animator.SetBool("hasHit", true);
+                            StartCoroutine(UpdateLineRenderer());
+                            StartCoroutine(StopUpdateLineRenderer(time));
+                            lineRenderer.enabled = true;
+                            trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
+                            child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
+                        }
+                    } else
+                    {
+
+                        Debug.Log("I am eating your mom");
                         float time = 0.2f;
                         empty = new GameObject();
                         empty.transform.position = tonguePosition.position;
-                        tonguePoint = transform.position + dir.normalized * tongueLength;
+                        tonguePoint = hit.point;
+                        Destroy(empty, 3);
 
                         StartCoroutine(EmptyTongueOut(time));
                         StartCoroutine(EmptyTongueIn(time));
-
-                    }   
-                    else {
-                        Debug.Log(child.transform.name);
-                        Debug.Log(child.transform.gameObject.layer);
-                        child.GetComponent<ChildContoller>().Eat();
-                        trail.enabled = true;
-                        trail.gameObject.transform.position = child.transform.position;
-                        float time = 0.85f;
-                        animator.SetBool("hasHit", true);
-
-
-
-                        StartCoroutine(UpdateLineRenderer());
-                        StartCoroutine(StopUpdateLineRenderer(time));
-
-                        lineRenderer.enabled = true;
-                        trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
-
-                        child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
                     }
-                }
 
-                else
+                } else
                 {
-
-                    Debug.Log("I am eating your mom");
+                    animator.SetBool("hasHit", false);
                     float time = 0.2f;
                     empty = new GameObject();
                     empty.transform.position = tonguePosition.position;
-                    tonguePoint = hit.point;
-                    Destroy(empty, 3);
-
-                    StartCoroutine(EmptyTongueOut(time));
-                    StartCoroutine(EmptyTongueIn(time));
-                }
-
-                }
-                else
-                {
-                animator.SetBool("hasHit", false);
-                float time = 0.2f;
-                    empty = new GameObject();
-                    empty.transform.position = tonguePosition.position;
                     tonguePoint = transform.position + dir.normalized * tongueLength;
-               
-                StartCoroutine(EmptyTongueOut(time));
+                    StartCoroutine(EmptyTongueOut(time));
                     StartCoroutine(EmptyTongueIn(time));
                 }
             }
