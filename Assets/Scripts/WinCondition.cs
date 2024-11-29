@@ -60,6 +60,7 @@ public class WinCondition : MonoBehaviour
         {
             timeLimit -= Time.deltaTime;
             uiManager.UpdateTime(timeLimit);
+            
             if (timeLimit <= 0.0f)
             {
                 GameOver(LostGameCase.TimeRunOut);
@@ -183,5 +184,10 @@ public class WinCondition : MonoBehaviour
         {
             GameWon();
         }
+    }
+
+    public float getTimer() 
+    {
+        return timeLimit;
     }
 }
