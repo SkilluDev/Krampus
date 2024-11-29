@@ -33,8 +33,8 @@ public class ParentController : MonoBehaviour
             if(!detection.isAlerted) continue;
             var vector = child.transform.position - transform.position;
             var sqrDistanceToChild = Vector3.SqrMagnitude(vector);
-            if (sqrDistanceToChild <= distance && !Physics.Raycast(transform.position, vector.normalized, distance,1<<6)) { 
-                detection.isAlerted = false;
+            if (sqrDistanceToChild <= distance && !Physics.Raycast(transform.position, vector.normalized, distance,1<<6)) {
+                child.GetComponent<ChildContoller>().Calming();
                 if (!parentDetections[1].isAlerted)
                 {
                     navMeshAgent.SetDestination(detection.krampusEncounerPosition);
