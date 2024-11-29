@@ -6,6 +6,8 @@ using UnityEngine;
 public class interaction : MonoBehaviour
 {
     private static readonly int CurrentlyEating = Animator.StringToHash("CurrentlyEating");
+
+    public Texture2D cursor;
     [SerializeField] Camera cam;
     [SerializeField] Animator animator;
     public float tongueLength;
@@ -34,6 +36,7 @@ public class interaction : MonoBehaviour
     
     void Start()
     {
+      Cursor.SetCursor(cursor, new Vector2(cursor.width/2,cursor.height/2), CursorMode.ForceSoftware);
         lineRenderer = gameObject.GetComponent<LineRenderer>();
         trail=GetComponentInChildren<TrailRenderer>();
         cam = Camera.main.GetComponent<Camera>();
