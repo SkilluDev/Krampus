@@ -13,6 +13,7 @@ public class ChildContoller : MonoBehaviour
     public bool isDummy = false;
 
     public bool logState = false;
+    Transform closestParent; 
     public enum State{
         
         Stopped,
@@ -37,6 +38,7 @@ public class ChildContoller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (logState && state != previousState)
         {
             previousState = state;
@@ -44,10 +46,10 @@ public class ChildContoller : MonoBehaviour
         }
         if (!WinCondition.Instance.isGamePausedValue() && !isDummy)
         {
-            if (detection.isAlerted) UpdateState(State.Running);
-            else if(state == State.Hiding)
+            if (detection.isAlerted) { UpdateState(State.Running);  RunToParent(); }
+            else if (state == State.Hiding)
             {
-                if (destinationReached()) 
+                if (destinationReached())
                 {
                     UpdateState(State.Stopped);
                 }
