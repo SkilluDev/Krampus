@@ -81,6 +81,8 @@ public class UIManager : MonoBehaviour
         foreach (Transform child in transform)
             child.gameObject.SetActive(false);
         gameOverTexture.gameObject.SetActive(true);
+        Time.timeScale = 0f;
+        gameOverText.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time elapsed: "+ (int)WinCondition.Instance.totalTime+"\nNaughty children eaten: " + interaction.badChildrenEatCount + "\nGood children eaten: " + interaction.goodChildrenEatCount;
         /*switch (lostGameCase)
         {
             case WinCondition.LostGameCase.TimeRunOut:
@@ -103,6 +105,8 @@ public class UIManager : MonoBehaviour
         foreach (Transform child in transform)
             child.gameObject.SetActive(false);
         gameWonTexture.gameObject.SetActive(true);
+        Time.timeScale = 0f;
+        gameOverText.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time elapsed: "+ (int)WinCondition.Instance.totalTime+"\nNaughty children eaten: " + interaction.badChildrenEatCount + "\nGood children eaten: " + interaction.goodChildrenEatCount;
     }
 
     public void ActivateNaughtyChildrenList()

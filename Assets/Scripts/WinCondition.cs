@@ -39,6 +39,8 @@ public class WinCondition : MonoBehaviour
     [SerializeField] private bool isGameOver; //Game is Over - either Won or Lost
     [SerializeField] private float timeLimit; //Czas rundy
     private int score;
+
+    public float totalTime;
     //private ChildList _ChildrenList; //Needs to be changed to ChildrenListManager appropiate class
     //private Detection _Detection; //Not sure where it will be relevant
     //private Player _PlayerScritpt; //Needs to be changed to appropiate class for handling Player
@@ -59,6 +61,7 @@ public class WinCondition : MonoBehaviour
         if (!isGamePaused)
         {
             timeLimit -= Time.deltaTime;
+            totalTime += Time.deltaTime;
             uiManager.UpdateTime(timeLimit);
             
             if (timeLimit <= 0.0f)
@@ -97,17 +100,14 @@ public class WinCondition : MonoBehaviour
             }
         yield return new WaitForSeconds(2);
             uiManager.ActivateGameOverScreen(lostGameCase);
-            StartCoroutine(AutoQuit());
-            
-           
-
+            //StartCoroutine(AutoQuit());
     }
         
         public void GameWon()
         {
             isGameOver = true;
             uiManager.ActivateGameWonScreen();
-            StartCoroutine(AutoQuit());
+            //StartCoroutine(AutoQuit());
             //Do other staff, that needs to happen , like Show Score
         }
         
