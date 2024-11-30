@@ -52,7 +52,7 @@ public class ChildDetection : MonoBehaviour
         }
         else 
         {
-            if (WinCondition.Instance.getTimer() < timeActivation)
+            if (WinCondition.Instance.getTimer() < timeActivation || WinCondition.Instance.getBadChildrenCount() < 7)
             {
                 ActivateDetection();
             }
