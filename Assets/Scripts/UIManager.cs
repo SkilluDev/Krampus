@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text naughtyChildrenListText;
     [SerializeField] private TextMeshProUGUI naughtyChildrenLeftText;
     [SerializeField] private Text scoreText;
-    [SerializeField] private Text timeText;
+    [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private GameObject gameOverTexture;
     [SerializeField] private Text gameOverText;
     [SerializeField] private GameObject gameWonTexture;
@@ -84,7 +84,24 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTime(float time)
     {
-        timeText.text = "Time: " + ((int)time).ToString();
+        timeText.text =   ((int)time).ToString();
+
+            
+    }
+
+    public void UpdateTime(float time, bool positiveImapct) 
+    {
+        Debug.Log("W");
+        if (positiveImapct)
+        {
+            timeText.GetComponent<Animator>().SetTrigger("PositiveScore");
+        }
+        else 
+        {
+            timeText.GetComponent<Animator>().SetTrigger("NegativeScore");
+        }
+
+        UpdateTime(time);
     }
 
     public void ActivateGameOverScreen(WinCondition.LostGameCase lostGameCase)
