@@ -27931,7 +27931,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: 5a95b89106b98384bb839d773dd427f4, type: 3}
     - target: {fileID: 6486921181118018004, guid: d6e86fe4f8d924091b9305ee8eb89532,
         type: 3}
       propertyPath: m_PlayOnAwake
@@ -27944,7 +27944,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1411331840536090598, guid: d6e86fe4f8d924091b9305ee8eb89532,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1311953883}
+      addedObject: {fileID: 1311953889}
+    - targetCorrespondingSourceObject: {fileID: 1411331840536090598, guid: d6e86fe4f8d924091b9305ee8eb89532,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1311953888}
   m_SourcePrefab: {fileID: 100100000, guid: d6e86fe4f8d924091b9305ee8eb89532, type: 3}
 --- !u!1 &902793256 stripped
 GameObject:
@@ -43418,16 +43422,40 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 901572729}
   m_PrefabAsset: {fileID: 0}
---- !u!165 &1311953883
-AudioHighPassFilter:
+--- !u!170 &1311953888
+AudioDistortionFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1311953878}
-  m_Enabled: 0
-  m_CutoffFrequency: 10
-  m_HighpassResonanceQ: 4
+  m_Enabled: 1
+  m_DistortionLevel: 0.5
+--- !u!169 &1311953889
+AudioLowPassFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311953878}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_LowpassResonanceQ: 5
+  lowpassLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1312946943
 PrefabInstance:
   m_ObjectHideFlags: 0

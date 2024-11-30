@@ -14,7 +14,7 @@ public class SoundManager : MonoBehaviour
         windup2 = Resources.Load<AudioClip>("Clips/windup2");
         step1 = Resources.Load<AudioClip>("Clips/step_1");
         step2 = Resources.Load<AudioClip>("Clips/step_2");
-        kill = Resources.Load<AudioClip>("Clips/krampKill");
+        kill = Resources.Load<AudioClip>("Clips/kill1");
         caught = Resources.Load<AudioClip>("Clips/catch");
         tongue = Resources.Load<AudioClip>("Clips/tongue");
     }
