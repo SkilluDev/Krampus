@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public static AudioClip windup1,windup2, step1, step2;
+    public static AudioClip windup1,windup2, step1, step2, kill, caught, tongue;
     static AudioSource src;
 
     private void Start()
@@ -14,6 +14,9 @@ public class SoundManager : MonoBehaviour
         windup2 = Resources.Load<AudioClip>("Clips/windup2");
         step1 = Resources.Load<AudioClip>("Clips/step_1");
         step2 = Resources.Load<AudioClip>("Clips/step_2");
+        kill = Resources.Load<AudioClip>("Clips/krampKill");
+        caught = Resources.Load<AudioClip>("Clips/catch");
+        tongue = Resources.Load<AudioClip>("Clips/tongue");
     }
 
     public static void PlaySound(string clipName)
@@ -31,6 +34,15 @@ public class SoundManager : MonoBehaviour
                 break;
             case "step2":
                 src.PlayOneShot(step2);
+                break;
+            case "kill":
+                src.PlayOneShot(kill);
+                break;
+            case "catch":
+                src.PlayOneShot(caught);
+                break;
+            case "tongue":
+                src.PlayOneShot(tongue);
                 break;
         }
     }

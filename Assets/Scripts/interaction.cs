@@ -70,6 +70,7 @@ public class interaction : MonoBehaviour
         ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child")))
         {
+            SoundManager.PlaySound("tongue");
             Vector3 realPoint = new Vector3(hitData.point.x, 1f, hitData.point.z);
             lastRealPosition = realPoint;
             dir = (realPoint - transform.position);
@@ -101,6 +102,7 @@ public class interaction : MonoBehaviour
                         Debug.Log(child.transform.name);
                         Debug.Log(child.transform.gameObject.layer);
                         child.GetComponent<ChildContoller>().Eat();
+                        SoundManager.PlaySound("catch");
                         trail.enabled = true;
                         trail.gameObject.transform.position = child.transform.position;
                         float time = 0.85f;
@@ -175,6 +177,7 @@ public class interaction : MonoBehaviour
         lineRenderer.enabled = false;
         trail.enabled = false;
         StopCoroutine(UpdateLineRenderer());
+        SoundManager.PlaySound("kill");
         Destroy(child);
         Camera.main.GetComponent<CameraFollow>().Shake();
         canTongue = true;
