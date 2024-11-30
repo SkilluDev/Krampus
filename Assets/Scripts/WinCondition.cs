@@ -86,6 +86,9 @@ public class WinCondition : MonoBehaviour
         public void GameOver(LostGameCase lostGameCase)
         {
 
+
+         uiManager.StopClock();
+
         StartCoroutine(GameOverAnimation( lostGameCase));
             //Do other staff, like show the Score that you managed to get
         }

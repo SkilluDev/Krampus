@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider sliderSFX;
     [SerializeField] private AudioMixer audioMixer;
 
-
+    [SerializeField] Animator clockAnimator;
 
     [SerializeField] private GameObject tutrialInfo;
     bool inTutorial;
@@ -89,6 +89,12 @@ public class UIManager : MonoBehaviour
             
     }
 
+
+    public void StopClock() 
+    {
+        clockAnimator.SetTrigger("Dead");
+    
+    }
     public void UpdateTime(float time, bool positiveImapct) 
     {
         Debug.Log("W");
