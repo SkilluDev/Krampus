@@ -36,7 +36,8 @@ public class UIManager : MonoBehaviour
         scoreText.text = "Score: " + 0;
         timeText.text = "Time limit: --.--";
         naughtyChildrenLeftText.text = "Naughty Children Left: 0";
-        gameOverTexture.gameObject.SetActive(false);
+        //gameOverTexture.gameObject.SetActive(false);
+        //gameWonTexture.gameObject.SetActive(false);
 
 
         tutrialInfo.gameObject.SetActive(true);
