@@ -7712,12 +7712,17 @@ PrefabInstance:
     - target: {fileID: 1956343171599992208, guid: 9b3415687bdc17d40af6875cc70e019c,
         type: 3}
       propertyPath: m_Speed
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1956343171599992208, guid: 9b3415687bdc17d40af6875cc70e019c,
         type: 3}
       propertyPath: m_StoppingDistance
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2889504408180282046, guid: 9b3415687bdc17d40af6875cc70e019c,
+        type: 3}
+      propertyPath: distance
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3804484053084258229, guid: 9b3415687bdc17d40af6875cc70e019c,
         type: 3}
@@ -23598,7 +23603,12 @@ PrefabInstance:
     - target: {fileID: 1956343171599992208, guid: 9b3415687bdc17d40af6875cc70e019c,
         type: 3}
       propertyPath: m_Speed
-      value: 6
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2889504408180282046, guid: 9b3415687bdc17d40af6875cc70e019c,
+        type: 3}
+      propertyPath: distance
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3804484053084258229, guid: 9b3415687bdc17d40af6875cc70e019c,
         type: 3}
@@ -50367,7 +50377,12 @@ PrefabInstance:
     - target: {fileID: 1956343171599992208, guid: 9b3415687bdc17d40af6875cc70e019c,
         type: 3}
       propertyPath: m_Speed
-      value: 6
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2889504408180282046, guid: 9b3415687bdc17d40af6875cc70e019c,
+        type: 3}
+      propertyPath: distance
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3804484053084258229, guid: 9b3415687bdc17d40af6875cc70e019c,
         type: 3}
@@ -54231,7 +54246,7 @@ PrefabInstance:
     - target: {fileID: 1003165501530414725, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: tongueLength
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1003165501530414725, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -54241,7 +54256,7 @@ PrefabInstance:
     - target: {fileID: 1003165501530414725, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: lolipopRadius
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3083306166600181781, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -54433,7 +54448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowMesh: {fileID: 650765024}
   isActive: 0
-  timeActivation: 10
+  timeActivation: 15
 --- !u!65 &1683437467
 BoxCollider:
   m_ObjectHideFlags: 0
