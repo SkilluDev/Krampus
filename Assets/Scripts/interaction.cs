@@ -25,6 +25,9 @@ public class interaction : MonoBehaviour
     [SerializeField] float lolipopRadius = 2f;
 
 
+   Vector3 lastRealPosition = Vector3.zero;
+
+
 
     Ray ray;
     RaycastHit hitData;
@@ -69,6 +72,7 @@ public class interaction : MonoBehaviour
         {
             SoundManager.PlaySound("tongue");
             Vector3 realPoint = new Vector3(hitData.point.x, 1f, hitData.point.z);
+            lastRealPosition = realPoint;
             dir = (realPoint - transform.position);
             RotatePlayer(dir);
             yield return new WaitForSeconds(0.4f);
@@ -226,5 +230,11 @@ public class interaction : MonoBehaviour
 
 
     }
-    
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(lastRealPosition, 0.1f);
+        Gizmos.DrawWireSphere(lastRealPosition, lolipopRadius);
+    }
+
 }

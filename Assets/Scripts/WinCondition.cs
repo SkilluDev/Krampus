@@ -124,6 +124,8 @@ public class WinCondition : MonoBehaviour
         public void SubtractTime(float seconds)
         {
             timeLimit = timeLimit - seconds;
+
+        uiManager.UpdateTime(timeLimit, seconds > 0?false:true);
             //Debug.Log("Subtracted time: "+ seconds);
         }
 
