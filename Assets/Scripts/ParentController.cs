@@ -9,7 +9,7 @@ public class ParentController : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private detection[] parentDetections;
 
-
+    float waitTime = 1f;
 
     private Animator animator;
 
@@ -19,6 +19,9 @@ public class ParentController : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         parentDetections = GetComponents<detection>();
         animator = GetComponentInChildren<Animator>();
+
+
+        
 
     }
 
@@ -38,11 +41,64 @@ public class ParentController : MonoBehaviour
                 if (!parentDetections[1].isAlerted)
                 {
                     navMeshAgent.SetDestination(detection.krampusEncounerPosition);
-                }
+                }   
                 
             }
+
+
             
         }
         animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
+
+        ChoosingTarget();
     }
+
+    void ChoosingTarget() 
+    {
+        if (destinationReached() || navMeshAgent.destination == null ) 
+        {
+
+            waitTime -= Time.deltaTime;
+
+            if (waitTime < 0)
+            {
+
+                GameObject[] children = GameObject.FindGameObjectsWithTag("Child");
+                Vector3 descination = children[Random.RandomRange(0, children.Length)].gameObject.transform.position;
+
+
+                SetDestination(descination);
+               
+                waitTime = 10f;
+            }
+            
+        }
+        else
+        {
+            waitTime = 10f;
+        }
+
+    }
+    bool destinationReached()
+    {
+        if (!navMeshAgent.pathPending)
+        {
+            if (navMeshAgent.remainingDistance <= 15)
+            {
+              
+                
+                    return true;
+                
+            }
+        }
+        return false;
+    }
+
+    void SetDestination(Vector3 destination)
+    {
+
+        NavMesh.SamplePosition(destination, out NavMeshHit closestNavHit, 1000, NavMesh.AllAreas);
+        navMeshAgent.SetDestination(closestNavHit.position);
+    }
+   
 }

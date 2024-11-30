@@ -14,7 +14,7 @@ public class ChildContoller : MonoBehaviour
 
     public bool logState = false;
     public enum State{
-        Panicing,
+        
         Stopped,
         Walking,
         Hiding,
@@ -122,7 +122,7 @@ public class ChildContoller : MonoBehaviour
                 int i = Random.RandomRange(0,3);
                 animator.SetBool("Stop", true);
                 float value = i / 2;
-                navMeshAgent.Stop();
+                navMeshAgent.velocity = Vector3.zero;
                 animator.SetFloat("Idle", i);
                 break;
 

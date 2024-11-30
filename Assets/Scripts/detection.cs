@@ -57,9 +57,9 @@ public class detection : MonoBehaviour
             
             wasChasingKrampus = true;
             Vector3 krampusPosition = krampus.transform.position;
-            if (!Physics.Raycast(transform.position, (krampusPosition - transform.position).normalized, Vector3.Distance(transform.position,krampusPosition), LayerMask.GetMask("Wall")))
+            if (!Physics.Raycast(transform.position, (krampusPosition - transform.position).normalized, Vector3.Distance(transform.position, krampusPosition), LayerMask.GetMask("Wall")))
             {
-                Debug.DrawLine(transform.position, transform.position+ (krampusPosition - transform.position).normalized * Vector3.Distance(transform.position, krampusPosition));
+                Debug.DrawLine(transform.position, transform.position + (krampusPosition - transform.position).normalized * Vector3.Distance(transform.position, krampusPosition));
                 isAlerted = true;
                 if (isAlerted && gameObject.tag == "Parent")
                 {
@@ -67,18 +67,21 @@ public class detection : MonoBehaviour
 
                 }
                 krampusEncounerPosition = krampusPosition;
+
+
+                if (chaseDetection) { navMeshAgent.SetDestination(krampusPosition); }
+            }
+            else if (chaseDetection)
+            {
+                isAlerted = false;
             }
 
-            if (chaseDetection && isAlerted) navMeshAgent.SetDestination(krampusPosition);
+            
         }
-        else if (KeepAgroForWhile)
+        else if (chaseDetection)
         {
 
-            if (wasChasingKrampus)
-            {
-                navMeshAgent.SetDestination(krampus.transform.position);
-                wasChasingKrampus = false;
-            }
+            isAlerted = false;
         }
         
         
