@@ -109,11 +109,26 @@ public class WinCondition : MonoBehaviour
         public void GameWon()
         {
             isGameOver = true;
-            uiManager.ActivateGameWonScreen();
-            //StartCoroutine(AutoQuit());
-            //Do other staff, that needs to happen , like Show Score
+
+        StartCoroutine(GameWinAnimation());
         }
-        
+
+        IEnumerator GameWinAnimation() 
+        {
+           
+            characterController characterController = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<characterController>();
+
+            if (characterController != null)
+            {
+                characterController.Win();
+            }
+        yield return new WaitForSeconds(3);
+
+        uiManager.ActivateGameWonScreen();
+
+    }
+
+
         public void AddScore(int points)
         {
             score += points;
