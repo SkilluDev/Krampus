@@ -13,6 +13,7 @@ public class Child : MonoBehaviour {
 
     private void Start() {
         transform.GetChild(0).GetChild(8).GetComponent<Renderer>().material = mat;
+        transform.Rotate(transform.rotation.x,Random.Range(0,360),transform.rotation.z);
     }
 
     public void Die() { }
