@@ -178,7 +178,7 @@ public class ChildContoller : MonoBehaviour
     }
 
 
-   public  void Calming() 
+   public void Calming() 
     {
         UpdateState(State.Hiding);   
         detection.isAlerted = false;
