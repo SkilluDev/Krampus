@@ -67,9 +67,10 @@ public class WinCondition : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
+        if ((Input.GetKeyDown(KeyCode.R)||Input.GetKeyDown(KeyCode.G) )&& (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
         {
-                SceneManager.LoadScene("UITest"); //Goes Back to First Scene
+            Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
+            SceneManager.LoadScene("UITest"); //Goes Back to First Scene
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)||Input.GetKeyDown(KeyCode.P)) //Pause Game
@@ -134,14 +135,14 @@ public class WinCondition : MonoBehaviour
         {
             if (!isGamePaused)  //Instead of Time Scale we are just deactivating Movement Scritps
             {
-                //Time.timeScale = 0;
+                Time.timeScale = 0;
                 AudioListener.pause = true;
                 isGamePaused = true;
                 uiManager.ActivateSettingsMenu();
             }
             else
             {
-                //Time.timeScale = 1;
+                Time.timeScale = 1;
                 AudioListener.pause = false;
                 isGamePaused = false;
                 uiManager.DeactivateSettingsMenu();
