@@ -37,7 +37,7 @@ public class ChildDetection : MonoBehaviour
 
         if (isActive)
         {
-            if (WinCondition.Instance.getTimer() >= timeActivation)
+            if (WinCondition.Instance.getTimer() >= timeActivation && WinCondition.Instance.getBadChildrenCount() > 5)
             {
                 isActive = false;
                 arrowMesh.SetActive(false);
@@ -52,7 +52,7 @@ public class ChildDetection : MonoBehaviour
         }
         else 
         {
-            if (WinCondition.Instance.getTimer() < timeActivation || WinCondition.Instance.getBadChildrenCount() < 7)
+            if (WinCondition.Instance.getTimer() < timeActivation || WinCondition.Instance.getBadChildrenCount() < 5)
             {
                 ActivateDetection();
             }

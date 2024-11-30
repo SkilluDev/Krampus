@@ -60,6 +60,10 @@ public class ChildSpawner : MonoBehaviour
         foreach (Vector3 point in randomSpawnPoints)
         {
             int mat = Random.Range(0, materials.Length);
+            if ( badChildrenCount >= 22) 
+            {
+                mat = goodColor;
+            }
             bool isBad = true;
             if (mat == goodColor)
             {

@@ -13,9 +13,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI naughtyChildrenLeftText;
     [SerializeField] private Text scoreText;
     [SerializeField] private TextMeshProUGUI timeText;
+
+
     [SerializeField] private GameObject gameOverTexture;
     [SerializeField] private Text gameOverText;
+
+
+
     [SerializeField] private GameObject gameWonTexture;
+
+    [SerializeField] private Text gameWonText;
     //[SerializeField] private Text credits; //We show in the fist Menu
     //[SerializeField] private GameObject startMenu;
     [SerializeField] private GameObject settingsMenu;
@@ -140,7 +147,7 @@ public class UIManager : MonoBehaviour
             child.gameObject.SetActive(false);
         gameWonTexture.gameObject.SetActive(true);
         Time.timeScale = 0f;
-        gameOverText.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time elapsed: "+ (int)WinCondition.Instance.totalTime+"\nNaughty children eaten: " + interaction.badChildrenEatCount + "\nGood children eaten: " + interaction.goodChildrenEatCount;
+        gameWonText.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time elapsed: "+ (int)WinCondition.Instance.totalTime+"\nNaughty children eaten: " + interaction.badChildrenEatCount + "\nGood children eaten: " + interaction.goodChildrenEatCount;
     }
 
     public void ActivateNaughtyChildrenList()
