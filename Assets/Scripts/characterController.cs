@@ -37,6 +37,10 @@ public class characterController : MonoBehaviour
     float windUpSpeed;
     float stepSpeed;
 
+
+
+    [SerializeField] GameObject rocktParticle;
+
     enum State
     {
         running,walking,idle
@@ -61,6 +65,8 @@ public class characterController : MonoBehaviour
 
         camera = GameObject.FindWithTag("MainCamera");
         matrix = Matrix4x4.Rotate(Quaternion.Euler(0, camera.transform.localEulerAngles.y, 0));
+
+        rocktParticle.SetActive(false);
     }
 
     void Update()
@@ -177,6 +183,19 @@ public class characterController : MonoBehaviour
             isDead = true;
             rigidBody.velocity = Vector3.zero;
             shouldKrampusMove = false;
+        }
+    }
+
+    public void Win()
+    {
+        if (!isDead)
+        {
+            animator.SetTrigger("Win");
+            isDead = true;
+            rigidBody.velocity = Vector3.zero;
+            shouldKrampusMove = false;
+
+            rocktParticle.SetActive(true);
         }
     }
 }
