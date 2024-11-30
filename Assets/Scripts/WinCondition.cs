@@ -169,18 +169,18 @@ public class WinCondition : MonoBehaviour
         return badChildrenCount;
     }
 
-    public void SetChildCount(int count) {
+    public void SetChildCount(int count, bool playAnimation) {
         badChildrenOnStart = count;
         badChildrenCount = badChildrenOnStart;
 
-        uiManager.UpdateNaughtlyCount(badChildrenCount);
+        uiManager.UpdateNaughtlyCount(badChildrenCount,playAnimation);
     }
 
    public void badChildEaten() 
     {
         badChildrenCount--;
 
-       uiManager.UpdateNaughtlyCount(badChildrenCount);
+       uiManager.UpdateNaughtlyCount(badChildrenCount,true);
         if (badChildrenCount <= 0) 
         {
             GameWon();

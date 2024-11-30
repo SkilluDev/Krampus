@@ -28,14 +28,16 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject tutrialInfo;
     bool inTutorial;
-    
+
+
+    int currentlyDisplayScore = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         scoreText.text = "Score: " + 0;
         timeText.text = "Time limit: --.--";
-        naughtyChildrenLeftText.text = "Naughty Children Left: 0";
+       
         //gameOverTexture.gameObject.SetActive(false);
         //gameWonTexture.gameObject.SetActive(false);
 
@@ -62,9 +64,17 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateNaughtlyCount(int count)
+    public void UpdateNaughtlyCount(int count, bool playAnimation)
     {
-        naughtyChildrenLeftText.text = "Naughty Children Left: " + (count);
+        if (playAnimation)
+        {
+            naughtyChildrenLeftText.GetComponent<Animator>().SetTrigger("PositiveScore");
+
+
+        }
+        currentlyDisplayScore = count;
+       
+        naughtyChildrenLeftText.text = currentlyDisplayScore.ToString() ;
     }
 
     public void UpdateScore()

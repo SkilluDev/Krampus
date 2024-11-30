@@ -85,7 +85,7 @@ public class ChildSpawner : MonoBehaviour
         GameObject.Find("shirttext").GetComponent<Text>().text = goodChildrenText;
         GameObject.Find("shirttext").GetComponent<Text>().color = colors[goodColor];
 
-        WinCondition.Instance.SetChildCount(badChildrenCount);
+        WinCondition.Instance.SetChildCount(badChildrenCount, false);
     }
 
     Child CreateChild(Vector3 spawn, int colorId, bool isBad)
