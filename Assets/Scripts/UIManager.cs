@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
     {
         scoreText.text = "Score: " + 0;
         timeText.text = "Time limit: --.--";
-       
+
         //gameOverTexture.gameObject.SetActive(false);
         //gameWonTexture.gameObject.SetActive(false);
 
@@ -55,17 +55,18 @@ public class UIManager : MonoBehaviour
         tutrialInfo.gameObject.SetActive(true);
         Time.timeScale = 0;
         inTutorial = true;
+        showTutorials.GetComponent<Toggle>().isOn = TutorialManager.getShowTutorials();
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdateScore();
-        
 
-        if (inTutorial) 
+
+        if (inTutorial)
         {
-            if(Input.GetKeyUp(KeyCode.G)) 
+            if (Input.GetKeyUp(KeyCode.G))
             {
                 tutrialInfo.gameObject.SetActive(false);
                 Time.timeScale = 1;
@@ -83,8 +84,8 @@ public class UIManager : MonoBehaviour
 
         }
         currentlyDisplayScore = count;
-       
-        naughtyChildrenLeftText.text = currentlyDisplayScore.ToString() ;
+
+        naughtyChildrenLeftText.text = currentlyDisplayScore.ToString();
     }
 
     public void UpdateScore()
@@ -94,25 +95,25 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTime(float time)
     {
-        timeText.text =   ((int)time).ToString();
+        timeText.text = ((int)time).ToString();
 
-            
+
     }
 
 
-    public void StopClock() 
+    public void StopClock()
     {
         clockAnimator.SetTrigger("Dead");
-    
+
     }
-    public void UpdateTime(float time, bool positiveImapct) 
+    public void UpdateTime(float time, bool positiveImapct)
     {
         Debug.Log("W");
         if (positiveImapct)
         {
             timeText.GetComponent<Animator>().SetTrigger("PositiveScore");
         }
-        else 
+        else
         {
             timeText.GetComponent<Animator>().SetTrigger("NegativeScore");
         }
@@ -126,7 +127,7 @@ public class UIManager : MonoBehaviour
             child.gameObject.SetActive(false);
         gameOverTexture.gameObject.SetActive(true);
         Time.timeScale = 0f;
-        gameOverText.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time elapsed: "+ (int)WinCondition.Instance.totalTime+"\nNaughty children eaten: " + interaction.badChildrenEatCount + "\nGood children eaten: " + interaction.goodChildrenEatCount;
+        gameOverText.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time elapsed: " + (int)WinCondition.Instance.totalTime + "\nNaughty children eaten: " + interaction.badChildrenEatCount + "\nGood children eaten: " + interaction.goodChildrenEatCount;
         /*switch (lostGameCase)
         {
             case WinCondition.LostGameCase.TimeRunOut:
@@ -150,7 +151,7 @@ public class UIManager : MonoBehaviour
             child.gameObject.SetActive(false);
         gameWonTexture.gameObject.SetActive(true);
         Time.timeScale = 0f;
-        gameWonText.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time elapsed: "+ (int)WinCondition.Instance.totalTime+"\nNaughty children eaten: " + interaction.badChildrenEatCount + "\nGood children eaten: " + interaction.goodChildrenEatCount;
+        gameWonText.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Time elapsed: " + (int)WinCondition.Instance.totalTime + "\nNaughty children eaten: " + interaction.badChildrenEatCount + "\nGood children eaten: " + interaction.goodChildrenEatCount;
     }
 
     public void ActivateNaughtyChildrenList()
@@ -160,7 +161,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateChildrenList(string listaDzieci)
     {
-        naughtyChildrenListText.text = "These children were very naughty this year: "+ listaDzieci;
+        naughtyChildrenListText.text = "These children were very naughty this year: " + listaDzieci;
     }
     /*
     public void ActivateStartMenu()
@@ -176,9 +177,9 @@ public class UIManager : MonoBehaviour
     public void ActivateSettingsMenu()
     {
         settingsMenu.gameObject.SetActive(true);
-        sliderMaster.value = Mathf.Pow(10,GetVolumeFromMixer("MasterVolume")/20); //Reversed values from SetFloat in volumeUpdate()
-        sliderMusic.value = Mathf.Pow(10, GetVolumeFromMixer("MusicVolume")/20);
-        sliderSFX.value = Mathf.Pow(10, GetVolumeFromMixer("SFXVolume")/20);
+        sliderMaster.value = Mathf.Pow(10, GetVolumeFromMixer("MasterVolume") / 20); //Reversed values from SetFloat in volumeUpdate()
+        sliderMusic.value = Mathf.Pow(10, GetVolumeFromMixer("MusicVolume") / 20);
+        sliderSFX.value = Mathf.Pow(10, GetVolumeFromMixer("SFXVolume") / 20);
     }
     public void DeactivateSettingsMenu()
     {
@@ -190,12 +191,16 @@ public class UIManager : MonoBehaviour
         credits.gameObject.SetActive(true);
     }
     */
-    public float GetVolumeFromMixer(string name){
+    public float GetVolumeFromMixer(string name)
+    {
         float value;
-        bool result =  audioMixer.GetFloat(name, out value);
-        if(result){
+        bool result = audioMixer.GetFloat(name, out value);
+        if (result)
+        {
             return value;
-        }else{
+        }
+        else
+        {
             return 0f;
         }
     }
@@ -213,12 +218,18 @@ public class UIManager : MonoBehaviour
     }
     public void volumeUpdate()
     {
-        audioMixer.SetFloat("MasterVolume", Mathf.Log10(sliderMaster.value)*20); //Changed to Log10 to adjust better than linear
-        audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderMusic.value)*20);
-        audioMixer.SetFloat("SFXVolume", Mathf.Log10(sliderSFX.value)*20);
+        audioMixer.SetFloat("MasterVolume", Mathf.Log10(sliderMaster.value) * 20); //Changed to Log10 to adjust better than linear
+        audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderMusic.value) * 20);
+        audioMixer.SetFloat("SFXVolume", Mathf.Log10(sliderSFX.value) * 20);
     }
 
-    public bool getShowTutorials(){
+    public bool getShowTutorials()
+    {
         return showTutorials.GetComponent<Toggle>().isOn;
+    }
+
+    public void saveShowTutorials()
+    {
+        TutorialManager.setShowTutorials(showTutorials.GetComponent<Toggle>().isOn);
     }
 }
