@@ -30,6 +30,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider sliderMusic;
     [SerializeField] private Slider sliderSFX;
     [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private GameObject showTutorials;
+
+
 
     [SerializeField] Animator clockAnimator;
 
@@ -213,5 +216,9 @@ public class UIManager : MonoBehaviour
         audioMixer.SetFloat("MasterVolume", Mathf.Log10(sliderMaster.value)*20); //Changed to Log10 to adjust better than linear
         audioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderMusic.value)*20);
         audioMixer.SetFloat("SFXVolume", Mathf.Log10(sliderSFX.value)*20);
+    }
+
+    public bool getShowTutorials(){
+        return showTutorials.GetComponent<Toggle>().isOn;
     }
 }
