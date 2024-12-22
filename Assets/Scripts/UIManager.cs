@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Animator clockAnimator;
 
-    [SerializeField] private GameObject tutrialInfo;
+    [SerializeField] private GameObject loreNote;
     bool inTutorial;
 
 
@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
         //gameWonTexture.gameObject.SetActive(false);
 
 
-        tutrialInfo.gameObject.SetActive(true);
+        loreNote.gameObject.SetActive(true);
         Time.timeScale = 0;
         inTutorial = true;
         showTutorials.GetComponent<Toggle>().isOn = TutorialManager.getShowTutorials();
@@ -68,7 +68,7 @@ public class UIManager : MonoBehaviour
         {
             if (Input.GetKeyUp(KeyCode.G))
             {
-                tutrialInfo.gameObject.SetActive(false);
+                loreNote.gameObject.SetActive(false);
                 Time.timeScale = 1;
                 inTutorial = false;
             }

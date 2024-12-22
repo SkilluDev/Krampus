@@ -15,19 +15,19 @@ public class WinCondition : MonoBehaviour
     public int badChildrenCount;
 
     [SerializeField] UIManager manager;
-    
 
-    private void Awake() 
-    { 
+
+    private void Awake()
+    {
         // If there is an instance, and it's not me, delete myself.
-        if (Instance != null && Instance != this) 
-        { 
-            Destroy(this); 
-        } 
-        else 
-        { 
-            Instance = this; 
-        } 
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
     public enum LostGameCase
     {
@@ -51,8 +51,8 @@ public class WinCondition : MonoBehaviour
     {
         isGameOver = false;
         isGamePaused = false;
-       
-        
+
+
     }
 
     // Update is called once per frame
@@ -63,65 +63,65 @@ public class WinCondition : MonoBehaviour
             timeLimit -= Time.deltaTime;
             totalTime += Time.deltaTime;
             uiManager.UpdateTime(timeLimit);
-            
+
             if (timeLimit <= 0.0f)
             {
                 GameOver(LostGameCase.TimeRunOut);
             }
         }
 
-        if ((Input.GetKeyDown(KeyCode.R)||Input.GetKeyDown(KeyCode.G) )&& (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
+        if ((Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.G)) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
         {
             Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
             SceneManager.LoadScene("UITest"); //Goes Back to First Scene
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape)||Input.GetKeyDown(KeyCode.P)) //Pause Game
+        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
         {
             GamePauseToggle();
         }
-        
+
     }
 
-        public void GameOver(LostGameCase lostGameCase)
+    public void GameOver(LostGameCase lostGameCase)
+    {
+
+
+        uiManager.StopClock();
+
+        StartCoroutine(GameOverAnimation(lostGameCase));
+        //Do other staff, like show the Score that you managed to get
+    }
+    IEnumerator GameOverAnimation(LostGameCase lostGameCase)
+    {
+        isGameOver = true;
+        characterController characterController = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<characterController>();
+
+        if (characterController != null)
         {
-
-
-         uiManager.StopClock();
-
-        StartCoroutine(GameOverAnimation( lostGameCase));
-            //Do other staff, like show the Score that you managed to get
+            characterController.Die();
         }
-        IEnumerator GameOverAnimation(LostGameCase lostGameCase) 
-        {
-            isGameOver = true;
-            characterController characterController = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<characterController>();
-
-            if (characterController != null)
-            {
-                characterController.Die();
-            }
         yield return new WaitForSeconds(2);
-            uiManager.ActivateGameOverScreen(lostGameCase);
-            //StartCoroutine(AutoQuit());
+        uiManager.ActivateGameOverScreen(lostGameCase);
+        //StartCoroutine(AutoQuit());
     }
-        
-        public void GameWon()
-        {
-            isGameOver = true;
+
+    public void GameWon()
+    {
+        isGameOver = true;
 
         StartCoroutine(GameWinAnimation());
-        }
+    }
 
-        IEnumerator GameWinAnimation() 
+    IEnumerator GameWinAnimation()
+    {
+
+        characterController characterController = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<characterController>();
+
+        if (characterController != null)
         {
-           
-            characterController characterController = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<characterController>();
-
-            if (characterController != null)
-            {
-                characterController.Win();
-            }
+            characterController.Win();
+        }
         yield return new WaitForSeconds(3);
 
         uiManager.ActivateGameWonScreen();
@@ -129,85 +129,86 @@ public class WinCondition : MonoBehaviour
     }
 
 
-        public void AddScore(int points)
-        {
-            score += points;
-        }
-        
-        public void SubtractScore(int points)
-        {
-            score -= points;
-        }
+    public void AddScore(int points)
+    {
+        score += points;
+    }
 
-        public void SubtractTime(float seconds)
-        {
-            timeLimit = timeLimit - seconds;
+    public void SubtractScore(int points)
+    {
+        score -= points;
+    }
 
-        uiManager.UpdateTime(timeLimit, seconds > 0?false:true);
-            //Debug.Log("Subtracted time: "+ seconds);
-        }
+    public void SubtractTime(float seconds)
+    {
+        timeLimit = timeLimit - seconds;
 
-        public int GetScore()
-        {
-            return score;
-        }
-        public void GamePauseToggle()
-        {
-            if (!isGamePaused)  //Instead of Time Scale we are just deactivating Movement Scritps
-            {
-                Time.timeScale = 0;
-                AudioListener.pause = true;
-                isGamePaused = true;
-                uiManager.ActivateSettingsMenu();
-            }
-            else
-            {
-                Time.timeScale = 1;
-                AudioListener.pause = false;
-                isGamePaused = false;
-                uiManager.DeactivateSettingsMenu();
-            }
-        }
+        uiManager.UpdateTime(timeLimit, seconds > 0 ? false : true);
+        //Debug.Log("Subtracted time: "+ seconds);
+    }
 
-        public bool isGamePausedValue()
+    public int GetScore()
+    {
+        return score;
+    }
+    public void GamePauseToggle()
+    {
+        if (!isGamePaused)  //Instead of Time Scale we are just deactivating Movement Scritps
         {
-            return isGamePaused;
+            Time.timeScale = 0;
+            AudioListener.pause = true;
+            isGamePaused = true;
+            uiManager.ActivateSettingsMenu();
         }
-        
-        IEnumerator AutoQuit()
+        else
         {
-            yield return new WaitForSeconds(4);
-            SceneManager.LoadScene("UITest");
+            Time.timeScale = 1;
+            AudioListener.pause = false;
+            isGamePaused = false;
+            uiManager.DeactivateSettingsMenu();
         }
+    }
+
+    public bool isGamePausedValue()
+    {
+        return isGamePaused;
+    }
+
+    IEnumerator AutoQuit()
+    {
+        yield return new WaitForSeconds(4);
+        SceneManager.LoadScene("UITest");
+    }
 
 
     //FunctionAboutEatingChildren
 
 
-    public int getBadChildrenCount() 
+    public int getBadChildrenCount()
     {
         return badChildrenCount;
     }
 
-    public void SetChildCount(int count, bool playAnimation) {
+    public void SetChildCount(int count, bool playAnimation)
+    {
         badChildrenOnStart = count;
         badChildrenCount = badChildrenOnStart;
 
-        uiManager.UpdateNaughtlyCount(badChildrenCount,playAnimation);
+        uiManager.UpdateNaughtlyCount(badChildrenCount, playAnimation);
     }
 
-   public void badChildEaten() 
+    public void badChildEaten()
     {
         badChildrenCount--;
 
-       uiManager.UpdateNaughtlyCount(badChildrenCount,true);
-        if (badChildrenCount <= 0) 
+        uiManager.UpdateNaughtlyCount(badChildrenCount, true);
+        if (badChildrenCount <= 0)
         {
             GameWon();
         }
     }
 
-    public float getTimer() 
+    public float getTimer()
     {
         return timeLimit;
     }
