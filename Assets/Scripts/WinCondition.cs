@@ -60,19 +60,22 @@ public class WinCondition : MonoBehaviour
     {
         if (!isGamePaused)
         {
-            timeLimit -= Time.deltaTime;
-            totalTime += Time.deltaTime;
-            uiManager.UpdateTime(timeLimit);
-
             if (timeLimit <= 0.0f)
             {
                 GameOver(LostGameCase.TimeRunOut);
+            }
+            else
+            {
+                timeLimit -= Time.deltaTime;
+                totalTime += Time.deltaTime;
+                uiManager.UpdateTime(timeLimit);
             }
         }
 
         if ((Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.G)) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
         {
             Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
+            if (!isGameOver) GamePauseToggle();
             SceneManager.LoadScene("UITest"); //Goes Back to First Scene
         }
 
