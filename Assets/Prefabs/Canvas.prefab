@@ -1936,7 +1936,7 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: ebed9cc6463044422a611f4748adc568, type: 2}
   showTutorials: {fileID: 6935044444542762500}
   clockAnimator: {fileID: 6293010404045826410}
-  tutrialInfo: {fileID: 3591587975015192828}
+  loreNote: {fileID: 3591587975015192828}
 --- !u!1 &5742614770804633160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2281,8 +2281,20 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
-  m_IsOn: 1
+      m_Calls:
+      - m_Target: {fileID: 995555995481527752}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: saveShowTutorials
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsOn: 0
 --- !u!1 &7015565053208865247
 GameObject:
   m_ObjectHideFlags: 0
