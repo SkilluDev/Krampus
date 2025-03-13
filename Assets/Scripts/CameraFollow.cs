@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
-{
+public class CameraFollow : MonoBehaviour {
     // Reference to the target (e.g., player or object to follow)
     public Transform target;
 
@@ -13,22 +12,19 @@ public class CameraFollow : MonoBehaviour
     // Smooth follow speed
     public float smoothSpeed = 0.125f;
 
-    [SerializeField] float shakeForce = 0.7f;
+    [SerializeField] private float shakeForce = 0.7f;
     public float shakeMagnitude = 0.1f;
     // The speed at which the shake decays (higher value = faster decay)
     public float shakeDampingSpeed = 1.0f;
 
 
-    private void Awake()
-    {
+    private void Awake() {
         target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    void LateUpdate()
-    {
+    private void LateUpdate() {
         // Ensure the target exists
-        if (target != null)
-        {
+        if (target != null) {
             // Calculate the desired position (target position + offset)
             Vector3 desiredPosition = target.position + offset;
 
@@ -39,26 +35,23 @@ public class CameraFollow : MonoBehaviour
             transform.position = smoothedPosition;
 
             // Optionally, you can make the camera always look at the target
-            
+
         }
     }
 
-    public void Shake() 
-    {
+    public void Shake() {
 
         StartCoroutine(Shake(0.2f));
     }
 
-    private IEnumerator Shake(float duration)
-    {
+    private IEnumerator Shake(float duration) {
 
-       Vector3 originalPosition = transform.localPosition;
+        Vector3 originalPosition = transform.localPosition;
         float elapsedTime = 0f;
 
         shakeMagnitude = shakeForce;
 
-        while (elapsedTime < duration)
-        {
+        while (elapsedTime < duration) {
             // Generate a random shake offset (can customize for more control)
             Vector3 shakeOffset = Random.insideUnitSphere * shakeMagnitude;
 

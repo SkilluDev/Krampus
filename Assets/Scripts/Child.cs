@@ -7,13 +7,13 @@ public class Child : MonoBehaviour {
     public Material mat;
 
     public MeshRenderer ring;
-    [SerializeField] ParticleSystem confirmEatingParticle;
-    [SerializeField] ParticleSystem confirmEatingParticleMistake;
+    [SerializeField] private ParticleSystem confirmEatingParticle;
+    [SerializeField] private ParticleSystem confirmEatingParticleMistake;
 
 
     private void Start() {
         transform.GetChild(0).GetChild(8).GetComponent<Renderer>().material = mat;
-        transform.Rotate(transform.rotation.x,Random.Range(0,360),transform.rotation.z);
+        transform.Rotate(transform.rotation.x, Random.Range(0, 360), transform.rotation.z);
     }
 
     public void Die() { }

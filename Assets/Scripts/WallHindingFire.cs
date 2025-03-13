@@ -1,46 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class WallHindingFire : MonoBehaviour
-{
+public class WallHindingFire : MonoBehaviour {
 
-   [SerializeField] MeshRenderer[] walls;
+    [FormerlySerializedAs("walls")][SerializeField] private MeshRenderer[] walls;
 
     public bool playerIsInsideTheRoom = false;
     public float globalAlpha = 1.0f;
 
     [Header("Settings")]
-    [SerializeField] float minAlpha = 0.33f;
-    [SerializeField] float alphaSpeed = 100f;
+    [FormerlySerializedAs("minAlpha")][SerializeField] private float minAlpha = 0.33f;
+    [FormerlySerializedAs("m_alphaSpeed")][SerializeField] private float m_alphaSpeed = 100f;
 
-   
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Player") 
-        {
+
+    private void OnTriggerExit(Collider other) {
+        if (other.gameObject.tag == "Player") {
             playerIsInsideTheRoom = false;
-           
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
+    private void OnTriggerStay(Collider other) {
+        if (other.gameObject.tag == "Player") {
             playerIsInsideTheRoom = true;
 
         }
     }
-    private void Update()
-    {
-        if (!playerIsInsideTheRoom)
-        {
-            if (globalAlpha < 1)
-            {
-                globalAlpha += (alphaSpeed/100) * Time.deltaTime;
-                foreach (MeshRenderer wall in walls)
-                {
+    private void Update() {
+        if (!playerIsInsideTheRoom) {
+            if (globalAlpha < 1) {
+                globalAlpha += (m_alphaSpeed / 100) * Time.deltaTime;
+                foreach (MeshRenderer wall in walls) {
                     Color color = wall.materials[1].color;
 
                     {
@@ -49,14 +40,10 @@ public class WallHindingFire : MonoBehaviour
                     }
                 }
             }
-        }
-        else 
-        {
-            if (globalAlpha > minAlpha)
-            {
-                globalAlpha -= (alphaSpeed / 100) * Time.deltaTime;
-                foreach (MeshRenderer wall in walls)
-                {
+        } else {
+            if (globalAlpha > minAlpha) {
+                globalAlpha -= (m_alphaSpeed / 100) * Time.deltaTime;
+                foreach (MeshRenderer wall in walls) {
                     Color color = wall.materials[1].color;
 
                     {

@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
-{
-    public static AudioClip windup1,windup2, step1, step2, kill, caught, tongue;
-    static AudioSource src;
+public class SoundManager : MonoBehaviour {
+    public static AudioClip windup1, windup2, step1, step2, kill, caught, tongue;
+    private static AudioSource src;
 
-    private void Start()
-    {
+    private void Start() {
         src = GetComponent<AudioSource>();
         windup1 = Resources.Load<AudioClip>("Clips/windup1");
         windup2 = Resources.Load<AudioClip>("Clips/windup2");
@@ -19,10 +17,8 @@ public class SoundManager : MonoBehaviour
         tongue = Resources.Load<AudioClip>("Clips/tongue");
     }
 
-    public static void PlaySound(string clipName)
-    {
-        switch (clipName)
-        {
+    public static void PlaySound(string clipName) {
+        switch (clipName) {
             case "windup1":
                 src.PlayOneShot(windup1);
                 break;

@@ -3,102 +3,89 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ParentController : MonoBehaviour
-{
+public class ParentController : MonoBehaviour {
     public float distance = 30;
     private NavMeshAgent navMeshAgent;
-    private detection[] parentDetections;
+    private Detection[] parentDetections;
 
-    float waitTime = 1f;
+    private float waitTime = 1f;
 
     private Animator animator;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    private void Start() {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        parentDetections = GetComponents<detection>();
+        parentDetections = GetComponents<Detection>();
         animator = GetComponentInChildren<Animator>();
 
 
-        
+
 
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-        if (WinCondition.Instance.isGamePausedValue())  return;
+    private void Update() {
+
+        if (WinCondition.Instance.isGamePausedValue()) return;
         var children = GameObject.FindGameObjectsWithTag("Child");
-        foreach(GameObject child in children){
-            detection detection = child.GetComponent<detection>();
-            if(!detection.isAlerted) continue;
+        foreach (GameObject child in children) {
+            Detection detection = child.GetComponent<Detection>();
+            if (!detection.isAlerted) continue;
             var vector = child.transform.position - transform.position;
             var sqrDistanceToChild = Vector3.SqrMagnitude(vector);
-            if (sqrDistanceToChild <= distance && !Physics.Raycast(transform.position, vector.normalized, distance,1<<6)) {
+            if (sqrDistanceToChild <= distance && !Physics.Raycast(transform.position, vector.normalized, distance, 1 << 6)) {
                 child.GetComponent<ChildContoller>().Calming();
-                if (!parentDetections[1].isAlerted)
-                {
+                if (!parentDetections[1].isAlerted) {
                     navMeshAgent.SetDestination(detection.krampusEncounerPosition);
-                }   
-                
+                }
+
             }
 
 
-            
+
         }
         animator.SetFloat("Speed", navMeshAgent.velocity.magnitude);
 
         ChoosingTarget();
     }
 
-    void ChoosingTarget() 
-    {
-        if (destinationReached() || navMeshAgent.destination == null ) 
-        {
+    private void ChoosingTarget() {
+        if (destinationReached() || navMeshAgent.destination == null) {
 
             waitTime -= Time.deltaTime;
 
-            if (waitTime < 0)
-            {
+            if (waitTime < 0) {
 
                 GameObject[] children = GameObject.FindGameObjectsWithTag("Child");
                 Vector3 descination = children[Random.RandomRange(0, children.Length)].gameObject.transform.position;
 
 
                 SetDestination(descination);
-               
+
                 waitTime = 10f;
             }
-            
-        }
-        else
-        {
+
+        } else {
             waitTime = 10f;
         }
 
     }
-    bool destinationReached()
-    {
-        if (!navMeshAgent.pathPending)
-        {
-            if (navMeshAgent.remainingDistance <= 15)
-            {
-              
-                
-                    return true;
-                
+    private bool destinationReached() {
+        if (!navMeshAgent.pathPending) {
+            if (navMeshAgent.remainingDistance <= 15) {
+
+
+                return true;
+
             }
         }
         return false;
     }
 
-    void SetDestination(Vector3 destination)
-    {
+    private void SetDestination(Vector3 destination) {
 
         NavMesh.SamplePosition(destination, out NavMeshHit closestNavHit, 1000, NavMesh.AllAreas);
         navMeshAgent.SetDestination(closestNavHit.position);
     }
-   
+
 }

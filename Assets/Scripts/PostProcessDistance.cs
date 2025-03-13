@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-public class PostProcessDistance : MonoBehaviour
-{
-    Volume vol;
-    Vignette vignette;
-    ChromaticAberration aberration;
+public class PostProcessDistance : MonoBehaviour {
+    private Volume vol;
+    private Vignette vignette;
+    private ChromaticAberration aberration;
 
     public float minDistance;
-    childDistance closestDist;
+    private ChildDistance closestDist;
 
     public float abberIntensity = 0.2f;
     public float vignetteIntensity = 0.2f;
@@ -20,13 +19,11 @@ public class PostProcessDistance : MonoBehaviour
 
     public float resetSpeed = 1f;
 
-    float distanceToClosest;
+    private float distanceToClosest;
 
-    private void Start()
-    {
+    private void Start() {
         vol = GetComponent<Volume>();
-        if (vol != null && vol.profile != null)
-        {
+        if (vol != null && vol.profile != null) {
             // Try to get Vignette effect
             if (!vol.profile.TryGet(out vignette))
                 Debug.LogError("Vignette effect not found in Volume profile.");
@@ -34,108 +31,76 @@ public class PostProcessDistance : MonoBehaviour
             // Try to get Chromatic Aberration effect
             if (!vol.profile.TryGet(out aberration))
                 Debug.LogError("Chromatic Aberration effect not found in Volume profile.");
-        }
-        else
-        {
+        } else {
             Debug.LogError("Volume or Volume profile is missing.");
         }
-        closestDist = GameObject.Find("Player").GetComponent<childDistance>();
+        closestDist = GameObject.Find("Player").GetComponent<ChildDistance>();
         ChangeAberration(abberIntensity);
         ChangeVignette(vignetteIntensity);
     }
 
-    private void Update()
-    {
+    private void Update() {
         distanceToClosest = Mathf.Sqrt(closestDist.dist);
-        if (distanceToClosest < minDistance)
-        {          
-            if ((minDistance - distanceToClosest) / minDistance <= vignetteIntensity)
-            {
+        if (distanceToClosest < minDistance) {
+            if ((minDistance - distanceToClosest) / minDistance <= vignetteIntensity) {
                 //Debug.Log("1");
                 ChangeVignette(vignetteIntensity);
-            }
-            else if ((minDistance - distanceToClosest) / minDistance > vignetteIntensity && (minDistance - distanceToClosest) / minDistance < maxVignette)
-            {
+            } else if ((minDistance - distanceToClosest) / minDistance > vignetteIntensity && (minDistance - distanceToClosest) / minDistance < maxVignette) {
                 //Debug.Log("2");
-                ChangeVignette((minDistance - distanceToClosest)/minDistance);
-            }
-            else
-            {
+                ChangeVignette((minDistance - distanceToClosest) / minDistance);
+            } else {
                 //Debug.Log("3");
                 ChangeVignette(maxVignette);
             }
 
-            if ((minDistance - distanceToClosest)/minDistance <= abberIntensity)
-            {
+            if ((minDistance - distanceToClosest) / minDistance <= abberIntensity) {
                 //Debug.Log("1");
                 ChangeAberration(vignetteIntensity);
-            }
-            else if ((minDistance - distanceToClosest) / minDistance > abberIntensity && (minDistance - distanceToClosest) / minDistance < maxChroma)
-            {
+            } else if ((minDistance - distanceToClosest) / minDistance > abberIntensity && (minDistance - distanceToClosest) / minDistance < maxChroma) {
                 //Debug.Log("2");
-                ChangeAberration((minDistance - distanceToClosest)/minDistance);
-            }
-            else
-            {
+                ChangeAberration((minDistance - distanceToClosest) / minDistance);
+            } else {
                 //Debug.Log("3");
                 ChangeAberration(maxChroma);
             }
 
-        }
-        else
-        {
+        } else {
             resetVignetteToDefault(vignetteIntensity);
             resetAberrToDefault(abberIntensity);
         }
     }
 
-    public void ChangeVignette(float intensity)
-    {
-        if (vignette != null)
-        {
+    public void ChangeVignette(float intensity) {
+        if (vignette != null) {
             vignette.intensity.value = intensity;
-        }
-        else
-        {
+        } else {
             Debug.Log("Vignette is null.");
         }
     }
 
-    public void ChangeAberration(float intensity)
-    {
-        if (aberration != null)
-        {
+    public void ChangeAberration(float intensity) {
+        if (aberration != null) {
             aberration.intensity.value = intensity;
-        }
-        else
-        {
+        } else {
             Debug.Log("Abber is null.");
         }
     }
 
-    public void resetVignetteToDefault(float intensity)
-    {
-        if (vignette != null)
-        {
-            if(vignette.intensity.value > intensity){
-                vignette.intensity.value -= Time.deltaTime*resetSpeed;
+    public void resetVignetteToDefault(float intensity) {
+        if (vignette != null) {
+            if (vignette.intensity.value > intensity) {
+                vignette.intensity.value -= Time.deltaTime * resetSpeed;
             }
-        }
-        else
-        {
+        } else {
             Debug.Log("Vignette is null.");
         }
     }
-    public void resetAberrToDefault(float intensity)
-    {
-        if (aberration != null)
-        {
-            if(aberration.intensity.value > intensity){
-                aberration.intensity.value -= Time.deltaTime*resetSpeed;
+    public void resetAberrToDefault(float intensity) {
+        if (aberration != null) {
+            if (aberration.intensity.value > intensity) {
+                aberration.intensity.value -= Time.deltaTime * resetSpeed;
             }
-        }
-        else
-        {
+        } else {
             Debug.Log("Abber is null.");
         }
     }
