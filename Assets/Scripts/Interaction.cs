@@ -59,6 +59,8 @@ public class Interaction : MonoBehaviour {
     }
 
     private IEnumerator ShootTongue() {
+
+
         GetComponent<CharacterController>().shouldKrampusMove = false;
         m_animator.SetBool("hasHit", false);
         canTongue = false;
@@ -133,7 +135,7 @@ public class Interaction : MonoBehaviour {
 
 
     private IEnumerator EmptyTongueOut(float time) {
-        empty.transform.DOMove(tonguePoint, time).SetEase(Ease.OutCubic);
+        empty.transform.DOMove(tonguePoint, time).SetEase(Ease.OutExpo);
         lineRenderer.enabled = true;
         canTongue = false;
         while (true) {
@@ -143,8 +145,8 @@ public class Interaction : MonoBehaviour {
         }
     }
     private IEnumerator EmptyTongueIn(float time) {
-        yield return new WaitForSeconds(time);
-        empty.transform.DOMove(m_tonguePosition.position, time).SetEase(Ease.OutCubic);
+        yield return new WaitForSeconds(time+0.1f);
+        empty.transform.DOMove(m_tonguePosition.position, time).SetEase(Ease.InExpo);
         yield return new WaitForSeconds(time);
         StopCoroutine(EmptyTongueOut(time));
         lineRenderer.enabled = false;
