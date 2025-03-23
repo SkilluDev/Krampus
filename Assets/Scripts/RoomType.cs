@@ -1,10 +1,6 @@
 using UnityEngine;
 using System;
 using static GridDoorset.Direction;
-using UnityEngine.UIElements;
-using Extensions;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
