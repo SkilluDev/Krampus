@@ -99,4 +99,15 @@ public struct GridDoorset {
             m_doors &= ALL;
         }
     }
+
+    public int Count {
+        get {
+            int c = 0;
+            if (North) c++;
+            if (East) c++;
+            if (South) c++;
+            if (West) c++;
+            return c;
+        }
+    }
 }

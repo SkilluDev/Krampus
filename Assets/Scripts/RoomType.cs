@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Linq;
 using static GridDoorset.Direction;
 
 #if UNITY_EDITOR
@@ -9,8 +10,38 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "Game/Room Type", fileName = "New Room Type")]
 public class RoomType : ScriptableObject, ISerializationCallbackReceiver {
     public GridRoomConstraint[,] constraints = new GridRoomConstraint[2, 2];
+    public int gradeOffset;
     public int Width => constraints.GetLength(0);
     public int Height => constraints.GetLength(1);
+    public int BaseGrade {
+        get {
+            int grd = Width * Height * 4;
+            for (int i = 0; i < Width; i++) {
+                for (int j = 0; j < Height; j++) {
+                    if (constraints[i, j] == null) {
+                        grd -= 4; // same as 4 optional doors
+                        continue;
+                    }
+                    grd -= constraints[i, j].optionalDoors.Count;
+                }
+            }
+            return grd;
+        }
+    }
+
+    public int Grade {
+        get => BaseGrade + gradeOffset;
+    }
+
+    public bool CanPlace(int x, int y, GridDoorset[,] grid) {
+        for (int i = 0; i < Width; i++) {
+            for (int j = 0; j < Height; j++) {
+                if (constraints[i, j] == null) continue;
+                if (!constraints[i, j].CanPlace(grid[i + x, j + y])) return false;
+            }
+        }
+        return true;
+    }
 
     #region Serializer bullshit
     [SerializeField] private NullableSerializationContainer<GridRoomConstraint>[] m_constraints;
@@ -38,7 +69,7 @@ public class RoomType : ScriptableObject, ISerializationCallbackReceiver {
     #endregion
 }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR // custom editor
 
 [CustomEditor(typeof(RoomType))]
 public class RoomTypeEditor : Editor {
@@ -48,7 +79,7 @@ public class RoomTypeEditor : Editor {
 
     private GUIStyle m_emptyCellStyle, m_filledCellStyle, m_doorButtonStyle, m_phantomCellStyle, m_errorLabelStyle;
     private Texture2D m_optionalDoorTex, m_requiredDoorTex, m_blockedDoorTex, m_emptyTex, m_deleteTex, m_phantomTex, m_stripes;
-
+    private bool m_showConstraints;
 
     private void Awake() {
         PrepareAssets();
@@ -96,37 +127,46 @@ public class RoomTypeEditor : Editor {
         int gw = Target.Width;
         int gh = Target.Height;
 
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.TextField("Name", Target.name);
+        EditorGUI.EndDisabledGroup();
 
-        GUILayout.Label($"{Target.name}; {Target.Width}x{Target.Height}", EditorStyles.boldLabel);
-        var workArea = GUILayoutUtility.GetRect(w, w * gh / gw);
+        m_showConstraints = EditorGUILayout.BeginFoldoutHeaderGroup(m_showConstraints, $"Constraints ({Target.Width} x {Target.Height})");
+        if (m_showConstraints) {
 
-        if (workArea.width > gw * 128) {
+
+            var workArea = GUILayoutUtility.GetRect(w, w * gh / gw);
+
             workArea.x += 16;
             workArea.width -= 32;
             workArea.height -= 32;
             workArea.y += 16;
+            if (workArea.width > gw * 128) {
+                GUI.Label(workArea, "", m_emptyCellStyle);
 
-            GUI.Label(workArea, "", m_emptyCellStyle);
+                for (int i = 0; i < gw; i++) {
+                    for (int j = 0; j < gh; j++) {
+                        var rect = new Rect(
+                            workArea.x + (i * workArea.width / gw) + MARGIN,
+                            workArea.y + (j * workArea.height / gh) + MARGIN,
+                            (workArea.width / gw) - (MARGIN * 2),
+                            (workArea.height / gh) - (MARGIN * 2)
+                        );
 
-            for (int i = 0; i < gw; i++) {
-                for (int j = 0; j < gh; j++) {
-                    var rect = new Rect(
-                        workArea.x + (i * workArea.width / gw) + MARGIN,
-                        workArea.y + (j * workArea.height / gh) + MARGIN,
-                        (workArea.width / gw) - (MARGIN * 2),
-                        (workArea.height / gh) - (MARGIN * 2)
-                    );
-
-                    if (Target.constraints[i, j] == null) {
-                        if (GUI.Button(rect, m_emptyTex, m_doorButtonStyle)) {
-                            Target.constraints[i, j] = new GridRoomConstraint();
-                            EditorUtility.SetDirty(Target);
+                        if (Target.constraints[i, j] == null) {
+                            if (GUI.Button(rect, m_emptyTex, m_doorButtonStyle)) {
+                                Target.constraints[i, j] = new GridRoomConstraint();
+                                EditorUtility.SetDirty(Target);
+                            }
+                        } else {
+                            DrawGridRoom(i, j, rect);
                         }
-                    } else {
-                        DrawGridRoom(i, j, rect);
-                    }
 
+                    }
                 }
+
+            } else {
+                GUI.Label(workArea, "Expand the window!", m_errorLabelStyle);
             }
 
             #region Editing buttons
@@ -191,15 +231,28 @@ public class RoomTypeEditor : Editor {
                 }
             }
             #endregion
-        } else {
-            GUI.Label(workArea, "Expand the window!", m_errorLabelStyle);
+
+            EditorGUILayout.HelpBox("Click on the empty (+) cells to create Room cells.\nClicking the (ghost) makes the cell Phantom - its constraints need to be met but it is not a part of the room.\nTo delete a cell, switch it to a Phantom and click the (trashcan).\n\nClick on the icons to toggle door types.\nGreen = required door; Red = no door; Yellow = optional door;\nShift-clicking prevents affecting neighbours.\nThe [+] buttons in the corners can be used to increase the constraint area.\nShift-clicking [+] changes it to a [-] and reduces the area.", MessageType.Info);
+
+            if (GUILayout.Button("Reset Constraints") && EditorUtility.DisplayDialog("Reset?", "Are you sure to delete all the constraints and start from scratch?", "Yes", "Nah")) {
+                Target.constraints = new GridRoomConstraint[1, 1];
+                EditorUtility.SetDirty(Target);
+            }
+            GUILayout.Space(20);
         }
 
+        EditorGUILayout.EndFoldoutHeaderGroup();
 
-        if (GUILayout.Button("Reset") && EditorUtility.DisplayDialog("Reset ???", "Are you sure to delete all the constraints and start from scratch?", "Yes", "Nah")) {
-            Target.constraints = new GridRoomConstraint[1, 1];
-            EditorUtility.SetDirty(Target);
-        }
+
+        EditorGUILayout.HelpBox("The room's grade determines how complex it is to place. Rooms with higher grade get placed first, as they fit a smaller amount of cases.", MessageType.Info);
+        GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Grade");
+        if (GUILayout.Button("-")) Target.gradeOffset--;
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.TextField($"{Target.BaseGrade} {Target.gradeOffset:+ #;- #;+ 0} = {Target.Grade}");
+        EditorGUI.EndDisabledGroup();
+        if (GUILayout.Button("+")) Target.gradeOffset++;
+        GUILayout.EndHorizontal();
     }
 
     private Texture2D TextureDoorForCellDirection(GridRoomConstraint c, GridDoorset.Direction dir) {
