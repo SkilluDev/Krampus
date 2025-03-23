@@ -11,8 +11,35 @@ using UnityEditor;
 #endif
 
 [CreateAssetMenu(menuName = "Game/Room Type", fileName = "New Room Type")]
-public class RoomType : ScriptableObject {
-    public TArray<GridRoomConstraint> constraints = new GridRoomConstraint[2, 2];
+public class RoomType : ScriptableObject, ISerializationCallbackReceiver {
+    public GridRoomConstraint[,] constraints = new GridRoomConstraint[2, 2];
+    public int Width => constraints.GetLength(0);
+    public int Height => constraints.GetLength(1);
+
+    #region Serializer bullshit
+    [SerializeField] private NullableSerializationContainer<GridRoomConstraint>[] m_constraints;
+    [SerializeField] private int m_width, m_height;
+
+    public void OnAfterDeserialize() {
+        constraints = new GridRoomConstraint[m_width, m_height];
+        for (int i = 0; i < m_width; i++) {
+            for (int j = 0; j < m_height; j++) {
+                constraints[i, j] = m_constraints[i * m_height + j].hasValue ? m_constraints[i * m_height + j].value : null;
+            }
+        }
+    }
+
+    public void OnBeforeSerialize() {
+        m_width = constraints.GetLength(0);
+        m_height = constraints.GetLength(1);
+        m_constraints = new NullableSerializationContainer<GridRoomConstraint>[m_width * m_height];
+        for (int i = 0; i < m_width; i++) {
+            for (int j = 0; j < m_height; j++) {
+                m_constraints[i * m_height + j] = new NullableSerializationContainer<GridRoomConstraint>(constraints[i, j]);
+            }
+        }
+    }
+    #endregion
 }
 
 #if UNITY_EDITOR
@@ -67,13 +94,14 @@ public class RoomTypeEditor : Editor {
     }
 
     public override void OnInspectorGUI() {
-        //if (Target.constraints.Array == null) Target.constraints = new GridRoomConstraint[1, 1];
+        if (Target.constraints == null) Target.constraints = new GridRoomConstraint[1, 1];
 
         float w = Screen.width - 10;
-        int gw = Target.constraints.Size.x;
-        int gh = Target.constraints.Size.y;
+        int gw = Target.Width;
+        int gh = Target.Height;
 
 
+        GUILayout.Label($"{Target.name}; {Target.Width}x{Target.Height}", EditorStyles.boldLabel);
         var workArea = GUILayoutUtility.GetRect(w, w * gh / gw);
 
         if (workArea.width > gw * 128) {
@@ -94,7 +122,10 @@ public class RoomTypeEditor : Editor {
                     );
 
                     if (Target.constraints[i, j] == null) {
-                        if (GUI.Button(rect, m_emptyTex, m_doorButtonStyle)) Target.constraints[i, j] = new GridRoomConstraint();
+                        if (GUI.Button(rect, m_emptyTex, m_doorButtonStyle)) {
+                            Target.constraints[i, j] = new GridRoomConstraint();
+                            EditorUtility.SetDirty(Target);
+                        }
                     } else {
                         DrawGridRoom(i, j, rect);
                     }
@@ -107,15 +138,15 @@ public class RoomTypeEditor : Editor {
             if (GUI.Button(new Rect(workArea.x, workArea.y - 16, 16, 16), Event.current.shift ? "-" : "+")) { //new row at the top
                 var old = Target.constraints;
                 if (Event.current.shift) {
-                    if (Target.constraints.Size.y <= 1) return;
-                    Target.constraints = new GridRoomConstraint[Target.constraints.Size.x, Target.constraints.Size.y - 1];
-                    for (int i = 0; i < old.Size.x && i < Target.constraints.Size.x; i++) {
-                        for (int j = 1; j < old.Size.y && i < Target.constraints.Size.y; j++) Target.constraints[i, j - 1] = old[i, j];
+                    if (Target.Height <= 1) return;
+                    Target.constraints = new GridRoomConstraint[Target.Width, Target.Height - 1];
+                    for (int i = 0; i < old.GetLength(0) && i < Target.Width; i++) {
+                        for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i, j + 1];
                     }
                 } else {
-                    Target.constraints = new GridRoomConstraint[Target.constraints.Size.x, Target.constraints.Size.y + 1];
-                    for (int i = 0; i < old.Size.x; i++) {
-                        for (int j = 0; j < old.Size.y && j < Target.constraints.Size.y; j++) Target.constraints[i, j + 1] = old[i, j];
+                    Target.constraints = new GridRoomConstraint[Target.Width, Target.Height + 1];
+                    for (int i = 0; i < old.GetLength(0); i++) {
+                        for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j + 1] = old[i, j];
                     }
                 }
             }
@@ -125,15 +156,15 @@ public class RoomTypeEditor : Editor {
             if (GUI.Button(new Rect(workArea.x - 16, workArea.y, 16, 16), Event.current.shift ? "-" : "+")) { //new column on the left
                 var old = Target.constraints;
                 if (Event.current.shift) {
-                    if (Target.constraints.Size.x <= 1) return;
-                    Target.constraints = new GridRoomConstraint[Target.constraints.Size.x - 1, Target.constraints.Size.y];
-                    for (int i = 1; i < old.Size.x && i < Target.constraints.Size.x; i++) {
-                        for (int j = 0; j < old.Size.y && j < Target.constraints.Size.y; j++) Target.constraints[i - 1, j] = old[i, j];
+                    if (Target.Width <= 1) return;
+                    Target.constraints = new GridRoomConstraint[Target.Width - 1, Target.Height];
+                    for (int i = 0; i < old.GetLength(0) && i < Target.Width; i++) {
+                        for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i + 1, j];
                     }
                 } else {
-                    Target.constraints = new GridRoomConstraint[Target.constraints.Size.x + 1, Target.constraints.Size.y];
-                    for (int i = 0; i < old.Size.x; i++) {
-                        for (int j = 0; j < old.Size.y && j < Target.constraints.Size.y; j++) Target.constraints[i + 1, j] = old[i, j];
+                    Target.constraints = new GridRoomConstraint[Target.Width + 1, Target.Height];
+                    for (int i = 0; i < old.GetLength(0); i++) {
+                        for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i + 1, j] = old[i, j];
                     }
                 }
             }
@@ -141,26 +172,26 @@ public class RoomTypeEditor : Editor {
             if (GUI.Button(new Rect(workArea.x + workArea.width - 16, workArea.y + workArea.height, 16, 16), Event.current.shift ? "-" : "+")) { // new row at the bottom
                 var old = Target.constraints;
                 if (Event.current.shift) {
-                    if (Target.constraints.Size.y <= 1) return;
-                    Target.constraints = new GridRoomConstraint[Target.constraints.Size.x, Target.constraints.Size.y - 1];
+                    if (Target.Height <= 1) return;
+                    Target.constraints = new GridRoomConstraint[Target.Width, Target.Height - 1];
                 } else {
-                    Target.constraints = new GridRoomConstraint[Target.constraints.Size.x, Target.constraints.Size.y + 1];
+                    Target.constraints = new GridRoomConstraint[Target.Width, Target.Height + 1];
                 }
-                for (int i = 0; i < old.Size.x && i < Target.constraints.Size.x; i++) {
-                    for (int j = 0; j < old.Size.y && j < Target.constraints.Size.y; j++) Target.constraints[i, j] = old[i, j];
+                for (int i = 0; i < old.GetLength(0) && i < Target.Width; i++) {
+                    for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
                 }
             }
 
             if (GUI.Button(new Rect(workArea.x + workArea.width, workArea.y + workArea.height - 16, 16, 16), Event.current.shift ? "-" : "+")) { // new column on the right
                 var old = Target.constraints;
                 if (Event.current.shift) {
-                    if (Target.constraints.Size.y <= 0) return;
-                    Target.constraints = new GridRoomConstraint[Target.constraints.Size.x - 1, Target.constraints.Size.y];
+                    if (Target.Height <= 0) return;
+                    Target.constraints = new GridRoomConstraint[Target.Width - 1, Target.Height];
                 } else {
-                    Target.constraints = new GridRoomConstraint[Target.constraints.Size.x + 1, Target.constraints.Size.y];
+                    Target.constraints = new GridRoomConstraint[Target.Width + 1, Target.Height];
                 }
-                for (int i = 0; i < old.Size.x && i < Target.constraints.Size.x; i++) {
-                    for (int j = 0; j < old.Size.y && j < Target.constraints.Size.y; j++) Target.constraints[i, j] = old[i, j];
+                for (int i = 0; i < old.GetLength(0) && i < Target.Width; i++) {
+                    for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
                 }
             }
             #endregion
@@ -169,7 +200,10 @@ public class RoomTypeEditor : Editor {
         }
 
 
-        if (GUILayout.Button("Reset")) Target.constraints = new GridRoomConstraint[1, 1];
+        if (GUILayout.Button("Reset") && EditorUtility.DisplayDialog("Reset ???", "Are you sure to delete all the constraints and start from scratch?", "Yes", "Nah")) {
+            Target.constraints = new GridRoomConstraint[1, 1];
+            EditorUtility.SetDirty(Target);
+        }
     }
 
     private Texture2D TextureDoorForCellDirection(GridRoomConstraint c, GridDoorset.Direction dir) {
@@ -189,8 +223,8 @@ public class RoomTypeEditor : Editor {
         var c = Target.constraints[i, j];
         var n = dir switch {
             NORTH => j > 0 ? Target.constraints[i, j - 1] : null, // up
-            EAST => i < Target.constraints.Size.x - 1 ? Target.constraints[i + 1, j] : null, // right
-            SOUTH => j < Target.constraints.Size.y - 1 ? Target.constraints[i, j + 1] : null, //down
+            EAST => i < Target.Width - 1 ? Target.constraints[i + 1, j] : null, // right
+            SOUTH => j < Target.Height - 1 ? Target.constraints[i, j + 1] : null, //down
             WEST => i > 0 ? Target.constraints[i - 1, j] : null, // left
             _ => throw new Exception("cannot set directions like this")
         };
@@ -218,9 +252,9 @@ public class RoomTypeEditor : Editor {
             GUI.Label(at, "", m_phantomCellStyle);
         } else {
             GUI.Label(at, "", m_filledCellStyle);
-            if (i < Target.constraints.Size.x - 1 && Target.constraints[i + 1, j] != null && !Target.constraints[i + 1, j].phantom && Target.constraints[i + 1, j].requiredDoors.West && Target.constraints[i, j].requiredDoors.East)
+            if (i < Target.Width - 1 && Target.constraints[i + 1, j] != null && !Target.constraints[i + 1, j].phantom && Target.constraints[i + 1, j].requiredDoors.West && Target.constraints[i, j].requiredDoors.East)
                 GUI.Label(new Rect(at.x + at.width, at.y, MARGIN, at.height), "", m_filledCellStyle);
-            if (j < Target.constraints.Size.y - 1 && Target.constraints[i, j + 1] != null && !Target.constraints[i, j + 1].phantom && Target.constraints[i, j + 1].requiredDoors.North && Target.constraints[i, j].requiredDoors.South)
+            if (j < Target.Height - 1 && Target.constraints[i, j + 1] != null && !Target.constraints[i, j + 1].phantom && Target.constraints[i, j + 1].requiredDoors.North && Target.constraints[i, j].requiredDoors.South)
                 GUI.Label(new Rect(at.x, at.y + at.height, at.width, MARGIN), "", m_filledCellStyle);
             if (i > 0 && Target.constraints[i - 1, j] != null && !Target.constraints[i - 1, j].phantom && Target.constraints[i - 1, j].requiredDoors.East && Target.constraints[i, j].requiredDoors.West)
                 GUI.Label(new Rect(at.x - MARGIN, at.y, MARGIN, at.height), "", m_filledCellStyle);
