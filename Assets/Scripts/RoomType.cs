@@ -79,7 +79,7 @@ public class RoomTypeEditor : Editor {
 
     private GUIStyle m_emptyCellStyle, m_filledCellStyle, m_doorButtonStyle, m_phantomCellStyle, m_errorLabelStyle;
     private Texture2D m_optionalDoorTex, m_requiredDoorTex, m_blockedDoorTex, m_emptyTex, m_deleteTex, m_phantomTex, m_stripes;
-    private bool m_showConstraints;
+    private bool m_showConstraints = true;
 
     private void Awake() {
         PrepareAssets();
@@ -180,6 +180,7 @@ public class RoomTypeEditor : Editor {
                         for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i, j + 1];
                     }
                 } else {
+                    if (Target.Height >= 9) return;
                     Target.constraints = new GridRoomConstraint[Target.Width, Target.Height + 1];
                     for (int i = 0; i < old.GetLength(0); i++) {
                         for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j + 1] = old[i, j];
@@ -198,6 +199,7 @@ public class RoomTypeEditor : Editor {
                         for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i + 1, j];
                     }
                 } else {
+                    if (Target.Width >= 9) return;
                     Target.constraints = new GridRoomConstraint[Target.Width + 1, Target.Height];
                     for (int i = 0; i < old.GetLength(0); i++) {
                         for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i + 1, j] = old[i, j];
@@ -211,6 +213,7 @@ public class RoomTypeEditor : Editor {
                     if (Target.Height <= 1) return;
                     Target.constraints = new GridRoomConstraint[Target.Width, Target.Height - 1];
                 } else {
+                    if (Target.Height >= 9) return;
                     Target.constraints = new GridRoomConstraint[Target.Width, Target.Height + 1];
                 }
                 for (int i = 0; i < old.GetLength(0) && i < Target.Width; i++) {
@@ -224,6 +227,7 @@ public class RoomTypeEditor : Editor {
                     if (Target.Height <= 0) return;
                     Target.constraints = new GridRoomConstraint[Target.Width - 1, Target.Height];
                 } else {
+                    if (Target.Width >= 9) return;
                     Target.constraints = new GridRoomConstraint[Target.Width + 1, Target.Height];
                 }
                 for (int i = 0; i < old.GetLength(0) && i < Target.Width; i++) {
@@ -321,6 +325,10 @@ public class RoomTypeEditor : Editor {
 
             if (Target.constraints[i, j].requiredDoors.South || Target.constraints[i, j].optionalDoors.South)
                 GUI.Label(new Rect(at.x + at.width / 2 - sSmall, at.y + at.height, sNormal, MARGIN), "", m_filledCellStyle);
+
+            // holy mother of christ DO NOT ASK ME ABOUT THIS
+            if ((j > 0 && Target.constraints[i, j - 1] != null && !Target.constraints[i, j - 1].phantom && Target.constraints[i, j - 1].requiredDoors.South && Target.constraints[i, j - 1].requiredDoors.West && Target.constraints[i, j].requiredDoors.North) && (i > 0 && Target.constraints[i - 1, j] != null && !Target.constraints[i - 1, j].phantom && Target.constraints[i - 1, j].requiredDoors.East && Target.constraints[i - 1, j].requiredDoors.North && Target.constraints[i, j].requiredDoors.West))
+                GUI.Label(new Rect(at.x - MARGIN * 2, at.y - MARGIN * 2, MARGIN * 2, MARGIN * 2), "", m_filledCellStyle);
         }
 
 
