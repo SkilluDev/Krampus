@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using System.Linq;
 using static GridDoorset.Direction;
 
 #if UNITY_EDITOR
@@ -41,6 +40,29 @@ public class RoomType : ScriptableObject, ISerializationCallbackReceiver {
             }
         }
         return true;
+    }
+
+    public void Rotate90Clockwise() {
+        var old = constraints;
+        constraints = new GridRoomConstraint[Height, Width];
+        for (int i = 0; i < Width; i++) {
+            for (int j = 0; j < Height; j++) {
+                constraints[i, j] = old[j, Width - 1 - i];
+                if (constraints[i, j] == null) continue;
+                constraints[i, j].requiredDoors = constraints[i, j].requiredDoors.Rotate90Clockwise();
+                constraints[i, j].optionalDoors = constraints[i, j].optionalDoors.Rotate90Clockwise();
+            }
+        }
+    }
+
+    public void Flip() {
+        var old = constraints;
+        constraints = new GridRoomConstraint[Width, Height];
+        for (int i = 0; i < Width; i++) {
+            for (int j = 0; j < Height; j++) {
+                constraints[i, j] = old[Width - 1 - i, j];
+            }
+        }
     }
 
     #region Serializer bullshit
@@ -133,9 +155,8 @@ public class RoomTypeEditor : Editor {
 
         m_showConstraints = EditorGUILayout.BeginFoldoutHeaderGroup(m_showConstraints, $"Constraints ({Target.Width} x {Target.Height})");
         if (m_showConstraints) {
-
-
-            var workArea = GUILayoutUtility.GetRect(w, w * gh / gw);
+            //var workArea = GUILayoutUtility.GetRect(w, w * gh / gw);
+            var workArea = GUILayoutUtility.GetAspectRect(gw / (float)gh);
 
             workArea.x += 16;
             workArea.width -= 32;
@@ -234,9 +255,17 @@ public class RoomTypeEditor : Editor {
                     for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
                 }
             }
+
+
+            if (GUI.Button(new Rect(workArea.x - 16, workArea.y + workArea.height, 16, 16), Event.current.shift ? "M" : "R")) { //rotate
+                if (Event.current.shift) Target.Flip();
+                else Target.Rotate90Clockwise();
+            }
+
+
             #endregion
 
-            EditorGUILayout.HelpBox("Click on the empty (+) cells to create Room cells.\nClicking the (ghost) makes the cell Phantom - its constraints need to be met but it is not a part of the room.\nTo delete a cell, switch it to a Phantom and click the (trashcan).\n\nClick on the icons to toggle door types.\nGreen = required door; Red = no door; Yellow = optional door;\nShift-clicking prevents affecting neighbours.\nThe [+] buttons in the corners can be used to increase the constraint area.\nShift-clicking [+] changes it to a [-] and reduces the area.", MessageType.Info);
+            EditorGUILayout.HelpBox("Click on the empty (+) cells to create Room cells.\nClicking the (ghost) makes the cell Phantom - its constraints need to be met but it is not a part of the room.\nTo delete a cell, hold shift and click the (trashcan).\nTo switch a cell back to a Room cell, click on the (+) in a Phantom cell.\n\nClick on the icons to toggle door types.\nGreen = required door; Red = no door; Yellow = optional door;\nShift-clicking prevents affecting neighbours.\nThe [+] buttons in the corners can be used to increase the constraint area.\nShift-clicking [+] changes it to a [-] and reduces the area.", MessageType.Info);
 
             if (GUILayout.Button("Reset Constraints") && EditorUtility.DisplayDialog("Reset?", "Are you sure to delete all the constraints and start from scratch?", "Yes", "Nah")) {
                 Target.constraints = new GridRoomConstraint[1, 1];
@@ -305,6 +334,9 @@ public class RoomTypeEditor : Editor {
             GUI.Label(at, "", m_phantomCellStyle);
         } else {
             GUI.Label(at, "", m_filledCellStyle);
+
+            #region Drawing rooms
+            // draw the additional fills to make the rooms look more coherent
             if (i < Target.Width - 1 && Target.constraints[i + 1, j] != null && !Target.constraints[i + 1, j].phantom && Target.constraints[i + 1, j].requiredDoors.West && Target.constraints[i, j].requiredDoors.East)
                 GUI.Label(new Rect(at.x + at.width, at.y, MARGIN, at.height), "", m_filledCellStyle);
             if (j < Target.Height - 1 && Target.constraints[i, j + 1] != null && !Target.constraints[i, j + 1].phantom && Target.constraints[i, j + 1].requiredDoors.North && Target.constraints[i, j].requiredDoors.South)
@@ -314,6 +346,7 @@ public class RoomTypeEditor : Editor {
             if (j > 0 && Target.constraints[i, j - 1] != null && !Target.constraints[i, j - 1].phantom && Target.constraints[i, j - 1].requiredDoors.South && Target.constraints[i, j].requiredDoors.North)
                 GUI.Label(new Rect(at.x, at.y - MARGIN, at.width, MARGIN), "", m_filledCellStyle);
 
+            // add additional fills for doors
             if (Target.constraints[i, j].requiredDoors.West || Target.constraints[i, j].optionalDoors.West)
                 GUI.Label(new Rect(at.x - MARGIN, at.y + at.height / 2 - sSmall, MARGIN, sNormal), "", m_filledCellStyle);
 
@@ -326,11 +359,13 @@ public class RoomTypeEditor : Editor {
             if (Target.constraints[i, j].requiredDoors.South || Target.constraints[i, j].optionalDoors.South)
                 GUI.Label(new Rect(at.x + at.width / 2 - sSmall, at.y + at.height, sNormal, MARGIN), "", m_filledCellStyle);
 
-            // holy mother of christ DO NOT ASK ME ABOUT THIS
-            if ((j > 0 && Target.constraints[i, j - 1] != null && !Target.constraints[i, j - 1].phantom && Target.constraints[i, j - 1].requiredDoors.South && Target.constraints[i, j - 1].requiredDoors.West && Target.constraints[i, j].requiredDoors.North) && (i > 0 && Target.constraints[i - 1, j] != null && !Target.constraints[i - 1, j].phantom && Target.constraints[i - 1, j].requiredDoors.East && Target.constraints[i - 1, j].requiredDoors.North && Target.constraints[i, j].requiredDoors.West))
+            // holy mother of christ DO NOT ASK ME ABOUT THIS, it makes it so there are no black dots in the middle
+            if ((j > 0 && Target.constraints[i, j - 1] != null && !Target.constraints[i, j - 1].phantom && Target.constraints[i, j - 1].requiredDoors.South && Target.constraints[i, j - 1].requiredDoors.West && Target.constraints[i, j].requiredDoors.North) && (i > 0 && Target.constraints[i - 1, j] != null && !Target.constraints[i - 1, j].phantom && Target.constraints[i - 1, j].requiredDoors.East && Target.constraints[i - 1, j].requiredDoors.North && Target.constraints[i, j].requiredDoors.West) && (Target.constraints[i - 1, j - 1] != null && !Target.constraints[i - 1, j - 1].phantom && Target.constraints[i - 1, j - 1].requiredDoors.South && Target.constraints[i - 1, j - 1].requiredDoors.East))
                 GUI.Label(new Rect(at.x - MARGIN * 2, at.y - MARGIN * 2, MARGIN * 2, MARGIN * 2), "", m_filledCellStyle);
+            #endregion
         }
 
+        #region Door buttons
 
         if (GUI.Button(
             new Rect(at.x + (at.width - sNormal) / 2, at.y, sNormal, sNormal),
@@ -373,15 +408,25 @@ public class RoomTypeEditor : Editor {
 
         GUIUtility.RotateAroundPivot(270, new Vector2(at.x + at.width - sNormal, at.y + (at.height - sNormal) / 2) + Vector2.one * sSmall);
 
+        #endregion
+
         if (Target.constraints[i, j].phantom) {
-            if (GUI.Button(new Rect(at.x + at.width / 2 - sSmall / 2, at.y + at.height / 2 - sSmall / 2, sSmall, sSmall), m_deleteTex, m_doorButtonStyle)) {
-                Target.constraints[i, j] = null;
+            if (GUI.Button(new Rect(at.x + at.width / 2 - sSmall / 2, at.y + at.height / 2 - sSmall / 2, sSmall, sSmall), Event.current.shift ? m_deleteTex : m_emptyTex, m_doorButtonStyle)) {
+                if (Event.current.shift)
+                    Target.constraints[i, j] = null;
+                else
+                    Target.constraints[i, j].phantom = false;
             }
         } else {
-            if (GUI.Button(new Rect(at.x + at.width / 2 - sSmall / 2, at.y + at.height / 2 - sSmall / 2, sSmall, sSmall), m_phantomTex, m_doorButtonStyle)) {
-                Target.constraints[i, j].phantom = true;
+            if (GUI.Button(new Rect(at.x + at.width / 2 - sSmall / 2, at.y + at.height / 2 - sSmall / 2, sSmall, sSmall), Event.current.shift ? m_deleteTex : m_phantomTex, m_doorButtonStyle)) {
+                if (Event.current.shift)
+                    Target.constraints[i, j] = null;
+                else
+                    Target.constraints[i, j].phantom = true;
+
             }
         }
+
 
     }
 
