@@ -61,6 +61,9 @@ public class RoomType : ScriptableObject, ISerializationCallbackReceiver {
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
                 constraints[i, j] = old[Width - 1 - i, j];
+                if (constraints[i, j] == null) continue;
+                constraints[i, j].requiredDoors = constraints[i, j].requiredDoors.InvertHorizontal();
+                constraints[i, j].optionalDoors = constraints[i, j].optionalDoors.InvertHorizontal();
             }
         }
     }
@@ -145,7 +148,6 @@ public class RoomTypeEditor : Editor {
     public override void OnInspectorGUI() {
         if (Target.constraints == null) Target.constraints = new GridRoomConstraint[1, 1];
 
-        float w = Screen.width - 10;
         int gw = Target.Width;
         int gh = Target.Height;
 
@@ -155,7 +157,6 @@ public class RoomTypeEditor : Editor {
 
         m_showConstraints = EditorGUILayout.BeginFoldoutHeaderGroup(m_showConstraints, $"Constraints ({Target.Width} x {Target.Height})");
         if (m_showConstraints) {
-            //var workArea = GUILayoutUtility.GetRect(w, w * gh / gw);
             var workArea = GUILayoutUtility.GetAspectRect(gw / (float)gh);
 
             workArea.x += 16;
@@ -265,7 +266,7 @@ public class RoomTypeEditor : Editor {
 
             #endregion
 
-            EditorGUILayout.HelpBox("Click on the empty (+) cells to create Room cells.\nClicking the (ghost) makes the cell Phantom - its constraints need to be met but it is not a part of the room.\nTo delete a cell, hold shift and click the (trashcan).\nTo switch a cell back to a Room cell, click on the (+) in a Phantom cell.\n\nClick on the icons to toggle door types.\nGreen = required door; Red = no door; Yellow = optional door;\nShift-clicking prevents affecting neighbours.\nThe [+] buttons in the corners can be used to increase the constraint area.\nShift-clicking [+] changes it to a [-] and reduces the area.", MessageType.Info);
+            EditorGUILayout.HelpBox("Click on the empty (+) cells to create Room cells.\nClicking the (ghost) makes the cell Phantom - its constraints need to be met but it is not a part of the room.\nTo switch a cell back to a Room cell, click on the (+) in a Phantom cell.\nTo delete a cell, hold shift and click the (trashcan).\n\nClick on the icons to toggle door types.\nGreen = required door; Red = no door; Yellow = optional door;\nShift-clicking prevents affecting neighbours.\nThe [+] buttons in the corners can be used to increase the constraint area.\nShift-clicking [+] changes it to a [-] and reduces the area.\nTo rotate, use the [R] in the corner. Shift-clicking it mirrors the room.", MessageType.Info);
 
             if (GUILayout.Button("Reset Constraints") && EditorUtility.DisplayDialog("Reset?", "Are you sure to delete all the constraints and start from scratch?", "Yes", "Nah")) {
                 Target.constraints = new GridRoomConstraint[1, 1];

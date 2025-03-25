@@ -64,6 +64,18 @@ public struct GridDoorset {
         return new GridDoorset(Invert(m_doors));
     }
 
+    public GridDoorset InvertHorizontal() {
+        var gs = new GridDoorset(m_doors);
+        (gs.East, gs.West) = (West, East);
+        return gs;
+    }
+
+    public GridDoorset InvertVertical() {
+        var gs = new GridDoorset(m_doors);
+        (gs.North, gs.South) = (South, North);
+        return gs;
+    }
+
     public bool North {
         get => (m_doors & NORTH) != 0;
         set {
