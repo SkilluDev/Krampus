@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-using static GridDoorset.Direction;
+using static QuadDirection;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,7 +8,7 @@ using UnityEditor;
 
 [CreateAssetMenu(menuName = "Game/Room Type", fileName = "New Room Type")]
 public class RoomType : ScriptableObject, ISerializationCallbackReceiver {
-    public GridRoomConstraint[,] constraints = new GridRoomConstraint[2, 2];
+    public GridRoomConstraint[,] constraints = new GridRoomConstraint[1, 1];
     public int gradeOffset;
     public int Width => constraints.GetLength(0);
     public int Height => constraints.GetLength(1);
@@ -289,20 +289,20 @@ public class RoomTypeEditor : Editor {
         GUILayout.EndHorizontal();
     }
 
-    private Texture2D TextureDoorForCellDirection(GridRoomConstraint c, GridDoorset.Direction dir) {
+    private Texture2D TextureDoorForCellDirection(GridRoomConstraint c, QuadDirection dir) {
         if (c.requiredDoors[dir]) return m_requiredDoorTex;
         else if (c.optionalDoors[dir]) return m_optionalDoorTex;
         else return m_blockedDoorTex;
     }
 
-    private void SetDoorForCellDirection(GridRoomConstraint c, GridDoorset.Direction dir, bool r, bool o) {
+    private void SetDoorForCellDirection(GridRoomConstraint c, QuadDirection dir, bool r, bool o) {
         if (r) o = false;
         if (o) r = false;
         c.optionalDoors[dir] = o;
         c.requiredDoors[dir] = r;
     }
 
-    private void ToggleDoorDirection(int i, int j, GridDoorset.Direction dir) {
+    private void ToggleDoorDirection(int i, int j, QuadDirection dir) {
         var c = Target.constraints[i, j];
         var n = dir switch {
             NORTH => j > 0 ? Target.constraints[i, j - 1] : null, // up
@@ -315,13 +315,13 @@ public class RoomTypeEditor : Editor {
 
         if (c.requiredDoors[dir]) {
             SetDoorForCellDirection(c, dir, false, true);
-            if (!Event.current.shift && n != null) SetDoorForCellDirection(n, GridDoorset.Invert(dir), false, true);
+            if (!Event.current.shift && n != null) SetDoorForCellDirection(n, dir.Invert(), false, true);
         } else if (c.optionalDoors[dir]) {
             SetDoorForCellDirection(c, dir, false, false);
-            if (!Event.current.shift && n != null) SetDoorForCellDirection(n, GridDoorset.Invert(dir), false, false);
+            if (!Event.current.shift && n != null) SetDoorForCellDirection(n, dir.Invert(), false, false);
         } else {
             SetDoorForCellDirection(c, dir, true, false);
-            if (!Event.current.shift && n != null) SetDoorForCellDirection(n, GridDoorset.Invert(dir), true, false);
+            if (!Event.current.shift && n != null) SetDoorForCellDirection(n, dir.Invert(), true, false);
         }
 
         EditorUtility.SetDirty(Target);

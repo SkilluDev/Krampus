@@ -2,8 +2,8 @@ using System;
 
 [Serializable]
 public class GridRoomConstraint {
-    public GridDoorset requiredDoors;
-    public GridDoorset optionalDoors;
+    public GridDoorset requiredDoors = new GridDoorset(QuadDirection.NONE);
+    public GridDoorset optionalDoors = new GridDoorset(QuadDirection.NONE);
     public bool phantom;
 
     public bool CanPlace(GridDoorset on) {
