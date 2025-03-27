@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class RoomPrefab : MonoBehaviour {
     [SerializeField] private RoomType m_type;
-
-
-    // needs a structure to store GameObject door information
+    private DoorGroups[,] m_groups;
+    [SerializeField][HideInInspector] private NullableSerializationContainer<DoorGroups> m_serializableGroups; // Wrapper type might come in handy
 
     public int Width => m_type.Width;
     public int Height => m_type.Height;
 
-    private GameObject m_floorObject;
+    [SerializeField][HideInInspector] private GameObject m_floorObject;
 
 
     private const int CELL_SIZE = 10;
