@@ -3,25 +3,25 @@ using UnityEngine;
 using static QuadDirection;
 
 [Serializable]
-public class GridDoorset : QuadDirectional<GridDoorset, bool> {
+public class DoorFlags : QuadDirectional<DoorFlags, bool> {
     [SerializeField][HideInInspector] private QuadDirection m_doors;
 
-    public static implicit operator QuadDirection(GridDoorset set) => set.m_doors;
-    public static implicit operator byte(GridDoorset set) => (byte)(set.m_doors & ALL);
-    public static implicit operator GridDoorset(byte b) => new GridDoorset((QuadDirection)b);
+    public static implicit operator QuadDirection(DoorFlags set) => set.m_doors;
+    public static implicit operator byte(DoorFlags set) => (byte)(set.m_doors & ALL);
+    public static implicit operator DoorFlags(byte b) => new DoorFlags((QuadDirection)b);
 
-    public GridDoorset() : this(NONE) { }
+    public DoorFlags() : this(NONE) { }
 
-    public GridDoorset(QuadDirection b) {
+    public DoorFlags(QuadDirection b) {
         m_doors = b & ALL;
     }
 
-    public override GridDoorset Rotate90Clockwise() {
-        return new GridDoorset(m_doors.Rotate90Clockwise());
+    public override DoorFlags Rotate90Clockwise() {
+        return new DoorFlags(m_doors.Rotate90Clockwise());
     }
 
-    public override GridDoorset Invert() {
-        return new GridDoorset(m_doors.Invert());
+    public override DoorFlags Invert() {
+        return new DoorFlags(m_doors.Invert());
     }
 
 

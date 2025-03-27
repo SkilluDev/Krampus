@@ -6,13 +6,13 @@ using UnityEngine;
 
 
 public class Roomgen : MonoBehaviour {
-    private GridDoorset[,] m_doorGrid;
+    private DoorFlags[,] m_doorGrid;
     [SerializeField] private int m_width, m_height;
     [SerializeField] private RoomType m_roomType;
 
     [ContextMenu("gen")]
     public void Generate() {
-        m_doorGrid = new GridDoorset[m_width, m_height];
+        m_doorGrid = new DoorFlags[m_width, m_height];
 
         void CreateRectangle(int sx, int sy, int ex, int ey) {
             for (int i = sx, j = sy; i <= ex; i++) {
