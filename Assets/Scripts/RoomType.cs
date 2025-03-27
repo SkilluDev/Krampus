@@ -7,11 +7,11 @@ using UnityEditor;
 #endif
 
 [CreateAssetMenu(menuName = "Game/Room Type", fileName = "New Room Type")]
-public class RoomType : ScriptableObject, ISerializationCallbackReceiver {
-    public GridRoomConstraint[,] constraints = new GridRoomConstraint[1, 1];
+public class RoomType : ScriptableObject {
+    public Array2D<GridRoomConstraint> constraints = new Array2D<GridRoomConstraint>(1, 1);
     public int gradeOffset;
-    public int Width => constraints.GetLength(0);
-    public int Height => constraints.GetLength(1);
+    public int Width => constraints.Width;
+    public int Height => constraints.Height;
     public int BaseGrade {
         get {
             int grd = Width * Height * 4;
@@ -44,7 +44,7 @@ public class RoomType : ScriptableObject, ISerializationCallbackReceiver {
 
     public void Rotate90Clockwise() {
         var old = constraints;
-        constraints = new GridRoomConstraint[Height, Width];
+        constraints = new Array2D<GridRoomConstraint>(Height, Width);
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
                 constraints[i, j] = old[j, Width - 1 - i];
@@ -57,7 +57,7 @@ public class RoomType : ScriptableObject, ISerializationCallbackReceiver {
 
     public void Flip() {
         var old = constraints;
-        constraints = new GridRoomConstraint[Width, Height];
+        constraints = new Array2D<GridRoomConstraint>(Width, Height);
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
                 constraints[i, j] = old[Width - 1 - i, j];
@@ -68,30 +68,30 @@ public class RoomType : ScriptableObject, ISerializationCallbackReceiver {
         }
     }
 
-    #region Serializer bullshit
-    [SerializeField] private NullableSerializationContainer<GridRoomConstraint>[] m_constraints;
-    [SerializeField] private int m_width, m_height;
+    // #region Serializer bullshit
+    // [SerializeField] private NullableSerializationContainer<GridRoomConstraint>[] m_constraints;
+    // [SerializeField] private int m_width, m_height;
 
-    public void OnAfterDeserialize() {
-        constraints = new GridRoomConstraint[m_width, m_height];
-        for (int i = 0; i < m_width; i++) {
-            for (int j = 0; j < m_height; j++) {
-                constraints[i, j] = m_constraints[i * m_height + j].hasValue ? m_constraints[i * m_height + j].value : null;
-            }
-        }
-    }
+    // public void OnAfterDeserialize() {
+    //     constraints = new Array2D<GridRoomConstraint>(m_width, m_height];
+    //     for (int i = 0; i < m_width; i++) {
+    //         for (int j = 0; j < m_height; j++) {
+    //             constraints[i, j] = m_constraints[i * m_height + j].hasValue ? m_constraints[i * m_height + j].value : null;
+    //         }
+    //     }
+    // }
 
-    public void OnBeforeSerialize() {
-        m_width = constraints.GetLength(0);
-        m_height = constraints.GetLength(1);
-        m_constraints = new NullableSerializationContainer<GridRoomConstraint>[m_width * m_height];
-        for (int i = 0; i < m_width; i++) {
-            for (int j = 0; j < m_height; j++) {
-                m_constraints[i * m_height + j] = new NullableSerializationContainer<GridRoomConstraint>(constraints[i, j]);
-            }
-        }
-    }
-    #endregion
+    // public void OnBeforeSerialize() {
+    //     m_width = constraints.Width;
+    //     m_height = constraints.Height;
+    //     m_constraints = new NullableSerializationContainer<GridRoomConstraint>[m_width * m_height];
+    //     for (int i = 0; i < m_width; i++) {
+    //         for (int j = 0; j < m_height; j++) {
+    //             m_constraints[i * m_height + j] = new NullableSerializationContainer<GridRoomConstraint>(constraints[i, j]);
+    //         }
+    //     }
+    // }
+    // #endregion
 }
 
 #if UNITY_EDITOR // custom editor
@@ -146,7 +146,7 @@ public class RoomTypeEditor : Editor {
     }
 
     public override void OnInspectorGUI() {
-        if (Target.constraints == null) Target.constraints = new GridRoomConstraint[1, 1];
+        if (Target.constraints == null) Target.constraints = new Array2D<GridRoomConstraint>(1, 1);
 
         int gw = Target.Width;
         int gh = Target.Height;
@@ -197,15 +197,15 @@ public class RoomTypeEditor : Editor {
                 var old = Target.constraints;
                 if (Event.current.shift) {
                     if (Target.Height <= 1) return;
-                    Target.constraints = new GridRoomConstraint[Target.Width, Target.Height - 1];
-                    for (int i = 0; i < old.GetLength(0) && i < Target.Width; i++) {
-                        for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i, j + 1];
+                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height - 1);
+                    for (int i = 0; i < old.Width && i < Target.Width; i++) {
+                        for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i, j + 1];
                     }
                 } else {
                     if (Target.Height >= 9) return;
-                    Target.constraints = new GridRoomConstraint[Target.Width, Target.Height + 1];
-                    for (int i = 0; i < old.GetLength(0); i++) {
-                        for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j + 1] = old[i, j];
+                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height + 1);
+                    for (int i = 0; i < old.Width; i++) {
+                        for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j + 1] = old[i, j];
                     }
                 }
             }
@@ -216,15 +216,15 @@ public class RoomTypeEditor : Editor {
                 var old = Target.constraints;
                 if (Event.current.shift) {
                     if (Target.Width <= 1) return;
-                    Target.constraints = new GridRoomConstraint[Target.Width - 1, Target.Height];
-                    for (int i = 0; i < old.GetLength(0) && i < Target.Width; i++) {
-                        for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i + 1, j];
+                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width - 1, Target.Height);
+                    for (int i = 0; i < old.Width && i < Target.Width; i++) {
+                        for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i + 1, j];
                     }
                 } else {
                     if (Target.Width >= 9) return;
-                    Target.constraints = new GridRoomConstraint[Target.Width + 1, Target.Height];
-                    for (int i = 0; i < old.GetLength(0); i++) {
-                        for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i + 1, j] = old[i, j];
+                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width + 1, Target.Height);
+                    for (int i = 0; i < old.Width; i++) {
+                        for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i + 1, j] = old[i, j];
                     }
                 }
             }
@@ -233,13 +233,13 @@ public class RoomTypeEditor : Editor {
                 var old = Target.constraints;
                 if (Event.current.shift) {
                     if (Target.Height <= 1) return;
-                    Target.constraints = new GridRoomConstraint[Target.Width, Target.Height - 1];
+                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height - 1);
                 } else {
                     if (Target.Height >= 9) return;
-                    Target.constraints = new GridRoomConstraint[Target.Width, Target.Height + 1];
+                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height + 1);
                 }
-                for (int i = 0; i < old.GetLength(0) && i < Target.Width; i++) {
-                    for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
+                for (int i = 0; i < old.Width && i < Target.Width; i++) {
+                    for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
                 }
             }
 
@@ -247,13 +247,13 @@ public class RoomTypeEditor : Editor {
                 var old = Target.constraints;
                 if (Event.current.shift) {
                     if (Target.Height <= 0) return;
-                    Target.constraints = new GridRoomConstraint[Target.Width - 1, Target.Height];
+                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width - 1, Target.Height);
                 } else {
                     if (Target.Width >= 9) return;
-                    Target.constraints = new GridRoomConstraint[Target.Width + 1, Target.Height];
+                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width + 1, Target.Height);
                 }
-                for (int i = 0; i < old.GetLength(0) && i < Target.Width; i++) {
-                    for (int j = 0; j < old.GetLength(1) && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
+                for (int i = 0; i < old.Width && i < Target.Width; i++) {
+                    for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
                 }
             }
 
@@ -269,7 +269,7 @@ public class RoomTypeEditor : Editor {
             EditorGUILayout.HelpBox("Click on the empty (+) cells to create Room cells.\nClicking the (ghost) makes the cell Phantom - its constraints need to be met but it is not a part of the room.\nTo switch a cell back to a Room cell, click on the (+) in a Phantom cell.\nTo delete a cell, hold shift and click the (trashcan).\n\nClick on the icons to toggle door types.\nGreen = required door; Red = no door; Yellow = optional door;\nShift-clicking prevents affecting neighbours.\nThe [+] buttons in the corners can be used to increase the constraint area.\nShift-clicking [+] changes it to a [-] and reduces the area.\nTo rotate, use the [R] in the corner. Shift-clicking it mirrors the room.", MessageType.Info);
 
             if (GUILayout.Button("Reset Constraints") && EditorUtility.DisplayDialog("Reset?", "Are you sure to delete all the constraints and start from scratch?", "Yes", "Nah")) {
-                Target.constraints = new GridRoomConstraint[1, 1];
+                Target.constraints = new Array2D<GridRoomConstraint>(1, 1);
                 EditorUtility.SetDirty(Target);
             }
             GUILayout.Space(20);

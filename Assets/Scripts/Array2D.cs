@@ -32,7 +32,7 @@ public struct NullableSerializationContainer<T> {
 }
 
 [Serializable]
-public struct Array2D<T> : ITArray, IEquatable<Array2D<T>> {
+public class Array2D<T> : ITArray, IEquatable<Array2D<T>> {
 
     [SerializeField] private Vector2Int m_size;
     [SerializeField, HideInInspector] private NullableSerializationContainer<T>[] m_data;
@@ -43,6 +43,8 @@ public struct Array2D<T> : ITArray, IEquatable<Array2D<T>> {
 
 
     public Vector2Int Size => m_size;
+    public int Width => Size.x;
+    public int Height => Size.y;
     public int Length => m_data.Length;
     public T[] Array => m_data.Select(w => w.hasValue ? w.value : default).ToArray();
 
@@ -58,8 +60,8 @@ public struct Array2D<T> : ITArray, IEquatable<Array2D<T>> {
     }
 
 
-    public Array2D(int x, int y) {
-        this = new Array2D<T>(new Vector2Int(x, y));
+    public Array2D(int x, int y) : this(new Vector2Int(x, y)) {
+
     }
 
     public Array2D(Vector2Int size) {
