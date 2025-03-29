@@ -6,22 +6,27 @@ using UnityEngine.Events;
 public class RoomDoorGroup : MonoBehaviour {
     public UnityAction onGenerateWith;
     public UnityAction onGenerateWithout;
+
+    [SerializeField] private List<GameObject> m_disableList = new List<GameObject>();
+    [SerializeField][HideInInspector] private RoomPrefab m_room;
+    [SerializeField][HideInInspector] private Vector2Int m_cellPosition;
+    [SerializeField][HideInInspector] private QuadDirection m_direction;
+
+
     private bool m_generated = false;
-
-    [SerializeField] private List<GameObject> m_disableList;
-
-    private Color m_gizmoColor;
+    [SerializeField] private Color m_gizmoColor;
 
 
     // Start and update are edit-mode only!
     private void Start() {
-        m_gizmoColor = Color.HSVToRGB(Random.Range(0, 36) * 10, Random.Range(5, 10) / 10.0f, 0.8f);
-        m_gizmoColor.a = 0.2f;
+        m_gizmoColor = Color.HSVToRGB((Random.Range(0, 36) * 10f) / 360f, Random.Range(5, 10) / 10.0f, 0.6f);
+        m_gizmoColor.a = 0.1f;
     }
 
     private void Update() {
         for (int i = 0; i < transform.childCount; i++) {
             var childObject = transform.GetChild(i).gameObject;
+            childObject.transform.SetParent(m_room.transform);
             Debug.LogWarning($"A RoomDoorGroup should not contain {childObject.name}. Object was added to the disable list, however it was not parented");
             AddToDisableList(childObject);
         }
@@ -38,11 +43,26 @@ public class RoomDoorGroup : MonoBehaviour {
         else Debug.LogWarning($"Cannot remove {go.name} from the disable list as it is not there!");
     }
 
+    public static RoomDoorGroup Create(Vector3 position, Vector2Int cellPosition, RoomPrefab roomPrefab, QuadDirection dir) {
+        var obj = new GameObject($"Door [{cellPosition} {dir}]");
+        var c = obj.AddComponent<RoomDoorGroup>();
+        c.m_direction = dir;
+        c.m_cellPosition = cellPosition;
+        c.m_room = roomPrefab;
+        obj.transform.position = position;
+        obj.transform.SetParent(roomPrefab.transform);
+
+        return c;
+    }
+
     public void Generate(bool with) {
         if (m_generated) throw new System.Exception("Attempting to regenerate a generated door");
 
-        foreach (var go in m_disableList) {
-            go.SetActive(!with);
+        if (!with) {
+            foreach (var go in m_disableList) {
+                if (go == null) continue;
+                go.SetActive(false);
+            }
         }
 
         if (with) {
@@ -55,15 +75,32 @@ public class RoomDoorGroup : MonoBehaviour {
         m_generated = true;
     }
 
+    private void OnDrawGizmosSelected() {
+        Gizmos.color = m_gizmoColor;
+        foreach (var go in m_disableList) {
+            if (go == null) continue;
+            var renderer = go.GetComponent<Renderer>();
+            var collider = go.GetComponent<Collider>();
+            if (collider != null) {
+                Gizmos.DrawCube(renderer.bounds.center, renderer.bounds.extents * 2);
+            } else if (renderer != null) {
+                Gizmos.DrawCube(collider.bounds.center, collider.bounds.extents * 2);
+            } else {
+                Gizmos.DrawSphere(go.transform.position, 0.2f);
+            }
+        }
+    }
+
     private void OnDrawGizmos() {
         Gizmos.color = m_gizmoColor;
         foreach (var go in m_disableList) {
+            if (go == null) continue;
             var renderer = go.GetComponent<Renderer>();
             var collider = go.GetComponent<Collider>();
-            if (renderer != null) {
-                Gizmos.DrawCube(renderer.bounds.center, renderer.bounds.extents);
-            } else if (collider != null) {
-                Gizmos.DrawCube(collider.bounds.center, collider.bounds.extents);
+            if (collider != null) {
+                Gizmos.DrawWireCube(renderer.bounds.center, renderer.bounds.extents * 2);
+            } else if (renderer != null) {
+                Gizmos.DrawWireCube(collider.bounds.center, collider.bounds.extents * 2);
             } else {
                 Gizmos.DrawSphere(go.transform.position, 0.2f);
             }

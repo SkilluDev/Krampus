@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class RoomPrefab : MonoBehaviour {
     [SerializeField] private RoomType m_type;
-    private DoorGroups[,] m_groups;
-    [SerializeField][HideInInspector] private NullableSerializationContainer<DoorGroups> m_serializableGroups; // Wrapper type might come in handy
+    private Array2D<DoorGroups> m_groups;
 
     public int Width => m_type.Width;
     public int Height => m_type.Height;
@@ -28,6 +28,12 @@ public class RoomPrefab : MonoBehaviour {
 
         if (m_floorObject != null) DestroyImmediate(m_floorObject);
         m_floorObject = CreateFloor();
+
+        if (m_groups == null) m_groups = new Array2D<DoorGroups>(Width, Height);
+        if (m_type.Width != m_groups.Width || m_type.Height != m_groups.Height) {
+            m_groups = new Array2D<DoorGroups>(Width, Height);
+        }
+        UpdateDoorGroups();
     }
 
     private GameObject CreateFloor() {
@@ -73,10 +79,38 @@ public class RoomPrefab : MonoBehaviour {
         return floorObject;
     }
 
-    private void CreateDoorGroups() {
 
+    private void UpdateDoorGroups() {
+        for (int i = 0; i < Width; i++) {
+            for (int j = 0; j < Height; j++) {
+                var targetDoors = m_type.constraints[i, j]?.optionalDoors;
+
+                if (targetDoors == null) {
+                    if (m_groups[i, j] != null) {
+                        m_groups[i, j].Destroy();
+                        m_groups[i, j] = null;
+                    }
+                    continue;
+                }
+
+                if (m_groups[i, j] == null) {
+                    m_groups[i, j] = new DoorGroups();
+                }
+
+                foreach (var dir in DirectionMethods.cardinals) {
+                    if (targetDoors[dir] && m_groups[i, j][dir] == null) {
+                        m_groups[i, j][dir] = RoomDoorGroup.Create(Vector3.zero, new Vector2Int(i, j), this, dir);
+                    }
+                    if (!targetDoors[dir] && m_groups[i, j][dir] != null) {
+                        m_groups[i, j].Destroy(dir);
+                    }
+                }
+            }
+        }
     }
 
+
+    #region Gizmos
     private void OnDrawGizmos() {
         Gizmos.color = Color.blue;
         Gizmos.DrawSphere(Vector3.zero, DOOR_SIZE);
@@ -89,7 +123,7 @@ public class RoomPrefab : MonoBehaviour {
             for (int j = 0; j < Height; j++) {
                 if (m_type.constraints[i, j] == null) continue;
                 var rd = m_type.constraints[i, j].requiredDoors;
-                var od = m_type.constraints[i, j].requiredDoors;
+                var od = m_type.constraints[i, j].optionalDoors;
                 var c = new Vector3(CELL_SIZE * i + CELL_SIZE / 2, 0, -CELL_SIZE * j - CELL_SIZE / 2);
 
                 if (rd.North) {
@@ -110,7 +144,7 @@ public class RoomPrefab : MonoBehaviour {
                 Gizmos.DrawWireCube(c - Vector3.forward * CELL_SIZE / 2, new Vector3(DOOR_SIZE, DOOR_SIZE / 2, DOOR_SIZE * 2));
                 if (rd.East) {
                     Gizmos.color = required;
-                } else if (od.North) {
+                } else if (od.East) {
                     Gizmos.color = optional;
                 } else {
                     Gizmos.color = none;
@@ -118,7 +152,7 @@ public class RoomPrefab : MonoBehaviour {
                 Gizmos.DrawWireCube(c + Vector3.right * CELL_SIZE / 2, new Vector3(DOOR_SIZE * 2, DOOR_SIZE / 2, DOOR_SIZE));
                 if (rd.West) {
                     Gizmos.color = required;
-                } else if (od.North) {
+                } else if (od.West) {
                     Gizmos.color = optional;
                 } else {
                     Gizmos.color = none;
@@ -127,4 +161,5 @@ public class RoomPrefab : MonoBehaviour {
             }
         }
     }
+    #endregion
 }

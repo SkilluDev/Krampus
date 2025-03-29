@@ -26,7 +26,7 @@ public class DoorFlags : QuadDirectional<DoorFlags, bool> {
 
 
     public override bool North {
-        get => (m_doors & NORTH) != 0;
+        get => m_doors.HasFlag(NORTH);
         set {
             if (value) m_doors |= NORTH;
             else m_doors &= ~NORTH;
@@ -35,7 +35,7 @@ public class DoorFlags : QuadDirectional<DoorFlags, bool> {
     }
 
     public override bool East {
-        get => (m_doors & EAST) != 0;
+        get => m_doors.HasFlag(EAST);
         set {
             if (value) m_doors |= EAST;
             else m_doors &= ~EAST;
@@ -44,7 +44,7 @@ public class DoorFlags : QuadDirectional<DoorFlags, bool> {
     }
 
     public override bool South {
-        get => (m_doors & SOUTH) != 0;
+        get => m_doors.HasFlag(SOUTH);
         set {
             if (value) m_doors |= SOUTH;
             else m_doors &= ~SOUTH;
@@ -53,7 +53,7 @@ public class DoorFlags : QuadDirectional<DoorFlags, bool> {
     }
 
     public override bool West {
-        get => (m_doors & WEST) != 0;
+        get => m_doors.HasFlag(WEST);
         set {
             if (value) m_doors |= WEST;
             else m_doors &= ~WEST;

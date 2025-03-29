@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [Flags]
 [Serializable]
@@ -23,4 +24,15 @@ public static class DirectionMethods {
         return (QuadDirection)((db >> 2) | (db << 2)) & QuadDirection.ALL;
     }
 
+    public static Vector3 XZ(this QuadDirection direction) {
+        return new Vector3(
+            (direction.HasFlag(QuadDirection.EAST) ? 1 : 0) +
+            (direction.HasFlag(QuadDirection.WEST) ? -1 : 0),
+            0,
+            (direction.HasFlag(QuadDirection.NORTH) ? 1 : 0) +
+            (direction.HasFlag(QuadDirection.SOUTH) ? -1 : 0)
+        );
+    }
+
+    public static readonly QuadDirection[] cardinals = { QuadDirection.NORTH, QuadDirection.EAST, QuadDirection.SOUTH, QuadDirection.WEST };
 }
