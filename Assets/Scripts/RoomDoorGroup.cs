@@ -19,8 +19,8 @@ public class RoomDoorGroup : MonoBehaviour {
 
     // Start and update are edit-mode only!
     private void Start() {
-        m_gizmoColor = Color.HSVToRGB((Random.Range(0, 36) * 10f) / 360f, Random.Range(5, 10) / 10.0f, 0.6f);
-        m_gizmoColor.a = 0.1f;
+        m_gizmoColor = Color.HSVToRGB(Random.Range(0, 36) * 10f / 360f, Random.Range(5, 10) / 10.0f, 0.6f);
+        m_gizmoColor.a = 0.7f;
     }
 
     private void Update() {
@@ -43,14 +43,14 @@ public class RoomDoorGroup : MonoBehaviour {
         else Debug.LogWarning($"Cannot remove {go.name} from the disable list as it is not there!");
     }
 
-    public static RoomDoorGroup Create(Vector3 position, Vector2Int cellPosition, RoomPrefab roomPrefab, QuadDirection dir) {
+    public static RoomDoorGroup Create(Vector2Int cellPosition, QuadDirection dir, RoomPrefab room) {
         var obj = new GameObject($"Door [{cellPosition} {dir}]");
         var c = obj.AddComponent<RoomDoorGroup>();
         c.m_direction = dir;
         c.m_cellPosition = cellPosition;
-        c.m_room = roomPrefab;
-        obj.transform.position = position;
-        obj.transform.SetParent(roomPrefab.transform);
+        c.m_room = room;
+        obj.transform.position = RoomPrefab.GetPleasantDoorPosition(cellPosition.x, cellPosition.y, dir);
+        obj.transform.SetParent(room.transform);
 
         return c;
     }
@@ -93,6 +93,7 @@ public class RoomDoorGroup : MonoBehaviour {
 
     private void OnDrawGizmos() {
         Gizmos.color = m_gizmoColor;
+        Gizmos.DrawCube(transform.position, (m_direction.HasFlag(QuadDirection.NORTH) || m_direction.HasFlag(QuadDirection.SOUTH)) ? RoomPrefab.DOOR_NS_SIZE : RoomPrefab.DOOR_EW_SIZE);
         foreach (var go in m_disableList) {
             if (go == null) continue;
             var renderer = go.GetComponent<Renderer>();

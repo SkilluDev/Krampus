@@ -1,24 +1,42 @@
 using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class RoomPrefab : MonoBehaviour {
-    [SerializeField] private RoomType m_type;
-    private Array2D<DoorGroups> m_groups;
 
+    public const int CELL_SIZE = 10;
+    // Gizmo constants
+    public const float DOOR_SIZE = 1f;
+    public static readonly Vector3 DOOR_NS_SIZE = new Vector3(DOOR_SIZE, DOOR_SIZE / 2, DOOR_SIZE * 2);
+    public static readonly Vector3 DOOR_EW_SIZE = new Vector3(DOOR_SIZE * 2, DOOR_SIZE / 2, DOOR_SIZE);
+    // 
     public int Width => m_type.Width;
     public int Height => m_type.Height;
-
+    [SerializeField] private RoomType m_type;
     [SerializeField][HideInInspector] private GameObject m_floorObject;
+    [SerializeField][HideInInspector] private Array2D<DoorGroups> m_groups;
 
 
-    private const int CELL_SIZE = 10;
-    private const float DOOR_SIZE = 1f; // used for gizmos only
+    public static Vector3 GetCellCenter(int i, int j) {
+        return new Vector3((CELL_SIZE * i) + CELL_SIZE / 2f, 0, (-CELL_SIZE * j) - CELL_SIZE / 2f);
+    }
+
+    public static Vector3 GetPleasantDoorPosition(int i, int j, QuadDirection dir) {
+        return GetCellCenter(i, j) + (dir.XZ() * (CELL_SIZE / 2 - DOOR_SIZE)); // el funky mathematico to get a nice door position; 
+    }
+
+    public static Vector3 GetDoorPosition(int i, int j, QuadDirection dir) {
+        return GetCellCenter(i, j) + dir.XZ() * CELL_SIZE;
+    }
+
+    public static Vector3 GetCellTopLeft(int i, int j) {
+        return new Vector3(CELL_SIZE * i, 0, -CELL_SIZE * j);
+    }
+
 
     public bool CheckNeedsUpdate(RoomType type) {
         if (m_type != type) return true;
-
+        // not implemented!
         return false;
     }
 
@@ -31,6 +49,7 @@ public class RoomPrefab : MonoBehaviour {
 
         if (m_groups == null) m_groups = new Array2D<DoorGroups>(Width, Height);
         if (m_type.Width != m_groups.Width || m_type.Height != m_groups.Height) {
+            DestroyDoorGroups();
             m_groups = new Array2D<DoorGroups>(Width, Height);
         }
         UpdateDoorGroups();
@@ -79,6 +98,17 @@ public class RoomPrefab : MonoBehaviour {
         return floorObject;
     }
 
+    private void DestroyDoorGroups() {
+        for (int i = 0; i < Width; i++) {
+            for (int j = 0; j < Height; j++) {
+                if (m_groups[i, j] != null) {
+                    m_groups[i, j].Destroy();
+                    m_groups[i, j] = null;
+                }
+            }
+        }
+    }
+
 
     private void UpdateDoorGroups() {
         for (int i = 0; i < Width; i++) {
@@ -99,7 +129,7 @@ public class RoomPrefab : MonoBehaviour {
 
                 foreach (var dir in DirectionMethods.cardinals) {
                     if (targetDoors[dir] && m_groups[i, j][dir] == null) {
-                        m_groups[i, j][dir] = RoomDoorGroup.Create(Vector3.zero, new Vector2Int(i, j), this, dir);
+                        m_groups[i, j][dir] = RoomDoorGroup.Create(new Vector2Int(i, j), dir, this);
                     }
                     if (!targetDoors[dir] && m_groups[i, j][dir] != null) {
                         m_groups[i, j].Destroy(dir);
@@ -124,40 +154,18 @@ public class RoomPrefab : MonoBehaviour {
                 if (m_type.constraints[i, j] == null) continue;
                 var rd = m_type.constraints[i, j].requiredDoors;
                 var od = m_type.constraints[i, j].optionalDoors;
-                var c = new Vector3(CELL_SIZE * i + CELL_SIZE / 2, 0, -CELL_SIZE * j - CELL_SIZE / 2);
 
-                if (rd.North) {
-                    Gizmos.color = required;
-                } else if (od.North) {
-                    Gizmos.color = optional;
-                } else {
-                    Gizmos.color = none;
-                }
-                Gizmos.DrawWireCube(c + Vector3.forward * CELL_SIZE / 2, new Vector3(DOOR_SIZE, DOOR_SIZE / 2, DOOR_SIZE * 2));
-                if (rd.South) {
-                    Gizmos.color = required;
-                } else if (od.South) {
-                    Gizmos.color = optional;
-                } else {
-                    Gizmos.color = none;
-                }
-                Gizmos.DrawWireCube(c - Vector3.forward * CELL_SIZE / 2, new Vector3(DOOR_SIZE, DOOR_SIZE / 2, DOOR_SIZE * 2));
-                if (rd.East) {
-                    Gizmos.color = required;
-                } else if (od.East) {
-                    Gizmos.color = optional;
-                } else {
-                    Gizmos.color = none;
-                }
-                Gizmos.DrawWireCube(c + Vector3.right * CELL_SIZE / 2, new Vector3(DOOR_SIZE * 2, DOOR_SIZE / 2, DOOR_SIZE));
-                if (rd.West) {
-                    Gizmos.color = required;
-                } else if (od.West) {
-                    Gizmos.color = optional;
-                } else {
-                    Gizmos.color = none;
-                }
-                Gizmos.DrawWireCube(c - Vector3.right * CELL_SIZE / 2, new Vector3(DOOR_SIZE * 2, DOOR_SIZE / 2, DOOR_SIZE));
+                Gizmos.color = rd.North ? required : (od.North ? optional : none);
+                Gizmos.DrawWireCube(GetPleasantDoorPosition(i, j, QuadDirection.NORTH), DOOR_NS_SIZE);
+
+                Gizmos.color = rd.South ? required : (od.South ? optional : none);
+                Gizmos.DrawWireCube(GetPleasantDoorPosition(i, j, QuadDirection.SOUTH), DOOR_NS_SIZE);
+
+                Gizmos.color = rd.East ? required : (od.East ? optional : none);
+                Gizmos.DrawWireCube(GetPleasantDoorPosition(i, j, QuadDirection.EAST), DOOR_EW_SIZE);
+
+                Gizmos.color = rd.West ? required : (od.West ? optional : none);
+                Gizmos.DrawWireCube(GetPleasantDoorPosition(i, j, QuadDirection.WEST), DOOR_EW_SIZE);
             }
         }
     }
