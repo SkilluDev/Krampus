@@ -82,9 +82,9 @@ public class RoomDoorGroup : MonoBehaviour {
             var renderer = go.GetComponent<Renderer>();
             var collider = go.GetComponent<Collider>();
             if (collider != null) {
-                Gizmos.DrawCube(renderer.bounds.center, renderer.bounds.extents * 2);
-            } else if (renderer != null) {
                 Gizmos.DrawCube(collider.bounds.center, collider.bounds.extents * 2);
+            } else if (renderer != null) {
+                Gizmos.DrawCube(renderer.bounds.center, renderer.bounds.extents * 2);
             } else {
                 Gizmos.DrawSphere(go.transform.position, 0.2f);
             }
@@ -99,9 +99,9 @@ public class RoomDoorGroup : MonoBehaviour {
             var renderer = go.GetComponent<Renderer>();
             var collider = go.GetComponent<Collider>();
             if (collider != null) {
-                Gizmos.DrawWireCube(renderer.bounds.center, renderer.bounds.extents * 2);
-            } else if (renderer != null) {
                 Gizmos.DrawWireCube(collider.bounds.center, collider.bounds.extents * 2);
+            } else if (renderer != null) {
+                Gizmos.DrawWireCube(renderer.bounds.center, renderer.bounds.extents * 2);
             } else {
                 Gizmos.DrawSphere(go.transform.position, 0.2f);
             }

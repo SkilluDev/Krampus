@@ -13,6 +13,7 @@ public class Roomgen : MonoBehaviour {
     [ContextMenu("gen")]
     public void Generate() {
         m_doorGrid = new DoorFlags[m_width, m_height];
+        for (int i = 0; i < m_width; i++) for (int j = 0; j < m_height; j++) m_doorGrid[i, j] = new DoorFlags();
 
         void CreateRectangle(int sx, int sy, int ex, int ey) {
             for (int i = sx, j = sy; i <= ex; i++) {
@@ -57,11 +58,20 @@ public class Roomgen : MonoBehaviour {
         }
 
 
+
+        RoomPrefab PlaceRoom(RoomType room, Vector2Int placement) {
+            var origin = RoomPrefab.GetCellTopLeft(placement.x, placement.y);
+            return Instantiate(room.prefab, origin, Quaternion.identity, transform).GetComponent<RoomPrefab>();
+        }
+
+        // for now just place it
+        var possiblePlacements = FindPossiblePlacements(m_roomType);
+
+        if (possiblePlacements.Count > 0) PlaceRoom(m_roomType, possiblePlacements[0]);
+
         DebugLogDoorset();
-        foreach (var c in FindPossiblePlacements(m_roomType)) Debug.Log(c);
+        foreach (var c in possiblePlacements) Debug.Log(c);
     }
-
-
 
     private void DebugLogDoorset() {
         var sb = new StringBuilder();

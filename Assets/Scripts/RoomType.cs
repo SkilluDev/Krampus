@@ -9,6 +9,7 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "Game/Room Type", fileName = "New Room Type")]
 public class RoomType : ScriptableObject {
     public Array2D<GridRoomConstraint> constraints = new Array2D<GridRoomConstraint>(1, 1);
+    public GameObject prefab;
     public int gradeOffset;
     public int Width => constraints.Width;
     public int Height => constraints.Height;
@@ -154,6 +155,8 @@ public class RoomTypeEditor : Editor {
         EditorGUI.BeginDisabledGroup(true);
         EditorGUILayout.TextField("Name", Target.name);
         EditorGUI.EndDisabledGroup();
+
+        Target.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", Target.prefab, typeof(GameObject), false);
 
         m_showConstraints = EditorGUILayout.BeginFoldoutHeaderGroup(m_showConstraints, $"Constraints ({Target.Width} x {Target.Height})");
         if (m_showConstraints) {

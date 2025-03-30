@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class RoomPrefab : MonoBehaviour {
 
@@ -88,6 +91,11 @@ public class RoomPrefab : MonoBehaviour {
         generation.SetTriangles(tris, 0);
         generation.RecalculateNormals();
 
+#if UNITY_EDITOR
+        AssetDatabase.CreateAsset(generation, $"Assets/RoomExp/floor-mesh-{Guid.NewGuid()}.asset");
+        AssetDatabase.SaveAssets();
+#endif
+
         var floorObject = new GameObject("Floor");
         floorObject.transform.SetParent(transform);
         var meshFilter = floorObject.AddComponent<MeshFilter>();
@@ -99,8 +107,8 @@ public class RoomPrefab : MonoBehaviour {
     }
 
     private void DestroyDoorGroups() {
-        for (int i = 0; i < Width; i++) {
-            for (int j = 0; j < Height; j++) {
+        for (int i = 0; i < m_groups.Width; i++) {
+            for (int j = 0; j < m_groups.Height; j++) {
                 if (m_groups[i, j] != null) {
                     m_groups[i, j].Destroy();
                     m_groups[i, j] = null;
@@ -127,7 +135,7 @@ public class RoomPrefab : MonoBehaviour {
                     m_groups[i, j] = new DoorGroups();
                 }
 
-                foreach (var dir in DirectionMethods.cardinals) {
+                foreach (var dir in DirectionMethods.CARDINALS) {
                     if (targetDoors[dir] && m_groups[i, j][dir] == null) {
                         m_groups[i, j][dir] = RoomDoorGroup.Create(new Vector2Int(i, j), dir, this);
                     }
@@ -143,7 +151,7 @@ public class RoomPrefab : MonoBehaviour {
     #region Gizmos
     private void OnDrawGizmos() {
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(Vector3.zero, DOOR_SIZE);
+        Gizmos.DrawSphere(transform.position, DOOR_SIZE);
 
         var required = new Color(0.06f, 0.6f, 0.06f, 0.4f);
         var optional = new Color(0.6f, 0.6f, 0.06f, 0.4f);
@@ -156,16 +164,16 @@ public class RoomPrefab : MonoBehaviour {
                 var od = m_type.constraints[i, j].optionalDoors;
 
                 Gizmos.color = rd.North ? required : (od.North ? optional : none);
-                Gizmos.DrawWireCube(GetPleasantDoorPosition(i, j, QuadDirection.NORTH), DOOR_NS_SIZE);
+                Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.NORTH), DOOR_NS_SIZE);
 
                 Gizmos.color = rd.South ? required : (od.South ? optional : none);
-                Gizmos.DrawWireCube(GetPleasantDoorPosition(i, j, QuadDirection.SOUTH), DOOR_NS_SIZE);
+                Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.SOUTH), DOOR_NS_SIZE);
 
                 Gizmos.color = rd.East ? required : (od.East ? optional : none);
-                Gizmos.DrawWireCube(GetPleasantDoorPosition(i, j, QuadDirection.EAST), DOOR_EW_SIZE);
+                Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.EAST), DOOR_EW_SIZE);
 
                 Gizmos.color = rd.West ? required : (od.West ? optional : none);
-                Gizmos.DrawWireCube(GetPleasantDoorPosition(i, j, QuadDirection.WEST), DOOR_EW_SIZE);
+                Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.WEST), DOOR_EW_SIZE);
             }
         }
     }

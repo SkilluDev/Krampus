@@ -34,5 +34,5 @@ public static class DirectionMethods {
         );
     }
 
-    public static readonly QuadDirection[] cardinals = { QuadDirection.NORTH, QuadDirection.EAST, QuadDirection.SOUTH, QuadDirection.WEST };
+    public static readonly QuadDirection[] CARDINALS = { QuadDirection.NORTH, QuadDirection.EAST, QuadDirection.SOUTH, QuadDirection.WEST };
 }

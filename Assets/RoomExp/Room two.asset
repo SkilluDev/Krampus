@@ -10,51 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85b1b0714d7ebedfb93ea8cca0f9ae0e, type: 3}
-  m_Name: New Room Type
+  m_Name: Room two
   m_EditorClassIdentifier: 
   constraints:
-    m_size: {x: 3, y: 2}
+    m_size: {x: 2, y: 1}
     m_data:
     - hasValue: 1
       value:
         requiredDoors:
-          m_doors: 4
+          m_doors: 6
         optionalDoors:
-          m_doors: 0
-        phantom: 0
-    - hasValue: 1
-      value:
-        requiredDoors:
-          m_doors: 7
-        optionalDoors:
-          m_doors: 0
-        phantom: 0
-    - hasValue: 1
-      value:
-        requiredDoors:
           m_doors: 1
-        optionalDoors:
-          m_doors: 0
-        phantom: 0
-    - hasValue: 0
-      value:
-        requiredDoors:
-          m_doors: 0
-        optionalDoors:
-          m_doors: 0
         phantom: 0
     - hasValue: 1
       value:
         requiredDoors:
-          m_doors: 8
+          m_doors: 3
         optionalDoors:
           m_doors: 0
         phantom: 0
-    - hasValue: 0
-      value:
-        requiredDoors:
-          m_doors: 0
-        optionalDoors:
-          m_doors: 0
-        phantom: 0
+  prefab: {fileID: 0}
   gradeOffset: 0
