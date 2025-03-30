@@ -20,6 +20,12 @@ public class DoorGroups : QuadDirectional<DoorGroups, RoomDoorGroup> {
         set => m_west = value;
     }
 
+    public void Configure(QuadDirection dir) {
+        foreach (var d in DirectionMethods.CARDINALS) {
+            if (this[d] != null) this[d].Generate(!dir.HasFlag(d));
+        }
+    }
+
 
     public void Destroy(QuadDirection dir = QuadDirection.ALL) {
         if (Application.isPlaying) {

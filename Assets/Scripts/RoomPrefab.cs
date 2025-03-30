@@ -101,8 +101,7 @@ public class RoomPrefab : MonoBehaviour {
         var meshFilter = floorObject.AddComponent<MeshFilter>();
         var meshRenderer = floorObject.AddComponent<MeshRenderer>();
 
-        meshFilter.sharedMesh = generation;
-        meshRenderer.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        meshFilter.sharedMesh = generation; ;
         return floorObject;
     }
 
@@ -147,6 +146,15 @@ public class RoomPrefab : MonoBehaviour {
         }
     }
 
+    public void ConfigureDoors(int x, int y, DoorFlags[,] doors) {
+        for (int i = 0; i < Width; i++) {
+            for (int j = 0; j < Height; j++) {
+                m_groups[i, j].Configure(doors[i + x, j + y]);
+            }
+        }
+    }
+
+
 
     #region Gizmos
     private void OnDrawGizmos() {
@@ -177,5 +185,6 @@ public class RoomPrefab : MonoBehaviour {
             }
         }
     }
+
     #endregion
 }

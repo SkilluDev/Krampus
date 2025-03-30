@@ -4,8 +4,8 @@ using UnityEngine.Events;
 
 [ExecuteInEditMode]
 public class RoomDoorGroup : MonoBehaviour {
-    public UnityAction onGenerateWith;
-    public UnityAction onGenerateWithout;
+    public UnityEvent onGenerateWith;
+    public UnityEvent onGenerateWithout;
 
     [SerializeField] private List<GameObject> m_disableList = new List<GameObject>();
     [SerializeField][HideInInspector] private RoomPrefab m_room;

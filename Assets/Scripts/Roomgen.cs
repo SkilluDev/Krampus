@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -7,12 +6,20 @@ using UnityEngine;
 
 public class Roomgen : MonoBehaviour {
     private DoorFlags[,] m_doorGrid;
-    [SerializeField] private int m_width, m_height;
-    [SerializeField] private RoomType m_roomType;
+    private bool[,] m_generationGrid;
 
-    [ContextMenu("gen")]
+    [SerializeField] private int m_width, m_height;
+    [SerializeField] private RoomSet m_roomSet;
+
+
+
+    private void Start() {
+        Generate();
+    }
+
     public void Generate() {
         m_doorGrid = new DoorFlags[m_width, m_height];
+        m_generationGrid = new bool[m_width, m_height];
         for (int i = 0; i < m_width; i++) for (int j = 0; j < m_height; j++) m_doorGrid[i, j] = new DoorFlags();
 
         void CreateRectangle(int sx, int sy, int ex, int ey) {
@@ -49,28 +56,38 @@ public class Roomgen : MonoBehaviour {
 
         List<Vector2Int> FindPossiblePlacements(RoomType room) {
             var list = new List<Vector2Int>();
-            for (int i = 0; i < m_width - room.Width; i++) {
-                for (int j = 0; j < m_height - room.Height; j++) {
-                    if (room.CanPlace(i, j, m_doorGrid)) list.Add(new Vector2Int(i, j));
+            for (int i = 0; i < m_width - room.Width + 1; i++) {
+                for (int j = 0; j < m_height - room.Height + 1; j++) {
+                    if (room.CanPlace(i, j, m_doorGrid, m_generationGrid)) list.Add(new Vector2Int(i, j));
                 }
             }
             return list;
         }
 
-
-
         RoomPrefab PlaceRoom(RoomType room, Vector2Int placement) {
             var origin = RoomPrefab.GetCellTopLeft(placement.x, placement.y);
-            return Instantiate(room.prefab, origin, Quaternion.identity, transform).GetComponent<RoomPrefab>();
+            for (int i = placement.x; i < placement.x + room.Width; i++) {
+                for (int j = placement.y; j < placement.y + room.Height; j++) {
+                    m_generationGrid[i, j] = true;
+                }
+            }
+            var prefab = Instantiate(room.prefab, origin, Quaternion.identity, transform).GetComponent<RoomPrefab>();
+            prefab.ConfigureDoors(placement.x, placement.y, m_doorGrid);
+
+            return prefab;
         }
 
-        // for now just place it
-        var possiblePlacements = FindPossiblePlacements(m_roomType);
+        foreach (var rt in m_roomSet.GetTierSortedList()) {
+            var possiblePlacements = new List<Vector2Int>();
+            while ((possiblePlacements = FindPossiblePlacements(rt)).Count > 0) {
+                PlaceRoom(rt, possiblePlacements[0]);
+            }
 
-        if (possiblePlacements.Count > 0) PlaceRoom(m_roomType, possiblePlacements[0]);
+        }
+
+
 
         DebugLogDoorset();
-        foreach (var c in possiblePlacements) Debug.Log(c);
     }
 
     private void DebugLogDoorset() {

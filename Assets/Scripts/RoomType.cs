@@ -33,10 +33,11 @@ public class RoomType : ScriptableObject {
         get => BaseGrade + gradeOffset;
     }
 
-    public bool CanPlace(int x, int y, DoorFlags[,] grid) {
+    public bool CanPlace(int x, int y, DoorFlags[,] grid, bool[,] occupied) {
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
                 if (constraints[i, j] == null) continue;
+                if (occupied[i + x, j + y] && !constraints[i, j].phantom) return false;
                 if (!constraints[i, j].CanPlace(grid[i + x, j + y])) return false;
             }
         }
@@ -69,30 +70,6 @@ public class RoomType : ScriptableObject {
         }
     }
 
-    // #region Serializer bullshit
-    // [SerializeField] private NullableSerializationContainer<GridRoomConstraint>[] m_constraints;
-    // [SerializeField] private int m_width, m_height;
-
-    // public void OnAfterDeserialize() {
-    //     constraints = new Array2D<GridRoomConstraint>(m_width, m_height];
-    //     for (int i = 0; i < m_width; i++) {
-    //         for (int j = 0; j < m_height; j++) {
-    //             constraints[i, j] = m_constraints[i * m_height + j].hasValue ? m_constraints[i * m_height + j].value : null;
-    //         }
-    //     }
-    // }
-
-    // public void OnBeforeSerialize() {
-    //     m_width = constraints.Width;
-    //     m_height = constraints.Height;
-    //     m_constraints = new NullableSerializationContainer<GridRoomConstraint>[m_width * m_height];
-    //     for (int i = 0; i < m_width; i++) {
-    //         for (int j = 0; j < m_height; j++) {
-    //             m_constraints[i * m_height + j] = new NullableSerializationContainer<GridRoomConstraint>(constraints[i, j]);
-    //         }
-    //     }
-    // }
-    // #endregion
 }
 
 #if UNITY_EDITOR // custom editor
