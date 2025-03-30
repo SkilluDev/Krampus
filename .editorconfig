@@ -70,6 +70,12 @@ dotnet_naming_rule.classes_must_be_pascal_case.style    = pascal_case_style
 dotnet_naming_rule.classes_must_be_pascal_case.symbols    = classes_namespaces
 dotnet_naming_symbols.classes_namespaces.applicable_kinds   = class, namespace
 
+# name generic type params in PascalCase
+dotnet_naming_rule.tparams_must_be_pascal_case.severity = warning
+dotnet_naming_rule.tparams_must_be_pascal_case.style    = pascal_case_style
+dotnet_naming_rule.tparams_must_be_pascal_case.symbols    = type_parameter_group
+dotnet_naming_symbols.type_parameter_group.applicable_kinds   = type_parameter
+
 # async methods should be named as such
 dotnet_naming_rule.async_naming_methods.severity = warning
 dotnet_naming_rule.async_naming_methods.symbols  = async_methods
@@ -92,7 +98,7 @@ dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case
 dotnet_naming_rule.camel_case_for_public_fields.severity = warning
 dotnet_naming_rule.camel_case_for_public_fields.symbols  = public_fields
 dotnet_naming_rule.camel_case_for_public_fields.style    = camel_case_style
-dotnet_naming_symbols.public_fields.applicable_kinds = field, parameter, local, type_parameter
+dotnet_naming_symbols.public_fields.applicable_kinds = field, parameter, local
 dotnet_naming_symbols.public_fields.applicable_accessibilities = public, local
 dotnet_naming_style.camel_case_style.required_prefix = 
 dotnet_naming_style.camel_case_style.capitalization = camel_case
@@ -103,6 +109,15 @@ dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols  = constant_fie
 dotnet_naming_rule.constant_fields_should_be_pascal_case.style    = allcaps_style
 dotnet_naming_symbols.constant_fields.applicable_kinds   = field
 dotnet_naming_symbols.constant_fields.required_modifiers = const
+dotnet_naming_style.allcaps_style.capitalization = all_upper
+dotnet_naming_style.allcaps_style.required_prefix = 
+
+# name all static readonly fields using ALLCAPS
+dotnet_naming_rule.sreadonly_fields_should_be_pascal_case.severity = warning
+dotnet_naming_rule.sreadonly_fields_should_be_pascal_case.symbols  = sreadonly_fields
+dotnet_naming_rule.sreadonly_fields_should_be_pascal_case.style    = allcaps_style
+dotnet_naming_symbols.sreadonly_fields.applicable_kinds   = field
+dotnet_naming_symbols.sreadonly_fields.required_modifiers = static, readonly
 dotnet_naming_style.allcaps_style.capitalization = all_upper
 dotnet_naming_style.allcaps_style.required_prefix = 
 
