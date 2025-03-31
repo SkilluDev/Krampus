@@ -77,13 +77,17 @@ public class Roomgen : MonoBehaviour {
             return prefab;
         }
 
-        foreach (var rt in m_roomSet.GetTierSortedList()) {
-            var possiblePlacements = new List<Vector2Int>();
-            while ((possiblePlacements = FindPossiblePlacements(rt)).Count > 0) {
-                PlaceRoom(rt, possiblePlacements[0]);
-            }
+        var type = m_roomSet.types[1].CreateInstance(1);
 
-        }
+        PlaceRoom(type, new Vector2Int(0, 0));
+
+        // foreach (var rt in m_roomSet.GetTierSortedList()) {
+        //     var possiblePlacements = new List<Vector2Int>();
+        //     while ((possiblePlacements = FindPossiblePlacements(rt)).Count > 0) {
+        //         PlaceRoom(rt, possiblePlacements[0]);
+        //     }
+
+        // }
 
 
 

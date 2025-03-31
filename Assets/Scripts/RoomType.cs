@@ -10,6 +10,7 @@ using UnityEditor;
 public class RoomType : ScriptableObject {
     public Array2D<GridRoomConstraint> constraints = new Array2D<GridRoomConstraint>(1, 1);
     public GameObject prefab;
+    public RoomType basedOn;
     public int gradeOffset;
     public int Width => constraints.Width;
     public int Height => constraints.Height;
@@ -68,6 +69,18 @@ public class RoomType : ScriptableObject {
                 constraints[i, j].optionalDoors = constraints[i, j].optionalDoors.InvertHorizontal();
             }
         }
+    }
+
+    public RoomType CreateInstance(int rotation) {
+        var ni = Instantiate(this);
+        var np = ni.prefab.GetComponent<RoomPrefab>();
+        for (int i = 0; i < rotation; i++) {
+            np.Rotate90Clockwise();
+            ni.Rotate90Clockwise();
+        }
+        ni.basedOn = this;
+        np.type = ni;
+        return ni;
     }
 
 }

@@ -13,9 +13,9 @@ public class RoomPrefab : MonoBehaviour {
     public static readonly Vector3 DOOR_NS_SIZE = new Vector3(DOOR_SIZE, DOOR_SIZE / 2, DOOR_SIZE * 2);
     public static readonly Vector3 DOOR_EW_SIZE = new Vector3(DOOR_SIZE * 2, DOOR_SIZE / 2, DOOR_SIZE);
     // 
-    public int Width => m_type.Width;
-    public int Height => m_type.Height;
-    [SerializeField] private RoomType m_type;
+    public int Width => m_groups.Width;
+    public int Height => m_groups.Height;
+    public RoomType type;
     [SerializeField][HideInInspector] private GameObject m_floorObject;
     [SerializeField][HideInInspector] private Array2D<DoorGroups> m_groups;
 
@@ -37,9 +37,38 @@ public class RoomPrefab : MonoBehaviour {
     }
 
 
-    public bool CheckNeedsUpdate(RoomType type) {
-        if (m_type != type) return true;
-        // not implemented!
+    public bool CheckSizeObsolete() {
+        return m_groups == null || type.Width != Width || type.Height != Height;
+    }
+
+    public bool CheckFloorObsolete() {
+        if (CheckSizeObsolete()) return true;
+        for (int i = 0; i < Width; i++) {
+            for (int j = 0; j < Height; j++) {
+                if (m_groups[i, j] != null && (type.constraints[i, j] == null || type.constraints[i, j].phantom))
+                    return true;
+                if (m_groups[i, j] == null && (type.constraints[i, j] != null && !type.constraints[i, j].phantom))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public bool CheckDoorsObsolete() {
+        if (CheckSizeObsolete()) return true;
+        for (int i = 0; i < Width; i++) {
+            for (int j = 0; j < Height; j++) {
+                var targetDoors = type.constraints[i, j]?.optionalDoors;
+
+                if ((targetDoors == null && m_groups[i, j] != null) || (m_groups[i, j] == null && targetDoors != null))
+                    return true;
+
+                foreach (var dir in DirectionMethods.CARDINALS) {
+                    if ((targetDoors[dir] && m_groups[i, j][dir] == null) || (!targetDoors[dir] && m_groups[i, j][dir] != null))
+                        return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -47,14 +76,17 @@ public class RoomPrefab : MonoBehaviour {
     public void RegenerateLayout() {
         if (Application.isPlaying) throw new Exception("Cannot generate layouts at runtime; You are probably doing something wrong.");
 
-        if (m_floorObject != null) DestroyImmediate(m_floorObject);
-        m_floorObject = CreateFloor();
-
-        if (m_groups == null) m_groups = new Array2D<DoorGroups>(Width, Height);
-        if (m_type.Width != m_groups.Width || m_type.Height != m_groups.Height) {
-            DestroyDoorGroups();
-            m_groups = new Array2D<DoorGroups>(Width, Height);
+        if (CheckFloorObsolete()) {
+            if (m_floorObject != null) DestroyImmediate(m_floorObject);
+            m_floorObject = CreateFloor();
         }
+
+        if (CheckSizeObsolete()) {
+            if (m_groups != null) DestroyDoorGroups();
+            m_groups = new Array2D<DoorGroups>(type.Width, type.Height);
+        }
+
+        // no need to check whether the doors are obsolete, this will not do anything if it has nothing to do.
         UpdateDoorGroups();
     }
 
@@ -65,7 +97,7 @@ public class RoomPrefab : MonoBehaviour {
 
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
-                if (m_type.constraints[i, j] == null || m_type.constraints[i, j].phantom)
+                if (type.constraints[i, j] == null || type.constraints[i, j].phantom)
                     continue;
 
                 int offset = verts.Count;
@@ -120,7 +152,7 @@ public class RoomPrefab : MonoBehaviour {
     private void UpdateDoorGroups() {
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
-                var targetDoors = m_type.constraints[i, j]?.optionalDoors;
+                var targetDoors = type.constraints[i, j]?.optionalDoors;
 
                 if (targetDoors == null) {
                     if (m_groups[i, j] != null) {
@@ -154,6 +186,27 @@ public class RoomPrefab : MonoBehaviour {
         }
     }
 
+    [ContextMenu("rotate")]
+    public void Rotate90Clockwise() {
+        var old = m_groups;
+        var oldCenter = new Vector3(Width / 2f * CELL_SIZE, 0, -Height / 2f * CELL_SIZE);
+        m_groups = new Array2D<DoorGroups>(Height, Width);
+        for (int i = 0; i < Width; i++) {
+            for (int j = 0; j < Height; j++) {
+                m_groups[i, j] = old[j, Width - 1 - i];
+                if (m_groups[i, j] == null) continue;
+                m_groups[i, j].Rotate90Clockwise();
+            }
+        }
+        var newCenter = new Vector3(Width / 2f * CELL_SIZE, 0, -Height / 2f * CELL_SIZE);
+
+        for (int i = 0; i < transform.childCount; i++) {
+            var kid = transform.GetChild(i);
+            kid.RotateAround(oldCenter, Vector3.up, 90);
+            kid.position += newCenter - oldCenter;
+        }
+    }
+
 
 
     #region Gizmos
@@ -165,11 +218,11 @@ public class RoomPrefab : MonoBehaviour {
         var optional = new Color(0.6f, 0.6f, 0.06f, 0.4f);
         var none = new Color(0.6f, 0.06f, 0.06f, 0f);
 
-        for (int i = 0; i < Width; i++) {
-            for (int j = 0; j < Height; j++) {
-                if (m_type.constraints[i, j] == null) continue;
-                var rd = m_type.constraints[i, j].requiredDoors;
-                var od = m_type.constraints[i, j].optionalDoors;
+        for (int i = 0; i < type.Width; i++) {
+            for (int j = 0; j < type.Height; j++) {
+                if (type.constraints[i, j] == null) continue;
+                var rd = type.constraints[i, j].requiredDoors;
+                var od = type.constraints[i, j].optionalDoors;
 
                 Gizmos.color = rd.North ? required : (od.North ? optional : none);
                 Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.NORTH), DOOR_NS_SIZE);
