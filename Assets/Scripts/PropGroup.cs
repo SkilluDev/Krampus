@@ -3,12 +3,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [ExecuteInEditMode]
-public class RoomDoorGroup : MonoBehaviour {
+public class PropGroup : MonoBehaviour {
     public UnityEvent onGenerateWith;
     public UnityEvent onGenerateWithout;
 
     [SerializeField] private List<GameObject> m_disableList = new List<GameObject>();
-    [SerializeField][HideInInspector] private RoomPrefab m_room;
+    [SerializeField][HideInInspector] private Room m_room;
     [SerializeField][HideInInspector] private Vector2Int m_cellPosition;
     [SerializeField][HideInInspector] private QuadDirection m_direction;
 
@@ -43,13 +43,13 @@ public class RoomDoorGroup : MonoBehaviour {
         else Debug.LogWarning($"Cannot remove {go.name} from the disable list as it is not there!");
     }
 
-    public static RoomDoorGroup Create(Vector2Int cellPosition, QuadDirection dir, RoomPrefab room) {
+    public static PropGroup Create(Vector2Int cellPosition, QuadDirection dir, Room room) {
         var obj = new GameObject($"Door [{cellPosition} {dir}]");
-        var c = obj.AddComponent<RoomDoorGroup>();
+        var c = obj.AddComponent<PropGroup>();
         c.m_direction = dir;
         c.m_cellPosition = cellPosition;
         c.m_room = room;
-        obj.transform.position = RoomPrefab.GetPleasantDoorPosition(cellPosition.x, cellPosition.y, dir);
+        obj.transform.position = Room.GetPleasantDoorPosition(cellPosition.x, cellPosition.y, dir);
         obj.transform.SetParent(room.transform);
 
         return c;
@@ -93,7 +93,7 @@ public class RoomDoorGroup : MonoBehaviour {
 
     private void OnDrawGizmos() {
         Gizmos.color = m_gizmoColor;
-        Gizmos.DrawCube(transform.position, (m_direction.HasFlag(QuadDirection.NORTH) || m_direction.HasFlag(QuadDirection.SOUTH)) ? RoomPrefab.DOOR_NS_SIZE : RoomPrefab.DOOR_EW_SIZE);
+        Gizmos.DrawCube(transform.position, (m_direction.HasFlag(QuadDirection.NORTH) || m_direction.HasFlag(QuadDirection.SOUTH)) ? Room.DOOR_NS_SIZE : Room.DOOR_EW_SIZE);
         foreach (var go in m_disableList) {
             if (go == null) continue;
             var renderer = go.GetComponent<Renderer>();

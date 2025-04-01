@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class RoomPrefab : MonoBehaviour {
+public class Room : MonoBehaviour {
 
     public const int CELL_SIZE = 10;
     // Gizmo constants
@@ -17,7 +17,7 @@ public class RoomPrefab : MonoBehaviour {
     public int Height => m_groups.Height;
     public RoomType type;
     [SerializeField][HideInInspector] private GameObject m_floorObject;
-    [SerializeField][HideInInspector] private Array2D<DoorGroups> m_groups;
+    [SerializeField][HideInInspector] private Array2D<DoorPropGroups> m_groups;
 
 
     public static Vector3 GetCellCenter(int i, int j) {
@@ -83,7 +83,7 @@ public class RoomPrefab : MonoBehaviour {
 
         if (CheckSizeObsolete()) {
             if (m_groups != null) DestroyDoorGroups();
-            m_groups = new Array2D<DoorGroups>(type.Width, type.Height);
+            m_groups = new Array2D<DoorPropGroups>(type.Width, type.Height);
         }
 
         // no need to check whether the doors are obsolete, this will not do anything if it has nothing to do.
@@ -156,12 +156,12 @@ public class RoomPrefab : MonoBehaviour {
                 }
 
                 if (m_groups[i, j] == null) {
-                    m_groups[i, j] = new DoorGroups();
+                    m_groups[i, j] = new DoorPropGroups();
                 }
 
                 foreach (var dir in DirectionMethods.CARDINALS) {
                     if (targetDoors[dir] && m_groups[i, j][dir] == null) {
-                        m_groups[i, j][dir] = RoomDoorGroup.Create(new Vector2Int(i, j), dir, this);
+                        m_groups[i, j][dir] = PropGroup.Create(new Vector2Int(i, j), dir, this);
                     }
                     if (!targetDoors[dir] && m_groups[i, j][dir] != null) {
                         m_groups[i, j].Destroy(dir);
@@ -182,7 +182,7 @@ public class RoomPrefab : MonoBehaviour {
     public void Rotate90Clockwise() {
         var old = m_groups;
         var oldCenter = new Vector3(Width / 2f * CELL_SIZE, 0, -Height / 2f * CELL_SIZE);
-        m_groups = new Array2D<DoorGroups>(Height, Width);
+        m_groups = new Array2D<DoorPropGroups>(Height, Width);
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++) {
                 m_groups[i, j] = old[j, Width - 1 - i];

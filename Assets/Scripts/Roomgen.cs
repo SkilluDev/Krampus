@@ -64,14 +64,14 @@ public class Roomgen : MonoBehaviour {
             return list;
         }
 
-        RoomPrefab PlaceRoom(RoomType room, Vector2Int placement) {
-            var origin = RoomPrefab.GetCellTopLeft(placement.x, placement.y);
+        Room PlaceRoom(RoomType room, Vector2Int placement) {
+            var origin = Room.GetCellTopLeft(placement.x, placement.y);
             for (int i = placement.x; i < placement.x + room.Width; i++) {
                 for (int j = placement.y; j < placement.y + room.Height; j++) {
                     m_generationGrid[i, j] = true;
                 }
             }
-            var prefab = Instantiate(room.PrefabObject, origin, Quaternion.identity, transform).GetComponent<RoomPrefab>();
+            var prefab = Instantiate(room.PrefabObject, origin, Quaternion.identity, transform).GetComponent<Room>();
             prefab.ConfigureDoors(placement.x, placement.y, m_doorGrid);
 
             return prefab;

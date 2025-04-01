@@ -1,21 +1,21 @@
 using UnityEngine;
 
 [System.Serializable]
-public class DoorGroups : QuadDirectional<DoorGroups, RoomDoorGroup> {
-    [SerializeField] private RoomDoorGroup m_north, m_east, m_south, m_west; // need that for serializing??
-    public override RoomDoorGroup North {
+public class DoorPropGroups : QuadDirectional<DoorPropGroups, PropGroup> {
+    [SerializeField] private PropGroup m_north, m_east, m_south, m_west; // need that for serializing??
+    public override PropGroup North {
         get => m_north;
         set => m_north = value;
     }
-    public override RoomDoorGroup East {
+    public override PropGroup East {
         get => m_east;
         set => m_east = value;
     }
-    public override RoomDoorGroup South {
+    public override PropGroup South {
         get => m_south;
         set => m_south = value;
     }
-    public override RoomDoorGroup West {
+    public override PropGroup West {
         get => m_west;
         set => m_west = value;
     }
