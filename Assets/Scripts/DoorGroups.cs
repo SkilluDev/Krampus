@@ -27,17 +27,14 @@ public class DoorGroups : QuadDirectional<DoorGroups, RoomDoorGroup> {
     }
 
 
+#if UNITY_EDITOR
     public void Destroy(QuadDirection dir = QuadDirection.ALL) {
-        if (Application.isPlaying) {
-            if (North != null && dir.HasFlag(QuadDirection.NORTH)) Object.Destroy(North.gameObject);
-            if (East != null && dir.HasFlag(QuadDirection.EAST)) Object.Destroy(East.gameObject);
-            if (South != null && dir.HasFlag(QuadDirection.SOUTH)) Object.Destroy(South.gameObject);
-            if (West != null && dir.HasFlag(QuadDirection.WEST)) Object.Destroy(West.gameObject);
-        } else {
-            if (North != null && dir.HasFlag(QuadDirection.NORTH)) Object.DestroyImmediate(North.gameObject);
-            if (East != null && dir.HasFlag(QuadDirection.EAST)) Object.DestroyImmediate(East.gameObject);
-            if (South != null && dir.HasFlag(QuadDirection.SOUTH)) Object.DestroyImmediate(South.gameObject);
-            if (West != null && dir.HasFlag(QuadDirection.WEST)) Object.DestroyImmediate(West.gameObject);
-        }
+
+        if (North != null && dir.HasFlag(QuadDirection.NORTH)) Object.DestroyImmediate(North.gameObject);
+        if (East != null && dir.HasFlag(QuadDirection.EAST)) Object.DestroyImmediate(East.gameObject);
+        if (South != null && dir.HasFlag(QuadDirection.SOUTH)) Object.DestroyImmediate(South.gameObject);
+        if (West != null && dir.HasFlag(QuadDirection.WEST)) Object.DestroyImmediate(West.gameObject);
     }
+
+#endif
 }

@@ -71,25 +71,19 @@ public class Roomgen : MonoBehaviour {
                     m_generationGrid[i, j] = true;
                 }
             }
-            var prefab = Instantiate(room.prefab, origin, Quaternion.identity, transform).GetComponent<RoomPrefab>();
+            var prefab = Instantiate(room.PrefabObject, origin, Quaternion.identity, transform).GetComponent<RoomPrefab>();
             prefab.ConfigureDoors(placement.x, placement.y, m_doorGrid);
 
             return prefab;
         }
 
-        var type = m_roomSet.types[1].CreateInstance(1);
+        foreach (var rt in m_roomSet.GetTierSortedList()) {
+            var possiblePlacements = new List<Vector2Int>();
+            while ((possiblePlacements = FindPossiblePlacements(rt)).Count > 0) {
+                PlaceRoom(rt, possiblePlacements[0]);
+            }
 
-        PlaceRoom(type, new Vector2Int(0, 0));
-
-        // foreach (var rt in m_roomSet.GetTierSortedList()) {
-        //     var possiblePlacements = new List<Vector2Int>();
-        //     while ((possiblePlacements = FindPossiblePlacements(rt)).Count > 0) {
-        //         PlaceRoom(rt, possiblePlacements[0]);
-        //     }
-
-        // }
-
-
+        }
 
         DebugLogDoorset();
     }

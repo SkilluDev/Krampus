@@ -7,19 +7,65 @@ using UnityEditor;
 #endif
 
 [CreateAssetMenu(menuName = "Game/Room Type", fileName = "New Room Type")]
-public class RoomType : ScriptableObject {
+public class RoomType : ScriptableObject
+{
     public Array2D<GridRoomConstraint> constraints = new Array2D<GridRoomConstraint>(1, 1);
-    public GameObject prefab;
+    private GameObject m_prefabObject;
+    private RoomPrefab m_prefabScript;
+    public GameObject PrefabObject
+    {
+        get => m_prefabObject;
+        set
+        {
+            if (value == null)
+            {
+                m_prefabScript = null;
+                m_prefabObject = null;
+                return;
+            }
+            if (value.GetComponent<RoomPrefab>() != null)
+            {
+                m_prefabScript = value.GetComponent<RoomPrefab>();
+                m_prefabObject = value;
+            }
+            else
+            {
+                Debug.LogError("Room prefab is not valid!");
+            }
+        }
+    }
+
+    public RoomPrefab PrefabScript
+    {
+        get => m_prefabScript;
+        set
+        {
+            if (value == null)
+            {
+                m_prefabScript = null;
+                m_prefabObject = null;
+                return;
+            }
+            m_prefabScript = value;
+            m_prefabObject = value.gameObject;
+        }
+    }
+
     public RoomType basedOn;
     public int gradeOffset;
     public int Width => constraints.Width;
     public int Height => constraints.Height;
-    public int BaseGrade {
-        get {
+    public int BaseGrade
+    {
+        get
+        {
             int grd = Width * Height * 4;
-            for (int i = 0; i < Width; i++) {
-                for (int j = 0; j < Height; j++) {
-                    if (constraints[i, j] == null) {
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    if (constraints[i, j] == null)
+                    {
                         grd -= 4; // same as 4 optional doors
                         continue;
                     }
@@ -30,13 +76,17 @@ public class RoomType : ScriptableObject {
         }
     }
 
-    public int Grade {
+    public int Grade
+    {
         get => BaseGrade + gradeOffset;
     }
 
-    public bool CanPlace(int x, int y, DoorFlags[,] grid, bool[,] occupied) {
-        for (int i = 0; i < Width; i++) {
-            for (int j = 0; j < Height; j++) {
+    public bool CanPlace(int x, int y, DoorFlags[,] grid, bool[,] occupied)
+    {
+        for (int i = 0; i < Width; i++)
+        {
+            for (int j = 0; j < Height; j++)
+            {
                 if (constraints[i, j] == null) continue;
                 if (occupied[i + x, j + y] && !constraints[i, j].phantom) return false;
                 if (!constraints[i, j].CanPlace(grid[i + x, j + y])) return false;
@@ -45,11 +95,14 @@ public class RoomType : ScriptableObject {
         return true;
     }
 
-    public void Rotate90Clockwise() {
+    public void Rotate90Clockwise()
+    {
         var old = constraints;
         constraints = new Array2D<GridRoomConstraint>(Height, Width);
-        for (int i = 0; i < Width; i++) {
-            for (int j = 0; j < Height; j++) {
+        for (int i = 0; i < Width; i++)
+        {
+            for (int j = 0; j < Height; j++)
+            {
                 constraints[i, j] = old[j, Width - 1 - i];
                 if (constraints[i, j] == null) continue;
                 constraints[i, j].requiredDoors = constraints[i, j].requiredDoors.Rotate90Clockwise();
@@ -58,11 +111,14 @@ public class RoomType : ScriptableObject {
         }
     }
 
-    public void Flip() {
+    public void Flip()
+    {
         var old = constraints;
         constraints = new Array2D<GridRoomConstraint>(Width, Height);
-        for (int i = 0; i < Width; i++) {
-            for (int j = 0; j < Height; j++) {
+        for (int i = 0; i < Width; i++)
+        {
+            for (int j = 0; j < Height; j++)
+            {
                 constraints[i, j] = old[Width - 1 - i, j];
                 if (constraints[i, j] == null) continue;
                 constraints[i, j].requiredDoors = constraints[i, j].requiredDoors.InvertHorizontal();
@@ -71,10 +127,12 @@ public class RoomType : ScriptableObject {
         }
     }
 
-    public RoomType CreateInstance(int rotation) {
+    public RoomType CreateInstance(int rotation)
+    {
         var ni = Instantiate(this);
-        var np = ni.prefab.GetComponent<RoomPrefab>();
-        for (int i = 0; i < rotation; i++) {
+        var np = ni.PrefabScript;
+        for (int i = 0; i < rotation; i++)
+        {
             np.Rotate90Clockwise();
             ni.Rotate90Clockwise();
         }
@@ -145,8 +203,6 @@ public class RoomTypeEditor : Editor {
         EditorGUI.BeginDisabledGroup(true);
         EditorGUILayout.TextField("Name", Target.name);
         EditorGUI.EndDisabledGroup();
-
-        Target.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", Target.prefab, typeof(GameObject), false);
 
         m_showConstraints = EditorGUILayout.BeginFoldoutHeaderGroup(m_showConstraints, $"Constraints ({Target.Width} x {Target.Height})");
         if (m_showConstraints) {
@@ -239,7 +295,7 @@ public class RoomTypeEditor : Editor {
             if (GUI.Button(new Rect(workArea.x + workArea.width, workArea.y + workArea.height - 16, 16, 16), Event.current.shift ? "-" : "+")) { // new column on the right
                 var old = Target.constraints;
                 if (Event.current.shift) {
-                    if (Target.Height <= 0) return;
+                    if (Target.Width <= 1) return;
                     Target.constraints = new Array2D<GridRoomConstraint>(Target.Width - 1, Target.Height);
                 } else {
                     if (Target.Width >= 9) return;
@@ -270,8 +326,6 @@ public class RoomTypeEditor : Editor {
 
         EditorGUILayout.EndFoldoutHeaderGroup();
 
-
-        EditorGUILayout.HelpBox("The room's grade determines how complex it is to place. Rooms with higher grade get placed first, as they fit a smaller amount of cases.", MessageType.Info);
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Grade");
         if (GUILayout.Button("-")) Target.gradeOffset--;
@@ -280,6 +334,46 @@ public class RoomTypeEditor : Editor {
         EditorGUI.EndDisabledGroup();
         if (GUILayout.Button("+")) Target.gradeOffset++;
         GUILayout.EndHorizontal();
+        EditorGUILayout.HelpBox("The room's grade determines how complex it is to place. Rooms with higher grade get placed first, as they fit a smaller amount of cases.", MessageType.Info);
+
+        GUILayout.Space(10);
+        Target.PrefabObject = (GameObject)EditorGUILayout.ObjectField("Prefab", Target.PrefabObject, typeof(GameObject), false);
+        if (Target.PrefabScript == null) {
+            if (HelpBoxWithButton("The Room has no prefab assigned!", "Create"))
+                CreateRoomPrefab();
+        } else if (Target.PrefabScript.CheckSizeObsolete()) {
+            if (HelpBoxWithButton("The prefab does not match this Room!", "Update"))
+                UpdateRoomPrefab();
+        } else {
+            EditorGUILayout.HelpBox("The prefab is the physical representation of this Room", MessageType.Info);
+        }
+    }
+
+    // MaterialEditor.HelpBoxWithButton is for some reason not static so here is a copy paste
+    private static bool HelpBoxWithButton(string messageContent, string buttonContent) {
+        Rect rect = GUILayoutUtility.GetRect(new GUIContent(messageContent), EditorStyles.helpBox);
+        GUILayoutUtility.GetRect(1f, 25f);
+        rect.height += 25f;
+        GUI.Label(rect, messageContent, EditorStyles.helpBox);
+        Rect position = new Rect(rect.xMax - 60f - 4f, rect.yMax - 20f - 4f, 60f, 20f);
+        return GUI.Button(position, buttonContent);
+    }
+
+    private void UpdateRoomPrefab() {
+
+    }
+
+    private void CreateRoomPrefab() {
+        var obj = new GameObject(Target.name);
+        var script = obj.AddComponent<RoomPrefab>();
+        script.type = Target;
+        script.RegenerateLayout();
+
+        
+    }
+
+    private void SaveFloorAsset() {
+
     }
 
     private Texture2D TextureDoorForCellDirection(GridRoomConstraint c, QuadDirection dir) {
@@ -420,8 +514,6 @@ public class RoomTypeEditor : Editor {
 
             }
         }
-
-
     }
 
 }

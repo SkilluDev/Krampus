@@ -95,8 +95,8 @@ public class RoomPrefab : MonoBehaviour {
         var tris = new List<int>();
         var uvs = new List<Vector2>();
 
-        for (int i = 0; i < Width; i++) {
-            for (int j = 0; j < Height; j++) {
+        for (int i = 0; i < type.Width; i++) {
+            for (int j = 0; j < type.Height; j++) {
                 if (type.constraints[i, j] == null || type.constraints[i, j].phantom)
                     continue;
 
@@ -123,16 +123,9 @@ public class RoomPrefab : MonoBehaviour {
         generation.SetTriangles(tris, 0);
         generation.RecalculateNormals();
 
-#if UNITY_EDITOR
-        AssetDatabase.CreateAsset(generation, $"Assets/RoomExp/floor-mesh-{Guid.NewGuid()}.asset");
-        AssetDatabase.SaveAssets();
-#endif
-
         var floorObject = new GameObject("Floor");
         floorObject.transform.SetParent(transform);
         var meshFilter = floorObject.AddComponent<MeshFilter>();
-        var meshRenderer = floorObject.AddComponent<MeshRenderer>();
-
         meshFilter.sharedMesh = generation; ;
         return floorObject;
     }
@@ -186,7 +179,6 @@ public class RoomPrefab : MonoBehaviour {
         }
     }
 
-    [ContextMenu("rotate")]
     public void Rotate90Clockwise() {
         var old = m_groups;
         var oldCenter = new Vector3(Width / 2f * CELL_SIZE, 0, -Height / 2f * CELL_SIZE);
