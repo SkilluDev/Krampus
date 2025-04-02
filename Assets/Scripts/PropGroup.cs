@@ -4,8 +4,8 @@ using UnityEngine.Events;
 
 [ExecuteInEditMode]
 public class PropGroup : MonoBehaviour {
-    public UnityEvent onGenerateWith;
-    public UnityEvent onGenerateWithout;
+    public UnityEvent onEnabled;
+    public UnityEvent onDisabled;
 
     [SerializeField] private List<GameObject> m_disableList = new List<GameObject>();
     [SerializeField][HideInInspector] private Room m_room;
@@ -55,25 +55,27 @@ public class PropGroup : MonoBehaviour {
         return c;
     }
 
-    public void Generate(bool with) {
+    public void SetState(bool enabled) {
         if (m_generated) throw new System.Exception("Attempting to regenerate a generated door");
 
-        if (!with) {
+        if (!enabled) {
             foreach (var go in m_disableList) {
                 if (go == null) continue;
                 go.SetActive(false);
             }
         }
 
-        if (with) {
-            onGenerateWith.Invoke();
+        if (enabled) {
+            onEnabled.Invoke();
         } else {
-            onGenerateWithout.Invoke();
+            onDisabled.Invoke();
         }
 
-        gameObject.SetActive(with);
+        gameObject.SetActive(enabled);
         m_generated = true;
     }
+
+    #region Gizmos
 
     private void OnDrawGizmosSelected() {
         Gizmos.color = m_gizmoColor;
@@ -107,4 +109,6 @@ public class PropGroup : MonoBehaviour {
             }
         }
     }
+
+    #endregion
 }

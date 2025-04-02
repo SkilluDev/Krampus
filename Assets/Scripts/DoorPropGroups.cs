@@ -20,20 +20,18 @@ public class DoorPropGroups : QuadDirectional<DoorPropGroups, PropGroup> {
         set => m_west = value;
     }
 
-    public void Configure(QuadDirection dir) {
+    public void SetState(QuadDirection dir) {
         foreach (var d in DirectionMethods.CARDINALS) {
-            if (this[d] != null) this[d].Generate(!dir.HasFlag(d));
+            if (this[d] != null) this[d].SetState(!dir.HasFlag(d));
         }
     }
 
 
 #if UNITY_EDITOR
     public void Destroy(QuadDirection dir = QuadDirection.ALL) {
-
-        if (North != null && dir.HasFlag(QuadDirection.NORTH)) Object.DestroyImmediate(North.gameObject);
-        if (East != null && dir.HasFlag(QuadDirection.EAST)) Object.DestroyImmediate(East.gameObject);
-        if (South != null && dir.HasFlag(QuadDirection.SOUTH)) Object.DestroyImmediate(South.gameObject);
-        if (West != null && dir.HasFlag(QuadDirection.WEST)) Object.DestroyImmediate(West.gameObject);
+        foreach (var d in DirectionMethods.CARDINALS) {
+            if (this[d] != null && dir.HasFlag(d)) Object.DestroyImmediate(this[d].gameObject);
+        }
     }
 
 #endif
