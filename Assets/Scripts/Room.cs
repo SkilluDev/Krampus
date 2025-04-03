@@ -15,9 +15,10 @@ public class Room : MonoBehaviour {
     // 
     public int Width => m_doorGrid.Width;
     public int Height => m_doorGrid.Height;
-    public RoomType type;
-    [SerializeField][HideInInspector] private GameObject m_floorObject;
-    [SerializeField][HideInInspector] private Array2D<DoorPropGroups> m_doorGrid;
+
+    [SerializeField][HideInInspector] internal RoomType m_type;
+    [SerializeField][HideInInspector] internal Array2D<DoorPropGroups> m_doorGrid;
+    [SerializeField][HideInInspector] internal MeshFilter m_floorMeshFilter;
 
 
     public static Vector3 GetCellCenter(int i, int j) {
@@ -35,9 +36,6 @@ public class Room : MonoBehaviour {
     public static Vector3 GetCellTopLeft(int i, int j) {
         return new Vector3(CELL_SIZE * i, 0, -CELL_SIZE * j);
     }
-
-
-
 
     public void ConfigureDoors(int x, int y, DoorFlags[,] doors) {
         for (int i = 0; i < Width; i++) {
@@ -78,11 +76,11 @@ public class Room : MonoBehaviour {
         var optional = new Color(0.6f, 0.6f, 0.06f, 0.4f);
         var none = new Color(0.6f, 0.06f, 0.06f, 0f);
 
-        for (int i = 0; i < type.Width; i++) {
-            for (int j = 0; j < type.Height; j++) {
-                if (type.constraints[i, j] == null) continue;
-                var rd = type.constraints[i, j].requiredDoors;
-                var od = type.constraints[i, j].optionalDoors;
+        for (int i = 0; i < m_type.Width; i++) {
+            for (int j = 0; j < m_type.Height; j++) {
+                if (m_type.constraints[i, j] == null) continue;
+                var rd = m_type.constraints[i, j].requiredDoors;
+                var od = m_type.constraints[i, j].optionalDoors;
 
                 Gizmos.color = rd.North ? required : (od.North ? optional : none);
                 Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.NORTH), DOOR_NS_SIZE);

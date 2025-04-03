@@ -71,7 +71,7 @@ public class Roomgen : MonoBehaviour {
                     m_generationGrid[i, j] = true;
                 }
             }
-            var prefab = Instantiate(room.PrefabObject, origin, Quaternion.identity, transform).GetComponent<Room>();
+            var prefab = Instantiate(room.prefab, origin, Quaternion.identity, transform).GetComponent<Room>();
             prefab.ConfigureDoors(placement.x, placement.y, m_doorGrid);
 
             return prefab;

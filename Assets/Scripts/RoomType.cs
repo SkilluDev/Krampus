@@ -9,39 +9,9 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "Game/Room Type", fileName = "New Room Type")]
 public class RoomType : ScriptableObject {
     public Array2D<GridRoomConstraint> constraints = new Array2D<GridRoomConstraint>(1, 1);
-    private GameObject m_prefabObject;
-    private Room m_prefabScript;
-    public GameObject PrefabObject {
-        get => m_prefabObject;
-        set {
-            if (value == null) {
-                m_prefabScript = null;
-                m_prefabObject = null;
-                return;
-            }
-            if (value.GetComponent<Room>() != null) {
-                m_prefabScript = value.GetComponent<Room>();
-                m_prefabObject = value;
-            } else {
-                Debug.LogError("Room prefab is not valid!");
-            }
-        }
-    }
-
-    public Room PrefabScript {
-        get => m_prefabScript;
-        set {
-            if (value == null) {
-                m_prefabScript = null;
-                m_prefabObject = null;
-                return;
-            }
-            m_prefabScript = value;
-            m_prefabObject = value.gameObject;
-        }
-    }
-
+    public GameObject prefab;
     public RoomType basedOn;
+
     public int gradeOffset;
     public int Width => constraints.Width;
     public int Height => constraints.Height;
@@ -104,13 +74,13 @@ public class RoomType : ScriptableObject {
 
     public RoomType CreateInstance(int rotation) {
         var ni = Instantiate(this);
-        var np = ni.PrefabScript;
+        var np = ni.prefab.GetComponent<Room>();
         for (int i = 0; i < rotation; i++) {
             np.Rotate90Clockwise();
             ni.Rotate90Clockwise();
         }
         ni.basedOn = this;
-        np.type = ni;
+        np.m_type = ni;
         return ni;
     }
 
@@ -310,11 +280,11 @@ public class RoomTypeEditor : Editor {
         EditorGUILayout.HelpBox("The room's grade determines how complex it is to place. Rooms with higher grade get placed first, as they fit a smaller amount of cases.", MessageType.Info);
 
         GUILayout.Space(10);
-        Target.PrefabObject = (GameObject)EditorGUILayout.ObjectField("Prefab", Target.PrefabObject, typeof(GameObject), false);
-        if (Target.PrefabScript == null) {
+        Target.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", Target.prefab, typeof(GameObject), false);
+        if (Target.prefab == null) {
             if (HelpBoxWithButton("The Room has no prefab assigned!", "Create"))
                 CreateRoomPrefab();
-        } else if (Target.PrefabScript.CheckSizeObsolete()) {
+        } else if (RoomPrefab.CheckSizeObsolete(Target.prefab.GetComponent<Room>(), Target)) {
             if (HelpBoxWithButton("The prefab does not match this Room!", "Update"))
                 UpdateRoomPrefab();
         } else {
@@ -333,14 +303,15 @@ public class RoomTypeEditor : Editor {
     }
 
     private void UpdateRoomPrefab() {
-
+        var editor = new RoomPrefab(Target, Target.prefab);
+        editor.GetFloorMeshFilter();
+        editor.ApplyAndSave();
     }
 
     private void CreateRoomPrefab() {
-        var obj = new GameObject(Target.name);
-        var script = obj.AddComponent<Room>();
-        script.type = Target;
-        script.RegenerateLayout();
+        var editor = new RoomPrefab(Target, EditorUtility.SaveFilePanel("Save prefab", Application.dataPath, Target.name, "prefab"));
+        editor.GetFloorMeshFilter();
+        editor.ApplyAndSave();
     }
 
     private void SaveFloorAsset() {
