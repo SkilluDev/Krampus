@@ -5,15 +5,16 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 
-public class CharacterController : MonoBehaviour {
+public class KrampusController : MonoBehaviour
+{
     public Rigidbody rigidBody;
-    private GameObject camera;
+    new private GameObject camera;
 
     public Transform playerModel;
 
-	[Header("Statistic")]
-	public float baseSpeed = 4;
-	public float runSpeed = 12;
+    [Header("Statistic")]
+    public float baseSpeed = 4;
+    public float runSpeed = 12;
 
 
 
@@ -47,7 +48,8 @@ public class CharacterController : MonoBehaviour {
 
     [SerializeField] private GameObject rocktParticle;
 
-    private enum State {
+    private enum State
+    {
         running, walking, idle
     }
 
@@ -56,7 +58,8 @@ public class CharacterController : MonoBehaviour {
 
     private Animator animator;
 
-    private void Start() {
+    private void Start()
+    {
         timerWindUp1 = 0f;
         timerWindUp2 = -windUpIdleSpeed;
 
@@ -73,10 +76,12 @@ public class CharacterController : MonoBehaviour {
         rocktParticle.SetActive(false);
     }
 
-    private void Update() {
+    private void Update()
+    {
 
         previousState = currentState;
-        if (!WinCondition.Instance.isGamePausedValue()) {
+        if (!WinCondition.Instance.isGamePausedValue())
+        {
             xMovement = Input.GetAxis("Horizontal");
             zMovement = Input.GetAxis("Vertical");
 
@@ -86,17 +91,24 @@ public class CharacterController : MonoBehaviour {
             timerStep1 += Time.deltaTime;
             timerStep2 += Time.deltaTime;
 
-            if (rigidBody.velocity.x == 0 && rigidBody.velocity.z == 0) {
+            if (rigidBody.velocity.x == 0 && rigidBody.velocity.z == 0)
+            {
                 currentState = State.idle;
-            } else {
-                if (Input.GetKey(KeyCode.LeftShift)) {
+            }
+            else
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
                     currentState = State.running;
-                } else {
+                }
+                else
+                {
                     currentState = State.walking;
                 }
             }
 
-            switch (currentState) {
+            switch (currentState)
+            {
                 case State.running:
                     isRunning = true;
 
@@ -122,7 +134,8 @@ public class CharacterController : MonoBehaviour {
                     break;
             }
 
-            if (previousState != currentState) {
+            if (previousState != currentState)
+            {
                 timerWindUp1 = 0;
                 timerWindUp2 = -windUpSpeed;
                 timerStep1 = 0;
@@ -130,20 +143,24 @@ public class CharacterController : MonoBehaviour {
             }
 
             //winding up sounds playing
-            if (timerWindUp1 >= windUpSpeed) {
+            if (timerWindUp1 >= windUpSpeed)
+            {
                 SoundManager.PlaySound("windup1");
                 timerWindUp1 = -windUpSpeed;
             }
-            if (timerWindUp2 >= windUpSpeed) {
+            if (timerWindUp2 >= windUpSpeed)
+            {
                 SoundManager.PlaySound("windup2");
                 timerWindUp2 = -windUpSpeed;
             }
             //steps sounds playing
-            if (timerStep1 >= stepSpeed) {
+            if (timerStep1 >= stepSpeed)
+            {
                 SoundManager.PlaySound("step1");
                 timerStep1 = -stepSpeed;
             }
-            if (timerStep2 >= stepSpeed) {
+            if (timerStep2 >= stepSpeed)
+            {
                 SoundManager.PlaySound("step2");
                 timerStep2 = -stepSpeed;
             }
@@ -152,54 +169,63 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
-    private void FixedUpdate() {
-        if (!WinCondition.Instance.isGamePausedValue()) {
-			Vector3 movementDirection = new Vector3(xMovement, 0, zMovement).normalized;
+    private void FixedUpdate()
+    {
+        if (!WinCondition.Instance.isGamePausedValue())
+        {
+            Vector3 movementDirection = new Vector3(xMovement, 0, zMovement).normalized;
 
-			Vector3 skewedInput = matrix.MultiplyPoint3x4(movementDirection);
+            Vector3 skewedInput = matrix.MultiplyPoint3x4(movementDirection);
 
-			rigidBody.velocity = skewedInput * (isRunning? runSpeed: baseSpeed);
-			if (movementDirection.magnitude < 0.1f) {
-				animator.SetFloat("Speed", 0,0.1f,Time.deltaTime);
-			}else if (!isRunning) {
-				animator.SetFloat("Speed", 1,0.1f,Time.deltaTime);
+            rigidBody.velocity = skewedInput * (isRunning ? runSpeed : baseSpeed);
+            if (movementDirection.magnitude < 0.1f)
+            {
+                animator.SetFloat("Speed", 0, 0.1f, Time.deltaTime);
+            }
+            else if (!isRunning)
+            {
+                animator.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
 
-			} else
-			{
-				animator.SetFloat("Speed", 2,0.1f,Time.deltaTime);
-			}
+            }
+            else
+            {
+                animator.SetFloat("Speed", 2, 0.1f, Time.deltaTime);
+            }
 
 
-			//animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
-			//RotatePlayer(movementDirection );
+            //animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
+            //RotatePlayer(movementDirection );
 
 
         }
     }
 
-    private void RotatePlayer(Vector3 movementDirection ) {
-	    Ray ray;
-	    ray = camera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-	    RaycastHit hit;
-	    if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("MapCollider")))
-	    {
-		    Vector3 direction = (hit.point - transform.position).normalized;
-		    direction.y = 0;
+    private void RotatePlayer(Vector3 movementDirection)
+    {
+        Ray ray;
+        ray = camera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("MapCollider")))
+        {
+            Vector3 direction = (hit.point - transform.position).normalized;
+            direction.y = 0;
 
-		    playerModel.rotation = Quaternion.LookRotation(direction);
+            playerModel.rotation = Quaternion.LookRotation(direction);
 
-		    Vector3 animDirection = playerModel.rotation * movementDirection;
+            Vector3 animDirection = playerModel.rotation * movementDirection;
 
-		    Debug.DrawLine(transform.position,  transform.position + animDirection*5f, Color.yellow);
-		    animator.SetFloat("X",animDirection.x,0.3f,Time.deltaTime);
-		    animator.SetFloat("Y", animDirection.z,0.3f,Time.deltaTime);
+            Debug.DrawLine(transform.position, transform.position + animDirection * 5f, Color.yellow);
+            animator.SetFloat("X", animDirection.x, 0.3f, Time.deltaTime);
+            animator.SetFloat("Y", animDirection.z, 0.3f, Time.deltaTime);
 
-		    Debug.Log(Math.Round(animDirection.x,2)+" | "+Math.Round(animDirection.y,2)+" | "+Math.Round(animDirection.z,2));
-	    }
+            Debug.Log(Math.Round(animDirection.x, 2) + " | " + Math.Round(animDirection.y, 2) + " | " + Math.Round(animDirection.z, 2));
+        }
     }
 
-    public void Die() {
-        if (!isDead) {
+    public void Die()
+    {
+        if (!isDead)
+        {
             animator.SetTrigger("Death");
             isDead = true;
             rigidBody.velocity = Vector3.zero;
@@ -207,8 +233,10 @@ public class CharacterController : MonoBehaviour {
         }
     }
 
-    public void Win() {
-        if (!isDead) {
+    public void Win()
+    {
+        if (!isDead)
+        {
             animator.SetTrigger("Win");
             isDead = true;
             rigidBody.velocity = Vector3.zero;
