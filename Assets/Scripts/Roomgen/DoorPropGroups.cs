@@ -29,14 +29,11 @@ namespace Roomgen {
             }
         }
 
-
-#if UNITY_EDITOR
-        public void Destroy(QuadDirection dir = QuadDirection.ALL) {
+        internal void Destroy(QuadDirection dir = QuadDirection.ALL) {
             foreach (var d in DirectionMethods.CARDINALS) {
                 if (this[d] != null && dir.HasFlag(d)) Object.DestroyImmediate(this[d].gameObject);
             }
         }
 
-#endif
     }
 }

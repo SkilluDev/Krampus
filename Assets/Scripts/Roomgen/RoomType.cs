@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using static QuadDirection;
 using Unity.VisualScripting;
 using System.Linq;
@@ -50,7 +49,16 @@ namespace Roomgen {
             return true;
         }
 
-        public void Rotate90Clockwise() {
+        public static RoomType CreateRotated(RoomType original, int rots) {
+            var instance = Instantiate(original);
+            for (int i = 0; i < rots % 4; i++) {
+                instance.Rotate90Clockwise();
+                instance.prefab.GetComponent<Room>().Rotate90Clockwise();
+            }
+            return instance;
+        }
+
+        internal void Rotate90Clockwise() {
             var old = constraints;
             constraints = new Array2D<GridRoomConstraint>(Height, Width);
             for (int i = 0; i < Width; i++) {
@@ -63,7 +71,7 @@ namespace Roomgen {
             }
         }
 
-        public void Flip() {
+        internal void Flip() {
             var old = constraints;
             constraints = new Array2D<GridRoomConstraint>(Width, Height);
             for (int i = 0; i < Width; i++) {
@@ -398,7 +406,7 @@ namespace Roomgen {
         }
 
         private void CreateRoomPrefab() {
-            string defaultPath = System.IO.Directory.GetDirectories(Application.dataPath).FirstOrDefault(w => w.Contains("room", StringComparison.InvariantCultureIgnoreCase));
+            string defaultPath = System.IO.Directory.GetDirectories(Application.dataPath).FirstOrDefault(w => w.Contains("room", System.StringComparison.InvariantCultureIgnoreCase));
             if (string.IsNullOrWhiteSpace(defaultPath)) defaultPath = "Assets/";
             string savePath = EditorUtility.SaveFilePanelInProject(
                 "Save prefab",
@@ -459,7 +467,7 @@ namespace Roomgen {
                 EAST => i < Target.Width - 1 ? Target.constraints[i + 1, j] : null, // right
                 SOUTH => j < Target.Height - 1 ? Target.constraints[i, j + 1] : null, //down
                 WEST => i > 0 ? Target.constraints[i - 1, j] : null, // left
-                _ => throw new Exception("cannot set directions like this")
+                _ => throw new System.Exception("cannot set directions like this")
             };
 
 
