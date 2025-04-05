@@ -2,6 +2,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class DoorPropGroups : QuadDirectional<DoorPropGroups, PropGroup> {
+    public bool phantom = false;
     [SerializeField] private PropGroup m_north, m_east, m_south, m_west; // need that for serializing??
     public override PropGroup North {
         get => m_north;
@@ -19,6 +20,7 @@ public class DoorPropGroups : QuadDirectional<DoorPropGroups, PropGroup> {
         get => m_west;
         set => m_west = value;
     }
+
 
     public void SetState(QuadDirection dir) {
         foreach (var d in DirectionMethods.CARDINALS) {

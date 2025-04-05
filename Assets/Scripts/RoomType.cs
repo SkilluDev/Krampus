@@ -284,39 +284,78 @@ public class RoomTypeEditor : Editor {
         if (Target.prefab == null) {
             if (HelpBoxWithButton("The Room has no prefab assigned!", "Create"))
                 CreateRoomPrefab();
-        } else if (RoomPrefab.CheckSizeObsolete(Target.prefab.GetComponent<Room>(), Target)) {
-            if (HelpBoxWithButton("The prefab does not match this Room!", "Update"))
-                UpdateRoomPrefab();
+        } else if (RoomPrefab.CheckFloorObsolete(Target.prefab.GetComponent<Room>(), Target)) {
+            if (HelpBoxWithButton("The prefab requires a complete update!", "Update"))
+                UpdateRoomPrefabComplete();
+        } else if (RoomPrefab.CheckDoorsObsolete(Target.prefab.GetComponent<Room>(), Target)) {
+            if (HelpBoxWithButton("The prefab door layout has changed!", "Update"))
+                UpdateRoomPrefabDoors();
         } else {
-            EditorGUILayout.HelpBox("The prefab is the physical representation of this Room", MessageType.Info);
+            if (Event.current.shift) {
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Recreate prefab")) CreateRoomPrefab();
+                if (GUILayout.Button("Complete update")) UpdateRoomPrefabComplete();
+                if (GUILayout.Button("Door update")) UpdateRoomPrefabDoors();
+                GUILayout.EndHorizontal();
+            } else {
+                EditorGUILayout.HelpBox("The prefab is the physical representation of this Room", MessageType.Info);
+            }
         }
     }
 
     // MaterialEditor.HelpBoxWithButton is for some reason not static so here is a copy paste
     private static bool HelpBoxWithButton(string messageContent, string buttonContent) {
-        Rect rect = GUILayoutUtility.GetRect(new GUIContent(messageContent), EditorStyles.helpBox);
+        var rect = GUILayoutUtility.GetRect(new GUIContent(messageContent), EditorStyles.helpBox);
         GUILayoutUtility.GetRect(1f, 25f);
         rect.height += 25f;
         GUI.Label(rect, messageContent, EditorStyles.helpBox);
-        Rect position = new Rect(rect.xMax - 60f - 4f, rect.yMax - 20f - 4f, 60f, 20f);
+        var position = new Rect(rect.xMax - 60f - 4f, rect.yMax - 20f - 4f, 60f, 20f);
         return GUI.Button(position, buttonContent);
     }
 
-    private void UpdateRoomPrefab() {
+    private void UpdateRoomPrefabComplete() {
         var editor = new RoomPrefab(Target, Target.prefab);
-        editor.GetFloorMeshFilter();
-        editor.ApplyAndSave();
+        editor.RecreateDoorGrid();
+        UpdateFloorDialog(editor);
+        editor.UpdateDoorGroups();
+        Target.prefab = editor.ApplyAndSave();
+    }
+
+    private void UpdateRoomPrefabDoors() {
+        var editor = new RoomPrefab(Target, Target.prefab);
+        editor.UpdateDoorGroups();
+        Target.prefab = editor.ApplyAndSave();
     }
 
     private void CreateRoomPrefab() {
-        var editor = new RoomPrefab(Target, EditorUtility.SaveFilePanel("Save prefab", Application.dataPath, Target.name, "prefab"));
-        editor.GetFloorMeshFilter();
-        editor.ApplyAndSave();
+        string savePath = EditorUtility.SaveFilePanelInProject(
+            "Save prefab",
+            Target.name.Replace("Type", "").Trim(),
+            "prefab", "Save the prefab"
+        );
+        var editor = new RoomPrefab(Target, savePath);
+        editor.RecreateDoorGrid();
+        UpdateFloorDialog(editor);
+        Target.prefab = editor.ApplyAndSave();
     }
 
-    private void SaveFloorAsset() {
-
+    private void UpdateFloorDialog(RoomPrefab editor) {
+        var mesh = editor.CreateFloorMesh();
+        if (AssetDatabase.Contains(mesh)) {
+            AssetDatabase.SaveAssets();
+        } else {
+            string nextToPath = editor.PrefabPath.Replace(Application.dataPath, "Assets/").Replace(".prefab", "");
+            AssetDatabase.CreateAsset(mesh, EditorUtility.SaveFilePanelInProject(
+                "Save mesh",
+                Target.name.Replace("Type", "").Trim(),
+                "asset",
+                "Save the floor mesh",
+                nextToPath
+            ));
+            AssetDatabase.SaveAssets();
+        }
     }
+
 
     private Texture2D TextureDoorForCellDirection(GridRoomConstraint c, QuadDirection dir) {
         if (c.requiredDoors[dir]) return m_requiredDoorTex;

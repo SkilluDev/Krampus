@@ -1,24 +1,17 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class RoomPrefab {
     private Room m_targetRoom;
     private GameObject m_targetObject;
     private RoomType m_type;
-    private string m_prefabPath;
-
+    public string PrefabPath { get; private set; }
 
     public RoomPrefab(RoomType type, string savePath) {
         m_type = type;
         LoadObjectToMemory(CreatePrefabObject(type.name, savePath));
-    }
-
-    private GameObject CreatePrefabObject(string name, string savePath) {
-        var sceneObj = new GameObject(name);
-        var prefabObj = PrefabUtility.SaveAsPrefabAsset(sceneObj, savePath);
-        Object.DestroyImmediate(sceneObj);
-        return prefabObj;
     }
 
     public RoomPrefab(RoomType type, GameObject prefab) {
@@ -26,12 +19,21 @@ public class RoomPrefab {
         LoadObjectToMemory(prefab);
     }
 
+    // Literally just creates an empty
+    private GameObject CreatePrefabObject(string name, string savePath) {
+        var sceneObj = new GameObject(name);
+        var prefabObj = PrefabUtility.SaveAsPrefabAsset(sceneObj, savePath);
+        Object.DestroyImmediate(sceneObj);
+        return prefabObj;
+    }
+
+    // Unity needs to load the prefab to a temporary scene to actually make changes to it.
     private void LoadObjectToMemory(GameObject obj) {
         if (PrefabUtility.GetPrefabAssetType(obj) == PrefabAssetType.NotAPrefab)
             throw new System.Exception("This object is not a prefab; How did this happen");
 
-        m_prefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(obj);
-        obj = PrefabUtility.LoadPrefabContents(m_prefabPath);
+        PrefabPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(obj);
+        obj = PrefabUtility.LoadPrefabContents(PrefabPath);
         if (obj.TryGetComponent<Room>(out var room)) {
             m_targetRoom = room;
         } else {
@@ -41,8 +43,11 @@ public class RoomPrefab {
         m_targetObject = obj;
     }
 
-    public void ApplyAndSave() {
-        PrefabUtility.SaveAsPrefabAsset(m_targetObject, m_prefabPath);
+    /// <summary>
+    /// End editing the prefab and save to file (needs to be called to actually change a thing)
+    /// </summary>
+    public GameObject ApplyAndSave() {
+        return PrefabUtility.SaveAsPrefabAsset(m_targetObject, PrefabPath);
     }
 
     public static bool CheckSizeObsolete(Room room, RoomType type) {
@@ -54,9 +59,12 @@ public class RoomPrefab {
         if (CheckSizeObsolete(room, type)) return true;
         for (int i = 0; i < room.Width; i++) {
             for (int j = 0; j < room.Height; j++) {
-                if (room.m_doorGrid[i, j] != null && (type.constraints[i, j] == null || type.constraints[i, j].phantom))
+                if (room.m_doorGrid[i, j] != null && type.constraints[i, j] == null)
                     return true;
-                if (room.m_doorGrid[i, j] == null && (type.constraints[i, j] != null && !type.constraints[i, j].phantom))
+                if (room.m_doorGrid[i, j] == null && type.constraints[i, j] != null)
+                    return true;
+
+                if (room.m_doorGrid[i, j] != null && room.m_doorGrid[i, j].phantom != type.constraints[i, j].phantom)
                     return true;
             }
         }
@@ -72,6 +80,8 @@ public class RoomPrefab {
                 if ((targetDoors == null && room.m_doorGrid[i, j] != null) || (room.m_doorGrid[i, j] == null && targetDoors != null))
                     return true;
 
+                if (targetDoors == null && room.m_doorGrid[i, j] == null) continue;
+
                 foreach (var dir in DirectionMethods.CARDINALS) {
                     if ((targetDoors[dir] && room.m_doorGrid[i, j][dir] == null) || (!targetDoors[dir] && room.m_doorGrid[i, j][dir] != null))
                         return true;
@@ -81,27 +91,63 @@ public class RoomPrefab {
         return false;
     }
 
-    public MeshFilter GetFloorMeshFilter() {
-        var mf = m_targetRoom.m_floorMeshFilter;
 
-        if (mf == null) {
-            var ngo = new GameObject("fag");
-            mf = ngo.AddComponent<MeshFilter>();
-            ngo.transform.SetParent(m_targetRoom.transform);
+    /// <summary>
+    /// Create a MeshFilter for the floor as a child of the prefab or get one if it exists
+    /// </summary>
+    /// <returns>The MeshFilter</returns>
+    public MeshFilter GetOrAddFloorObject() {
+        var meshFilter = m_targetRoom.m_floorMeshFilter;
+        if (meshFilter == null) {
+            var go = new GameObject("Floor");
+            go.transform.SetParent(m_targetRoom.transform);
+            meshFilter = go.AddComponent<MeshFilter>();
+            m_targetRoom.m_floorMeshFilter = meshFilter;
+            go.AddComponent<MeshRenderer>().sharedMaterial = GraphicsSettings.defaultRenderPipeline.defaultMaterial;
         }
-
-        return mf;
+        return meshFilter;
     }
 
-    public GameObject CreateFloor() {
+    /// <summary>
+    /// Updates the door grid size
+    /// </summary>
+    public void RecreateDoorGrid() {
+        if (m_targetRoom.m_doorGrid == null) {
+            m_targetRoom.m_doorGrid = new Array2D<DoorPropGroups>(m_type.Width, m_type.Height);
+        } else {
+            DestroyDoorGroups();
+            m_targetRoom.m_doorGrid = new Array2D<DoorPropGroups>(m_type.Width, m_type.Height);
+        }
+    }
+
+    /// <summary>
+    /// Creates floor and updates the doorGrid to match
+    /// </summary>
+    /// <returns>The mesh created. Should be checked whether it can be reused or does it need saving first</returns>
+    public Mesh CreateFloorMesh() {
+        if (m_targetRoom.m_doorGrid == null) throw new System.Exception("Uninitiated door grid!");
+
         var verts = new List<Vector3>();
         var tris = new List<int>();
         var uvs = new List<Vector2>();
 
         for (int i = 0; i < m_type.Width; i++) {
             for (int j = 0; j < m_type.Height; j++) {
-                if (m_type.constraints[i, j] == null || m_type.constraints[i, j].phantom)
+                if (m_type.constraints[i, j] == null) {
+                    if (m_targetRoom.m_doorGrid[i, j] != null)
+                        m_targetRoom.m_doorGrid[i, j].Destroy();
                     continue;
+                }
+
+                if (m_targetRoom.m_doorGrid[i, j] == null)
+                    m_targetRoom.m_doorGrid[i, j] = new DoorPropGroups();
+
+                if (m_type.constraints[i, j].phantom) {
+                    m_targetRoom.m_doorGrid[i, j].phantom = true;
+                    continue;
+                }
+
+                m_targetRoom.m_doorGrid[i, j].phantom = false;
 
                 int offset = verts.Count;
 
@@ -120,20 +166,31 @@ public class RoomPrefab {
                 });
             }
         }
-        var generation = new Mesh();
+
+        var mf = GetOrAddFloorObject();
+        if (mf != null && mf.sharedMesh != null && !mf.sharedMesh.isReadable) {
+            Object.Destroy(mf.gameObject);
+            Debug.LogWarning("The default floor's MeshFilter has an unreadable Mesh assigned; Please don't do this!");
+            mf = GetOrAddFloorObject();
+        }
+        var generation = mf.sharedMesh;
+        if (generation == null) generation = new Mesh();
+        generation.Clear();
         generation.SetVertices(verts);
         generation.SetUVs(0, uvs);
         generation.SetTriangles(tris, 0);
         generation.RecalculateNormals();
+        mf.sharedMesh = generation;
 
-        var floorObject = new GameObject("Floor");
-        // floorObject.transform.SetParent(transform);
-        var meshFilter = floorObject.AddComponent<MeshFilter>();
-        meshFilter.sharedMesh = generation; ;
-        return floorObject;
+        return generation;
     }
 
-    private void DestroyDoorGroups() {
+    /// <summary>
+    /// Destroys all the door groups
+    /// </summary>
+    public void DestroyDoorGroups() {
+        if (m_targetRoom.m_doorGrid == null) throw new System.Exception("Uninitiated door grid!");
+
         for (int i = 0; i < m_targetRoom.Width; i++) {
             for (int j = 0; j < m_targetRoom.Height; j++) {
                 if (m_targetRoom.m_doorGrid[i, j] != null) {
@@ -145,7 +202,12 @@ public class RoomPrefab {
     }
 
 
-    private void UpdateDoorGroups() {
+    /// <summary>
+    /// Updates the door groups to match RoomType
+    /// </summary>
+    public void UpdateDoorGroups() {
+        if (m_targetRoom.m_doorGrid == null) throw new System.Exception("Uninitiated door grid!");
+
         for (int i = 0; i < m_targetRoom.Width; i++) {
             for (int j = 0; j < m_targetRoom.Height; j++) {
                 var targetDoors = m_type.constraints[i, j]?.optionalDoors;
