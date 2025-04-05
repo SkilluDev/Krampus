@@ -13,22 +13,37 @@ MonoBehaviour:
   m_Name: New Room Type
   m_EditorClassIdentifier: 
   constraints:
-    m_size: {x: 2, y: 1}
+    m_size: {x: 2, y: 2}
     m_data:
     - hasValue: 1
       value:
         requiredDoors:
-          m_doors: 15
+          m_doors: 13
+        optionalDoors:
+          m_doors: 2
+        phantom: 0
+    - hasValue: 1
+      value:
+        requiredDoors:
+          m_doors: 3
+        optionalDoors:
+          m_doors: 4
+        phantom: 0
+    - hasValue: 1
+      value:
+        requiredDoors:
+          m_doors: 4
         optionalDoors:
           m_doors: 0
         phantom: 0
     - hasValue: 1
       value:
         requiredDoors:
-          m_doors: 1
+          m_doors: 9
         optionalDoors:
           m_doors: 0
         phantom: 0
-  prefab: {fileID: 259472417276848345, guid: dff51f798fcfe5b7d8f7f9ac1140e35d, type: 3}
+  prefab: {fileID: 4316716824443822608, guid: dff51f798fcfe5b7d8f7f9ac1140e35d, type: 3}
+  note: "Pok\xF3j do testowania rzeczy :)"
   basedOn: {fileID: 0}
   gradeOffset: 0

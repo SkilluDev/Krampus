@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using static QuadDirection;
 using Unity.VisualScripting;
+using System.Linq;
 
 
 #if UNITY_EDITOR
@@ -14,7 +15,6 @@ public class RoomType : ScriptableObject {
     public GameObject prefab;
     public string note = "";
     public RoomType basedOn;
-
     public int gradeOffset;
     public int Width => constraints.Width;
     public int Height => constraints.Height;
@@ -86,7 +86,6 @@ public class RoomType : ScriptableObject {
         np.m_type = ni;
         return ni;
     }
-
 }
 
 #if UNITY_EDITOR 
@@ -317,6 +316,9 @@ public class RoomTypeEditor : Editor {
         }
     }
 
+    /// <summary>
+    /// Draws default inspector
+    /// </summary>
     public override void OnInspectorGUI() {
         if (Target.constraints == null) Target.constraints = new Array2D<GridRoomConstraint>(1, 1);
 
@@ -347,6 +349,9 @@ public class RoomTypeEditor : Editor {
         DrawPrefabField();
     }
 
+    /// <summary>
+    /// Draws the inspector for the Prefab edior variant
+    /// </summary>
     public void OnPrefabInspectorGUI() {
         if (Target.constraints == null) Target.constraints = new Array2D<GridRoomConstraint>(1, 1);
         DrawPrefabField(true);
@@ -373,8 +378,8 @@ public class RoomTypeEditor : Editor {
     }
 
     private void LoadPrefabEditing() {
-        if (Target.prefab != null)
-            AssetDatabase.OpenAsset(Target.prefab);
+        if (Target.prefab == null) return;
+        AssetDatabase.OpenAsset(Target.prefab);
     }
 
     private void UpdateRoomPrefabComplete() {
@@ -392,11 +397,16 @@ public class RoomTypeEditor : Editor {
     }
 
     private void CreateRoomPrefab() {
+        string defaultPath = System.IO.Directory.GetDirectories(Application.dataPath).FirstOrDefault(w => w.Contains("room", StringComparison.InvariantCultureIgnoreCase));
+        if (string.IsNullOrWhiteSpace(defaultPath)) defaultPath = "Assets/";
         string savePath = EditorUtility.SaveFilePanelInProject(
             "Save prefab",
             Target.name.Replace("Type", "").Trim(),
-            "prefab", "Save the prefab"
+            "prefab", "Save the prefab",
+            defaultPath
         );
+        if (string.IsNullOrWhiteSpace(savePath)) return;
+
         var editor = new RoomPrefabEditor(Target, savePath);
         editor.RecreateDoorGrid();
         UpdateFloorDialog(editor);
@@ -409,13 +419,20 @@ public class RoomTypeEditor : Editor {
             AssetDatabase.SaveAssets();
         } else {
             string nextToPath = editor.PrefabPath.Replace(Application.dataPath, "Assets/").Replace(".prefab", "");
-            AssetDatabase.CreateAsset(mesh, EditorUtility.SaveFilePanelInProject(
+            string savePath = EditorUtility.SaveFilePanelInProject(
                 "Save mesh",
                 Target.name.Replace("Type", "").Trim(),
                 "asset",
                 "Save the floor mesh",
                 nextToPath
-            ));
+            );
+
+            if (string.IsNullOrWhiteSpace(savePath)) {
+                EditorUtility.DisplayDialog("Warning", "A new mesh was created but not saved. Shit >will< break. Try regenerating a new one if things go wrong", "Fine");
+                return;
+            }
+
+            AssetDatabase.CreateAsset(mesh, savePath);
             AssetDatabase.SaveAssets();
         }
     }
@@ -556,7 +573,6 @@ public class RoomTypeEditor : Editor {
                     Target.constraints[i, j] = null;
                 else
                     Target.constraints[i, j].phantom = true;
-
             }
         }
     }
