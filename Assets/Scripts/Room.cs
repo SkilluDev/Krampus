@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -99,3 +98,28 @@ public class Room : MonoBehaviour {
 
     #endregion
 }
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(Room))]
+public class RoomEditor : Editor {
+    private RoomTypeEditor m_childEditor;
+    private Room Target => (Room)target;
+
+    public void OnEnable() {
+        m_childEditor = (RoomTypeEditor)CreateEditor(Target.m_type);
+        m_childEditor.m_showConstraints = false;
+    }
+
+    public override void OnInspectorGUI() {
+        base.OnInspectorGUI();
+        GUILayout.BeginHorizontal();
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.ObjectField("Room Type", Target.m_type, typeof(RoomType), false);
+        EditorGUI.EndDisabledGroup();
+        if (GUILayout.Button("Open")) Selection.activeObject = Target.m_type;
+        EditorGUILayout.EndHorizontal();
+        m_childEditor.OnPrefabInspectorGUI();
+    }
+}
+#endif

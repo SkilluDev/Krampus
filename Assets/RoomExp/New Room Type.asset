@@ -13,33 +13,19 @@ MonoBehaviour:
   m_Name: New Room Type
   m_EditorClassIdentifier: 
   constraints:
-    m_size: {x: 2, y: 2}
+    m_size: {x: 2, y: 1}
     m_data:
     - hasValue: 1
       value:
         requiredDoors:
-          m_doors: 4
-        optionalDoors:
-          m_doors: 2
-        phantom: 0
-    - hasValue: 1
-      value:
-        requiredDoors:
-          m_doors: 3
+          m_doors: 15
         optionalDoors:
           m_doors: 0
         phantom: 0
     - hasValue: 1
       value:
         requiredDoors:
-          m_doors: 4
-        optionalDoors:
-          m_doors: 9
-        phantom: 0
-    - hasValue: 1
-      value:
-        requiredDoors:
-          m_doors: 9
+          m_doors: 1
         optionalDoors:
           m_doors: 0
         phantom: 0

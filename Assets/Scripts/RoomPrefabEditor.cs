@@ -3,18 +3,18 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class RoomPrefab {
+public class RoomPrefabEditor {
     private Room m_targetRoom;
     private GameObject m_targetObject;
     private RoomType m_type;
     public string PrefabPath { get; private set; }
 
-    public RoomPrefab(RoomType type, string savePath) {
+    public RoomPrefabEditor(RoomType type, string savePath) {
         m_type = type;
         LoadObjectToMemory(CreatePrefabObject(type.name, savePath));
     }
 
-    public RoomPrefab(RoomType type, GameObject prefab) {
+    public RoomPrefabEditor(RoomType type, GameObject prefab) {
         m_type = type;
         LoadObjectToMemory(prefab);
     }

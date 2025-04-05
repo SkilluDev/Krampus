@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using static QuadDirection;
+using Unity.VisualScripting;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,6 +12,7 @@ using UnityEditor;
 public class RoomType : ScriptableObject {
     public Array2D<GridRoomConstraint> constraints = new Array2D<GridRoomConstraint>(1, 1);
     public GameObject prefab;
+    public string note = "";
     public RoomType basedOn;
 
     public int gradeOffset;
@@ -86,17 +89,18 @@ public class RoomType : ScriptableObject {
 
 }
 
-#if UNITY_EDITOR // custom editor
+#if UNITY_EDITOR 
+// DISCLAIMER - this is UI code. It is not meant to be aellegant or fast - it just has to be convinient to use and error-proof
 
 [CustomEditor(typeof(RoomType))]
 public class RoomTypeEditor : Editor {
-    private const int MARGIN = 10;
+    internal bool m_showConstraints = true, m_showNote = false;
+    private const int MARGIN = 8;
 
     private RoomType Target => (RoomType)target;
 
     private GUIStyle m_emptyCellStyle, m_filledCellStyle, m_doorButtonStyle, m_phantomCellStyle, m_errorLabelStyle;
     private Texture2D m_optionalDoorTex, m_requiredDoorTex, m_blockedDoorTex, m_emptyTex, m_deleteTex, m_phantomTex, m_stripes;
-    private bool m_showConstraints = true;
 
     private void Awake() {
         PrepareAssets();
@@ -137,138 +141,129 @@ public class RoomTypeEditor : Editor {
         m_errorLabelStyle.alignment = TextAnchor.MiddleCenter;
     }
 
-    public override void OnInspectorGUI() {
-        if (Target.constraints == null) Target.constraints = new Array2D<GridRoomConstraint>(1, 1);
-
+    private void DrawConstraintGrid() {
         int gw = Target.Width;
         int gh = Target.Height;
 
-        EditorGUI.BeginDisabledGroup(true);
-        EditorGUILayout.TextField("Name", Target.name);
-        EditorGUI.EndDisabledGroup();
+        var workArea = GUILayoutUtility.GetAspectRect(gw / (float)gh);
 
-        m_showConstraints = EditorGUILayout.BeginFoldoutHeaderGroup(m_showConstraints, $"Constraints ({Target.Width} x {Target.Height})");
-        if (m_showConstraints) {
-            var workArea = GUILayoutUtility.GetAspectRect(gw / (float)gh);
+        workArea.x += 16;
+        workArea.width -= 32;
+        workArea.height -= 32;
+        workArea.y += 16;
+        if (workArea.width > gw * 128) {
+            GUI.Label(workArea, "", m_emptyCellStyle);
 
-            workArea.x += 16;
-            workArea.width -= 32;
-            workArea.height -= 32;
-            workArea.y += 16;
-            if (workArea.width > gw * 128) {
-                GUI.Label(workArea, "", m_emptyCellStyle);
+            for (int i = 0; i < gw; i++) {
+                for (int j = 0; j < gh; j++) {
+                    var rect = new Rect(
+                        workArea.x + (i * workArea.width / gw) + MARGIN,
+                        workArea.y + (j * workArea.height / gh) + MARGIN,
+                        (workArea.width / gw) - (MARGIN * 2),
+                        (workArea.height / gh) - (MARGIN * 2)
+                    );
 
-                for (int i = 0; i < gw; i++) {
-                    for (int j = 0; j < gh; j++) {
-                        var rect = new Rect(
-                            workArea.x + (i * workArea.width / gw) + MARGIN,
-                            workArea.y + (j * workArea.height / gh) + MARGIN,
-                            (workArea.width / gw) - (MARGIN * 2),
-                            (workArea.height / gh) - (MARGIN * 2)
-                        );
-
-                        if (Target.constraints[i, j] == null) {
-                            if (GUI.Button(rect, m_emptyTex, m_doorButtonStyle)) {
-                                Target.constraints[i, j] = new GridRoomConstraint();
-                                EditorUtility.SetDirty(Target);
-                            }
-                        } else {
-                            DrawGridRoom(i, j, rect);
+                    if (Target.constraints[i, j] == null) {
+                        if (GUI.Button(rect, m_emptyTex, m_doorButtonStyle)) {
+                            Target.constraints[i, j] = new GridRoomConstraint();
+                            EditorUtility.SetDirty(Target);
                         }
-
+                    } else {
+                        DrawGridRoom(i, j, rect);
                     }
-                }
 
-            } else {
-                GUI.Label(workArea, "Expand the window!", m_errorLabelStyle);
-            }
-
-            #region Editing buttons
-
-            if (GUI.Button(new Rect(workArea.x, workArea.y - 16, 16, 16), Event.current.shift ? "-" : "+")) { //new row at the top
-                var old = Target.constraints;
-                if (Event.current.shift) {
-                    if (Target.Height <= 1) return;
-                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height - 1);
-                    for (int i = 0; i < old.Width && i < Target.Width; i++) {
-                        for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i, j + 1];
-                    }
-                } else {
-                    if (Target.Height >= 9) return;
-                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height + 1);
-                    for (int i = 0; i < old.Width; i++) {
-                        for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j + 1] = old[i, j];
-                    }
                 }
             }
 
-
-
-            if (GUI.Button(new Rect(workArea.x - 16, workArea.y, 16, 16), Event.current.shift ? "-" : "+")) { //new column on the left
-                var old = Target.constraints;
-                if (Event.current.shift) {
-                    if (Target.Width <= 1) return;
-                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width - 1, Target.Height);
-                    for (int i = 0; i < old.Width && i < Target.Width; i++) {
-                        for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i + 1, j];
-                    }
-                } else {
-                    if (Target.Width >= 9) return;
-                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width + 1, Target.Height);
-                    for (int i = 0; i < old.Width; i++) {
-                        for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i + 1, j] = old[i, j];
-                    }
-                }
-            }
-
-            if (GUI.Button(new Rect(workArea.x + workArea.width - 16, workArea.y + workArea.height, 16, 16), Event.current.shift ? "-" : "+")) { // new row at the bottom
-                var old = Target.constraints;
-                if (Event.current.shift) {
-                    if (Target.Height <= 1) return;
-                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height - 1);
-                } else {
-                    if (Target.Height >= 9) return;
-                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height + 1);
-                }
-                for (int i = 0; i < old.Width && i < Target.Width; i++) {
-                    for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
-                }
-            }
-
-            if (GUI.Button(new Rect(workArea.x + workArea.width, workArea.y + workArea.height - 16, 16, 16), Event.current.shift ? "-" : "+")) { // new column on the right
-                var old = Target.constraints;
-                if (Event.current.shift) {
-                    if (Target.Width <= 1) return;
-                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width - 1, Target.Height);
-                } else {
-                    if (Target.Width >= 9) return;
-                    Target.constraints = new Array2D<GridRoomConstraint>(Target.Width + 1, Target.Height);
-                }
-                for (int i = 0; i < old.Width && i < Target.Width; i++) {
-                    for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
-                }
-            }
-
-
-            if (GUI.Button(new Rect(workArea.x - 16, workArea.y + workArea.height, 16, 16), Event.current.shift ? "M" : "R")) { //rotate
-                if (Event.current.shift) Target.Flip();
-                else Target.Rotate90Clockwise();
-            }
-
-
-            #endregion
-
-            EditorGUILayout.HelpBox("Click on the empty (+) cells to create Room cells.\nClicking the (ghost) makes the cell Phantom - its constraints need to be met but it is not a part of the room.\nTo switch a cell back to a Room cell, click on the (+) in a Phantom cell.\nTo delete a cell, hold shift and click the (trashcan).\n\nClick on the icons to toggle door types.\nGreen = required door; Red = no door; Yellow = optional door;\nShift-clicking prevents affecting neighbours.\nThe [+] buttons in the corners can be used to increase the constraint area.\nShift-clicking [+] changes it to a [-] and reduces the area.\nTo rotate, use the [R] in the corner. Shift-clicking it mirrors the room.", MessageType.Info);
-
-            if (GUILayout.Button("Reset Constraints") && EditorUtility.DisplayDialog("Reset?", "Are you sure to delete all the constraints and start from scratch?", "Yes", "Nah")) {
-                Target.constraints = new Array2D<GridRoomConstraint>(1, 1);
-                EditorUtility.SetDirty(Target);
-            }
-            GUILayout.Space(20);
+        } else {
+            GUI.Label(workArea, "Expand the window!", m_errorLabelStyle);
         }
 
-        EditorGUILayout.EndFoldoutHeaderGroup();
+        #region Editing buttons
 
+        if (GUI.Button(new Rect(workArea.x, workArea.y - 16, 16, 16), Event.current.shift ? "-" : "+")) { //new row at the top
+            var old = Target.constraints;
+            if (Event.current.shift) {
+                if (Target.Height <= 1) return;
+                Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height - 1);
+                for (int i = 0; i < old.Width && i < Target.Width; i++) {
+                    for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i, j + 1];
+                }
+            } else {
+                if (Target.Height >= 9) return;
+                Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height + 1);
+                for (int i = 0; i < old.Width; i++) {
+                    for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j + 1] = old[i, j];
+                }
+            }
+        }
+
+
+
+        if (GUI.Button(new Rect(workArea.x - 16, workArea.y, 16, 16), Event.current.shift ? "-" : "+")) { //new column on the left
+            var old = Target.constraints;
+            if (Event.current.shift) {
+                if (Target.Width <= 1) return;
+                Target.constraints = new Array2D<GridRoomConstraint>(Target.Width - 1, Target.Height);
+                for (int i = 0; i < old.Width && i < Target.Width; i++) {
+                    for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i + 1, j];
+                }
+            } else {
+                if (Target.Width >= 9) return;
+                Target.constraints = new Array2D<GridRoomConstraint>(Target.Width + 1, Target.Height);
+                for (int i = 0; i < old.Width; i++) {
+                    for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i + 1, j] = old[i, j];
+                }
+            }
+        }
+
+        if (GUI.Button(new Rect(workArea.x + workArea.width - 16, workArea.y + workArea.height, 16, 16), Event.current.shift ? "-" : "+")) { // new row at the bottom
+            var old = Target.constraints;
+            if (Event.current.shift) {
+                if (Target.Height <= 1) return;
+                Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height - 1);
+            } else {
+                if (Target.Height >= 9) return;
+                Target.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height + 1);
+            }
+            for (int i = 0; i < old.Width && i < Target.Width; i++) {
+                for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
+            }
+        }
+
+        if (GUI.Button(new Rect(workArea.x + workArea.width, workArea.y + workArea.height - 16, 16, 16), Event.current.shift ? "-" : "+")) { // new column on the right
+            var old = Target.constraints;
+            if (Event.current.shift) {
+                if (Target.Width <= 1) return;
+                Target.constraints = new Array2D<GridRoomConstraint>(Target.Width - 1, Target.Height);
+            } else {
+                if (Target.Width >= 9) return;
+                Target.constraints = new Array2D<GridRoomConstraint>(Target.Width + 1, Target.Height);
+            }
+            for (int i = 0; i < old.Width && i < Target.Width; i++) {
+                for (int j = 0; j < old.Height && j < Target.Height; j++) Target.constraints[i, j] = old[i, j];
+            }
+        }
+
+
+        if (GUI.Button(new Rect(workArea.x - 16, workArea.y + workArea.height, 16, 16), Event.current.shift ? "M" : "R")) { //rotate
+            if (Event.current.shift) Target.Flip();
+            else Target.Rotate90Clockwise();
+        }
+
+
+        #endregion
+
+        EditorGUILayout.HelpBox("Click on the empty (+) cells to create Room cells.\nClicking the (ghost) makes the cell Phantom - its constraints need to be met but it is not a part of the room.\nTo switch a cell back to a Room cell, click on the (+) in a Phantom cell.\nTo delete a cell, hold shift and click the (trashcan).\n\nClick on the icons to toggle door types.\nGreen = required door; Red = no door; Yellow = optional door;\nShift-clicking prevents affecting neighbours.\nThe [+] buttons in the corners can be used to increase the constraint area.\nShift-clicking [+] changes it to a [-] and reduces the area.\nTo rotate, use the [R] in the corner. Shift-clicking it mirrors the room.", MessageType.Info);
+
+        if (GUILayout.Button("Reset Constraints") && EditorUtility.DisplayDialog("Reset?", "Are you sure to delete all the constraints and start from scratch?", "Yes", "Nah")) {
+            Target.constraints = new Array2D<GridRoomConstraint>(1, 1);
+            EditorUtility.SetDirty(Target);
+        }
+        GUILayout.Space(20);
+    }
+
+    private void DrawGradeField() {
         GUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Grade");
         if (GUILayout.Button("-")) Target.gradeOffset--;
@@ -278,43 +273,112 @@ public class RoomTypeEditor : Editor {
         if (GUILayout.Button("+")) Target.gradeOffset++;
         GUILayout.EndHorizontal();
         EditorGUILayout.HelpBox("The room's grade determines how complex it is to place. Rooms with higher grade get placed first, as they fit a smaller amount of cases.", MessageType.Info);
+    }
 
-        GUILayout.Space(10);
+    private void DrawNoteField() {
+        Target.note = EditorGUILayout.TextArea(Target.note);
+    }
+
+    private void DrawPrefabField(bool inPrefab = false) {
+        EditorGUI.BeginDisabledGroup(inPrefab);
+        GUILayout.BeginHorizontal();
         Target.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", Target.prefab, typeof(GameObject), false);
-        if (Target.prefab == null) {
-            if (HelpBoxWithButton("The Room has no prefab assigned!", "Create"))
-                CreateRoomPrefab();
-        } else if (RoomPrefab.CheckFloorObsolete(Target.prefab.GetComponent<Room>(), Target)) {
-            if (HelpBoxWithButton("The prefab requires a complete update!", "Update"))
-                UpdateRoomPrefabComplete();
-        } else if (RoomPrefab.CheckDoorsObsolete(Target.prefab.GetComponent<Room>(), Target)) {
-            if (HelpBoxWithButton("The prefab door layout has changed!", "Update"))
-                UpdateRoomPrefabDoors();
-        } else {
-            if (Event.current.shift) {
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Recreate prefab")) CreateRoomPrefab();
-                if (GUILayout.Button("Complete update")) UpdateRoomPrefabComplete();
-                if (GUILayout.Button("Door update")) UpdateRoomPrefabDoors();
-                GUILayout.EndHorizontal();
+        if (Target.prefab != null && !inPrefab && GUILayout.Button("Edit")) LoadPrefabEditing();
+        GUILayout.EndHorizontal();
+        EditorGUI.EndDisabledGroup();
+
+
+        var roomScript = Target.prefab == null ? null : Target.prefab.GetComponent<Room>(); // not ideal but whatevs
+
+        if (roomScript == null) {
+            if (!inPrefab) {
+                if (HelpBoxWithButton("No prefab is assigned!", "Create", MessageType.Error))
+                    CreateRoomPrefab();
             } else {
-                EditorGUILayout.HelpBox("The prefab is the physical representation of this Room", MessageType.Info);
+                EditorGUILayout.HelpBox("No prefab is assigned!", MessageType.Error);
+            }
+        } else if (Event.current.shift) {
+            GUILayout.Label("Warning - touch only if you know what you're doing!", EditorStyles.centeredGreyMiniLabel);
+            GUILayout.BeginHorizontal();
+            if (!inPrefab && GUILayout.Button("New")) CreateRoomPrefab();
+            if (GUILayout.Button("Regenerate")) UpdateRoomPrefabComplete();
+            if (GUILayout.Button("Update")) UpdateRoomPrefabDoors();
+            GUILayout.EndHorizontal();
+        } else if (RoomPrefabEditor.CheckFloorObsolete(roomScript, Target)) {
+            if (HelpBoxWithButton("Prefab needs a regeneration!", "Regenerate", MessageType.Warning)) UpdateRoomPrefabComplete();
+        } else if (RoomPrefabEditor.CheckDoorsObsolete(roomScript, Target)) {
+            if (HelpBoxWithButton("Prefab needs an update!", "Update", MessageType.Warning)) UpdateRoomPrefabDoors();
+        } else {
+            if (!inPrefab) {
+                EditorGUILayout.HelpBox("What is actually placed when generating a room.", MessageType.Info);
+            } else {
+                EditorGUILayout.HelpBox("Prefab is up to date with the layout.", MessageType.Info);
             }
         }
     }
 
-    // MaterialEditor.HelpBoxWithButton is for some reason not static so here is a copy paste
-    private static bool HelpBoxWithButton(string messageContent, string buttonContent) {
-        var rect = GUILayoutUtility.GetRect(new GUIContent(messageContent), EditorStyles.helpBox);
-        GUILayoutUtility.GetRect(1f, 25f);
-        rect.height += 25f;
-        GUI.Label(rect, messageContent, EditorStyles.helpBox);
-        var position = new Rect(rect.xMax - 60f - 4f, rect.yMax - 20f - 4f, 60f, 20f);
-        return GUI.Button(position, buttonContent);
+    public override void OnInspectorGUI() {
+        if (Target.constraints == null) Target.constraints = new Array2D<GridRoomConstraint>(1, 1);
+
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.TextField("Name", Target.name);
+        EditorGUI.EndDisabledGroup();
+
+        m_showConstraints = EditorGUILayout.BeginFoldoutHeaderGroup(m_showConstraints, $"Constraints ({Target.Width} x {Target.Height})");
+        if (m_showConstraints) {
+            DrawConstraintGrid();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
+        m_showNote = EditorGUILayout.BeginFoldoutHeaderGroup(
+            m_showNote,
+            "Note"
+                + (string.IsNullOrWhiteSpace(Target.note) ? "" : ": ")
+                + Target.note.Truncate(32).Replace("\n", " ")
+        );
+        if (m_showNote) {
+            DrawNoteField();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
+        DrawGradeField();
+
+        GUILayout.Space(10);
+        DrawPrefabField();
+    }
+
+    public void OnPrefabInspectorGUI() {
+        if (Target.constraints == null) Target.constraints = new Array2D<GridRoomConstraint>(1, 1);
+        DrawPrefabField(true);
+
+        m_showConstraints = EditorGUILayout.BeginFoldoutHeaderGroup(m_showConstraints, $"Constraints ({Target.Width} x {Target.Height})");
+        if (m_showConstraints) {
+            DrawConstraintGrid();
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
+
+        if (!string.IsNullOrWhiteSpace(Target.note)) {
+            EditorGUILayout.HelpBox(Target.note, MessageType.None);
+        }
+    }
+
+    // some magic i wrote
+    private static bool HelpBoxWithButton(string msg, string btn, MessageType t) {
+        var icon = new GUIContent(EditorGUIUtility.IconContent(t switch { MessageType.Info => "console.infoicon", MessageType.Warning => "console.warnicon", MessageType.Error => "console.erroricon", _ => "" })) { text = msg };
+        EditorGUILayout.LabelField(GUIContent.none, icon, EditorStyles.helpBox);
+        var rec = GUILayoutUtility.GetLastRect();
+        var dims = EditorStyles.objectField.CalcSize(new GUIContent(btn));
+        rec.xMin = rec.xMax - dims.x; rec.yMin += (rec.height - dims.y) / 2; rec.yMax -= (rec.height - dims.y) / 2; rec.x -= 8;
+        return GUI.Button(rec, new GUIContent(btn));
+    }
+
+    private void LoadPrefabEditing() {
+        if (Target.prefab != null)
+            AssetDatabase.OpenAsset(Target.prefab);
     }
 
     private void UpdateRoomPrefabComplete() {
-        var editor = new RoomPrefab(Target, Target.prefab);
+        var editor = new RoomPrefabEditor(Target, Target.prefab);
         editor.RecreateDoorGrid();
         UpdateFloorDialog(editor);
         editor.UpdateDoorGroups();
@@ -322,7 +386,7 @@ public class RoomTypeEditor : Editor {
     }
 
     private void UpdateRoomPrefabDoors() {
-        var editor = new RoomPrefab(Target, Target.prefab);
+        var editor = new RoomPrefabEditor(Target, Target.prefab);
         editor.UpdateDoorGroups();
         Target.prefab = editor.ApplyAndSave();
     }
@@ -333,13 +397,13 @@ public class RoomTypeEditor : Editor {
             Target.name.Replace("Type", "").Trim(),
             "prefab", "Save the prefab"
         );
-        var editor = new RoomPrefab(Target, savePath);
+        var editor = new RoomPrefabEditor(Target, savePath);
         editor.RecreateDoorGrid();
         UpdateFloorDialog(editor);
         Target.prefab = editor.ApplyAndSave();
     }
 
-    private void UpdateFloorDialog(RoomPrefab editor) {
+    private void UpdateFloorDialog(RoomPrefabEditor editor) {
         var mesh = editor.CreateFloorMesh();
         if (AssetDatabase.Contains(mesh)) {
             AssetDatabase.SaveAssets();
