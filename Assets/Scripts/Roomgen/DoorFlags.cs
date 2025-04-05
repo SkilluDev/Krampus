@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
-using static QuadDirection;
+using KrampUtils;
+using static KrampUtils.QuadDirection;
 
 namespace Roomgen {
     [Serializable]

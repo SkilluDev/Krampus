@@ -1,4 +1,7 @@
 using UnityEngine;
+using KrampUtils;
+using System;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -68,6 +71,8 @@ namespace Roomgen {
 
         #region Gizmos
         private void OnDrawGizmos() {
+            if (m_type == null) return;
+
             Gizmos.color = Color.blue;
             Gizmos.DrawSphere(transform.position, DOOR_SIZE);
 
@@ -107,21 +112,74 @@ namespace Roomgen {
         private Room Target => (Room)target;
 
         public void OnEnable() {
+            if (Target.m_type == null) {
+                Debug.LogError($"Invalid RoomType on Room {Target.gameObject.name}!");
+                return;
+            }
+
             m_childEditor = (RoomTypeEditor)CreateEditor(Target.m_type);
             m_childEditor.m_showConstraints = false;
         }
 
         public override void OnInspectorGUI() {
             base.OnInspectorGUI();
+
+
+
             GUILayout.BeginHorizontal();
-            EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.ObjectField("Room Type", Target.m_type, typeof(RoomType), false);
-            EditorGUI.EndDisabledGroup();
-            if (GUILayout.Button("Open")) Selection.activeObject = Target.m_type;
+            Target.m_type = (RoomType)EditorGUILayout.ObjectField("Room Type", Target.m_type, typeof(RoomType), false);
+            if (Target.m_type != null && GUILayout.Button("Open")) Selection.activeObject = Target.m_type;
             EditorGUILayout.EndHorizontal();
+            if (Target.m_type == null) {
+                if (EditorGUIHelper.HelpBoxWithButton("The Room has no RoomType!", "Create", MessageType.Error)) {
+                    CreateRoomType();
+                }
+                return;
+            }
+            if (m_childEditor == null) OnEnable();
             m_childEditor.OnPrefabInspectorGUI();
+        }
+
+        private void CreateRoomType() {
+            var newrt = RoomType.CreateInstance<RoomType>();
+            newrt.constraints = new Array2D<GridRoomConstraint>(Target.Width, Target.Height);
+            for (int i = 0; i < Target.Width; i++) {
+                for (int j = 0; j < Target.Height; j++) {
+                    if (Target.m_doorGrid[i, j] == null) newrt.constraints[i, j] = null;
+                    else {
+                        newrt.constraints[i, j] = new GridRoomConstraint();
+                        newrt.constraints[i, j].phantom = Target.m_doorGrid[i, j].phantom;
+                        foreach (var w in DirectionMethods.CARDINALS) {
+                            if (Target.m_doorGrid[i, j][w] != null) newrt.constraints[i, j].optionalDoors[w] = true;
+                        }
+                    }
+                }
+            }
+
+            string prefPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(Target.gameObject);
+            if (string.IsNullOrWhiteSpace(prefPath)) prefPath = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage().assetPath;
+            if (string.IsNullOrWhiteSpace(prefPath)) throw new Exception("Failed to create the type");
+
+            var tmpPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefPath);
+
+            newrt.prefab = tmpPrefab;
+            string defaultPath = EditorGUIHelper.GetFolderAlike("room");
+            string savePath = EditorUtility.SaveFilePanelInProject(
+                "Save RoomType",
+                Target.name.Replace("Type", "").Trim() + " Type",
+                "asset", "Save the asset",
+                defaultPath
+            );
+            if (string.IsNullOrWhiteSpace(savePath)) return;
+
+            AssetDatabase.CreateAsset(newrt, savePath);
+            AssetDatabase.SaveAssets();
+
+            Target.GetComponent<Room>().m_type = newrt;
+            EditorUtility.SetDirty(Target);
+
+
         }
     }
 #endif
-
 }

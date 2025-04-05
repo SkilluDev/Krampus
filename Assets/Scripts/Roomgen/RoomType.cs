@@ -1,7 +1,11 @@
 using UnityEngine;
-using static QuadDirection;
+using static KrampUtils.QuadDirection;
 using Unity.VisualScripting;
 using System.Linq;
+using KrampUtils;
+using System;
+
+
 
 
 #if UNITY_EDITOR
@@ -119,7 +123,7 @@ namespace Roomgen {
         }
 
         private void PrepareAssets() {
-            GUIStyleHelper.Drop();
+            EditorGUIHelper.Drop();
             m_optionalDoorTex = Resources.Load<Texture2D>("EditorIcons/OptionalDoor");
             m_blockedDoorTex = Resources.Load<Texture2D>("EditorIcons/BlockedDoor");
             m_requiredDoorTex = Resources.Load<Texture2D>("EditorIcons/RequiredDoor");
@@ -128,15 +132,15 @@ namespace Roomgen {
             m_phantomTex = Resources.Load<Texture2D>("EditorIcons/RoomPhantom");
             m_stripes = Resources.Load<Texture2D>("EditorIcons/BgStripes");
             m_emptyCellStyle = new GUIStyle() {
-                normal = GUIStyleHelper.GetColored(new Color(0.1f, 0.1f, 0.1f))
+                normal = EditorGUIHelper.GetColored(new Color(0.1f, 0.1f, 0.1f))
             };
             m_filledCellStyle = new GUIStyle() {
-                normal = GUIStyleHelper.GetColored(new Color(0.25f, 0.25f, 0.25f))
+                normal = EditorGUIHelper.GetColored(new Color(0.25f, 0.25f, 0.25f))
             };
             m_doorButtonStyle = new GUIStyle() {
-                normal = GUIStyleHelper.GetColored(new Color(0, 0, 0, 0)),
-                hover = GUIStyleHelper.GetColored(new Color(1, 1, 1, 0.1f)),
-                active = GUIStyleHelper.GetColored(new Color(1, 1, 1, 0.05f)),
+                normal = EditorGUIHelper.GetColored(new Color(0, 0, 0, 0)),
+                hover = EditorGUIHelper.GetColored(new Color(1, 1, 1, 0.1f)),
+                active = EditorGUIHelper.GetColored(new Color(1, 1, 1, 0.05f)),
                 alignment = TextAnchor.MiddleCenter
             };
             m_phantomCellStyle = new GUIStyle() {
@@ -300,7 +304,7 @@ namespace Roomgen {
 
             if (roomScript == null) {
                 if (!inPrefab) {
-                    if (HelpBoxWithButton("No prefab is assigned!", "Create", MessageType.Error))
+                    if (EditorGUIHelper.HelpBoxWithButton("No prefab is assigned!", "Create", MessageType.Error))
                         CreateRoomPrefab();
                 } else {
                     EditorGUILayout.HelpBox("No prefab is assigned!", MessageType.Error);
@@ -312,10 +316,12 @@ namespace Roomgen {
                 if (GUILayout.Button("Regenerate")) UpdateRoomPrefabComplete();
                 if (GUILayout.Button("Update")) UpdateRoomPrefabDoors();
                 GUILayout.EndHorizontal();
+            } else if (roomScript.m_type != Target) {
+                if (EditorGUIHelper.HelpBoxWithButton("Prefab is connected with another RoomType", "Reconnect", MessageType.Warning)) ConnectRoomPrefab();
             } else if (RoomPrefabEditor.CheckFloorObsolete(roomScript, Target)) {
-                if (HelpBoxWithButton("Prefab needs a regeneration!", "Regenerate", MessageType.Warning)) UpdateRoomPrefabComplete();
+                if (EditorGUIHelper.HelpBoxWithButton("Prefab needs a regeneration!", "Regenerate", MessageType.Warning)) UpdateRoomPrefabComplete();
             } else if (RoomPrefabEditor.CheckDoorsObsolete(roomScript, Target)) {
-                if (HelpBoxWithButton("Prefab needs an update!", "Update", MessageType.Warning)) UpdateRoomPrefabDoors();
+                if (EditorGUIHelper.HelpBoxWithButton("Prefab needs an update!", "Update", MessageType.Warning)) UpdateRoomPrefabDoors();
             } else {
                 if (!inPrefab) {
                     EditorGUILayout.HelpBox("What is actually placed when generating a room.", MessageType.Info);
@@ -324,6 +330,8 @@ namespace Roomgen {
                 }
             }
         }
+
+
 
         /// <summary>
         /// Draws default inspector
@@ -376,19 +384,15 @@ namespace Roomgen {
             }
         }
 
-        // some magic i wrote
-        private static bool HelpBoxWithButton(string msg, string btn, MessageType t) {
-            var icon = new GUIContent(EditorGUIUtility.IconContent(t switch { MessageType.Info => "console.infoicon", MessageType.Warning => "console.warnicon", MessageType.Error => "console.erroricon", _ => "" })) { text = msg };
-            EditorGUILayout.LabelField(GUIContent.none, icon, EditorStyles.helpBox);
-            var rec = GUILayoutUtility.GetLastRect();
-            var dims = EditorStyles.objectField.CalcSize(new GUIContent(btn));
-            rec.xMin = rec.xMax - dims.x; rec.yMin += (rec.height - dims.y) / 2; rec.yMax -= (rec.height - dims.y) / 2; rec.x -= 8;
-            return GUI.Button(rec, new GUIContent(btn));
-        }
-
         private void LoadPrefabEditing() {
             if (Target.prefab == null) return;
             AssetDatabase.OpenAsset(Target.prefab);
+        }
+
+        private void ConnectRoomPrefab() {
+            if (!EditorUtility.DisplayDialog("Are you sure?", "This will change the RoomType on the prefab.", "Yes", "No")) return;
+            var editor = new RoomPrefabEditor(Target, Target.prefab);
+            editor.ApplyAndSave();
         }
 
         private void UpdateRoomPrefabComplete() {
@@ -406,8 +410,7 @@ namespace Roomgen {
         }
 
         private void CreateRoomPrefab() {
-            string defaultPath = System.IO.Directory.GetDirectories(Application.dataPath).FirstOrDefault(w => w.Contains("room", System.StringComparison.InvariantCultureIgnoreCase));
-            if (string.IsNullOrWhiteSpace(defaultPath)) defaultPath = "Assets/";
+            string defaultPath = EditorGUIHelper.GetFolderAlike("room");
             string savePath = EditorUtility.SaveFilePanelInProject(
                 "Save prefab",
                 Target.name.Replace("Type", "").Trim(),
@@ -419,6 +422,7 @@ namespace Roomgen {
             var editor = new RoomPrefabEditor(Target, savePath);
             editor.RecreateDoorGrid();
             UpdateFloorDialog(editor);
+            editor.UpdateDoorGroups();
             Target.prefab = editor.ApplyAndSave();
         }
 

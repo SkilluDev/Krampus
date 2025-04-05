@@ -1,4 +1,5 @@
 using UnityEngine;
+using KrampUtils;
 
 namespace Roomgen {
     [System.Serializable]

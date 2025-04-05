@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
-
+using KrampUtils;
 
 namespace Roomgen {
     public class RoomPrefabEditor {
@@ -40,8 +40,8 @@ namespace Roomgen {
                 m_targetRoom = room;
             } else {
                 m_targetRoom = obj.AddComponent<Room>();
-                m_targetRoom.m_type = m_type;
             }
+            m_targetRoom.m_type = m_type;
             m_targetObject = obj;
         }
 
