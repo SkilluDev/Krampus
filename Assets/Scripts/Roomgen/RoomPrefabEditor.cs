@@ -41,7 +41,9 @@ namespace Roomgen {
             } else {
                 m_targetRoom = obj.AddComponent<Room>();
             }
+            Debug.Log(m_targetRoom.m_type);
             m_targetRoom.m_type = m_type;
+            Debug.Log(m_targetRoom.m_type);
             m_targetObject = obj;
         }
 

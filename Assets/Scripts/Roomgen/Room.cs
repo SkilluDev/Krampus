@@ -123,11 +123,10 @@ namespace Roomgen {
 
         public override void OnInspectorGUI() {
             base.OnInspectorGUI();
-
-
-
             GUILayout.BeginHorizontal();
-            Target.m_type = (RoomType)EditorGUILayout.ObjectField("Room Type", Target.m_type, typeof(RoomType), false);
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.ObjectField("Room Type", Target.m_type, typeof(RoomType), false);
+            EditorGUI.EndDisabledGroup();
             if (Target.m_type != null && GUILayout.Button("Open")) Selection.activeObject = Target.m_type;
             EditorGUILayout.EndHorizontal();
             if (Target.m_type == null) {
@@ -175,10 +174,9 @@ namespace Roomgen {
             AssetDatabase.CreateAsset(newrt, savePath);
             AssetDatabase.SaveAssets();
 
+            PrefabUtility.SaveAsPrefabAsset(tmpPrefab, prefPath); // what a fucking shitfuckery
             Target.GetComponent<Room>().m_type = newrt;
             EditorUtility.SetDirty(Target);
-
-
         }
     }
 #endif
