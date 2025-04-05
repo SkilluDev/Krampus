@@ -4,7 +4,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Interaction : MonoBehaviour {
+public class Interaction : MonoBehaviour
+{
     private static readonly int CurrentlyEating = Animator.StringToHash("CurrentlyEating");
 
     public Texture2D cursor;
@@ -42,7 +43,8 @@ public class Interaction : MonoBehaviour {
 
     private Vector3 tonguePoint;
 
-    private void Start() {
+    private void Start()
+    {
         Cursor.SetCursor(cursor, new Vector2(cursor.width / 2, cursor.height / 2), CursorMode.ForceSoftware);
         lineRenderer = gameObject.GetComponent<LineRenderer>();
         trail = GetComponentInChildren<TrailRenderer>();
@@ -52,21 +54,25 @@ public class Interaction : MonoBehaviour {
 
 
 
-    private void Update() {
-        if (Input.GetButtonDown("Fire1") && canTongue && GetComponent<CharacterController>().shouldKrampusMove) {
+    private void Update()
+    {
+        if (Input.GetButtonDown("Fire1") && canTongue && GetComponent<KrampusController>().shouldKrampusMove)
+        {
             StartCoroutine(ShootTongue());
         }
     }
 
-    private IEnumerator ShootTongue() {
+    private IEnumerator ShootTongue()
+    {
 
 
-        GetComponent<CharacterController>().shouldKrampusMove = false;
+        GetComponent<KrampusController>().shouldKrampusMove = false;
         m_animator.SetBool("hasHit", false);
         canTongue = false;
         m_animator.SetTrigger("Shoot");
         ray = m_cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child"))) {
+        if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child")))
+        {
             SoundManager.PlaySound("tongue");
             Vector3 realPoint = new Vector3(hitData.point.x, 1f, hitData.point.z);
             lastRealPosition = realPoint;
@@ -74,14 +80,17 @@ public class Interaction : MonoBehaviour {
             RotatePlayer(dir);
             yield return new WaitForSeconds(0.4f);
             Debug.DrawRay(transform.position + Vector3.up, dir, Color.red, 5f);
-            if (Physics.Raycast(transform.position + Vector3.up, dir.normalized, out hit, m_tongueLength, LayerMask.GetMask("Wall", "Child", "Door"))) {
+            if (Physics.Raycast(transform.position + Vector3.up, dir.normalized, out hit, m_tongueLength, LayerMask.GetMask("Wall", "Child", "Door")))
+            {
                 Debug.Log(hit.transform.name);
                 Debug.Log(hit.transform.gameObject.layer);
                 Collider[] cols = Physics.OverlapSphere(hit.point, lolipopRadius, LayerMask.GetMask("Child"));
-                if (cols.Length > 0) {
+                if (cols.Length > 0)
+                {
                     RotatePlayer(dir);
                     child = cols[0].gameObject;
-                    if (Physics.Raycast(transform.position, (child.transform.position - transform.position).normalized, Vector3.Distance(transform.position, child.transform.position), LayerMask.GetMask("Wall"))) {
+                    if (Physics.Raycast(transform.position, (child.transform.position - transform.position).normalized, Vector3.Distance(transform.position, child.transform.position), LayerMask.GetMask("Wall")))
+                    {
                         m_animator.SetBool("hasHit", false);
                         float time = 0.2f;
                         empty = new GameObject();
@@ -91,7 +100,9 @@ public class Interaction : MonoBehaviour {
                         StartCoroutine(EmptyTongueOut(time));
                         StartCoroutine(EmptyTongueIn(time));
 
-                    } else {
+                    }
+                    else
+                    {
                         Debug.Log(child.transform.name);
                         Debug.Log(child.transform.gameObject.layer);
                         child.GetComponent<ChildContoller>().Eat();
@@ -106,7 +117,9 @@ public class Interaction : MonoBehaviour {
                         trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
                         child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
                     }
-                } else {
+                }
+                else
+                {
 
                     Debug.Log("I am eating your mom");
                     float time = 0.2f;
@@ -119,7 +132,9 @@ public class Interaction : MonoBehaviour {
                     StartCoroutine(EmptyTongueIn(time));
                 }
 
-            } else {
+            }
+            else
+            {
                 m_animator.SetBool("hasHit", false);
                 float time = 0.2f;
                 empty = new GameObject();
@@ -134,28 +149,32 @@ public class Interaction : MonoBehaviour {
 
 
 
-    private IEnumerator EmptyTongueOut(float time) {
+    private IEnumerator EmptyTongueOut(float time)
+    {
         empty.transform.DOMove(tonguePoint, time).SetEase(Ease.OutExpo);
         lineRenderer.enabled = true;
         canTongue = false;
-        while (true) {
+        while (true)
+        {
             lineRenderer.SetPosition(0, m_tonguePosition.position);
             lineRenderer.SetPosition(1, empty.transform.position);
             yield return new WaitForEndOfFrame();
         }
     }
-    private IEnumerator EmptyTongueIn(float time) {
-        yield return new WaitForSeconds(time+0.1f);
+    private IEnumerator EmptyTongueIn(float time)
+    {
+        yield return new WaitForSeconds(time + 0.1f);
         empty.transform.DOMove(m_tonguePosition.position, time).SetEase(Ease.InExpo);
         yield return new WaitForSeconds(time);
         StopCoroutine(EmptyTongueOut(time));
         lineRenderer.enabled = false;
         canTongue = true;
-        if (!GetComponent<CharacterController>().isDead)
-            GetComponent<CharacterController>().shouldKrampusMove = true;
+        if (!GetComponent<KrampusController>().isDead)
+            GetComponent<KrampusController>().shouldKrampusMove = true;
 
     }
-    private IEnumerator StopUpdateLineRenderer(float time) {
+    private IEnumerator StopUpdateLineRenderer(float time)
+    {
 
 
         yield return new WaitForSeconds(time);
@@ -166,18 +185,21 @@ public class Interaction : MonoBehaviour {
         Destroy(child);
         Camera.main.GetComponent<CameraFollow>().Shake();
         canTongue = true;
-        if (!GetComponent<CharacterController>().isDead)
-            GetComponent<CharacterController>().shouldKrampusMove = true;
+        if (!GetComponent<KrampusController>().isDead)
+            GetComponent<KrampusController>().shouldKrampusMove = true;
         GrandPoints();
         yield break;
     }
 
-    private IEnumerator UpdateLineRenderer() {
+    private IEnumerator UpdateLineRenderer()
+    {
         lineRenderer.enabled = true;
         canTongue = false;
 
-        while (true) {
-            if (!child) {
+        while (true)
+        {
+            if (!child)
+            {
                 yield break;
             }
             lineRenderer.SetPosition(0, m_tonguePosition.position);
@@ -186,13 +208,17 @@ public class Interaction : MonoBehaviour {
         }
     }
 
-    private void GrandPoints() {
-        if (child.gameObject.GetComponent<Child>().isBad) {
+    private void GrandPoints()
+    {
+        if (child.gameObject.GetComponent<Child>().isBad)
+        {
             badChildrenEatCount++;
             WinCondition.Instance.badChildEaten();
             WinCondition.Instance.AddScore(10);
             WinCondition.Instance.SubtractTime(-10);
-        } else {
+        }
+        else
+        {
             goodChildrenEatCount++;
             WinCondition.Instance.SubtractScore(20);
             WinCondition.Instance.SubtractTime(15);
@@ -200,14 +226,16 @@ public class Interaction : MonoBehaviour {
     }
 
 
-    private void RotatePlayer(Vector3 dir) {
+    private void RotatePlayer(Vector3 dir)
+    {
         Debug.Log(dir);
         Quaternion rot = Quaternion.LookRotation(new Vector3(dir.x, dir.y, dir.z));
 
         model.transform.rotation = Quaternion.Euler(0, rot.eulerAngles.y, 0);
     }
 
-    private void OnDrawGizmos() {
+    private void OnDrawGizmos()
+    {
         Gizmos.DrawSphere(lastRealPosition, 0.1f);
         Gizmos.DrawWireSphere(lastRealPosition, lolipopRadius);
     }
