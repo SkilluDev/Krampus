@@ -1,12 +1,7 @@
 using UnityEngine;
 using static KrampUtils.QuadDirection;
 using Unity.VisualScripting;
-using System.Linq;
 using KrampUtils;
-using System;
-
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,6 +12,7 @@ namespace Roomgen {
     public class RoomType : ScriptableObject {
         public Array2D<GridRoomConstraint> constraints = new Array2D<GridRoomConstraint>(1, 1);
         public GameObject prefab;
+        public RoomType basedOn;
         public string note = "";
         public int gradeOffset;
         public bool r0 = true, r90 = true, r180 = true, r270 = true;
@@ -42,6 +38,12 @@ namespace Roomgen {
             get => BaseGrade + gradeOffset;
         }
 
+        public Room SpawnPrefab(int x, int y, DoorFlags[,] grid) {
+            var po = Instantiate(prefab, Room.GetCellTopLeft(x, y), Quaternion.identity).GetComponent<Room>();
+            po.ConfigureDoors(x, y, grid);
+            return po;
+        }
+
         public bool CanPlace(int x, int y, DoorFlags[,] grid, bool[,] occupied) {
             for (int i = 0; i < Width; i++) {
                 for (int j = 0; j < Height; j++) {
@@ -54,7 +56,7 @@ namespace Roomgen {
         }
 
 
-        internal void Rotate90Clockwise() {
+        internal void ConstraintRot90Clockwise() {
             var old = constraints;
             constraints = new Array2D<GridRoomConstraint>(Height, Width);
             for (int i = 0; i < Width; i++) {
@@ -67,7 +69,7 @@ namespace Roomgen {
             }
         }
 
-        internal void Flip() {
+        internal void ConstraintFlip() {
             var old = constraints;
             constraints = new Array2D<GridRoomConstraint>(Width, Height);
             for (int i = 0; i < Width; i++) {
@@ -239,8 +241,8 @@ namespace Roomgen {
 
 
             if (GUI.Button(new Rect(workArea.x - 16, workArea.y + workArea.height, 16, 16), Event.current.shift ? "M" : "R")) { //rotate
-                if (Event.current.shift) Target.Flip();
-                else Target.Rotate90Clockwise();
+                if (Event.current.shift) Target.ConstraintFlip();
+                else Target.ConstraintRot90Clockwise();
             }
 
 

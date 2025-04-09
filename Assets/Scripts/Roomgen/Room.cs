@@ -48,6 +48,10 @@ namespace Roomgen {
         }
 
         public void Rotate90Clockwise() {
+            if (m_type.basedOn == null) {
+                Debug.LogWarning("You should not be rotating Room base prefabs");
+            }
+
             var old = m_doorGrid;
             var oldCenter = new Vector3(Width / 2f * CELL_SIZE, 0, -Height / 2f * CELL_SIZE);
             m_doorGrid = new Array2D<DoorPropGroups>(Height, Width);
@@ -61,9 +65,9 @@ namespace Roomgen {
             var newCenter = new Vector3(Width / 2f * CELL_SIZE, 0, -Height / 2f * CELL_SIZE);
 
             for (int i = 0; i < transform.childCount; i++) {
-                var kid = transform.GetChild(i);
-                kid.RotateAround(oldCenter, Vector3.up, 90);
-                kid.position += newCenter - oldCenter;
+                var child = transform.GetChild(i);
+                child.RotateAround(oldCenter, Vector3.up, 90);
+                child.position += newCenter - oldCenter;
             }
         }
 
