@@ -18,8 +18,8 @@ namespace Roomgen {
         public Array2D<GridRoomConstraint> constraints = new Array2D<GridRoomConstraint>(1, 1);
         public GameObject prefab;
         public string note = "";
-        public RoomType basedOn;
         public int gradeOffset;
+        public bool r0 = true, r90 = true, r180 = true, r270 = true;
         public int Width => constraints.Width;
         public int Height => constraints.Height;
         public int BaseGrade {
@@ -53,14 +53,6 @@ namespace Roomgen {
             return true;
         }
 
-        public static RoomType CreateRotated(RoomType original, int rots) {
-            var instance = Instantiate(original);
-            for (int i = 0; i < rots % 4; i++) {
-                instance.Rotate90Clockwise();
-                instance.prefab.GetComponent<Room>().Rotate90Clockwise();
-            }
-            return instance;
-        }
 
         internal void Rotate90Clockwise() {
             var old = constraints;
@@ -86,18 +78,6 @@ namespace Roomgen {
                     constraints[i, j].optionalDoors = constraints[i, j].optionalDoors.InvertHorizontal();
                 }
             }
-        }
-
-        public RoomType CreateInstance(int rotation) {
-            var ni = Instantiate(this);
-            var np = ni.prefab.GetComponent<Room>();
-            for (int i = 0; i < rotation; i++) {
-                np.Rotate90Clockwise();
-                ni.Rotate90Clockwise();
-            }
-            ni.basedOn = this;
-            np.m_type = ni;
-            return ni;
         }
     }
 
@@ -275,6 +255,21 @@ namespace Roomgen {
             GUILayout.Space(20);
         }
 
+        private void DrawRotationFields() {
+            EditorGUILayout.LabelField("Rotated Variants", EditorStyles.boldLabel);
+            var s = new GUIStyle(EditorStyles.toggle) {
+                stretchWidth = false
+            };
+            GUILayout.BeginHorizontal();
+            Target.r0 = GUILayout.Toggle(Target.r0, "0°", EditorStyles.miniButton);
+            Target.r90 = GUILayout.Toggle(Target.r90, "90°", EditorStyles.miniButton);
+            Target.r180 = GUILayout.Toggle(Target.r180, "180°", EditorStyles.miniButton);
+            Target.r270 = GUILayout.Toggle(Target.r270, "270°", EditorStyles.miniButton);
+            GUILayout.EndHorizontal();
+
+            EditorGUILayout.HelpBox("Which ways can this room get rotated in generation?", MessageType.Info);
+        }
+
         private void DrawGradeField() {
             GUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Grade");
@@ -364,6 +359,9 @@ namespace Roomgen {
 
             GUILayout.Space(10);
             DrawPrefabField();
+
+            GUILayout.Space(10);
+            DrawRotationFields();
         }
 
         /// <summary>

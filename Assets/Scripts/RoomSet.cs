@@ -12,7 +12,6 @@ public class RoomSet : ScriptableObject {
 
         foreach (var r in types) {
             for (int i = 0; i < 4; i++) {
-                list.Add(RoomType.CreateRotated(r, i));
             }
         }
 
