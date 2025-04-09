@@ -41,9 +41,7 @@ namespace Roomgen {
             } else {
                 m_targetRoom = obj.AddComponent<Room>();
             }
-            Debug.Log(m_targetRoom.m_type);
             m_targetRoom.m_type = m_type;
-            Debug.Log(m_targetRoom.m_type);
             m_targetObject = obj;
         }
 
@@ -94,6 +92,13 @@ namespace Roomgen {
             }
             return false;
         }
+
+        private static PropGroup CreateDoorGroup(Vector2Int cellPosition, QuadDirection dir, Room room) =>
+            PropGroup.CreatePropGroup($"Door [{cellPosition} {dir}]",
+                Room.GetPleasantDoorPosition(cellPosition.x, cellPosition.y, dir),
+                room
+            );
+
 
 
         /// <summary>
@@ -230,7 +235,7 @@ namespace Roomgen {
 
                     foreach (var dir in DirectionMethods.CARDINALS) {
                         if (targetDoors[dir] && m_targetRoom.m_doorGrid[i, j][dir] == null) {
-                            m_targetRoom.m_doorGrid[i, j][dir] = PropGroup.Create(new Vector2Int(i, j), dir, m_targetRoom);
+                            m_targetRoom.m_doorGrid[i, j][dir] = RoomPrefabEditor.CreateDoorGroup(new Vector2Int(i, j), dir, m_targetRoom);
                         }
                         if (!targetDoors[dir] && m_targetRoom.m_doorGrid[i, j][dir] != null) {
                             m_targetRoom.m_doorGrid[i, j].Destroy(dir);

@@ -135,8 +135,6 @@ MonoBehaviour:
       m_Calls: []
   m_disableList: []
   m_room: {fileID: 3460584282063529152}
-  m_cellPosition: {x: 1, y: 0}
-  m_direction: 2
   m_gizmoColor: {r: 0.33, g: 0.060000017, b: 0.6, a: 0.7}
 --- !u!1 &4111035663978785588
 GameObject:
@@ -171,6 +169,7 @@ Transform:
   - {fileID: 3537277589429029311}
   - {fileID: 7324123478865667269}
   - {fileID: 6054838270408407442}
+  - {fileID: 8600199350865217235}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3460584282063529152
@@ -194,7 +193,7 @@ MonoBehaviour:
         phantom: 0
         m_north: {fileID: 5268371289839563056}
         m_east: {fileID: 0}
-        m_south: {fileID: 0}
+        m_south: {fileID: 1281580083918394398}
         m_west: {fileID: 0}
     - hasValue: 1
       value:
@@ -256,6 +255,57 @@ MonoBehaviour:
       m_Calls: []
   m_disableList: []
   m_room: {fileID: 3460584282063529152}
-  m_cellPosition: {x: 0, y: 0}
-  m_direction: 8
   m_gizmoColor: {r: 0.12, g: 0.6, b: 0.44000006, a: 0.7}
+--- !u!1 &9070427302014658074
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8600199350865217235}
+  - component: {fileID: 1281580083918394398}
+  m_Layer: 0
+  m_Name: Door [(0, 0) SOUTH]
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8600199350865217235
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9070427302014658074}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5, y: 0, z: -9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1975369445098594397}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1281580083918394398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9070427302014658074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d680ca413aae106bb7cd55e609b043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisabled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_disableList: []
+  m_room: {fileID: 3460584282063529152}
+  m_gizmoColor: {r: 0, g: 0, b: 0, a: 0}

@@ -104,18 +104,18 @@ namespace Roomgen {
                 }
             }
 
-            for (int i = 0; i < m_type.Width; i++) {
-                for (int j = 0; j < m_type.Height; j++) {
-                    if (m_type.constraints[i, j] == null) continue;
+            for (int i = 0; i < Width; i++) {
+                for (int j = 0; j < Height; j++) {
+                    if (m_doorGrid[i, j] == null) continue;
                     Gizmos.color = Color.blue;
                     if (m_doorGrid[i, j].North)
-                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.NORTH), DOOR_NS_SIZE);
+                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.NORTH), DOOR_NS_SIZE * 0.9f);
                     if (m_doorGrid[i, j].South)
-                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.SOUTH), DOOR_NS_SIZE);
+                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.SOUTH), DOOR_NS_SIZE * 0.9f);
                     if (m_doorGrid[i, j].East)
-                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.EAST), DOOR_EW_SIZE);
+                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.EAST), DOOR_EW_SIZE * 0.9f);
                     if (m_doorGrid[i, j].West)
-                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.WEST), DOOR_EW_SIZE);
+                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.WEST), DOOR_EW_SIZE * 0.9f);
                 }
             }
         }
