@@ -10,6 +10,8 @@ public class RoomGenerator : MonoBehaviour {
     [SerializeField] private int m_width, m_height;
     [SerializeField] private RoomSet m_roomSet;
 
+    [SerializeField] private RoomType m_testType;
+
     private void Start() {
         Generate();
     }
@@ -74,15 +76,20 @@ public class RoomGenerator : MonoBehaviour {
             return prefab;
         }
 
-        foreach (var rt in m_roomSet.GetTierSortedList()) {
-            var possiblePlacements = new List<Vector2Int>();
-            while ((possiblePlacements = FindPossiblePlacements(rt)).Count > 0) {
-                PlaceRoom(rt, possiblePlacements[0]);
-            }
+        // foreach (var rt in m_roomSet.GetTierSortedList()) {
+        //     var possiblePlacements = new List<Vector2Int>();
+        //     while ((possiblePlacements = FindPossiblePlacements(rt)).Count > 0) {
+        //         PlaceRoom(rt, possiblePlacements[0]);
+        //     }
 
-        }
+        // }
 
-        DebugLogDoorset();
+        // DebugLogDoorset();
+
+        RoomVariantManager.CreateRotatedInstance(m_testType, 0);
+        RoomVariantManager.CreateRotatedInstance(m_testType, 1);
+        RoomVariantManager.CreateRotatedInstance(m_testType, 2);
+        RoomVariantManager.CreateRotatedInstance(m_testType, 3);
     }
 
     private void DebugLogDoorset() {

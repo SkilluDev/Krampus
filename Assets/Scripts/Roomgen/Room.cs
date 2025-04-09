@@ -47,7 +47,7 @@ namespace Roomgen {
             }
         }
 
-        public void Rotate90Clockwise() {
+        internal void Rotate90Clockwise() {
             if (m_type.basedOn == null) {
                 Debug.LogWarning("You should not be rotating Room base prefabs");
             }
@@ -59,7 +59,7 @@ namespace Roomgen {
                 for (int j = 0; j < Height; j++) {
                     m_doorGrid[i, j] = old[j, Width - 1 - i];
                     if (m_doorGrid[i, j] == null) continue;
-                    m_doorGrid[i, j].Rotate90Clockwise();
+                    m_doorGrid[i, j] = m_doorGrid[i, j].Rotate90Clockwise();
                 }
             }
             var newCenter = new Vector3(Width / 2f * CELL_SIZE, 0, -Height / 2f * CELL_SIZE);
@@ -101,6 +101,21 @@ namespace Roomgen {
 
                     Gizmos.color = rd.West ? required : (od.West ? optional : none);
                     Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.WEST), DOOR_EW_SIZE);
+                }
+            }
+
+            for (int i = 0; i < m_type.Width; i++) {
+                for (int j = 0; j < m_type.Height; j++) {
+                    if (m_type.constraints[i, j] == null) continue;
+                    Gizmos.color = Color.blue;
+                    if (m_doorGrid[i, j].North)
+                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.NORTH), DOOR_NS_SIZE);
+                    if (m_doorGrid[i, j].South)
+                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.SOUTH), DOOR_NS_SIZE);
+                    if (m_doorGrid[i, j].East)
+                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.EAST), DOOR_EW_SIZE);
+                    if (m_doorGrid[i, j].West)
+                        Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.WEST), DOOR_EW_SIZE);
                 }
             }
         }
