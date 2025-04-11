@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using UnityEngine;
 
 namespace Roomgen {
@@ -64,6 +63,10 @@ namespace Roomgen {
                 Object.Destroy(type.prefab);
                 Object.Destroy(type);
             }
+        }
+
+        public static void Release(IEnumerable<RoomType> types) {
+            foreach (var type in types) Release(type);
         }
     }
 }
