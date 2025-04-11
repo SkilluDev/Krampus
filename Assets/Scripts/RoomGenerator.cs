@@ -1,37 +1,79 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using KrampUtils;
 using Roomgen;
+using UnityEditor;
 using UnityEngine;
 
 public class RoomGenerator : MonoBehaviour {
     private DoorFlags[,] m_doorGrid;
     private bool[,] m_generationGrid;
+    private Vector2Int m_spawnPoint;
 
     [SerializeField] private int m_width, m_height;
     [SerializeField] private RoomSet m_roomSet;
     [SerializeField] private int m_loopRectangles;
-    [SerializeField] private RoomType m_testType;
 
     private void Start() {
         Generate();
     }
 
+
+    [NaughtyAttributes.Button("Generate Grid")]
     public void Generate() {
+        Init();
+        SelectSpawnPoint();
         CreateGrid();
-        DebugLogDoorset();
+        RemoveDeadDoors();
+
+        PlaceRoom(m_roomSet.spawn, m_spawnPoint);
+
+        var types = new List<RoomType>();
+        foreach (var type in m_roomSet.types) {
+            for (int i = 0; i < 4; i++) {
+                if (type.supportedRots[i]) types.Add(RoomVariantManager.CreateRotatedInstance(type, i));
+            }
+        }
+
+        // Using LINQ is probably suboptimal here.
+        var grouped = types.GroupBy(x => x.Grade).OrderByDescending((w) => w.Key);
+
+        foreach (var group in grouped) {
+            Debug.Log($"Found {group.Count()} Room Variants with Tier {group.Key}");
+
+            while (true) {
+                var hardestToPlace = group.OrderBy(r => FindPossiblePlacements(r).Count).FirstOrDefault(r => FindPossiblePlacements(r).Count > 0);
+                if (hardestToPlace == null) {
+                    Debug.Log("No room could be placed");
+                    break;
+                }
+                var placements = FindPossiblePlacements(hardestToPlace);
+
+                Debug.Log($"Placing {hardestToPlace} in one of the {placements.Count} possible spots.");
+                PlaceRoom(hardestToPlace, placements[Random.Range(0, placements.Count)]);
+            }
+        }
+
+        RoomVariantManager.Release(types);
     }
 
-    private void CreateGrid() {
+    private void SelectSpawnPoint() {
+        m_spawnPoint = new Vector2Int(m_width / 2, m_height / 2);
+        m_generationGrid[m_width / 2, m_height / 2] = true;
+    }
+
+    private void Init() {
         m_doorGrid = new DoorFlags[m_width, m_height];
         m_generationGrid = new bool[m_width, m_height];
         for (int i = 0; i < m_width; i++) for (int j = 0; j < m_height; j++) m_doorGrid[i, j] = new DoorFlags();
+    }
 
+
+    private void CreateGrid() {
         void CreateRectangle(int sx, int sy, int ex, int ey) {
             if (sx > ex) (ex, sx) = (sx, ex);
             if (sy > ey) (ey, sy) = (sy, ey);
-            if (sx == ex) return;
-            if (sy == ey) return; // do not create zero width rects
 
             for (int i = sx, j = sy; i <= ex; i++) {
                 if (i != ex)
@@ -62,15 +104,45 @@ public class RoomGenerator : MonoBehaviour {
             }
         }
 
-        // create the spawn
-        m_generationGrid[m_width / 2, m_height / 2] = true;
+        // Create a rect that goes through the spawn
+        { // yes this scope is useful, keeps the naming conventions and stuff
+            int ex = Random.Range(0, m_width - 1);
+            int ey = Random.Range(0, m_height - 1);
+            if (ex >= m_spawnPoint.x) ex++;
+            if (ey >= m_spawnPoint.y) ey++;
+            CreateRectangle(m_spawnPoint.x, m_spawnPoint.y, ex, ey);
 
-        for (int i = 0; i < m_loopRectangles; i++) {
+        }
+
+        for (int i = 0; i < m_loopRectangles - 1; i++) {
             int sx = Random.Range(0, m_width - 1);
             int ex = Random.Range(sx + 1, m_width);
             int sy = Random.Range(0, m_height - 1);
             int ey = Random.Range(sy + 1, m_height);
             CreateRectangle(sx, sy, ex, ey);
+        }
+    }
+
+    private void RemoveDeadDoors() {
+        bool[,] floodFill = new bool[m_width, m_height];
+
+        void FillCell(int x, int y) {
+            if (floodFill[x, y]) return;
+            floodFill[x, y] = true;
+            if (m_doorGrid[x, y].North && y > 0) FillCell(x, y - 1);
+            if (m_doorGrid[x, y].South && y < m_height - 1) FillCell(x, y + 1);
+            if (m_doorGrid[x, y].East && x < m_width - 1) FillCell(x + 1, y);
+            if (m_doorGrid[x, y].West && x > 0) FillCell(x - 1, y);
+        }
+
+        FillCell(m_spawnPoint.x, m_spawnPoint.y);
+
+        for (int i = 0; i < m_width; i++) {
+            for (int j = 0; j < m_height; j++) {
+                if (!floodFill[i, j]) {
+                    m_doorGrid[i, j].Reset();
+                }
+            }
         }
     }
 
@@ -88,6 +160,7 @@ public class RoomGenerator : MonoBehaviour {
         var origin = Room.GetCellTopLeft(placement.x, placement.y);
         for (int i = placement.x; i < placement.x + room.Width; i++) {
             for (int j = placement.y; j < placement.y + room.Height; j++) {
+                if (room.constraints[i - placement.x, j - placement.y] == null || room.constraints[i - placement.x, j - placement.y].phantom) continue;
                 m_generationGrid[i, j] = true;
             }
         }
