@@ -42,6 +42,7 @@ namespace Roomgen {
         public void ConfigureDoors(int x, int y, DoorFlags[,] doors) {
             for (int i = 0; i < Width; i++) {
                 for (int j = 0; j < Height; j++) {
+                    if (m_doorGrid[i, j] == null) continue;
                     m_doorGrid[i, j].SetState(doors[i + x, j + y]);
                 }
             }
@@ -74,7 +75,7 @@ namespace Roomgen {
 
 
         #region Gizmos
-        private void OnDrawGizmos() {
+        private void OnDrawGizmosSelected() {
             if (m_type == null) return;
 
             Gizmos.color = Color.blue;
@@ -104,10 +105,14 @@ namespace Roomgen {
                 }
             }
 
+        }
+
+        private void OnDrawGizmos() {
+            Gizmos.color = new Color(0.6f, 0.6f, 0.06f, 0.4f);
+
             for (int i = 0; i < Width; i++) {
                 for (int j = 0; j < Height; j++) {
                     if (m_doorGrid[i, j] == null) continue;
-                    Gizmos.color = Color.blue;
                     if (m_doorGrid[i, j].North)
                         Gizmos.DrawWireCube(transform.position + GetPleasantDoorPosition(i, j, QuadDirection.NORTH), DOOR_NS_SIZE * 0.9f);
                     if (m_doorGrid[i, j].South)

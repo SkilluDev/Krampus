@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -75,6 +78,10 @@ namespace Roomgen {
 
         #region Gizmos
 
+#if UNITY_EDITOR
+
+        private static GUIStyle m_tinylbl;
+
         private void OnDrawGizmosSelected() {
             Gizmos.color = m_gizmoColor;
             foreach (var go in m_disableList) {
@@ -92,7 +99,12 @@ namespace Roomgen {
         }
 
         private void OnDrawGizmos() {
+            // this cannot be set in a constructor
+            m_tinylbl ??= new GUIStyle(EditorStyles.miniLabel) { fontSize = 8, normal = new GUIStyleState() { textColor = new Color(1, 1, 1, 0.5f) } };
+
             Gizmos.color = m_gizmoColor;
+            if (SceneView.currentDrawingSceneView != null && Vector3.Distance(SceneView.currentDrawingSceneView.camera.transform.position, transform.position) < 30)
+                Handles.Label(transform.position + Vector3.up, $"\t{gameObject.name}\n\t{m_disableList.Count} obj", m_tinylbl);
             Gizmos.DrawCube(transform.position, Vector3.one * Room.DOOR_SIZE);
             foreach (var go in m_disableList) {
                 if (go == null) continue;
@@ -105,9 +117,16 @@ namespace Roomgen {
                 } else {
                     Gizmos.DrawSphere(go.transform.position, 0.2f);
                 }
+
+                if (Selection.activeGameObject == go) {
+                    Handles.Label(Vector3.Lerp(go.transform.position, transform.position, 0.3f), $"Linked to {gameObject.name}", m_tinylbl);
+                    Gizmos.DrawLine(go.transform.position, transform.position);
+                }
             }
         }
 
+#endif
         #endregion
     }
+
 }
