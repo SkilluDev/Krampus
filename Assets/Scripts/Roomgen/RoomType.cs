@@ -15,7 +15,7 @@ namespace Roomgen {
         public RoomType basedOn;
         public string note = "";
         public int gradeOffset;
-        public bool r0 = true, r90 = true, r180 = true, r270 = true;
+        public bool[] supportedRots = new bool[4] { true, true, true, true };
         public int Width => constraints.Width;
         public int Height => constraints.Height;
         public int BaseGrade {
@@ -263,10 +263,8 @@ namespace Roomgen {
                 stretchWidth = false
             };
             GUILayout.BeginHorizontal();
-            Target.r0 = GUILayout.Toggle(Target.r0, "0°", EditorStyles.miniButton);
-            Target.r90 = GUILayout.Toggle(Target.r90, "90°", EditorStyles.miniButton);
-            Target.r180 = GUILayout.Toggle(Target.r180, "180°", EditorStyles.miniButton);
-            Target.r270 = GUILayout.Toggle(Target.r270, "270°", EditorStyles.miniButton);
+            for (int i = 0; i < 4; i++)
+                Target.supportedRots[i] = GUILayout.Toggle(Target.supportedRots[i], $"{90 * i}°", EditorStyles.miniButton);
             GUILayout.EndHorizontal();
 
             EditorGUILayout.HelpBox("Which ways can this room get rotated in generation?", MessageType.Info);

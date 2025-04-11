@@ -26,6 +26,13 @@ namespace Roomgen {
             return new DoorFlags(m_doors.Invert());
         }
 
+        public void Reset() {
+            North = false;
+            East = false;
+            South = false;
+            West = false;
+        }
+
 
         public override bool North {
             get => m_doors.HasFlag(NORTH);
