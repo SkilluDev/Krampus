@@ -391,6 +391,8 @@ namespace Roomgen {
             if (!EditorUtility.DisplayDialog("Are you sure?", "This will change the RoomType on the prefab.", "Yes", "No")) return;
             var editor = new RoomPrefabEditor(Target, Target.prefab);
             editor.ApplyAndSave();
+
+            EditorUtility.SetDirty(Target);
         }
 
         private void UpdateRoomPrefabComplete() {
@@ -399,12 +401,16 @@ namespace Roomgen {
             UpdateFloorDialog(editor);
             editor.UpdateDoorGroups();
             Target.prefab = editor.ApplyAndSave();
+
+            EditorUtility.SetDirty(Target);
         }
 
         private void UpdateRoomPrefabDoors() {
             var editor = new RoomPrefabEditor(Target, Target.prefab);
             editor.UpdateDoorGroups();
             Target.prefab = editor.ApplyAndSave();
+
+            EditorUtility.SetDirty(Target);
         }
 
         private void CreateRoomPrefab() {
@@ -422,6 +428,8 @@ namespace Roomgen {
             UpdateFloorDialog(editor);
             editor.UpdateDoorGroups();
             Target.prefab = editor.ApplyAndSave();
+
+            EditorUtility.SetDirty(Target);
         }
 
         private void UpdateFloorDialog(RoomPrefabEditor editor) {
