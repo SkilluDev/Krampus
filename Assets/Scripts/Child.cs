@@ -20,8 +20,8 @@ public class Child : MonoBehaviour {
 
 
     private void OnDestroy() {
-        if(gameObject.Scene.isLoaded){
-			Instantiate(confirmEatingParticle, transform.position, Quaternion.identity);
-		}
+      //  if(gameObject.Scene.isLoaded){
+			//Instantiate(confirmEatingParticle, transform.position, Quaternion.identity);
+		//}			
     }
 }

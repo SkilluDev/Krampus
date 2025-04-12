@@ -56,6 +56,8 @@ public class ChildContoller : MonoBehaviour {
         StateChanged();
     }
 
+
+    
     private void RunToParent() {
         var parents = GameObject.FindGameObjectsWithTag("Parent");
         if (parents.Length == 0) {
