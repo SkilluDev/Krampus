@@ -158,15 +158,21 @@ public class Interaction : MonoBehaviour
         {
             lineRenderer.SetPosition(0, m_tonguePosition.position);
             lineRenderer.SetPosition(1, empty.transform.position);
+
             yield return new WaitForEndOfFrame();
         }
     }
     private IEnumerator EmptyTongueIn(float time)
     {
         yield return new WaitForSeconds(time + 0.1f);
+        StartCoroutine(Dash(new Vector3(empty.transform.position.x, 1f, empty.transform.position.z)));
         empty.transform.DOMove(m_tonguePosition.position, time).SetEase(Ease.InExpo);
+
+
         yield return new WaitForSeconds(time);
         StopCoroutine(EmptyTongueOut(time));
+
+
         lineRenderer.enabled = false;
         canTongue = true;
         if (!GetComponent<KrampusController>().isDead)
@@ -189,6 +195,19 @@ public class Interaction : MonoBehaviour
             GetComponent<KrampusController>().shouldKrampusMove = true;
         GrandPoints();
         yield break;
+    }
+
+    IEnumerator Dash(Vector3 point)
+    {
+
+	    float time = 0f;
+	    while (time <0.2f) {
+
+		    transform.Translate((point - transform.position).normalized*20 * Time.deltaTime);
+
+		    time += Time.deltaTime;
+		    yield return new WaitForEndOfFrame();
+	    }
     }
 
     private IEnumerator UpdateLineRenderer()
