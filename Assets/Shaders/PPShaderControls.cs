@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class PPShaderControls : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+public class PPShaderControls : MonoBehaviour {
+	[SerializeField] private Volume postProcessingVolume;
+	[SerializeField] private bool disable;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	[Header("Post Processing Profiles")]
+	[SerializeField] private VolumeProfile postProfileMain;
+	[SerializeField] private VolumeProfile postProfileSecondary;
+
+	public void MainPostProcess() {
+
+	}
+
+	public void SecondaryPostProcess() {
+
+	}
 }
