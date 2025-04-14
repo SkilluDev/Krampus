@@ -59,20 +59,30 @@ Shader "Test/ColorBlit"
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
                 float2 uv = input.texcoord;
+                float depth = SampleSceneDepth(uv);
+
+                // --- VISUALIZE the raw depth value ---
+
+                // Option A: Grayscale depth (0=near, 1=far)
+                // Requires knowing the far plane (_ProjectionParams.z)
+                //return frac(depth*100); 
 
                 float2 texelSize = _CameraDepthTexture_TexelSize.xy; 
-
+                float centerDepth = GetLinearEyeDepth(uv);
                 float depthUp    = GetLinearEyeDepth(uv + float2(0, texelSize.y * _OutlineThickness));
                 float depthDown  = GetLinearEyeDepth(uv - float2(0, texelSize.y * _OutlineThickness));
                 float depthLeft  = GetLinearEyeDepth(uv - float2(texelSize.x * _OutlineThickness, 0));
                 float depthRight = GetLinearEyeDepth(uv + float2(texelSize.x * _OutlineThickness, 0));
-
                 
                 float depthDiffH = abs(depthRight - depthLeft);
                 float depthDiffV = abs(depthUp - depthDown);
                 float depthEdge = sqrt(depthDiffH * depthDiffH + depthDiffV * depthDiffV) * _DepthSensitivity; 
                 
                 float edgeFactor = saturate(depthEdge);
+                float minNeighborDepth = min(min(depthUp, depthDown), min(depthLeft, depthRight));
+                float depthEpsilon = minNeighborDepth * 0.005;
+                edgeFactor *= step(centerDepth, minNeighborDepth + depthEpsilon);
+                
                 // Sample the color from the input texture
                 float4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_BlitTexture, input.texcoord);
                 color.rgb = floor(color.rgb * _Levels) / _Levels;
