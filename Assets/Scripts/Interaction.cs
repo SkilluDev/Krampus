@@ -165,7 +165,7 @@ public class Interaction : MonoBehaviour
     private IEnumerator EmptyTongueIn(float time)
     {
         yield return new WaitForSeconds(time + 0.1f);
-        StartCoroutine(Dash(new Vector3(empty.transform.position.x, 1f, empty.transform.position.z)));
+        //StartCoroutine(Dash(new Vector3(empty.transform.position.x, 1f, empty.transform.position.z)));
         empty.transform.DOMove(m_tonguePosition.position, time).SetEase(Ease.InExpo);
 
 
