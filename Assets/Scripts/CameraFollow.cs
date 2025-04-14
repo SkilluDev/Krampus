@@ -8,13 +8,14 @@ public class CameraFollow : MonoBehaviour {
 	public Transform target;
 	//all the neccesary krampus components so we only call for them once
 	private GameObject krampus;
-	private Rigidbody kRigidBody;
-	private KrampusController kController;
+	private Rigidbody m_kRigidBody;
+	private KrampusController m_kController;
 	//Camera values
 	private Camera m_camera;
-	private float originalCameraSize;
-	[SerializeField] private float cameraSizeAddition;
-	private float desiredCameraSize;
+	private float m_originalCameraSize;
+	private bool m_zoomOut;
+	[SerializeField] private float m_cameraSizeAddition;
+	[SerializeField] private float m_velocityLookAheadDamp;
 	//[SerializeField] private float cameraZoomDivider; //part of velocity based camera
 
 	// Offset distance between the camera and the target
@@ -32,11 +33,11 @@ public class CameraFollow : MonoBehaviour {
 	private void Awake() {
 		krampus = GameObject.FindGameObjectWithTag("Player");
 		target = krampus.transform;
-		kRigidBody = krampus.GetComponent<Rigidbody>();
-		kController = krampus.GetComponent<KrampusController>();
+		m_kRigidBody = krampus.GetComponent<Rigidbody>();
+		m_kController = krampus.GetComponent<KrampusController>();
 
 		m_camera = gameObject.GetComponent<Camera>();
-		originalCameraSize = m_camera.orthographicSize;
+		m_originalCameraSize = m_camera.orthographicSize;
 
 	}
 
@@ -44,7 +45,7 @@ public class CameraFollow : MonoBehaviour {
 		// Ensure the target exists
 		if (target != null) {
 			// Calculate the desired position (target position + offset)
-			Vector3 desiredPosition = target.position + offset;
+			Vector3 desiredPosition = target.position + offset + (m_kRigidBody.velocity / m_velocityLookAheadDamp);
 
 			// Smoothly interpolate the camera's position towards the desired position
 			Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
@@ -63,15 +64,15 @@ public class CameraFollow : MonoBehaviour {
 
 			//separate camera increase, the one that we want
 			//if moving and running make the camera size wider, otherwise we want to use the original size
-			if (kRigidBody.velocity.magnitude > 0 && kController.isRunning) desiredCameraSize = (originalCameraSize + cameraSizeAddition);
-			else desiredCameraSize = originalCameraSize;
+			if (m_kRigidBody.velocity.magnitude > 0 && m_kController.isRunning) m_zoomOut = true;
+			else m_zoomOut = false;
 
 			//smoothly Lerp between current and desired
 			float smoothedCameraSize;
-			if (desiredCameraSize != originalCameraSize) {
-				smoothedCameraSize = Mathf.Lerp(m_camera.orthographicSize, desiredCameraSize, smoothSpeed);
+			if (m_zoomOut) {
+				smoothedCameraSize = Mathf.Lerp(m_camera.orthographicSize, m_originalCameraSize + m_cameraSizeAddition, smoothSpeed);
 			} else {
-				smoothedCameraSize = Mathf.Lerp(m_camera.orthographicSize, desiredCameraSize, smoothSpeed / 2);
+				smoothedCameraSize = Mathf.Lerp(m_camera.orthographicSize, m_originalCameraSize, smoothSpeed / 2);
 			}
 			//actually change the camera size
 			m_camera.orthographicSize = smoothedCameraSize;
