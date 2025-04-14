@@ -45,7 +45,8 @@ public class CameraFollow : MonoBehaviour {
 		// Ensure the target exists
 		if (target != null) {
 			// Calculate the desired position (target position + offset)
-			Vector3 desiredPosition = target.position + offset + (m_kRigidBody.velocity / m_velocityLookAheadDamp);
+			Vector3 desiredVelOffset = Vector3.Lerp(new Vector3(0, 0, 0), (m_kRigidBody.velocity / m_velocityLookAheadDamp), smoothSpeed);
+			Vector3 desiredPosition = target.position + offset + (desiredVelOffset);
 
 			// Smoothly interpolate the camera's position towards the desired position
 			Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
