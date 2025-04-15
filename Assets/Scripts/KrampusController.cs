@@ -87,6 +87,11 @@ public class KrampusController : MonoBehaviour {
 			timerStep2 += Time.deltaTime;
 
 			if (rigidBody.velocity.x == 0 && rigidBody.velocity.z == 0) {
+				if (currentState == State.running) {
+					animator.SetTrigger("Stop");
+					Debug.Log("Lol");
+				}
+
 				currentState = State.idle;
 			} else {
 				if (Input.GetKey(KeyCode.LeftShift)) {
