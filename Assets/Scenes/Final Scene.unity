@@ -25211,12 +25211,6 @@ MeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 1073995218}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &810389420 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7272266975805334079, guid: 1370af54edd30564086e0f4717044a13,
-    type: 3}
-  m_PrefabInstance: {fileID: 1679602161}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &813550636
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53128,6 +53122,12 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.0030000021, z: 0.039999995}
   m_Center: {x: -8.4936613e-10, y: 0.0084999995, z: 0.019999998}
+--- !u!4 &1637609066 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7272266975805334079, guid: 1370af54edd30564086e0f4717044a13,
+    type: 3}
+  m_PrefabInstance: {fileID: 1679602161}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1648452439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53711,7 +53711,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_tonguePosition
       value: 
-      objectReference: {fileID: 810389420}
+      objectReference: {fileID: 1637609066}
     - target: {fileID: 2740160339421588056, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_IsActive
