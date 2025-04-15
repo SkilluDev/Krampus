@@ -8,6 +8,7 @@ Shader "Test/ColorBlit"
         _OutlineColor ("Outline Color", Color) = (0, 0, 0, 1) // Black outline
         _OutlineThickness ("Outline Thickness", Range(0.5, 5.0)) = 1.0
         _DepthSensitivity ("Depth Sensitivity", Range(0.0, 100.0)) = 10.0 // Controls how sensitive depth difference is
+        _TransparentDepthTexture ("Transparent Depth Source", 2D) = "black" {}
     }
     SubShader
     {
@@ -34,6 +35,9 @@ Shader "Test/ColorBlit"
 
             // Set the color texture from the camera as the input texture
 
+            TEXTURE2D_X(_TransparentDepthTexture);
+            SAMPLER(sampler_TransparentDepthTexture);
+            
             SAMPLER(sampler_BlitTexture);
             
 
@@ -51,7 +55,29 @@ Shader "Test/ColorBlit"
             {
                 // SampleSceneDepth samples the platform-specific depth texture 
                 // and returns linear depth in eye space (0 at near plane, far plane distance at far plane).
-                return SampleSceneDepth(uv); 
+                //return SampleSceneDepth(uv);
+
+                // 1. Get standard opaque(-or-closer) depth (already Linear Eye)
+                float opaqueDepth = SampleSceneDepth(uv);
+
+                // 2. Sample our custom transparent depth texture (Raw depth, likely [0,1])
+                float rawTransparentDepth = SAMPLE_TEXTURE2D_X(_TransparentDepthTexture, sampler_TransparentDepthTexture, uv).r;
+
+                // 3. Check if transparent depth is valid (usually 1.0 or platform far plane value if nothing rendered)
+                //    Using < 0.9999 is a common way to check if *something* drew closer than the far plane.
+                if (rawTransparentDepth < 0.9999)
+                {
+                    // 4. Convert raw transparent depth to Linear Eye depth for comparison
+                    float transparentLinearEyeDepth = LinearEyeDepth(rawTransparentDepth, _ZBufferParams);
+
+                    // 5. Return the MINIMUM (closer) of the two depths
+                    return min(opaqueDepth, transparentLinearEyeDepth);
+                }
+                else
+                {
+                    // 6. No valid transparent depth here, only use opaque depth
+                    return opaqueDepth;
+                }
             }
 
             half4 frag (Varyings input) : SV_Target
@@ -59,7 +85,11 @@ Shader "Test/ColorBlit"
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
                 float2 uv = input.texcoord;
-                float depth = SampleSceneDepth(uv);
+                //float depth = SampleSceneDepth(uv);
+
+                float rawTransparentDepth = SAMPLE_TEXTURE2D_X(_TransparentDepthTexture, sampler_TransparentDepthTexture, uv).r;
+                return half4(rawTransparentDepth.xxx, 1.0); // Output raw depth as grayscale
+
 
                 // --- VISUALIZE the raw depth value ---
 
