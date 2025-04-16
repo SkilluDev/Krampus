@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using static WinCondition;
@@ -15,8 +16,7 @@ public class WinCondition : MonoBehaviour
     public int badChildrenCount;
 
     [SerializeField] private UIManager manager;
-
-
+    [SerializeField] public InputSubscribe inputSubscribe;
     private void Awake()
     {
         // If there is an instance, and it's not me, delete myself.
@@ -60,7 +60,7 @@ public class WinCondition : MonoBehaviour
     {
         if (!isGamePaused)
         {
-            if (timeLimit <= 0.0f)
+	        if (timeLimit <= 0.0f)
             {
                 GameOver(LostGameCase.TimeRunOut);
             }
@@ -72,14 +72,15 @@ public class WinCondition : MonoBehaviour
             }
         }
 
-        if ((Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.G)) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
+		//Input.GetKeyDown(KeyCode.R) Input.GetKeyDown(KeyCode.G //Old input system (inputSubscribe.RestartInput || inputSubscribe.AdvanceInput)
+        if ((inputSubscribe.RestartInput || inputSubscribe.AdvanceInput) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
         {
             Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
             if (!isGameOver) GamePauseToggle();
             SceneManager.LoadScene("UITest"); //Goes Back to First Scene
         }
-
-        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
+		//Input.GetKeyDown(KeyCode.Escape) Input.GetKeyDown(KeyCode.P) //Old input system
+        if ((inputSubscribe.PauseInput ) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
         {
             GamePauseToggle();
         }

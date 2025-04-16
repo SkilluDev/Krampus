@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-
+using UnityEngine.InputSystem;
 
 public class KrampusController : MonoBehaviour {
 	public Rigidbody rigidBody;
@@ -56,6 +56,7 @@ public class KrampusController : MonoBehaviour {
 
 	private Animator animator;
 
+
 	private void Start() {
 		timerWindUp1 = 0f;
 		timerWindUp2 = -windUpIdleSpeed;
@@ -77,8 +78,12 @@ public class KrampusController : MonoBehaviour {
 
 		previousState = currentState;
 		if (!WinCondition.Instance.isGamePausedValue()) {
-			xMovement = Input.GetAxis("Horizontal");
-			zMovement = Input.GetAxis("Vertical");
+			//xMovement = Input.GetAxis("Horizontal"); //Old input
+			//zMovement = Input.GetAxis("Vertical"); //Old input
+			//xMovement = playerControls.Player.Move.ReadValue<Vector2>().y;
+			//zMovement = playerControls.Player.Move.ReadValue<Vector2>().x;
+			xMovement = WinCondition.Instance.inputSubscribe.MoveInput.x;
+			zMovement = WinCondition.Instance.inputSubscribe.MoveInput.y;
 
 			timerWindUp1 += Time.deltaTime;
 			timerWindUp2 += Time.deltaTime;
@@ -94,7 +99,7 @@ public class KrampusController : MonoBehaviour {
 
 				currentState = State.idle;
 			} else {
-				if (Input.GetKey(KeyCode.LeftShift)) {
+				if (WinCondition.Instance.inputSubscribe.CrouchInput) { //Input.GetKey(KeyCode.LeftShift //Old input system
 					currentState = State.sneaking;
 				} else {
 					currentState = State.running;
