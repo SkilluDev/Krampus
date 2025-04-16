@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using static WinCondition;
@@ -14,10 +15,18 @@ public class WinCondition : MonoBehaviour {
     public int badChildrenCount;
 
 
-
-    private void Awake() {
-        if (Instance != null) {
-            Destroy(Instance);
+    [SerializeField] private UIManager manager;
+    [SerializeField] public InputSubscribe inputSubscribe;
+    private void Awake()
+    {
+        // If there is an instance, and it's not me, delete myself.
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
         }
         Instance = this;
     }
@@ -45,9 +54,12 @@ public class WinCondition : MonoBehaviour {
     }
 
     // Update is called once per frame
-    private void Update() {
-        if (!isGamePaused) {
-            if (timeLimit <= 0.0f) {
+    private void Update()
+    {
+        if (!isGamePaused)
+        {
+	        if (timeLimit <= 0.0f)
+            {
                 GameOver(LostGameCase.TimeRunOut);
             } else {
                 timeLimit -= Time.deltaTime;
@@ -56,20 +68,26 @@ public class WinCondition : MonoBehaviour {
             }
         }
 
-        if ((Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.G)) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
+
+		//Input.GetKeyDown(KeyCode.R) Input.GetKeyDown(KeyCode.G //Old input system (inputSubscribe.RestartInput || inputSubscribe.AdvanceInput)
+        if ((inputSubscribe.RestartInput || inputSubscribe.AdvanceInput) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
         {
             Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
             if (!isGameOver) GamePauseToggle();
             SceneManager.LoadScene("UITest"); //Goes Back to First Scene
         }
-        if (Input.GetKeyDown(KeyCode.Q) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can quick restart game with Q key
+	        //TODO
+        /*if (Input.GetKeyDown(KeyCode.Q) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can quick restart game with Q key
         {
             Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
             if (!isGameOver) GamePauseToggle();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name); //Goes Back to First Scene
         }
 
-        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
+        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game*/
+
+		//Input.GetKeyDown(KeyCode.Escape) Input.GetKeyDown(KeyCode.P) //Old input system
+        if ((inputSubscribe.PauseInput ) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
         {
             GamePauseToggle();
         }

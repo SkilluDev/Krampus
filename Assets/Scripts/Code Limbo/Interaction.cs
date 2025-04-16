@@ -62,8 +62,11 @@ public class Interaction : MonoBehaviour {
 
 
 
-    private void Update() {
-        if (Input.GetButtonDown("Fire1") && canTongue && GetComponent<LegacyKrampusController>().shouldKrampusMove) {
+
+    private void Update()
+    {	//Input.GetButtonDown("Fire1") //Old input
+        if (WinCondition.Instance.inputSubscribe.TongueInput && canTongue && GetComponent<KrampusController>().shouldKrampusMove)
+        {
             StartCoroutine(ShootTongue());
         }
     }
@@ -75,8 +78,10 @@ public class Interaction : MonoBehaviour {
         m_animator.SetBool("hasHit", false);
         canTongue = false;
         m_animator.SetTrigger("Shoot");
-        ray = m_cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child"))) {
+
+        ray = m_cam.ScreenPointToRay(WinCondition.Instance.inputSubscribe.AimInput); //Input.mousePosition //Old input system
+        if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child")))
+        {
             SoundManager.PlaySound("tongue");
             Vector3 realPoint = new Vector3(hitData.point.x, 1f, hitData.point.z);
             lastRealPosition = realPoint;
