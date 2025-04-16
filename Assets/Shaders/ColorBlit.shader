@@ -6,7 +6,7 @@ Shader "Test/ColorBlit"
         _MainTex ("Texture", 2D) = "white" {}
         _Levels ("Levels", Float) = 20.0
         _OutlineColor ("Outline Color", Color) = (0, 0, 0, 1) // Black outline
-        _OutlineThickness ("Outline Thickness", Range(0.5, 5.0)) = 1.0
+        _OutlineThickness ("Outline Thickness", Range(0, 5.0)) = 1.0
         _DepthSensitivity ("Depth Sensitivity", Range(0.0, 100.0)) = 10.0 // Controls how sensitive depth difference is
         _TransparentDepthTexture ("Transparent Depth Source", 2D) = "black" {}
     }
@@ -16,7 +16,7 @@ Shader "Test/ColorBlit"
         LOD 100
         ZWrite Off
         Cull Off
-        Blend Off
+        Blend SrcAlpha OneMinusSrcAlpha
         Pass
         {
             Name "ColorBlitPass"
@@ -87,8 +87,8 @@ Shader "Test/ColorBlit"
                 float2 uv = input.texcoord;
                 //float depth = SampleSceneDepth(uv);
 
-                float rawTransparentDepth = SAMPLE_TEXTURE2D_X(_TransparentDepthTexture, sampler_TransparentDepthTexture, uv).r;
-                return half4(rawTransparentDepth.xxx, 1.0); // Output raw depth as grayscale
+                //float rawTransparentDepth = SAMPLE_TEXTURE2D_X(_TransparentDepthTexture, sampler_TransparentDepthTexture, uv).r;
+                //return half4(rawTransparentDepth.xxx, 1.0); // Output raw depth as grayscale
 
 
                 // --- VISUALIZE the raw depth value ---
@@ -118,7 +118,8 @@ Shader "Test/ColorBlit"
                 color.rgb = floor(color.rgb * _Levels) / _Levels;
                 // Output the color from the texture, with the green value set to the chosen intensity
                 half4 finalColor = lerp(color, _OutlineColor, edgeFactor);
-                finalColor.a = color.a; 
+                finalColor.a = color.a;
+                finalColor.a = finalColor.a*_Intensity;
                 return finalColor;
             }
             ENDHLSL

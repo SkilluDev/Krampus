@@ -13,7 +13,7 @@ internal class ColorBlitPass : ScriptableRenderPass
 	public ColorBlitPass(Material material)
 	{
 		m_Material = material;
-		renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
+		renderPassEvent = RenderPassEvent.BeforeRenderingTransparents;
 	}
 
 	public void SetTarget(RTHandle colorHandle)//, float intensity, float levels)

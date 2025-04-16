@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -18,14 +19,14 @@ public class ChildSpawner : MonoBehaviour {
     public Transform spawnPoint;
 
     public int goodChildrenCount;
-    public int badChildrenCount;
+    static public int badChildrenCountOnStart;
 
     [SerializeField] private int spawnPointCount = 30;
 
     private string goodChildrenText;
 
     private void Start() {
-        badChildrenCount = 0;
+        badChildrenCountOnStart = 0;
         goodChildrenCount = 0;
 
         int goodColor = Random.Range(0, materials.Length);
@@ -47,7 +48,7 @@ public class ChildSpawner : MonoBehaviour {
         }
         foreach (Vector3 point in randomSpawnPoints) {
             int mat = Random.Range(0, materials.Length);
-            if (badChildrenCount >= 22) {
+            if (badChildrenCountOnStart >= 22) {
                 mat = goodColor;
             }
             bool isBad = true;
@@ -55,7 +56,7 @@ public class ChildSpawner : MonoBehaviour {
                 goodChildrenCount++;
                 isBad = false;
             } else {
-                badChildrenCount++;
+                badChildrenCountOnStart++;
             }
             CreateChild(point, mat, isBad);
             /*Child tempChild = CreateChild(point, materials[mat], isBad);
@@ -70,11 +71,11 @@ public class ChildSpawner : MonoBehaviour {
         Debug.Log(newChild.name + ": Empty child");
         //Destroy(newChild.GetComponent<NavMeshAgent>());
         //Destroy(newChild.GetComponent<ChildContoller>());
-        badChildrenCount++;
+        badChildrenCountOnStart++;
         GameObject.Find("shirttext").GetComponent<Text>().text = goodChildrenText;
         GameObject.Find("shirttext").GetComponent<Text>().color = colors[goodColor];
 
-        WinCondition.Instance.SetChildCount(badChildrenCount, false);
+        WinCondition.Instance.SetChildCount(badChildrenCountOnStart, false);
     }
 
     private Child CreateChild(Vector3 spawn, int colorId, bool isBad) {

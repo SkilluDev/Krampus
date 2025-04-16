@@ -23,7 +23,7 @@ internal class ColorBlitRendererFeature : ScriptableRendererFeature
 	{
 
 		if (renderingData.cameraData.cameraType == CameraType.Game) {
-			renderer.EnqueuePass(m_TransparentDepthPass);
+			//renderer.EnqueuePass(m_TransparentDepthPass);
 			renderer.EnqueuePass(m_RenderPass);
 		}
 	}
@@ -47,29 +47,6 @@ internal class ColorBlitRendererFeature : ScriptableRendererFeature
 					return; // Cannot proceed with invalid dimensions
 				}
 			}
-			depthDescriptor.graphicsFormat = GraphicsFormat.None; // We want depth, GraphicsFormat handles this better
-			// *** REVISED CHECK: Use SystemInfo with FormatUsage ***
-			UnityEngine.Experimental.Rendering.FormatUsage usage = UnityEngine.Experimental.Rendering.FormatUsage.Depth;
-
-			// Check for supported depth formats in preferred order
-			if (SystemInfo.IsFormatSupported(GraphicsFormat.D32_SFloat, usage)) {
-				preferredDepthFormat = GraphicsFormat.D32_SFloat;
-			} else if (SystemInfo.IsFormatSupported(GraphicsFormat.D24_UNorm_S8_UInt, usage)) {
-				preferredDepthFormat = GraphicsFormat.D24_UNorm_S8_UInt;
-			} else if (SystemInfo.IsFormatSupported(GraphicsFormat.D16_UNorm, usage)) {
-				preferredDepthFormat = GraphicsFormat.D16_UNorm;
-			}
-
-			// Check if we found a supported format
-			if (preferredDepthFormat == GraphicsFormat.None) {
-				Debug.LogError("[ColorBlitRendererFeature] Setup: No supported depth format found for the depth texture! Disabling pass setup.");
-				// Handle error case - perhaps return here to prevent further setup?
-				return;
-			} else {
-				// Debug.Log($"[ColorBlitRendererFeature] Setup: Selected depth format: {preferredDepthFormat}"); // Optional log
-			}
-
-			depthDescriptor.depthStencilFormat = preferredDepthFormat;
 			depthDescriptor.msaaSamples = 1;
 			depthDescriptor.bindMS = false;
 			depthDescriptor.colorFormat = RenderTextureFormat.Depth; // Explicitly set for clarity if needed, but depthStencilFormat is preferred
