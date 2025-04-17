@@ -119,6 +119,8 @@ public class KrampusController : MonoBehaviour {
 			timeGoingRight = Mathf.Clamp(timeGoingRight, 0, 1);
 			timeGoingLeft = Mathf.Clamp(timeGoingLeft, 0, 1);
 
+
+
 			//Debug.Log($"{timeGoingUp}+{timeGoingDown}+{timeGoingRight}+{timeGoingLeft}");
 
 			timerWindUp1 += Time.deltaTime;
@@ -129,16 +131,21 @@ public class KrampusController : MonoBehaviour {
 			if (rigidBody.velocity.x < runSpeed*0.65 && rigidBody.velocity.z < runSpeed*0.65 && xMovement==0 && zMovement == 0) {
 				if (currentState == State.running) {
 					animator.SetTrigger("Stop");
+
 					//Debug.Log("Lol");
 				}
+				animator.SetFloat("Speed", 0, 0.1f, Time.deltaTime);
 
 				currentState = State.idle;
 				timeLerping = 0;
 			} else {
 				if (Input.GetKey(KeyCode.LeftShift)) {
 					currentState = State.sneaking;
+					animator.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
+
 				} else {
 					currentState = State.running;
+					animator.SetFloat("Speed", 2, 0.1f, Time.deltaTime);
 				}
 			}
 
@@ -213,9 +220,9 @@ public class KrampusController : MonoBehaviour {
 
 
 			if (movementDirection.magnitude < 0.1f) {
-				animator.SetFloat("Speed", 0, 0.1f, Time.deltaTime);
+				//animator.SetFloat("Speed", 0, 0.1f, Time.deltaTime);
 			} else if (!isRunning) {
-				animator.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
+				//animator.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
 				timeLerping += Time.deltaTime;
 			} else {
 				animator.SetFloat("Speed", 2, 0.1f, Time.deltaTime);
