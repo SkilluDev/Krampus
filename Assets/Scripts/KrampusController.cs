@@ -126,7 +126,7 @@ public class KrampusController : MonoBehaviour {
 			timerStep1 += Time.deltaTime;
 			timerStep2 += Time.deltaTime;
 
-			if (rigidBody.velocity.x == 0 && rigidBody.velocity.z == 0) {
+			if (rigidBody.velocity.x < runSpeed*0.65 && rigidBody.velocity.z < runSpeed*0.65 && xMovement==0 && zMovement == 0) {
 				if (currentState == State.running) {
 					animator.SetTrigger("Stop");
 					//Debug.Log("Lol");
