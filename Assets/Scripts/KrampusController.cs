@@ -45,6 +45,13 @@ public class KrampusController : MonoBehaviour {
 	private float windUpSpeed;
 	private float stepSpeed;
 
+	[SerializeField] private AnimationCurve accelerationCurve;
+	[SerializeField] private float accelerationTime = 1f;
+	private float timeGoingUp = 0f;
+	private float timeGoingRight = 0f;
+	private float timeGoingDown = 0f;
+	private float timeGoingLeft = 0f;
+
 
 
 	[SerializeField] private GameObject rocktParticle;
@@ -82,16 +89,47 @@ public class KrampusController : MonoBehaviour {
 			xMovement = Input.GetAxisRaw("Horizontal"); //raw means the values are only -1, 0 or 1
 			zMovement = Input.GetAxisRaw("Vertical");
 
+			float adjustedTime = Time.deltaTime / accelerationTime;
+			//incrementing time of accelerating
+			if (zMovement > 0.5) {
+				timeGoingUp += adjustedTime;
+			} else {
+				timeGoingUp -= adjustedTime;
+			}
+
+			if (zMovement < -0.5) {
+				timeGoingDown += adjustedTime;
+			} else {
+				timeGoingDown -= adjustedTime;
+			}
+
+			if (xMovement > 0.5) {
+				timeGoingRight += adjustedTime;
+			} else {
+				timeGoingRight -= adjustedTime;
+			}
+
+			if (xMovement < -0.5) {
+				timeGoingLeft += adjustedTime;
+			} else {
+				timeGoingLeft -= adjustedTime;
+			}
+			timeGoingUp = Mathf.Clamp(timeGoingUp, 0, 1);
+			timeGoingDown = Mathf.Clamp(timeGoingDown, 0, 1);
+			timeGoingRight = Mathf.Clamp(timeGoingRight, 0, 1);
+			timeGoingLeft = Mathf.Clamp(timeGoingLeft, 0, 1);
+
+			//Debug.Log($"{timeGoingUp}+{timeGoingDown}+{timeGoingRight}+{timeGoingLeft}");
+
 			timerWindUp1 += Time.deltaTime;
 			timerWindUp2 += Time.deltaTime;
-
 			timerStep1 += Time.deltaTime;
 			timerStep2 += Time.deltaTime;
 
 			if (rigidBody.velocity.x == 0 && rigidBody.velocity.z == 0) {
 				if (currentState == State.running) {
 					animator.SetTrigger("Stop");
-					Debug.Log("Lol");
+					//Debug.Log("Lol");
 				}
 
 				currentState = State.idle;
@@ -163,6 +201,11 @@ public class KrampusController : MonoBehaviour {
 	private void FixedUpdate() {
 		if (!WinCondition.Instance.isGamePausedValue()) {
 			Vector3 movementDirection = new Vector3(xMovement, 0, zMovement).normalized;
+			Vector3 velocity = new Vector3(
+				accelerationCurve.Evaluate(timeGoingRight)-accelerationCurve.Evaluate(timeGoingLeft),
+				0,
+				accelerationCurve.Evaluate(timeGoingUp)-accelerationCurve.Evaluate(timeGoingDown)
+			);
 
 
 			if (movementDirection.magnitude < 0.1f) {
@@ -175,10 +218,12 @@ public class KrampusController : MonoBehaviour {
 				timeLerping += Time.deltaTime;
 			}
 
-			Vector3 skewedInput = matrix.MultiplyPoint3x4(movementDirection);
+			Vector3 skewedInput = matrix.MultiplyPoint3x4(velocity);
+			//Vector3 skewedInput = velocity;
+			skewedInput = skewedInput * (isRunning ? runSpeed : sneakSpeed);
 
-			rigidBody.velocity = Vector3.Lerp(rigidBody.velocity, skewedInput * (isRunning ? runSpeed : sneakSpeed), lerpT * Mathf.Sqrt(timeLerping));
-
+			//rigidBody.velocity = Vector3.Lerp(rigidBody.velocity, skewedInput * (isRunning ? runSpeed : sneakSpeed), lerpT * Mathf.Sqrt(timeLerping));
+			rigidBody.velocity = skewedInput;
 
 			//animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
 			//RotatePlayer(movementDirection );
