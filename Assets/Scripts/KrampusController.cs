@@ -201,11 +201,15 @@ public class KrampusController : MonoBehaviour {
 	private void FixedUpdate() {
 		if (!WinCondition.Instance.isGamePausedValue()) {
 			Vector3 movementDirection = new Vector3(xMovement, 0, zMovement).normalized;
+			float horizontalForce = accelerationCurve.Evaluate(timeGoingRight) - accelerationCurve.Evaluate(timeGoingLeft);
+			float verticalForce = accelerationCurve.Evaluate(timeGoingUp) - accelerationCurve.Evaluate(timeGoingDown);
 			Vector3 velocity = new Vector3(
-				accelerationCurve.Evaluate(timeGoingRight)-accelerationCurve.Evaluate(timeGoingLeft),
+				horizontalForce,
 				0,
-				accelerationCurve.Evaluate(timeGoingUp)-accelerationCurve.Evaluate(timeGoingDown)
+				verticalForce
 			);
+			velocity = velocity.normalized * Mathf.Max(Mathf.Abs(horizontalForce), Mathf.Abs(verticalForce));
+			//velocity = velocity.normalized;
 
 
 			if (movementDirection.magnitude < 0.1f) {
