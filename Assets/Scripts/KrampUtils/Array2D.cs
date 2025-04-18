@@ -124,6 +124,11 @@ namespace KrampUtils {
         public Array2D<T> GetArray<T>()
             => new Array2D<T>(m_data?.Cast<T>()?.ToArray(), m_size);
 
+        public bool InBounds(int i, int j) {
+            return i >= 0 && i < m_size.x && j >= 0 && j < m_size.y;
+        }
+
+        public bool InBounds(Vector2Int p) => InBounds(p.x, p.y);
 
         public bool Equals(Array2D<T> other) {
             if (m_size != other.m_size) {

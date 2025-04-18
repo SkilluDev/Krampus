@@ -311,6 +311,7 @@ namespace Roomgen {
                 if (!inPrefab && GUILayout.Button("New")) CreateRoomPrefab();
                 if (GUILayout.Button("Regenerate")) UpdateRoomPrefabComplete();
                 if (GUILayout.Button("Update")) UpdateRoomPrefabDoors();
+                if (GUILayout.Button("Walls")) UpdateRoomPrefabWalls();
                 GUILayout.EndHorizontal();
             } else if (roomScript.m_type != Target) {
                 if (EditorGUIHelper.HelpBoxWithButton("Prefab is connected with another RoomType", "Reconnect", MessageType.Warning)) ConnectRoomPrefab();
@@ -417,6 +418,17 @@ namespace Roomgen {
         private void UpdateRoomPrefabDoors() {
             var editor = new RoomPrefabEditor(Target, Target.prefab);
             editor.UpdateDoorGroups();
+            if (editor.GetOrAddWallList().Count(w => w != null) != 0)
+                editor.CreateWalls();
+
+            Target.prefab = editor.ApplyAndSave();
+
+            EditorUtility.SetDirty(Target);
+        }
+
+        private void UpdateRoomPrefabWalls() {
+            var editor = new RoomPrefabEditor(Target, Target.prefab);
+            editor.CreateWalls();
             Target.prefab = editor.ApplyAndSave();
 
             EditorUtility.SetDirty(Target);
@@ -436,6 +448,8 @@ namespace Roomgen {
             editor.RecreateDoorGrid();
             UpdateFloorDialog(editor);
             editor.UpdateDoorGroups();
+            if (EditorUtility.DisplayDialog("Walls", "Do you wish to create walls?", "Yes", "Nope"))
+                editor.CreateWalls();
             Target.prefab = editor.ApplyAndSave();
 
             EditorUtility.SetDirty(Target);

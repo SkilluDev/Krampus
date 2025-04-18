@@ -273,6 +273,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1936252559}
+  m_cameraSizeAddition: 2
+  m_velocityLookAheadDamp: 5
   offset: {x: -10, y: 15, z: 10}
   smoothSpeed: 0.125
   shakeForce: 0.7
@@ -1039,7 +1041,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a8e2ccdb0a8fa69a8244ac43ab48ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_mat: {fileID: 2100000, guid: 670e66a36a35b2434ba3cce49e5aace0, type: 2}
 --- !u!4 &2101279143
 Transform:
   m_ObjectHideFlags: 0

@@ -34,6 +34,10 @@ namespace Roomgen {
             }
         }
 
+        public void Cleanup() {
+            m_disableList.RemoveAll(w => w == null);
+        }
+
         // Probably wont get used but good to have
         public void AddToDisableList(GameObject go) {
             if (!m_disableList.Contains(go)) m_disableList.Add(go);

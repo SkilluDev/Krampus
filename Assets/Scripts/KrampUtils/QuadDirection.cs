@@ -20,6 +20,12 @@ namespace KrampUtils {
             return (QuadDirection)((db >> 1) | (db << 3)) & QuadDirection.ALL;
         }
 
+        public static QuadDirection Rotate90Clockwise(this QuadDirection direction, int times) {
+            var tmp = direction;
+            for (int i = 0; i < times % 4; i++) tmp = tmp.Rotate90Clockwise();
+            return tmp;
+        }
+
 
         public static QuadDirection Invert(this QuadDirection direction) {
             byte db = (byte)direction;
@@ -34,6 +40,19 @@ namespace KrampUtils {
                 (direction.HasFlag(QuadDirection.NORTH) ? 1 : 0) +
                 (direction.HasFlag(QuadDirection.SOUTH) ? -1 : 0)
             );
+        }
+
+        public static Vector2Int IJ(this QuadDirection direction) {
+            return new Vector2Int(
+                (direction.HasFlag(QuadDirection.EAST) ? 1 : 0) +
+                (direction.HasFlag(QuadDirection.WEST) ? -1 : 0),
+                (direction.HasFlag(QuadDirection.NORTH) ? -1 : 0) +
+                (direction.HasFlag(QuadDirection.SOUTH) ? 1 : 0)
+            );
+        }
+
+        public static Quaternion YRotation(this QuadDirection direction) {
+            return Quaternion.LookRotation(XZ(direction), Vector3.up);
         }
 
         public static readonly QuadDirection[] CARDINALS = { QuadDirection.NORTH, QuadDirection.EAST, QuadDirection.SOUTH, QuadDirection.WEST };

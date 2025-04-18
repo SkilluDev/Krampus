@@ -1,11 +1,15 @@
 using System.Collections.Generic;
-using UnityEditor;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using KrampUtils;
+using UnityEditor;
 
 namespace Roomgen {
     public class RoomPrefabEditor {
+        private const string ASSET_WALL_PATH = "Assets/Prefabs/Roomgen/Wall.prefab";
+        private const string ASSET_WALLDOOR_PATH = "Assets/Prefabs/Roomgen/WallDoor.prefab";
+        private const string ASSET_WALLSTUB_PATH = "Assets/Prefabs/Roomgen/WallStub.prefab";
         private Room m_targetRoom;
         private GameObject m_targetObject;
         private RoomType m_type;
@@ -99,8 +103,6 @@ namespace Roomgen {
                 room
             );
 
-
-
         /// <summary>
         /// Create a MeshFilter for the floor as a child of the prefab or get one if it exists
         /// </summary>
@@ -115,6 +117,30 @@ namespace Roomgen {
                 go.AddComponent<MeshRenderer>().sharedMaterial = GraphicsSettings.defaultRenderPipeline.defaultMaterial;
             }
             return meshFilter;
+        }
+
+        public List<GameObject> GetOrAddWallList() {
+            var list = m_targetRoom.m_autoWalls;
+            if (list == null) {
+                m_targetRoom.m_autoWalls = new List<GameObject>();
+                list = m_targetRoom.m_autoWalls;
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Makes sure no objects that were attached to the walls (such a rookie mistake!) get deleted - they get unparented instead.
+        /// </summary>
+        public void CleanupWallList() {
+            var list = GetOrAddWallList();
+            foreach (var go in list) {
+                if (go == null) continue;
+                if (!PrefabUtility.IsPartOfPrefabInstance(go)) continue;
+                var added = PrefabUtility.GetAddedGameObjects(go);
+                foreach (var w in added) w.instanceGameObject.transform.SetParent(m_targetRoom.transform);
+                Object.DestroyImmediate(go);
+            }
+            list.Clear();
         }
 
         /// <summary>
@@ -205,6 +231,76 @@ namespace Roomgen {
                     if (m_targetRoom.m_doorGrid[i, j] != null) {
                         m_targetRoom.m_doorGrid[i, j].Destroy();
                         m_targetRoom.m_doorGrid[i, j] = null;
+                    }
+                }
+            }
+        }
+
+        public void CreateWalls() {
+            if (m_targetRoom.m_doorGrid == null) throw new System.Exception("Uninitiated door grid!");
+
+            var list = GetOrAddWallList();
+
+            var oldMats = list.Count == 0 || list.FirstOrDefault(w => w != null) == null ?
+                null : list.FirstOrDefault(w => w != null).GetComponentInChildren<MeshRenderer>().sharedMaterials.ToList();
+
+            CleanupWallList();
+
+            var wallWall = AssetDatabase.LoadAssetAtPath<GameObject>(ASSET_WALL_PATH);
+            var wallDoor = AssetDatabase.LoadAssetAtPath<GameObject>(ASSET_WALLDOOR_PATH);
+            var wallStub = AssetDatabase.LoadAssetAtPath<GameObject>(ASSET_WALLSTUB_PATH);
+
+            GameObject MakeWall(GameObject which, int i, int j, Quaternion rot) {
+                var instance = (GameObject)PrefabUtility.InstantiatePrefab(which, m_targetObject.transform);
+                instance.transform.position = Room.GetCellCenter(i, j);
+                instance.transform.rotation = rot;
+
+                var renderers = instance.GetComponentsInChildren<MeshRenderer>();
+                if (oldMats != null) {
+                    foreach (var ren in renderers.Where(w => w.sharedMaterials.Length == 3))
+                        ren.SetSharedMaterials(oldMats);
+                }
+
+                list.Add(instance);
+                return instance;
+            }
+
+            for (int i = 0; i < m_targetRoom.Width; i++) {
+                for (int j = 0; j < m_targetRoom.Height; j++) {
+                    if (m_type.constraints[i, j] == null) continue;
+                    foreach (var dir in DirectionMethods.CARDINALS) {
+                        if (m_type.constraints[i, j].optionalDoors[dir]) {
+                            if (
+                                m_type.constraints.InBounds(new Vector2Int(i, j) + dir.IJ()) &&
+                                m_type.constraints[new Vector2Int(i, j) + dir.IJ()] != null &&
+                                !m_type.constraints[new Vector2Int(i, j) + dir.IJ()].phantom
+                            ) continue;
+
+                            var wo = MakeWall(wallDoor, i, j, dir.YRotation());
+                            if (
+                                wo.transform.childCount <= 0 ||
+                                !m_targetRoom.m_doorGrid.InBounds(i, j) ||
+                                m_targetRoom.m_doorGrid[i, j] == null ||
+                                m_targetRoom.m_doorGrid[i, j][dir] == null
+                            ) continue;
+                            m_targetRoom.m_doorGrid[i, j][dir].AddToDisableList(wo.transform.GetChild(0).gameObject);
+                            m_targetRoom.m_doorGrid[i, j][dir].Cleanup();
+                        } else if (m_type.constraints[i, j].requiredDoors[dir]) {
+                            if (
+                                m_type.constraints.InBounds(new Vector2Int(i, j) + dir.IJ()) &&
+                                m_type.constraints[new Vector2Int(i, j) + dir.IJ()] != null &&
+                                !m_type.constraints[new Vector2Int(i, j) + dir.IJ()].phantom
+                            ) {
+                                MakeWall(wallStub, i, j, dir.Rotate90Clockwise(3).YRotation());
+                                continue;
+                            }
+
+                            var wo = MakeWall(wallDoor, i, j, dir.YRotation());
+                            if (wo.transform.childCount <= 0) continue;
+                            wo.transform.GetChild(0).gameObject.SetActive(false);
+                        } else {
+                            MakeWall(wallWall, i, j, dir.YRotation());
+                        }
                     }
                 }
             }

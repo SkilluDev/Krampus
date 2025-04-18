@@ -1,6 +1,8 @@
 using UnityEngine;
 using KrampUtils;
 using System;
+using System.Collections.Generic;
+
 
 
 #if UNITY_EDITOR
@@ -21,6 +23,7 @@ namespace Roomgen {
         [SerializeField][HideInInspector] internal RoomType m_type;
         [SerializeField][HideInInspector] internal Array2D<DoorPropGroups> m_doorGrid;
         [SerializeField][HideInInspector] internal MeshFilter m_floorMeshFilter;
+        [SerializeField][HideInInspector] internal List<GameObject> m_autoWalls;
 
 
         public static Vector3 GetCellCenter(int i, int j) {
