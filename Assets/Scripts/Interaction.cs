@@ -14,7 +14,7 @@ public class Interaction : MonoBehaviour
     [FormerlySerializedAs("tonguePosition")][SerializeField] private Transform m_tonguePosition;
     [FormerlySerializedAs("animator")][SerializeField] private float m_tongueLength;
     [SerializeField] private ShaderManager m_shaderManager;
-    [SerializeField] private float m_maxIntensity = 2;
+    [SerializeField] private float m_maxIntensity = 5f;
 
     private LineRenderer lineRenderer;
     private GameObject child;
