@@ -2,6 +2,7 @@ using UnityEngine;
 using static KrampUtils.QuadDirection;
 using Unity.VisualScripting;
 using KrampUtils;
+using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -332,6 +333,10 @@ namespace Roomgen {
         /// Draws default inspector
         /// </summary>
         public override void OnInspectorGUI() {
+            var dirtyPrefab = Target.prefab;
+            string dirtyNote = Target.note;
+            var dirtyRotations = Target.supportedRots.ToList();
+
             if (Target.constraints == null) Target.constraints = new Array2D<GridRoomConstraint>(1, 1);
 
             EditorGUI.BeginDisabledGroup(true);
@@ -362,6 +367,10 @@ namespace Roomgen {
 
             GUILayout.Space(10);
             DrawRotationFields();
+
+            if (Target.prefab != dirtyPrefab || Target.note != dirtyNote || !Enumerable.SequenceEqual(Target.supportedRots, dirtyRotations)) {
+                EditorUtility.SetDirty(Target);
+            }
         }
 
         /// <summary>
