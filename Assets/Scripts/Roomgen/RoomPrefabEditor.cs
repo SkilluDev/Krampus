@@ -274,7 +274,10 @@ namespace Roomgen {
                                 m_type.constraints.InBounds(new Vector2Int(i, j) + dir.IJ()) &&
                                 m_type.constraints[new Vector2Int(i, j) + dir.IJ()] != null &&
                                 !m_type.constraints[new Vector2Int(i, j) + dir.IJ()].phantom
-                            ) continue;
+                            ) {
+                                MakeWall(wallStub, i, j, dir.Rotate90Clockwise(3).YRotation());
+                                continue;
+                            }
 
                             var wo = MakeWall(wallDoor, i, j, dir.YRotation());
                             if (
