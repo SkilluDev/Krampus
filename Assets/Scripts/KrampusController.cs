@@ -258,12 +258,12 @@ public class KrampusController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision) {
-
-		timeGoingUp = 0f;
-		timeGoingRight = 0f;
-		timeGoingDown = 0f;
-		timeGoingLeft = 0f;
-
+		if (collision.gameObject.layer != 13) { //13 is doors
+			timeGoingUp = 0f;
+			timeGoingRight = 0f;
+			timeGoingDown = 0f;
+			timeGoingLeft = 0f;
+		}
 
 	}
 
