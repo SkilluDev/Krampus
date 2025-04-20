@@ -52,10 +52,6 @@ public class KrampusController : MonoBehaviour {
 	private float timeGoingDown = 0f;
 	private float timeGoingLeft = 0f;
 
-
-
-	[SerializeField] private GameObject rocktParticle;
-
 	private enum State {
 		running, sneaking, idle
 	}
@@ -78,8 +74,6 @@ public class KrampusController : MonoBehaviour {
 
 		camera = GameObject.FindWithTag("MainCamera");
 		matrix = Matrix4x4.Rotate(Quaternion.Euler(0, camera.transform.localEulerAngles.y, 0));
-
-		rocktParticle.SetActive(false);
 	}
 
 	private void Update() {
@@ -128,7 +122,7 @@ public class KrampusController : MonoBehaviour {
 			timerStep1 += Time.deltaTime;
 			timerStep2 += Time.deltaTime;
 
-			if (rigidBody.velocity.x < runSpeed*0.65 && rigidBody.velocity.z < runSpeed*0.65 && xMovement==0 && zMovement == 0) {
+			if (rigidBody.velocity.x < runSpeed * 0.65 && rigidBody.velocity.z < runSpeed * 0.65 && xMovement == 0 && zMovement == 0) {
 				if (currentState == State.running) {
 					animator.SetTrigger("Stop");
 
@@ -240,7 +234,6 @@ public class KrampusController : MonoBehaviour {
 			//RotatePlayer(movementDirection );
 
 
-
 		}
 	}
 
@@ -264,6 +257,16 @@ public class KrampusController : MonoBehaviour {
 		}
 	}
 
+	void OnCollisionEnter(Collision collision) {
+
+		timeGoingUp = 0f;
+		timeGoingRight = 0f;
+		timeGoingDown = 0f;
+		timeGoingLeft = 0f;
+
+
+	}
+
 	public void Die() {
 		if (!isDead) {
 			animator.SetTrigger("Death");
@@ -279,8 +282,6 @@ public class KrampusController : MonoBehaviour {
 			isDead = true;
 			rigidBody.velocity = Vector3.zero;
 			shouldKrampusMove = false;
-
-			rocktParticle.SetActive(true);
 		}
 	}
 }
