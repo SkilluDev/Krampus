@@ -77,6 +77,12 @@ public class WinCondition : MonoBehaviour
             if (!isGameOver) GamePauseToggle();
             SceneManager.LoadScene("UITest"); //Goes Back to First Scene
         }
+        if (Input.GetKeyDown(KeyCode.Q) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can quick restart game with Q key
+        {
+	        Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
+	        if (!isGameOver) GamePauseToggle();
+	        SceneManager.LoadScene(SceneManager.GetActiveScene().name); //Goes Back to First Scene
+        }
 
         if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
         {
