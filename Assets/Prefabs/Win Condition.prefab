@@ -44,8 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab14b911d2fe7c4a8b9c0f59da67ea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  badChildrenOnStart: 0
+  badChildrenCount: 0
+  manager: {fileID: 0}
   isGamePaused: 0
   isGameOver: 0
-  timeLimit: 60
-  score: 0
+  timeLimit: 500
+  totalTime: 0
   uiManager: {fileID: 0}

@@ -1854,7 +1854,7 @@ Canvas:
   m_GameObject: {fileID: 5411021788035343781}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -1920,23 +1920,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6856f4fe790179d4089625190cdb1fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  naughtyChildrenList: {fileID: 3029336227527180661}
-  naughtyChildrenListText: {fileID: 7591411084011678504}
-  naughtyChildrenLeftText: {fileID: 2209620507828175861}
-  scoreText: {fileID: 4719320890047868926}
-  timeText: {fileID: 191817513268652190}
-  gameOverTexture: {fileID: 6153114365709784418}
-  gameOverText: {fileID: 5936801657069351777}
-  gameWonTexture: {fileID: 1533007578141392230}
-  gameWonText: {fileID: 1044448835110207183}
-  settingsMenu: {fileID: 7986888930545939195}
-  sliderMaster: {fileID: 2044423638630954865}
-  sliderMusic: {fileID: 3219659042934143597}
-  sliderSFX: {fileID: 183371118142156024}
-  audioMixer: {fileID: 24100000, guid: ebed9cc6463044422a611f4748adc568, type: 2}
-  showTutorials: {fileID: 6935044444542762500}
-  clockAnimator: {fileID: 6293010404045826410}
-  loreNote: {fileID: 3591587975015192828}
+  m_naughtyChildrenList: {fileID: 3029336227527180661}
+  m_naughtyChildrenListText: {fileID: 7591411084011678504}
+  m_naughtyChildrenLeftText: {fileID: 2209620507828175861}
+  m_scoreText: {fileID: 4719320890047868926}
+  m_timeText: {fileID: 191817513268652190}
+  m_gameOverTexture: {fileID: 6153114365709784418}
+  m_gameOverText: {fileID: 5936801657069351777}
+  m_gameWonTexture: {fileID: 1533007578141392230}
+  m_gameWonText: {fileID: 1044448835110207183}
+  m_settingsMenu: {fileID: 7986888930545939195}
+  m_sliderMaster: {fileID: 2044423638630954865}
+  m_sliderMusic: {fileID: 3219659042934143597}
+  m_sliderSFX: {fileID: 183371118142156024}
+  m_audioMixer: {fileID: 24100000, guid: ebed9cc6463044422a611f4748adc568, type: 2}
+  m_showTutorials: {fileID: 6935044444542762500}
+  m_clockAnimator: {fileID: 6293010404045826410}
+  m_loreNote: {fileID: 3591587975015192828}
 --- !u!1 &5742614770804633160
 GameObject:
   m_ObjectHideFlags: 0
@@ -3419,7 +3419,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -73, y: -158.00005}
+  m_AnchoredPosition: {x: -73, y: -158.00006}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &191817513268652190
@@ -4003,6 +4003,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4074983298640577609}
     m_Modifications:
+    - target: {fileID: 1692336489177719486, guid: 310b7767c738ff049b5613347bbda83c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -19.999985
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255707698690980656, guid: 310b7767c738ff049b5613347bbda83c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7204879871382771561, guid: 310b7767c738ff049b5613347bbda83c,
         type: 3}
       propertyPath: m_Name
@@ -4127,6 +4137,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5107719570857569871}
     m_Modifications:
+    - target: {fileID: 1692336489177719486, guid: 310b7767c738ff049b5613347bbda83c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -19.999985
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255707698690980656, guid: 310b7767c738ff049b5613347bbda83c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7204879871382771561, guid: 310b7767c738ff049b5613347bbda83c,
         type: 3}
       propertyPath: m_Name

@@ -14,7 +14,6 @@ public class Interaction : MonoBehaviour
     [FormerlySerializedAs("tonguePosition")][SerializeField] private Transform m_tonguePosition;
     [FormerlySerializedAs("animator")][SerializeField] private float m_tongueLength;
     [SerializeField] private ShaderManager m_shaderManager;
-    [SerializeField] private float m_maxIntensity = 5f;
 
     private LineRenderer lineRenderer;
     private GameObject child;
@@ -189,9 +188,7 @@ public class Interaction : MonoBehaviour
         trail.enabled = false;
         StopCoroutine(nameof(UpdateLineRenderer));
         SoundManager.PlaySound("kill");
-        m_shaderManager.Set_Intensity(m_maxIntensity*((ChildSpawner.badChildrenCountOnStart-WinCondition.Instance.getBadChildrenCount()+1f)/ChildSpawner.badChildrenCountOnStart));
-        Debug.Log(WinCondition.Instance.getBadChildrenCount());
-        Debug.Log(ChildSpawner.badChildrenCountOnStart);
+        m_shaderManager.ProcessKill();
         Destroy(child);
         Camera.main.GetComponent<CameraFollow>().Shake();
         canTongue = true;

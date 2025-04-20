@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class ShaderManager : MonoBehaviour
 {
 	[SerializeField] private Material m_material;
-	[SerializeField] private float m_intensity;
+	[SerializeField] private float m_maxIntensity = 5f;
+	private float m_intensity;
 	private float m_currentIntensity;
 
 	[SerializeField] private AnimationCurve shaderCurveIn;
@@ -16,20 +19,39 @@ public class ShaderManager : MonoBehaviour
 	private float m_shaderTime = 0f;
 	[SerializeField] private float testValue = 1f;
 
+	[SerializeField] private Volume UIPPVolume;
+	private SplitToning m_splitToning;
+	private float m_minSplitToning = 0f;
+	private float m_maxSplitToning = 100f;
+
+
+	private void Start() {
+		UIPPVolume.profile.TryGet(out m_splitToning);
+		m_splitToning.balance.value = m_minSplitToning;
+	}
 	private bool m_fade;
     // Start is called before the first frame update
     [NaughtyAttributes.Button("Set Intensity")]
     public void SetIntensity() {
-	    Set_Intensity(testValue);
+	    SetIntensity(testValue);
     }
-    public void Set_Intensity(float intensity) {
+    private void SetIntensity(float intensity) {
 	    m_intensity = intensity;
 	    m_currentIntensity = intensity;
 	    m_fade = true;
     }
 
+    [NaughtyAttributes.Button("Set Split Toning")]
+    public void SetSplitToning() {
+	    SetSplitToning(testValue);
+    }
+    private void SetSplitToning(float ratio) {
+	    m_splitToning.balance.value = Mathf.Lerp(m_minSplitToning, m_maxSplitToning, ratio);
+    }
+
+
     // Update is called once per frame
-    void Update() {
+    private void Update() {
 
 	    if (!m_fade) return;
 	    if (m_shaderTime <= shaderDurationIn) {
@@ -43,4 +65,13 @@ public class ShaderManager : MonoBehaviour
 	    m_material.SetFloat("_Intensity", m_currentIntensity);
 	    m_shaderTime += Time.deltaTime;
     }
+
+    public void ProcessKill() {
+	    float ratio = (ChildSpawner.badChildrenCountOnStart - WinCondition.Instance.getBadChildrenCount() + 1f) /
+	                   ChildSpawner.badChildrenCountOnStart;
+	    SetIntensity(m_maxIntensity*ratio);
+	    SetSplitToning(ratio);
+    }
+
+
 }
