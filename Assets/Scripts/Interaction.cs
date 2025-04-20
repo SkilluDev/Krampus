@@ -13,7 +13,7 @@ public class Interaction : MonoBehaviour
     [FormerlySerializedAs("animator")][SerializeField] private Animator m_animator;
     [FormerlySerializedAs("tonguePosition")][SerializeField] private Transform m_tonguePosition;
     [FormerlySerializedAs("animator")][SerializeField] private float m_tongueLength;
-    [SerializeField] private ShaderManager m_shaderManager;
+    //[SerializeField] private ShaderManager m_shaderManager;
 
     private LineRenderer lineRenderer;
     private GameObject child;
@@ -42,6 +42,9 @@ public class Interaction : MonoBehaviour
     private GameObject empty;
 
     private Vector3 tonguePoint;
+
+    private Coroutine m_emptyTongueOutCoroutine;
+    private Coroutine m_tongueCoroutine;
 
     private void Start()
     {
@@ -82,8 +85,8 @@ public class Interaction : MonoBehaviour
             Debug.DrawRay(transform.position + Vector3.up, dir, Color.red, 5f);
             if (Physics.Raycast(transform.position + Vector3.up, dir.normalized, out hit, m_tongueLength, LayerMask.GetMask("Wall", "Child", "Door")))
             {
-                Debug.Log(hit.transform.name);
-                Debug.Log(hit.transform.gameObject.layer);
+//                Debug.Log(hit.transform.name);
+//                Debug.Log(hit.transform.gameObject.layer);
                 Collider[] cols = Physics.OverlapSphere(hit.point, lolipopRadius, LayerMask.GetMask("Child"));
                 if (cols.Length > 0)
                 {
@@ -97,21 +100,21 @@ public class Interaction : MonoBehaviour
                         empty.transform.position = m_tonguePosition.position;
                         tonguePoint = transform.position + dir.normalized * m_tongueLength;
 
-                        StartCoroutine(EmptyTongueOut(time));
+                        m_emptyTongueOutCoroutine = StartCoroutine(EmptyTongueOut(time));
                         StartCoroutine(EmptyTongueIn(time));
 
                     }
                     else
                     {
-                        Debug.Log(child.transform.name);
-                        Debug.Log(child.transform.gameObject.layer);
+//                        Debug.Log(child.transform.name);
+//                        Debug.Log(child.transform.gameObject.layer);
                         child.GetComponent<ChildContoller>().Eat();
                         SoundManager.PlaySound("catch");
                         trail.enabled = true;
                         trail.gameObject.transform.position = child.transform.position;
                         float time = 0.85f;
                         m_animator.SetBool("hasHit", true);
-                        StartCoroutine(UpdateLineRenderer());
+                        m_tongueCoroutine = StartCoroutine(UpdateLineRenderer());
                         StartCoroutine(StopUpdateLineRenderer(time));
                         lineRenderer.enabled = true;
                         trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
@@ -121,14 +124,14 @@ public class Interaction : MonoBehaviour
                 else
                 {
 
-                    Debug.Log("I am eating your mom");
+//                    Debug.Log("I am eating your mom");
                     float time = 0.2f;
                     empty = new GameObject();
                     empty.transform.position = m_tonguePosition.position;
                     tonguePoint = hit.point;
                     Destroy(empty, 3);
 
-                    StartCoroutine(EmptyTongueOut(time));
+                    m_emptyTongueOutCoroutine = StartCoroutine(EmptyTongueOut(time));
                     StartCoroutine(EmptyTongueIn(time));
                 }
 
@@ -140,11 +143,11 @@ public class Interaction : MonoBehaviour
                 empty = new GameObject();
                 empty.transform.position = m_tonguePosition.position;
                 tonguePoint = transform.position + dir.normalized * m_tongueLength;
-                StartCoroutine(EmptyTongueOut(time));
+                m_emptyTongueOutCoroutine = StartCoroutine(EmptyTongueOut(time));
                 StartCoroutine(EmptyTongueIn(time));
             }
         }
-        m_animator.SetTrigger("nextAction");
+        //m_animator.SetTrigger("nextAction");
     }
 
 
@@ -170,7 +173,7 @@ public class Interaction : MonoBehaviour
 
 
         yield return new WaitForSeconds(time);
-        StopCoroutine(EmptyTongueOut(time));
+        StopCoroutine(m_emptyTongueOutCoroutine);
 
 
         lineRenderer.enabled = false;
@@ -186,9 +189,9 @@ public class Interaction : MonoBehaviour
         yield return new WaitForSeconds(time);
         lineRenderer.enabled = false;
         trail.enabled = false;
-        StopCoroutine(nameof(UpdateLineRenderer));
+        StopCoroutine(m_tongueCoroutine);
         SoundManager.PlaySound("kill");
-        m_shaderManager.ProcessKill();
+        ShaderManager.Instance.ProcessKill();
         Destroy(child);
         Camera.main.GetComponent<CameraFollow>().Shake();
         canTongue = true;
@@ -248,7 +251,7 @@ public class Interaction : MonoBehaviour
 
     private void RotatePlayer(Vector3 dir)
     {
-        Debug.Log(dir);
+//        Debug.Log(dir);
         Quaternion rot = Quaternion.LookRotation(new Vector3(dir.x, dir.y, dir.z));
 
         model.transform.rotation = Quaternion.Euler(0, rot.eulerAngles.y, 0);

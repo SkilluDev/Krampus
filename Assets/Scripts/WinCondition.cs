@@ -14,7 +14,6 @@ public class WinCondition : MonoBehaviour
     public int badChildrenOnStart;
     public int badChildrenCount;
 
-    [SerializeField] private UIManager manager;
 
 
     private void Awake()

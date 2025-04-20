@@ -114,7 +114,7 @@ public class CameraFollow : MonoBehaviour {
 		// After the shake ends, return the camera to its original position
 		transform.localPosition = originalPosition;
 
-		Debug.Log("Shake");
+//		Debug.Log("Shake");
 	}
 
 

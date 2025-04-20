@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 
 public class ShaderManager : MonoBehaviour
 {
+	public static ShaderManager Instance;
 	[SerializeField] private Material m_material;
 	[SerializeField] private float m_maxIntensity = 5f;
 	private float m_intensity;
@@ -24,8 +25,23 @@ public class ShaderManager : MonoBehaviour
 	private float m_minSplitToning = 0f;
 	private float m_maxSplitToning = 100f;
 
+	[SerializeField] private UniversalRendererData m_universalRendererData;
+	private bool shaderOn = true;
+
+	[NaughtyAttributes.Button("Toggle Shader")]
+	public void ToggleShader() {
+		shaderOn = !shaderOn;
+		foreach (var feature in m_universalRendererData.rendererFeatures) {
+			feature.SetActive(shaderOn);
+		}
+		UIPPVolume.profile.TryGet(out m_splitToning);
+		m_splitToning.active = shaderOn;
+	}
 
 	private void Start() {
+		if (Instance == null) {
+			Instance = this;
+		}
 		UIPPVolume.profile.TryGet(out m_splitToning);
 		m_splitToning.balance.value = m_minSplitToning;
 	}

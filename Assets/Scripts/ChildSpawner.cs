@@ -68,7 +68,7 @@ public class ChildSpawner : MonoBehaviour {
         newChild.GetComponent<ChildContoller>().isDummy = true;
         newChild.GetComponent<CapsuleCollider>().radius = 10;
         newChild.GetComponent<CapsuleCollider>().height = 50;
-        Debug.Log(newChild.name + ": Empty child");
+//        Debug.Log(newChild.name + ": Empty child");
         //Destroy(newChild.GetComponent<NavMeshAgent>());
         //Destroy(newChild.GetComponent<ChildContoller>());
         badChildrenCountOnStart++;
