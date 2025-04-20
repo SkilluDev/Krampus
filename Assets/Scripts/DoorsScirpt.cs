@@ -24,7 +24,7 @@ public class DoorsScirpt : MonoBehaviour {
 
 	private void OpenDoor(Vector3 direction) {
 
-		if ((gameObject.transform.rotation.y % 180 != 0) ? direction.z >= 0 : direction.x < 0) { //if this should be checked on Z, set Y rotation to 180. (idk if 360 works)
+		if ((gameObject.transform.rotation.y % 180 == 0) ? direction.z >= 0 : direction.x < 0) { //if this should be checked on Z, set Y rotation to 180. (idk if 360 works)
 			animator.SetTrigger("Open");
 		} else { animator.SetTrigger("Open2"); }
 		isOpen = true;
