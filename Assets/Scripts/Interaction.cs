@@ -36,8 +36,8 @@ public class Interaction : MonoBehaviour
 
     private RaycastHit hit;
 
-    public static int goodChildrenEatCount = 0;
-    public static int badChildrenEatCount = 0;
+    public int goodChildrenEatCount = 0;
+    public int badChildrenEatCount = 0;
 
     private GameObject empty;
 
@@ -46,6 +46,14 @@ public class Interaction : MonoBehaviour
     private Coroutine m_emptyTongueOutCoroutine;
     private Coroutine m_tongueCoroutine;
 
+    public static Interaction Instance { get; private set; }
+    private void Awake()
+    {
+	    if (Instance != null) {
+		    Destroy(Instance);
+	    }
+	    Instance = this;
+    }
     private void Start()
     {
         Cursor.SetCursor(cursor, new Vector2(cursor.width / 2, cursor.height / 2), CursorMode.ForceSoftware);
