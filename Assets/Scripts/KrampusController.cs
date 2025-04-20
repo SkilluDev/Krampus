@@ -25,6 +25,8 @@ public class KrampusController : MonoBehaviour {
 	private float xMovement;
 	private float zMovement;
 	public bool shouldKrampusMove = true;
+	[SerializeField] private float lerpT;
+	private float timeLerping;
 
 	private readonly float stepRunSpeed = 0.416f;
 	private readonly float stepSneakSpeed = 0.5f;
@@ -42,6 +44,13 @@ public class KrampusController : MonoBehaviour {
 
 	private float windUpSpeed;
 	private float stepSpeed;
+
+	[SerializeField] private AnimationCurve accelerationCurve;
+	[SerializeField] private float accelerationTime = 1f;
+	private float timeGoingUp = 0f;
+	private float timeGoingRight = 0f;
+	private float timeGoingDown = 0f;
+	private float timeGoingLeft = 0f;
 
 
 
@@ -77,22 +86,66 @@ public class KrampusController : MonoBehaviour {
 
 		previousState = currentState;
 		if (!WinCondition.Instance.isGamePausedValue()) {
-			xMovement = Input.GetAxis("Horizontal");
-			zMovement = Input.GetAxis("Vertical");
+			xMovement = Input.GetAxisRaw("Horizontal"); //raw means the values are only -1, 0 or 1
+			zMovement = Input.GetAxisRaw("Vertical");
+
+			float adjustedTime = Time.deltaTime / accelerationTime;
+			//incrementing time of accelerating
+			if (zMovement > 0.5) {
+				timeGoingUp += adjustedTime;
+			} else {
+				timeGoingUp -= adjustedTime;
+			}
+
+			if (zMovement < -0.5) {
+				timeGoingDown += adjustedTime;
+			} else {
+				timeGoingDown -= adjustedTime;
+			}
+
+			if (xMovement > 0.5) {
+				timeGoingRight += adjustedTime;
+			} else {
+				timeGoingRight -= adjustedTime;
+			}
+
+			if (xMovement < -0.5) {
+				timeGoingLeft += adjustedTime;
+			} else {
+				timeGoingLeft -= adjustedTime;
+			}
+			timeGoingUp = Mathf.Clamp(timeGoingUp, 0, 1);
+			timeGoingDown = Mathf.Clamp(timeGoingDown, 0, 1);
+			timeGoingRight = Mathf.Clamp(timeGoingRight, 0, 1);
+			timeGoingLeft = Mathf.Clamp(timeGoingLeft, 0, 1);
+
+
+
+			//Debug.Log($"{timeGoingUp}+{timeGoingDown}+{timeGoingRight}+{timeGoingLeft}");
 
 			timerWindUp1 += Time.deltaTime;
 			timerWindUp2 += Time.deltaTime;
-
 			timerStep1 += Time.deltaTime;
 			timerStep2 += Time.deltaTime;
 
-			if (rigidBody.velocity.x == 0 && rigidBody.velocity.z == 0) {
+			if (rigidBody.velocity.x < runSpeed*0.65 && rigidBody.velocity.z < runSpeed*0.65 && xMovement==0 && zMovement == 0) {
+				if (currentState == State.running) {
+					animator.SetTrigger("Stop");
+
+					//Debug.Log("Lol");
+				}
+				animator.SetFloat("Speed", 0, 0.1f, Time.deltaTime);
+
 				currentState = State.idle;
+				timeLerping = 0;
 			} else {
 				if (Input.GetKey(KeyCode.LeftShift)) {
 					currentState = State.sneaking;
+					animator.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
+
 				} else {
 					currentState = State.running;
+					animator.SetFloat("Speed", 2, 0.1f, Time.deltaTime);
 				}
 			}
 
@@ -155,19 +208,33 @@ public class KrampusController : MonoBehaviour {
 	private void FixedUpdate() {
 		if (!WinCondition.Instance.isGamePausedValue()) {
 			Vector3 movementDirection = new Vector3(xMovement, 0, zMovement).normalized;
+			float horizontalForce = accelerationCurve.Evaluate(timeGoingRight) - accelerationCurve.Evaluate(timeGoingLeft);
+			float verticalForce = accelerationCurve.Evaluate(timeGoingUp) - accelerationCurve.Evaluate(timeGoingDown);
+			Vector3 velocity = new Vector3(
+				horizontalForce,
+				0,
+				verticalForce
+			);
+			velocity = velocity.normalized * Mathf.Max(Mathf.Abs(horizontalForce), Mathf.Abs(verticalForce));
+			//velocity = velocity.normalized;
 
-			Vector3 skewedInput = matrix.MultiplyPoint3x4(movementDirection);
 
-			rigidBody.velocity = skewedInput * (isRunning ? runSpeed : sneakSpeed);
 			if (movementDirection.magnitude < 0.1f) {
-				animator.SetFloat("Speed", 0, 0.1f, Time.deltaTime);
+				//animator.SetFloat("Speed", 0, 0.1f, Time.deltaTime);
 			} else if (!isRunning) {
-				animator.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
-
+				//animator.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
+				timeLerping += Time.deltaTime;
 			} else {
 				animator.SetFloat("Speed", 2, 0.1f, Time.deltaTime);
+				timeLerping += Time.deltaTime;
 			}
 
+			Vector3 skewedInput = matrix.MultiplyPoint3x4(velocity);
+			//Vector3 skewedInput = velocity;
+			skewedInput = skewedInput * (isRunning ? runSpeed : sneakSpeed);
+
+			//rigidBody.velocity = Vector3.Lerp(rigidBody.velocity, skewedInput * (isRunning ? runSpeed : sneakSpeed), lerpT * Mathf.Sqrt(timeLerping));
+			rigidBody.velocity = skewedInput;
 
 			//animator.SetFloat("Speed", (skewedInput.magnitude / (speedMultiplier * runningMultiplier)));
 			//RotatePlayer(movementDirection );

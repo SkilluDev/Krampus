@@ -3,7 +3,12 @@ guid: e649dde2d4a1e1b4a86dcce694ecb338
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: 53f09beaf73ec82468b6b2669703c518, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -120,11 +125,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: GR_AttackToIdle
-      takeName: GR_AttackToIdle
-      internalID: -8758205030178252951
+      name: GR_AttackEating
+      takeName: GR_AttackEating
+      internalID: -5618688489626016513
       firstFrame: 0
-      lastFrame: 33
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -153,7 +158,7 @@ ModelImporter:
       takeName: GR_RunNice
       internalID: 166101334041065562
       firstFrame: 0
-      lastFrame: 16
+      lastFrame: 15
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -178,11 +183,40 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: GR_AttackEating
-      takeName: GR_AttackEating
-      internalID: -5618688489626016513
+      name: GR_RunToIdle
+      takeName: GR_RunToIdle
+      internalID: -1866779652437676463
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 32
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: GR_AttackToIdle
+      takeName: GR_AttackToIdle
+      internalID: -8758205030178252951
+      firstFrame: 0
+      lastFrame: 29
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
