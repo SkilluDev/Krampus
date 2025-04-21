@@ -8,6 +8,9 @@ public class Krampus : KrampusBehaviour {
     public KrampusController Kontroller => m_controller;
     [SerializeField] private KrampusController m_controller;
 
+    public KrampusAnimator Animator => m_animator;
+    [SerializeField] private KrampusAnimator m_animator;
+
 
     private void Awake() {
         foreach (var w in gameObject.GetComponentsInChildren<KrampusBehaviour>()) {

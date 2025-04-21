@@ -1,18 +1,19 @@
 using UnityEngine;
 using NaughtyAttributes;
 
-
+// Based on @WalkanFL's camera
 public class CameraController : MonoBehaviour {
     public Matrix4x4 Matrix { get; private set; }
     [SerializeField] private Krampus m_krampus;
     [SerializeField] private Camera m_camera;
+    [SerializeField] private AnimationCurve m_zoomCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     [SerializeField] private Vector3 m_baseOffset = Vector3.one * 10;
     [SerializeField] private float m_zoomedOrtoSize = 5;
     [SerializeField] private float m_unzoomedOrtoSize = 8;
     [SerializeField] private float m_zoomSpeed = 0.2f;
+    [SerializeField] private float m_zoomBuffer = 0.75f;
     [SerializeField] private float m_unzoomSpeed = 1f;
-    [SerializeField] private float m_stateChangeTimeout;
 
     private float m_zoomFactor = 1;
 
@@ -37,9 +38,9 @@ public class CameraController : MonoBehaviour {
         } else {
             m_zoomFactor += m_zoomSpeed * Time.deltaTime;
         }
-        m_zoomFactor = Mathf.Clamp01(m_zoomFactor);
+        m_zoomFactor = Mathf.Clamp(m_zoomFactor, -m_zoomBuffer, 1);
 
-        return Mathf.Lerp(m_unzoomedOrtoSize, m_zoomedOrtoSize, m_zoomFactor);
+        return Mathf.Lerp(m_unzoomedOrtoSize, m_zoomedOrtoSize, m_zoomCurve.Evaluate(Mathf.Clamp01(m_zoomFactor)));
     }
 
 

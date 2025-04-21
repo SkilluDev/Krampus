@@ -1,8 +1,16 @@
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class KrampusController : KrampusBehaviour {
     public State CurrentState { get; private set; }
+    public Vector3 VelocityVector => m_rigidbody.velocity;
+    public float RunSpeed => m_runSpeed;
+    public float Velocity => VelocityVector.magnitude;
+    public float VelocitySqr => VelocityVector.sqrMagnitude;
+    public float SneakSpeed => m_sneakSpeed;
+    public UnityAction<KrampusController.State, KrampusController.State> onStateChange;
+
     [SerializeField] private Rigidbody m_rigidbody;
 
     [BoxGroup("Speed Control")][SerializeField] private float m_sneakSpeed = 5f;
@@ -10,6 +18,7 @@ public class KrampusController : KrampusBehaviour {
     [BoxGroup("Acceleration")][SerializeField] private float m_accelerationTime = 0.2f;
     [BoxGroup("Acceleration")][SerializeField] private AnimationCurve m_accelerationCurve = AnimationCurve.Linear(0, 0, 1, 1);
     [BoxGroup("Acceleration")][SerializeField] private float m_movementThreshold = 0.5f;
+    [BoxGroup("Acceleration")][SerializeField] private float m_idleThreshhold;
     private Vector4 m_inputWeights;
     private State m_temporaryState;
 
@@ -38,15 +47,15 @@ public class KrampusController : KrampusBehaviour {
 
 
         BeginStateChange();
-        if (m_rigidbody.velocity.sqrMagnitude > 0.2f) {
-            if (!Input.GetKey(KeyCode.LeftShift)) {
-                CurrentState = State.Run;
-            } else {
-                CurrentState = State.Walk;
-            }
-        } else {
+        if (m_rigidbody.velocity.sqrMagnitude >= m_idleThreshhold && inputs.sqrMagnitude > m_movementThreshold) {
+            CurrentState = Input.GetKey(KeyCode.LeftShift) ? State.Walk : State.Run;
+        } else if (
+            inputs.sqrMagnitude < m_movementThreshold ||
+            (inputs.sqrMagnitude >= m_movementThreshold && m_rigidbody.velocity.sqrMagnitude < m_idleThreshhold)
+        ) {
             CurrentState = State.Idle;
         }
+
         ApplyStateChange();
     }
 
@@ -58,7 +67,7 @@ public class KrampusController : KrampusBehaviour {
         if (m_temporaryState == CurrentState) {
             return;
         }
-        // Notify animator etc etc
+        onStateChange.Invoke(m_temporaryState, CurrentState);
         Debug.Log("State changed to " + CurrentState);
     }
 
