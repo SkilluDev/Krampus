@@ -580,8 +580,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_krampus: {fileID: 1936252573}
   m_camera: {fileID: 1230558514}
+  m_zoomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_baseOffset: {x: -10, y: 12, z: 10}
-  m_baseOrtoSize: 10
+  m_zoomedOrtoSize: 8
+  m_unzoomedOrtoSize: 12
+  m_zoomSpeed: 0.5
+  m_zoomBuffer: 0.4
+  m_unzoomSpeed: 5
 --- !u!4 &1512549986
 Transform:
   m_ObjectHideFlags: 0
@@ -979,11 +1007,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1698299321934093973, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3083306166600181781, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_Name
@@ -1002,7 +1025,7 @@ PrefabInstance:
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.67
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
