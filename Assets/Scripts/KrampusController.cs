@@ -72,7 +72,7 @@ public class KrampusController : KrampusBehaviour {
 
     private void FixedUpdate() {
         var computedVelocity = ComputeVelocity();
-        computedVelocity = Vector3.ClampMagnitude(computedVelocity, 1);
+        computedVelocity = computedVelocity.normalized * Mathf.Max(Mathf.Abs(computedVelocity.x), Mathf.Abs(computedVelocity.z));
         var skewedInput = Kramp.Kamera.Matrix.MultiplyPoint3x4(computedVelocity);
         m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed : m_runSpeed);
     }
