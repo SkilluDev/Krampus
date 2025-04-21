@@ -44,7 +44,7 @@ public class Detection : MonoBehaviour
         currentDist = Vector3.SqrMagnitude(krampus.transform.position - gameObject.transform.position);
         if (isAlerted != lastStateAlerted)
         {
-            Debug.Log("Changed state from " + lastStateAlerted + " to " + isAlerted);
+//            Debug.Log("Changed state from " + lastStateAlerted + " to " + isAlerted);
             lastStateAlerted = isAlerted;
         }
     }

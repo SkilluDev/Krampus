@@ -14,20 +14,14 @@ public class WinCondition : MonoBehaviour
     public int badChildrenOnStart;
     public int badChildrenCount;
 
-    [SerializeField] private UIManager manager;
 
 
     private void Awake()
     {
-        // If there is an instance, and it's not me, delete myself.
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
+	    if (Instance != null) {
+		    Destroy(Instance);
+	    }
+	    Instance = this;
     }
     public enum LostGameCase
     {
@@ -47,12 +41,10 @@ public class WinCondition : MonoBehaviour
     [SerializeField] private UIManager uiManager; //UI controller attached to Canvas -> where our UI lurks
 
     // Start is called before the first frame update
-    private void Start()
-    {
+    private void Start() {
+	    totalTime = 0f;
         isGameOver = false;
         isGamePaused = false;
-
-
     }
 
     // Update is called once per frame
@@ -72,11 +64,17 @@ public class WinCondition : MonoBehaviour
             }
         }
 
-        if ((Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.G)) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
+        if ((Input.GetKeyDown(KeyCode.M) || Input.GetKeyDown(KeyCode.G)) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
         {
             Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
             if (!isGameOver) GamePauseToggle();
             SceneManager.LoadScene("UITest"); //Goes Back to First Scene
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can quick restart game with Q key
+        {
+	        Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
+	        if (!isGameOver) GamePauseToggle();
+	        SceneManager.LoadScene(SceneManager.GetActiveScene().name); //Goes Back to First Scene
         }
 
         if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
