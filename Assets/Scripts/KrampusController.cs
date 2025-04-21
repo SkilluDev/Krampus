@@ -194,8 +194,6 @@ public class KrampusController : MonoBehaviour {
 				SoundManager.PlaySound("step2");
 				timerStep2 = -stepSpeed;
 			}
-
-
 		}
 	}
 
