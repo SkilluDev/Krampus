@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using KrampUtils;
 using UnityEditor;
-
+#if UNITY_EDITOR
 namespace Roomgen {
     public class RoomPrefabEditor {
         private const string ASSET_WALL_PATH = "Assets/Prefabs/Roomgen/Wall.prefab";
@@ -346,3 +346,4 @@ namespace Roomgen {
 
     }
 }
+#endif
