@@ -3,12 +3,18 @@ using NaughtyAttributes;
 
 
 public class CameraController : MonoBehaviour {
-    [SerializeField] private KrampusController m_krampus;
+    [SerializeField] private Krampus m_krampus;
     [SerializeField] private Camera m_camera;
 
     [SerializeField] private Vector3 m_baseOffset = Vector3.one * 10;
     [SerializeField] private float m_baseOrtoSize = 5;
 
+    public Matrix4x4 Matrix { get; private set; }
+
+
+    private void Awake() {
+        Matrix = Matrix4x4.Rotate(Quaternion.Euler(0, transform.eulerAngles.y, 0));
+    }
 
     private void LateUpdate() {
         if (m_krampus == null || m_camera == null) return;
