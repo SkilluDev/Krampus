@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using KrampUtils;
 using Roomgen;
@@ -22,6 +23,7 @@ public class RoomGenerator : MonoBehaviour {
 
     [NaughtyAttributes.Button("Generate Grid")]
     public void Generate() {
+	    CleanUpChildren();
         Init();
         SelectSpawnPoint();
         CreateGrid();
@@ -56,6 +58,13 @@ public class RoomGenerator : MonoBehaviour {
         }
 
         RoomVariantManager.Release(types);
+    }
+
+    [NaughtyAttributes.Button("Clear Children")]
+    private void CleanUpChildren() {
+	    while (transform.childCount > 0){
+		    DestroyImmediate(transform.GetChild(0).gameObject);
+	    }
     }
 
     private void SelectSpawnPoint() {
