@@ -91,8 +91,8 @@ namespace KrampUtils {
 
         public T this[int x, int y]
         {
-            get => data[(size.x * y) + x];
-            set => data[(size.x * y) + x] = value;
+            get => m_data[(m_size.x * y) + x].hasValue ? m_data[(m_size.x * y) + x].value : default;
+            set => m_data[(m_size.x * y) + x] = new(value);
         }
 #endif
 
@@ -109,7 +109,7 @@ namespace KrampUtils {
 
 #else
 
-        public T Get(int x, int y) => data[(size.x * y) + x];
+        public T Get(int x, int y) => m_data[(m_size.x * y) + x].hasValue ? m_data[(m_size.x * y) + x].value : default;
         
 #endif
 
