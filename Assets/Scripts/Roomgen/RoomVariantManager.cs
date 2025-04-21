@@ -56,13 +56,13 @@ namespace Roomgen {
         }
 
         public static void Release(RoomType type) {
-            if (m_typeInstances.Contains(type)) {
-                m_prefabInstances.Remove(type.prefab);
-                m_typeInstances.Remove(type);
+	        if (!m_typeInstances.Contains(type)) return;
+            m_prefabInstances.Remove(type.prefab);
+            m_typeInstances.Remove(type);
 
-                Object.Destroy(type.prefab);
-                Object.Destroy(type);
-            }
+            //if doesn't work, change back to Destroy()
+            Object.DestroyImmediate(type.prefab);
+            Object.DestroyImmediate(type);
         }
 
         public static void Release(IEnumerable<RoomType> types) {
