@@ -52,9 +52,11 @@ public class KrampusController : MonoBehaviour {
 	private float timeGoingDown = 0f;
 	private float timeGoingLeft = 0f;
 
-	private enum State {
+	public enum State {
 		running, sneaking, idle
 	}
+
+	public State PlayerState => currentState;
 
 	private State currentState = State.idle;
 	private State previousState = State.idle;

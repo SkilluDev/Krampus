@@ -88,33 +88,18 @@ public class CameraFollow : MonoBehaviour {
 	}
 
 	private IEnumerator Shake(float duration) {
-
 		Vector3 originalPosition = transform.localPosition;
 		float elapsedTime = 0f;
 
 		shakeMagnitude = shakeForce;
-
 		while (elapsedTime < duration) {
-			// Generate a random shake offset (can customize for more control)
-			Vector3 shakeOffset = Random.insideUnitSphere * shakeMagnitude;
-
-			// Apply the shake offset to the camera position
+			var shakeOffset = Random.insideUnitSphere * shakeMagnitude;
 			transform.localPosition = originalPosition + shakeOffset;
-
-			// Increment the elapsed time
 			elapsedTime += Time.deltaTime;
-
-			// Optionally, you can add a damping factor to slow down the shake as it goes on
 			shakeMagnitude = Mathf.Lerp(shakeMagnitude, 0f, elapsedTime / duration);
-
-			// Wait for the next frame before continuing
 			yield return null;
 		}
-
-		// After the shake ends, return the camera to its original position
 		transform.localPosition = originalPosition;
-
-//		Debug.Log("Shake");
 	}
 
 
