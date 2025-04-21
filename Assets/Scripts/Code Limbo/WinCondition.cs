@@ -1,5 +1,3 @@
-#if false
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using static WinCondition;
 
-public class WinCondition : MonoBehaviour
-{
+public class WinCondition : MonoBehaviour {
     public static WinCondition Instance { get; private set; }
 
 
@@ -18,15 +15,13 @@ public class WinCondition : MonoBehaviour
 
 
 
-    private void Awake()
-    {
-	    if (Instance != null) {
-		    Destroy(Instance);
-	    }
-	    Instance = this;
+    private void Awake() {
+        if (Instance != null) {
+            Destroy(Instance);
+        }
+        Instance = this;
     }
-    public enum LostGameCase
-    {
+    public enum LostGameCase {
         TimeRunOut,         //Is handleded by WinCondition
         DetectedByParents, //Parent Script ->
         TooManyWrongChildren //Child List ->
@@ -44,22 +39,17 @@ public class WinCondition : MonoBehaviour
 
     // Start is called before the first frame update
     private void Start() {
-	    totalTime = 0f;
+        totalTime = 0f;
         isGameOver = false;
         isGamePaused = false;
     }
 
     // Update is called once per frame
-    private void Update()
-    {
-        if (!isGamePaused)
-        {
-            if (timeLimit <= 0.0f)
-            {
+    private void Update() {
+        if (!isGamePaused) {
+            if (timeLimit <= 0.0f) {
                 GameOver(LostGameCase.TimeRunOut);
-            }
-            else
-            {
+            } else {
                 timeLimit -= Time.deltaTime;
                 totalTime += Time.deltaTime;
                 uiManager.UpdateTime(timeLimit);
@@ -74,9 +64,9 @@ public class WinCondition : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can quick restart game with Q key
         {
-	        Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
-	        if (!isGameOver) GamePauseToggle();
-	        SceneManager.LoadScene(SceneManager.GetActiveScene().name); //Goes Back to First Scene
+            Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
+            if (!isGameOver) GamePauseToggle();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name); //Goes Back to First Scene
         }
 
         if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
@@ -86,8 +76,7 @@ public class WinCondition : MonoBehaviour
 
     }
 
-    public void GameOver(LostGameCase lostGameCase)
-    {
+    public void GameOver(LostGameCase lostGameCase) {
 
 
         uiManager.StopClock();
@@ -95,13 +84,11 @@ public class WinCondition : MonoBehaviour
         StartCoroutine(GameOverAnimation(lostGameCase));
         //Do other staff, like show the Score that you managed to get
     }
-    private IEnumerator GameOverAnimation(LostGameCase lostGameCase)
-    {
+    private IEnumerator GameOverAnimation(LostGameCase lostGameCase) {
         isGameOver = true;
-        KrampusController characterController = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<KrampusController>();
+        LegacyKrampusController characterController = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<LegacyKrampusController>();
 
-        if (characterController != null)
-        {
+        if (characterController != null) {
             characterController.Die();
         }
         yield return new WaitForSeconds(2);
@@ -109,20 +96,17 @@ public class WinCondition : MonoBehaviour
         //StartCoroutine(AutoQuit());
     }
 
-    public void GameWon()
-    {
+    public void GameWon() {
         isGameOver = true;
 
         StartCoroutine(GameWinAnimation());
     }
 
-    private IEnumerator GameWinAnimation()
-    {
+    private IEnumerator GameWinAnimation() {
 
-        KrampusController characterController = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<KrampusController>();
+        LegacyKrampusController characterController = GameObject.FindGameObjectWithTag("Player").gameObject.GetComponent<LegacyKrampusController>();
 
-        if (characterController != null)
-        {
+        if (characterController != null) {
             characterController.Win();
         }
         yield return new WaitForSeconds(3);
@@ -132,39 +116,32 @@ public class WinCondition : MonoBehaviour
     }
 
 
-    public void AddScore(int points)
-    {
+    public void AddScore(int points) {
         score += points;
     }
 
-    public void SubtractScore(int points)
-    {
+    public void SubtractScore(int points) {
         score -= points;
     }
 
-    public void SubtractTime(float seconds)
-    {
+    public void SubtractTime(float seconds) {
         timeLimit = timeLimit - seconds;
 
         uiManager.UpdateTime(timeLimit, seconds > 0 ? false : true);
         //Debug.Log("Subtracted time: "+ seconds);
     }
 
-    public int GetScore()
-    {
+    public int GetScore() {
         return score;
     }
-    public void GamePauseToggle()
-    {
+    public void GamePauseToggle() {
         if (!isGamePaused)  //Instead of Time Scale we are just deactivating Movement Scritps
         {
             Time.timeScale = 0;
             AudioListener.pause = true;
             isGamePaused = true;
             uiManager.ActivateSettingsMenu();
-        }
-        else
-        {
+        } else {
             Time.timeScale = 1;
             AudioListener.pause = false;
             isGamePaused = false;
@@ -172,13 +149,11 @@ public class WinCondition : MonoBehaviour
         }
     }
 
-    public bool isGamePausedValue()
-    {
+    public bool isGamePausedValue() {
         return isGamePaused;
     }
 
-    private IEnumerator AutoQuit()
-    {
+    private IEnumerator AutoQuit() {
         yield return new WaitForSeconds(4);
         SceneManager.LoadScene("UITest");
     }
@@ -187,34 +162,27 @@ public class WinCondition : MonoBehaviour
     //FunctionAboutEatingChildren
 
 
-    public int getBadChildrenCount()
-    {
+    public int getBadChildrenCount() {
         return badChildrenCount;
     }
 
-    public void SetChildCount(int count, bool playAnimation)
-    {
+    public void SetChildCount(int count, bool playAnimation) {
         badChildrenOnStart = count;
         badChildrenCount = badChildrenOnStart;
 
         uiManager.UpdateNaughtlyCount(badChildrenCount, playAnimation);
     }
 
-    public void badChildEaten()
-    {
+    public void badChildEaten() {
         badChildrenCount--;
 
         uiManager.UpdateNaughtlyCount(badChildrenCount, true);
-        if (badChildrenCount <= 0)
-        {
+        if (badChildrenCount <= 0) {
             GameWon();
         }
     }
 
-    public float getTimer()
-    {
+    public float getTimer() {
         return timeLimit;
     }
 }
-
-#endif

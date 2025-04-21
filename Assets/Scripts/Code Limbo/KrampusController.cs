@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 
-public class KrampusController : MonoBehaviour {
+public class LegacyKrampusController : MonoBehaviour {
 	public Rigidbody rigidBody;
 	new private GameObject camera;
 

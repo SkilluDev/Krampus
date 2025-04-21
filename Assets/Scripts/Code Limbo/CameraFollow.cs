@@ -9,7 +9,7 @@ public class CameraFollow : MonoBehaviour {
 	//all the neccesary krampus components so we only call for them once
 	private GameObject krampus;
 	private Rigidbody m_kRigidBody;
-	private KrampusController m_kController;
+	private LegacyKrampusController m_kController;
 	//Camera values
 	private Camera m_camera;
 	private float m_originalCameraSize;
@@ -34,7 +34,7 @@ public class CameraFollow : MonoBehaviour {
 		krampus = GameObject.FindGameObjectWithTag("Player");
 		target = krampus.transform;
 		m_kRigidBody = krampus.GetComponent<Rigidbody>();
-		m_kController = krampus.GetComponent<KrampusController>();
+		m_kController = krampus.GetComponent<LegacyKrampusController>();
 
 		m_camera = gameObject.GetComponent<Camera>();
 		m_originalCameraSize = m_camera.orthographicSize;
