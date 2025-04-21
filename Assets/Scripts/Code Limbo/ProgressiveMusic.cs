@@ -18,7 +18,7 @@ public class ProgressiveMusic : MonoBehaviour {
     }
 
     private void Update() {
-        distanceToClosest = Mathf.Sqrt(closestDist.dist);
+        distanceToClosest = Mathf.Sqrt(closestDist.Dist);
         if (distanceToClosest < minDistance) {
             childTrack.volume = (minDistance - distanceToClosest) / 20;
         } else {

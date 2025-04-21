@@ -1,3 +1,5 @@
+#if false
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -214,3 +216,5 @@ public class WinCondition : MonoBehaviour
         return timeLimit;
     }
 }
+
+#endif
