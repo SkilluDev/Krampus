@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7069810453768087152}
   - component: {fileID: 3415448039321906015}
   - component: {fileID: 3145118901642720459}
-  - component: {fileID: 3822309435898051353}
   - component: {fileID: 1698299321934093973}
   - component: {fileID: 6024168017209539665}
   m_Layer: 10
@@ -106,19 +105,6 @@ MonoBehaviour:
   m_controller: {fileID: 1698299321934093973}
   m_animator: {fileID: 6024168017209539665}
   m_tongue: {fileID: 5616205412533675726}
---- !u!114 &3822309435898051353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3083306166600181781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa1100f473547b6797de724dc6b4a72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_wallFade: {x: -1, y: 1}
 --- !u!114 &1698299321934093973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8320024670651621678}
   - component: {fileID: 5616205412533675726}
+  - component: {fileID: 2340552368402528506}
   m_Layer: 10
   m_Name: Tongue
   m_TagString: Untagged
@@ -238,8 +225,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2147483647
   m_tongueOrigin: {fileID: 8687825938405057626}
-  m_tongueLength: 5
-  m_cursor: {fileID: 2800000, guid: eb5dc644672b7ea44bb58dab8559d8ea, type: 3}
   m_tng:
     windup: 0.4
     extend: 0.2
@@ -293,6 +278,22 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+--- !u!114 &2340552368402528506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4670869950198197567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daa1100f473547b6797de724dc6b4a72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_wallFade: {x: -1, y: 1}
+  m_smoothTime: 5
+  m_offsetDistance: 2
+  m_fadeOriginRayLength: 10
 --- !u!1 &6203699023233265420
 GameObject:
   m_ObjectHideFlags: 0
