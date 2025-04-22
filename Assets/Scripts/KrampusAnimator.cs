@@ -7,9 +7,13 @@ public class KrampusAnimator : KrampusBehaviour {
     [SerializeField] private float m_fastVelocity = 4;
     [SerializeField] private float m_rotationSmoothing = 15;
 
-    [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty;
+    [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty;
 
     private float m_minimalVelocity;
+
+    private void Start() {
+        Kramp.Tongue.onStateChanged += TongueStateChanged;
+    }
 
     private void Update() {
         if (Kramp.Kontroller.CurrentState != KrampusController.State.Idle) {
@@ -19,12 +23,25 @@ public class KrampusAnimator : KrampusBehaviour {
         m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, Kramp.Kontroller.Velocity / Kramp.Kontroller.RunSpeed),0.1f, Time.deltaTime);
     }
 
+    public void TongueStateChanged(KrampusTongue.State previous, KrampusTongue.State current) {
+        Debug.Log("tongue change - " + previous + " -> " + current);
+        switch ((previous, current)) {
+            case (KrampusTongue.State.Idle, KrampusTongue.State.Windup):
+                m_animator.SetBool(m_tongueOutProperty, true);
+                break;
+
+            case (_, KrampusTongue.State.Retreating):
+                m_animator.SetBool(m_tongueOutProperty, false);
+                break;
+        }
+    }
+
     public void MovementStateChanged(KrampusController.State previous, KrampusController.State current, bool isSudden) {
         switch ((previous, current)) {
             case (KrampusController.State.Run, KrampusController.State.Idle):
-	            if (isSudden) {
-		            m_animator.SetTrigger(m_stopProperty);
-	            }
+                if (isSudden) {
+                    m_animator.SetTrigger(m_stopProperty);
+                }
                 m_minimalVelocity = 0f;
                 break;
             case (KrampusController.State.Idle, KrampusController.State.Run):

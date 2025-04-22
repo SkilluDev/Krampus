@@ -11,8 +11,10 @@ public class Krampus : KrampusBehaviour, IInteractor {
     [SerializeField] private KrampusController m_controller;
 
     public KrampusAnimator Animator => m_animator;
-
     [SerializeField] private KrampusAnimator m_animator;
+
+    public KrampusTongue Tongue => m_tongue;
+    [SerializeField] private KrampusTongue m_tongue;
 
 
     private void Awake() {

@@ -567,11 +567,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1
+  near clip plane: 0.2
   far clip plane: 100
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -724,7 +724,7 @@ Transform:
   m_GameObject: {fileID: 1512549984}
   serializedVersion: 2
   m_LocalRotation: {x: 0.112029515, y: 0.88340425, z: -0.27046317, w: 0.365918}
-  m_LocalPosition: {x: 45.25, y: 12.67, z: -45}
+  m_LocalPosition: {x: 5.25, y: 53, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1124,6 +1124,11 @@ PrefabInstance:
       objectReference: {fileID: 1512549985}
     - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
+      propertyPath: m_tongueTimings.windup
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
       propertyPath: m_retreatCurve.m_PostInfinity
       value: 2
       objectReference: {fileID: 0}
@@ -1136,6 +1141,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_retreatCurve.m_Curve.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -1214,8 +1224,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[1].time
+      value: 0.45499924
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
       propertyPath: m_retreatCurve.m_Curve.Array.data[0].outWeight
       value: 0.041666668
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[1].value
+      value: 0.994068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[2].value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -1226,6 +1256,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_extendCurve.m_Curve.Array.data[1].tangentMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.extendCurve.m_Curve.Array.data[0].inSlope
+      value: 0.0023727138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.extendCurve.m_Curve.Array.data[1].inSlope
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
@@ -1244,7 +1284,102 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
+      propertyPath: m_tng.extendCurve.m_Curve.Array.data[0].outSlope
+      value: 0.0023727138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.extendCurve.m_Curve.Array.data[1].inWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.extendCurve.m_Curve.Array.data[1].outSlope
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[0].inSlope
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[1].inSlope
+      value: 0.076816835
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[2].inSlope
+      value: -0.004078154
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
       propertyPath: m_retreatCurve.m_Curve.Array.data[1].weightedMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.extendCurve.m_Curve.Array.data[0].outWeight
+      value: 0.9916667
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[0].outSlope
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[1].inWeight
+      value: 0.7510223
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[1].outSlope
+      value: 0.076816835
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[2].inWeight
+      value: 0.41130537
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[2].outSlope
+      value: -0.004078154
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[0].outWeight
+      value: 1.1947376
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[1].outWeight
+      value: 0.31159565
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.extendCurve.m_Curve.Array.data[0].weightedMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.extendCurve.m_Curve.Array.data[1].weightedMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[0].weightedMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[1].weightedMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_tng.retreatCurve.m_Curve.Array.data[2].weightedMode
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
