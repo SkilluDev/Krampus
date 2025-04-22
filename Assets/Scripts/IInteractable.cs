@@ -1,5 +1,11 @@
+using UnityEngine;
+
 public interface IInteractable {
-    public IInteractor.Type InteractorMask { get; }
+    public GameObject GameObject => ((MonoBehaviour)this).gameObject;
+
+    public IInteractor.Type InteractorMask => IInteractor.Type.Player | IInteractor.Type.NPC;
+    public Vector3 InteractionPoint => GameObject.transform.position;
+
     public bool CanInteract(IInteractor interactor) =>
         InteractorMask.HasFlag(interactor.InteractorType);
 

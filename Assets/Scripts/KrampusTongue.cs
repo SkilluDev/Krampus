@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using KrampUtils;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SocialPlatforms;
 
 public class KrampusTongue : KrampusBehaviour {
 
@@ -10,6 +11,9 @@ public class KrampusTongue : KrampusBehaviour {
     [SerializeField] private LineRenderer m_tongueRenderer;
     [SerializeField] private LayerMask m_layerMask = int.MaxValue;
     [SerializeField] private Transform m_tongueOrigin;
+    [SerializeField] private float m_tongueLength = 8;
+    [SerializeField] private float m_tongueHitRadius = 0.5f;
+    [SerializeField] private Texture2D m_cursor;
 
     [Serializable]
     private class Timings : TimedSequence<Timings> {
@@ -20,19 +24,23 @@ public class KrampusTongue : KrampusBehaviour {
         [SeqDuration] public float retreat = 0.3f;
         public AnimationCurve retreatCurve = AnimationCurve.Linear(0, 0, 1, 1);
     }
-
     [SerializeField] private Timings m_tng;
 
 
     private Vector3 m_tongueDestination;
     private float m_tongueTime = 0f;
+    private Vector3 m_tongueDirection;
     private float m_tongueExtensionFactor = 0f;
+    private IInteractable m_hitInteractable;
+    private ITongueable m_hitTonguable;
+    private List<(float dst, ITongueable component)> m_midwayToungables;
 
     public State CurrentState { get; private set; }
 
     public enum State {
         Idle,
         Windup,
+        TargetFetch,
         Extending,
         Full,
         PreRetreat,
@@ -42,15 +50,15 @@ public class KrampusTongue : KrampusBehaviour {
 
     private void Awake() {
         m_tng.Init();
-        //Cursor.SetCursor(Cursor, new Vector2(cursor.width / 2, cursor.height / 2), CursorMode.ForceSoftware);
+        Cursor.SetCursor(m_cursor, new Vector2(m_cursor.width / 2, m_cursor.height / 2), CursorMode.ForceSoftware);
     }
 
     private void HandleInput() {
         if (Input.GetMouseButtonDown(0)) {
             var ray = Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out var hit, 100, m_layerMask)) {
-                Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red, 20f);
-                ShootOut(hit.point);
+
+            if (Physics.Raycast(ray, out var hit, 1000, m_layerMask)) {
+                ShootOut(hit.point - transform.position);
             } else {
                 Debug.Log("Missed!");
             }
@@ -72,6 +80,7 @@ public class KrampusTongue : KrampusBehaviour {
 
 
     private void Update() {
+
         if (CurrentState == State.Idle)
             HandleInput();
         // first - wait for the krampus wind up
@@ -85,14 +94,45 @@ public class KrampusTongue : KrampusBehaviour {
             case State.Windup:
                 AdvanceStateIfTime(nameof(Timings.windup));
                 break;
+            case State.TargetFetch:
+                var checkingPoint = Physics.Raycast(transform.position, m_tongueDirection, out var hit, m_tongueLength, m_layerMask) ?
+                    hit.point : transform.position + (m_tongueDirection * m_tongueLength);
+
+                // magic numbers - from ground to max wall height.
+                var possibleInteractors = Physics.OverlapCapsule(new Vector3(hit.point.x, 0, hit.point.z), new Vector3(hit.point.x, 6, hit.point.z), m_tongueHitRadius);
+
+                m_hitInteractable = possibleInteractors.Select(w => w.GetComponent<IInteractable>()).FirstOrDefault(w => w != null && w.CanInteract(Kramp));
+
+                if (m_hitInteractable == null || !m_hitInteractable.GameObject.TryGetComponent<ITongueable>(out m_hitTonguable))
+                    m_hitTonguable = possibleInteractors.Select(w => w.GetComponent<ITongueable>()).FirstOrDefault(w => w != null);
+
+
+                m_tongueDestination = m_hitInteractable == null ? checkingPoint : m_hitInteractable.InteractionPoint;
+
+                // find all tonguables to update with the extending tongue. We want to not include
+                var possibleTongueables = Physics.OverlapCapsule(transform.position, m_tongueDestination, m_tongueHitRadius);
+                float fullLength = (m_tongueDestination - transform.position).sqrMagnitude;
+                m_midwayToungables = possibleTongueables
+                    .Select(w => (dst: (w.transform.position - transform.position).sqrMagnitude / fullLength, component: w.GetComponent<ITongueable>()))
+                    .Where(w => w.component != null && (m_hitTonguable == null || w.component.GameObject != m_hitTonguable.GameObject))
+                    .OrderBy(w => w.dst).ToList();
+
+                AdvanceState();
+                break;
             case State.Extending:
                 m_tongueExtensionFactor = m_tng.extendCurve.Evaluate(m_tng.InverseLerp(nameof(Timings.extend), m_tongueTime));
+                if (m_midwayToungables.Count > 0 && m_tongueExtensionFactor >= m_midwayToungables[0].dst) {
+                    m_midwayToungables[0].component.Passby(Kramp, Vector3.Lerp(m_tongueOrigin.position, m_tongueDestination, m_tongueExtensionFactor), m_tongueExtensionFactor);
+                    m_midwayToungables.RemoveAt(0);
+                }
                 AdvanceStateIfTime(nameof(Timings.extend));
                 break;
             case State.PreRetreat:
                 AdvanceStateIfTime(nameof(Timings.preRetreat));
                 break;
             case State.Full:
+                if (m_hitInteractable != null) m_hitInteractable.Interact(Kramp);
+                if (m_hitTonguable != null) m_hitTonguable.DirectHit(Kramp, m_tongueDestination);
                 AdvanceState();
                 break;
             case State.Retreating:
@@ -113,10 +153,10 @@ public class KrampusTongue : KrampusBehaviour {
     }
 
 
-    public void ShootOut(Vector3 destination) {
+    public void ShootOut(Vector3 direction) {
         CurrentState = State.Windup;
         onStateChanged.Invoke(State.Idle, State.Windup);
-        m_tongueDestination = destination;
+        m_tongueDirection = new Vector3(direction.x, 0, direction.z).normalized;
         m_tongueExtensionFactor = 0;
         m_tongueTime = 0;
     }

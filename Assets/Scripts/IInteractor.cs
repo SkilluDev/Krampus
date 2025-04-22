@@ -4,9 +4,8 @@ using UnityEngine;
 public interface IInteractor {
     public Type InteractorType { get; }
 
-    public GameObject GetObject() {
-        return ((MonoBehaviour)this).gameObject;
-    }
+    public GameObject GameObject => ((MonoBehaviour)this).gameObject;
+
 
     public Krampus GetPlayer() {
         if (InteractorType != Type.Player) throw new System.Exception("Invalid interactor type");

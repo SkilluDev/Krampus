@@ -225,6 +225,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2147483647
   m_tongueOrigin: {fileID: 8687825938405057626}
+  m_tongueLength: 10
+  m_tongueHitRadius: 0.5
+  m_cursor: {fileID: 2800000, guid: eb5dc644672b7ea44bb58dab8559d8ea, type: 3}
   m_tng:
     windup: 0.4
     extend: 0.2
@@ -252,7 +255,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    preRetreat: 5
+    preRetreat: 0.2
     retreat: 0.4
     retreatCurve:
       serializedVersion: 2
