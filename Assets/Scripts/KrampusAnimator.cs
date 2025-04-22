@@ -16,7 +16,7 @@ public class KrampusAnimator : KrampusBehaviour {
             m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, Quaternion.LookRotation(Kramp.Kontroller.VelocityVector, Vector3.up), Time.deltaTime * m_rotationSmoothing);
         }
 
-        m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, Kramp.Kontroller.Velocity / Kramp.Kontroller.RunSpeed));
+        m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, Kramp.Kontroller.Velocity / Kramp.Kontroller.RunSpeed),0.1f, Time.deltaTime);
     }
 
     public void MovementStateChanged(KrampusController.State previous, KrampusController.State current, bool isSudden) {
