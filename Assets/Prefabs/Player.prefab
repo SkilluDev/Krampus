@@ -64,7 +64,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 1
 --- !u!136 &3415448039321906015
@@ -105,6 +105,7 @@ MonoBehaviour:
   m_camera: {fileID: 0}
   m_controller: {fileID: 1698299321934093973}
   m_animator: {fileID: 6024168017209539665}
+  m_tongue: {fileID: 5616205412533675726}
 --- !u!114 &3822309435898051353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,7 +160,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   m_movementThreshold: 0.5
-  m_idleThreshhold: 0.05
+  m_veloIdleThreshhold: 120
+  m_timeIdleThreshold: 0.2
+  m_deltaIdleThreshold: 100
+  m_startRunSpeed: 2
 --- !u!114 &6024168017209539665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,6 +182,7 @@ MonoBehaviour:
   m_rotationSmoothing: 15
   m_speedProperty: -823668238
   m_stopProperty: 426031496
+  m_tongueOutProperty: 1294476412
 --- !u!1 &4670869950198197567
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,13 +228,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed97adc904c5428189598db48b1e4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_tongueExtendSpeed: 4
-  m_tongueRetreatSpeed: 1
   m_tongueRenderer: {fileID: 7310454460585220596}
   m_layerMask:
     serializedVersion: 2
     m_Bits: 2147483647
   m_tongueOrigin: {fileID: 8687825938405057626}
+  m_tng:
+    windup: 0.4
+    extend: 0.2
+    extendCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    preRetreat: 0.3
+    retreat: 0.3
+    retreatCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
 --- !u!1 &6203699023233265420
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,11 +448,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8745913504507751508}
     m_Modifications:
-    - target: {fileID: 2187425440912010967, guid: 1b877549d16c6054c910bf9595111c25,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5.266
-      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5b9de2e272d8b7a47834edf56cdc74c3,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -476,6 +527,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2187425440912010967, guid: 1b877549d16c6054c910bf9595111c25,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.266
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
