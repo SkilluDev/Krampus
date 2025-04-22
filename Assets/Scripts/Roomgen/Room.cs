@@ -11,7 +11,7 @@ using UnityEditor;
 
 namespace Roomgen {
     public class Room : MonoBehaviour {
-        public const int CELL_SIZE = 10;
+        public const int CELL_SIZE = 15;
         // Gizmo constants
         public const float DOOR_SIZE = 1f;
         public static readonly Vector3 DOOR_NS_SIZE = new Vector3(DOOR_SIZE, DOOR_SIZE / 2, DOOR_SIZE * 2);
