@@ -50,8 +50,8 @@ public class UIManager : MonoBehaviour {
         UpdateScore();
 
 
-        if (m_inTutorial) {
-            if (WinCondition.Instance.inputSubscribe.AdvanceInput) { //Input.GetKeyUp(KeyCode.G) //Old input system
+        if (m_inTutorial) { //InputSubscribe.Input.UI.Advance.triggered
+            if (InputSubscribe.Input.UI.Advance.triggered) { //Input.GetKeyUp(KeyCode.G) //Old input system //WinCondition.Instance.inputSubscribe.AdvanceInput
                 m_loreNote.gameObject.SetActive(false);
                 Time.timeScale = 1;
                 m_inTutorial = false;

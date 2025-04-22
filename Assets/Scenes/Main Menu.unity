@@ -1278,6 +1278,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1717282589}
   m_CullTransparentMesh: 1
+--- !u!1 &1920895422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1920895424}
+  - component: {fileID: 1920895423}
+  m_Layer: 0
+  m_Name: AimPadTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1920895423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920895422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa804481e026e404aa5f39c2755ab7d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aimPadSensitivity: {x: 1500, y: 1500}
+  antiBias: {x: 0, y: -1}
+  rightStick: {x: 0, y: 0}
+  mousePosition: {x: 0, y: 0}
+  warpPosition: {x: 0, y: 0}
+  correction: {x: 0, y: 0}
+--- !u!4 &1920895424
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920895422}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1941669594
 GameObject:
   m_ObjectHideFlags: 0
@@ -1966,3 +2016,4 @@ SceneRoots:
   - {fileID: 781844075}
   - {fileID: 941591770}
   - {fileID: 2055153790}
+  - {fileID: 1920895424}

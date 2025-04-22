@@ -16,7 +16,6 @@ public class WinCondition : MonoBehaviour {
 
 
     [SerializeField] private UIManager manager;
-    [SerializeField] public InputSubscribe inputSubscribe;
     private void Awake()
     {
         // If there is an instance, and it's not me, delete myself.
@@ -41,9 +40,6 @@ public class WinCondition : MonoBehaviour {
     private int score;
 
     public float totalTime;
-    //private ChildList _ChildrenList; //Needs to be changed to ChildrenListManager appropiate class
-    //private Detection _Detection; //Not sure where it will be relevant
-    //private Player _PlayerScritpt; //Needs to be changed to appropiate class for handling Player
     [SerializeField] private UIManager uiManager; //UI controller attached to Canvas -> where our UI lurks
 
     // Start is called before the first frame update
@@ -70,7 +66,7 @@ public class WinCondition : MonoBehaviour {
 
 
 		//Input.GetKeyDown(KeyCode.R) Input.GetKeyDown(KeyCode.G //Old input system (inputSubscribe.RestartInput || inputSubscribe.AdvanceInput)
-        if ((inputSubscribe.RestartInput || inputSubscribe.AdvanceInput) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
+        if ((InputSubscribe.Input.UI.Restart.triggered || InputSubscribe.Input.UI.Advance.triggered) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
         {
             Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
             if (!isGameOver) GamePauseToggle();
@@ -87,7 +83,10 @@ public class WinCondition : MonoBehaviour {
         if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game*/
 
 		//Input.GetKeyDown(KeyCode.Escape) Input.GetKeyDown(KeyCode.P) //Old input system
-        if ((inputSubscribe.PauseInput ) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
+        //if ((inputSubscribe.PauseInput ) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
+
+		//Input.GetKeyDown(KeyCode.Escape) Input.GetKeyDown(KeyCode.P) //Old input system // inputSubscribe.PauseInput
+        if ((InputSubscribe.Input.UI.Pause.triggered ) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
         {
             GamePauseToggle();
         }
@@ -202,5 +201,9 @@ public class WinCondition : MonoBehaviour {
 
     public float getTimer() {
         return timeLimit;
+    }
+
+    private void OnDestroy() {
+	    InputSubscribe.Shutdown();
     }
 }

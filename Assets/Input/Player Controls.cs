@@ -62,6 +62,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""AimPad"",
+                    ""type"": ""Value"",
+                    ""id"": ""8810fa1c-5cb8-4129-9ed6-5ab0022fe792"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -232,12 +241,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9bac3dab-3013-4797-80f2-7896796068cb"",
-                    ""path"": ""<VirtualMouse>/position"",
+                    ""id"": ""1920feb7-536e-436f-8b3c-b61c50892512"",
+                    ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Aim"",
+                    ""action"": ""AimPad"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -494,6 +503,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_Tongue = m_Player.FindAction("Tongue", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
+        m_Player_AimPad = m_Player.FindAction("AimPad", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -571,6 +581,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_Tongue;
     private readonly InputAction m_Player_Aim;
+    private readonly InputAction m_Player_AimPad;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -579,6 +590,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputAction @Tongue => m_Wrapper.m_Player_Tongue;
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
+        public InputAction @AimPad => m_Wrapper.m_Player_AimPad;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -600,6 +612,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Aim.started += instance.OnAim;
             @Aim.performed += instance.OnAim;
             @Aim.canceled += instance.OnAim;
+            @AimPad.started += instance.OnAimPad;
+            @AimPad.performed += instance.OnAimPad;
+            @AimPad.canceled += instance.OnAimPad;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -616,6 +631,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Aim.started -= instance.OnAim;
             @Aim.performed -= instance.OnAim;
             @Aim.canceled -= instance.OnAim;
+            @AimPad.started -= instance.OnAimPad;
+            @AimPad.performed -= instance.OnAimPad;
+            @AimPad.canceled -= instance.OnAimPad;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -709,6 +727,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnTongue(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
+        void OnAimPad(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
