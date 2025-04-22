@@ -15,8 +15,6 @@ public class KrampusController : MonoBehaviour {
 	public float sneakSpeed = 4;
 	public float runSpeed = 12;
 
-
-
 	public bool isRunning;
 
 	public bool isDead = false;
@@ -82,8 +80,10 @@ public class KrampusController : MonoBehaviour {
 			//zMovement = Input.GetAxis("Vertical"); //Old input
 			//xMovement = playerControls.Player.Move.ReadValue<Vector2>().y;
 			//zMovement = playerControls.Player.Move.ReadValue<Vector2>().x;
-			xMovement = WinCondition.Instance.inputSubscribe.MoveInput.x;
-			zMovement = WinCondition.Instance.inputSubscribe.MoveInput.y;
+			//xMovement = WinCondition.Instance.inputSubscribe.MoveInput.x;
+			//zMovement = WinCondition.Instance.inputSubscribe.MoveInput.y;
+			xMovement = InputSubscribe.Input.Player.Move.ReadValue<Vector2>().x;
+			zMovement = InputSubscribe.Input.Player.Move.ReadValue<Vector2>().y;
 
 			timerWindUp1 += Time.deltaTime;
 			timerWindUp2 += Time.deltaTime;
@@ -99,7 +99,7 @@ public class KrampusController : MonoBehaviour {
 
 				currentState = State.idle;
 			} else {
-				if (WinCondition.Instance.inputSubscribe.CrouchInput) { //Input.GetKey(KeyCode.LeftShift //Old input system
+				if (InputSubscribe.Input.Player.Crouch.IsPressed()) { //Input.GetKey(KeyCode.LeftShift //Old input system //
 					currentState = State.sneaking;
 				} else {
 					currentState = State.running;

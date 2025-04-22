@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "AimPad",
+                    "type": "Value",
+                    "id": "8810fa1c-5cb8-4129-9ed6-5ab0022fe792",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -210,12 +219,12 @@
                 },
                 {
                     "name": "",
-                    "id": "9bac3dab-3013-4797-80f2-7896796068cb",
-                    "path": "<VirtualMouse>/position",
+                    "id": "1920feb7-536e-436f-8b3c-b61c50892512",
+                    "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Aim",
+                    "action": "AimPad",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
