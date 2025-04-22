@@ -4,6 +4,7 @@ using NaughtyAttributes;
 // Based on @WalkanFL's camera
 public class CameraController : MonoBehaviour {
     public Matrix4x4 Matrix { get; private set; }
+    public Camera Raw => m_camera;
     [SerializeField] private Krampus m_krampus;
     [SerializeField] private Camera m_camera;
     [SerializeField] private AnimationCurve m_zoomCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
