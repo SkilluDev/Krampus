@@ -1,7 +1,9 @@
 using UnityEngine;
 
 [ExecuteAlways]
-public class Krampus : KrampusBehaviour {
+public class Krampus : KrampusBehaviour, IInteractor {
+    public IInteractor.Type InteractorType => IInteractor.Type.Player;
+
     public CameraController Kamera => m_camera;
     [SerializeField] private CameraController m_camera;
 
@@ -9,6 +11,7 @@ public class Krampus : KrampusBehaviour {
     [SerializeField] private KrampusController m_controller;
 
     public KrampusAnimator Animator => m_animator;
+
     [SerializeField] private KrampusAnimator m_animator;
 
 
