@@ -20,7 +20,7 @@ public class KrampusAnimator : KrampusBehaviour {
             m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, Quaternion.LookRotation(Kramp.Kontroller.VelocityVector, Vector3.up), Time.deltaTime * m_rotationSmoothing);
         }
 
-        m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, Kramp.Kontroller.Velocity / Kramp.Kontroller.RunSpeed),0.1f, Time.deltaTime);
+        m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, Kramp.Kontroller.Velocity / Kramp.Kontroller.RunSpeed), 0.1f, Time.deltaTime);
     }
 
     public void TongueStateChanged(KrampusTongue.State previous, KrampusTongue.State current) {
@@ -30,7 +30,7 @@ public class KrampusAnimator : KrampusBehaviour {
                 m_animator.SetBool(m_tongueOutProperty, true);
                 break;
 
-            case (_, KrampusTongue.State.Retreating):
+            case (_, KrampusTongue.State.PreRetreat):
                 m_animator.SetBool(m_tongueOutProperty, false);
                 break;
         }

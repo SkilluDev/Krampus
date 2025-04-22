@@ -16,6 +16,7 @@ public class KrampusTongue : KrampusBehaviour {
         [SeqDuration] public float windup = 0.4f;
         [SeqDuration] public float extend = 0.2f;
         public AnimationCurve extendCurve = AnimationCurve.Linear(0, 0, 1, 1);
+        [SeqDuration] public float preRetreat = 0.1f;
         [SeqDuration] public float retreat = 0.3f;
         public AnimationCurve retreatCurve = AnimationCurve.Linear(0, 0, 1, 1);
     }
@@ -34,6 +35,7 @@ public class KrampusTongue : KrampusBehaviour {
         Windup,
         Extending,
         Full,
+        PreRetreat,
         Retreating,
         Eating
     }
@@ -87,11 +89,14 @@ public class KrampusTongue : KrampusBehaviour {
                 m_tongueExtensionFactor = m_tng.extendCurve.Evaluate(m_tng.InverseLerp(nameof(Timings.extend), m_tongueTime));
                 AdvanceStateIfTime(nameof(Timings.extend));
                 break;
+            case State.PreRetreat:
+                AdvanceStateIfTime(nameof(Timings.preRetreat));
+                break;
             case State.Full:
                 AdvanceState();
                 break;
             case State.Retreating:
-                m_tongueExtensionFactor = m_tng.extendCurve.Evaluate(1 - m_tng.InverseLerp(nameof(Timings.retreat), m_tongueTime));
+                m_tongueExtensionFactor = m_tng.retreatCurve.Evaluate(1 - m_tng.InverseLerp(nameof(Timings.retreat), m_tongueTime));
                 AdvanceStateIfTime(nameof(Timings.retreat));
                 break;
             case State.Eating:
