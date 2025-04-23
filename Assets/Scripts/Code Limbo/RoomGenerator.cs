@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using KrampUtils;
 using Roomgen;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class RoomGenerator : MonoBehaviour {
 	[SerializeField] private int m_width, m_height;
 	[SerializeField] private RoomSet m_roomSet;
 	[SerializeField] private int m_loopRectangles;
+	[SerializeField] private bool m_verbose;
 
 	private void Start() {
 		Generate();
@@ -36,13 +38,22 @@ public class RoomGenerator : MonoBehaviour {
 		}
 
 		// Using LINQ is probably suboptimal here.
-		var grouped = types.GroupBy(x => x.Grade).OrderByDescending((w) => w.Key);
+		// nah
+		var roomsByGrade = types
+			.GroupBy(x => x.Grade)
+			.OrderByDescending((w) => w.Key);
 
-		foreach (var group in grouped) {
+		foreach (var group in roomsByGrade) {
 			Debug.Log($"Found {group.Count()} Room Variants with Tier {group.Key}");
 
 			while (true) {
-				var hardestToPlace = group.OrderBy(r => FindPossiblePlacements(r).Count).FirstOrDefault(r => FindPossiblePlacements(r).Count > 0);
+				var tmp = group
+					.GroupBy(r => FindPossiblePlacements(r).Count)
+					.Where(gr => gr.Key > 0)
+					.MinBy(w => w.Key);
+
+				Debug.Log($"{tmp.Count()} rooms can be placed in {tmp.Key} places.");
+				var hardestToPlace = tmp?.UnityRandomElement();
 				if (hardestToPlace == null) {
 					Debug.Log("No room could be placed");
 					break;
@@ -59,7 +70,7 @@ public class RoomGenerator : MonoBehaviour {
 
 	[NaughtyAttributes.Button("Clear Children")]
 	private void CleanUpChildren() {
-		while (transform.childCount > 0){
+		while (transform.childCount > 0) {
 			DestroyImmediate(transform.GetChild(0).gameObject);
 		}
 	}

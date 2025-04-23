@@ -14,6 +14,7 @@ namespace KrampUtils {
         public static TItem Nth<TItem>(this IEnumerable<TItem> enumerable, int n) {
             var it = enumerable.GetEnumerator();
             for (int i = 0; i < n; i++) if (!it.MoveNext()) throw new IndexOutOfRangeException("Enumerable cannot move to n-th element.");
+            UnityEngine.Debug.Log($"Enumarate to {n} res = {it.Current}");
             return it.Current;
         }
 
