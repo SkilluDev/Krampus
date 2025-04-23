@@ -103,6 +103,8 @@ public class KrampusTongue : KrampusBehaviour {
 
                 m_hitInteractable = possibleInteractors.Select(w => w.GetComponent<IInteractable>()).FirstOrDefault(w => w != null && w.CanInteract(Kramp));
 
+                if (m_hitInteractable != null && m_hitInteractable is IEdible) ((IEdible)m_hitInteractable).Prepare(Kramp); // todo finish eating methods
+
                 if (m_hitInteractable == null || !m_hitInteractable.GameObject.TryGetComponent<ITongueable>(out m_hitTonguable))
                     m_hitTonguable = possibleInteractors.Select(w => w.GetComponent<ITongueable>()).FirstOrDefault(w => w != null);
 

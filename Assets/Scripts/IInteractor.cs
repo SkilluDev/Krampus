@@ -7,7 +7,7 @@ public interface IInteractor {
     public GameObject GameObject => ((MonoBehaviour)this).gameObject;
 
 
-    public Krampus GetPlayer() {
+    public Krampus AsPlayer() {
         if (InteractorType != Type.Player) throw new System.Exception("Invalid interactor type");
         return (Krampus)this;
     }
