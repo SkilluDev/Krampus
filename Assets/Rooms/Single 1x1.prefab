@@ -53,7 +53,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 8011472754153443745}
   m_room: {fileID: 1534900161111967745}
-  m_gizmoColor: {r: 0.5400001, g: 0.24, b: 0.6, a: 0.7}
+  m_gizmoColor: {r: 0.6, g: 0.52000004, b: 0.12, a: 0.7}
 --- !u!1 &1613275255428212531
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,8 +65,8 @@ GameObject:
   - component: {fileID: 8164824941715945470}
   - component: {fileID: 781919158031487299}
   - component: {fileID: 5946567959342246948}
-  - component: {fileID: 4680525116272613985}
   - component: {fileID: 8379175850220727859}
+  - component: {fileID: 3442253423202844553}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -139,7 +139,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4680525116272613985
+--- !u!64 &8379175850220727859
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613275255428212531}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 8ad946fda91f91e438be726b1d760ca9, type: 2}
+--- !u!114 &3442253423202844553
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,28 +192,6 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
---- !u!64 &8379175850220727859
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1613275255428212531}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 8ad946fda91f91e438be726b1d760ca9, type: 2}
 --- !u!1 &2238587846157826273
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 3692201312511307341}
   m_room: {fileID: 1534900161111967745}
-  m_gizmoColor: {r: 0.24, g: 0.6, b: 0.29999995, a: 0.7}
+  m_gizmoColor: {r: 0.29999995, g: 0.24, b: 0.6, a: 0.7}
 --- !u!1 &6097697938933317920
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,7 +299,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 6534532464056244409}
   m_room: {fileID: 1534900161111967745}
-  m_gizmoColor: {r: 0.18, g: 0.6, b: 0.53, a: 0.7}
+  m_gizmoColor: {r: 0.6, g: 0.060000017, b: 0.5100001, a: 0.7}
 --- !u!1 &7340504088652594765
 GameObject:
   m_ObjectHideFlags: 0

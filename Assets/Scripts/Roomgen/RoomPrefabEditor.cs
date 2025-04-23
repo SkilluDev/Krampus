@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using KrampUtils;
 using UnityEditor;
+using Unity.AI.Navigation;
 #if UNITY_EDITOR
 namespace Roomgen {
     public class RoomPrefabEditor {
@@ -114,7 +115,17 @@ namespace Roomgen {
                 go.transform.SetParent(m_targetRoom.transform);
                 meshFilter = go.AddComponent<MeshFilter>();
                 m_targetRoom.m_floorMeshFilter = meshFilter;
-                go.AddComponent<MeshRenderer>().sharedMaterial = GraphicsSettings.defaultRenderPipeline.defaultMaterial;
+            }
+
+            if (meshFilter.GetComponent<MeshRenderer>() == null) {
+                meshFilter.gameObject.AddComponent<MeshRenderer>().sharedMaterial = GraphicsSettings.defaultRenderPipeline.defaultMaterial;
+            }
+            if (meshFilter.GetComponent<NavMeshSurface>() == null) {
+                var nms = meshFilter.gameObject.AddComponent<NavMeshSurface>();
+                nms.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
+            }
+            if (meshFilter.GetComponent<MeshCollider>() == null) {
+                meshFilter.gameObject.AddComponent<MeshCollider>();
             }
             return meshFilter;
         }

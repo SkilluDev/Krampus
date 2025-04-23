@@ -183,6 +183,7 @@ public class RoomGenerator : MonoBehaviour {
 		}
 		var prefab = Instantiate(room.prefab, origin, Quaternion.identity, transform).GetComponent<Room>();
 		prefab.ConfigureDoors(placement.x, placement.y, m_doorGrid);
+		prefab.BuildNavMeshes();
 
 		return prefab;
 	}

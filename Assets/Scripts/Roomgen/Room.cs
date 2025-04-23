@@ -3,6 +3,10 @@ using KrampUtils;
 using System;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
+using UnityEngine.Rendering.VirtualTexturing;
+using UnityEditor.SceneManagement;
+
+
 
 
 
@@ -53,8 +57,12 @@ namespace Roomgen {
                     m_doorGrid[i, j].SetState(doors[i + x, j + y]);
                 }
             }
+        }
 
-            if (GetComponentInChildren<NavMeshSurface>()) GetComponentInChildren<NavMeshSurface>().BuildNavMesh();
+        public void BuildNavMeshes() {
+            foreach (var m in GetComponentsInChildren<NavMeshSurface>()) {
+                m.BuildNavMesh();
+            }
         }
 
         internal void Rotate90Clockwise() {
@@ -142,6 +150,7 @@ namespace Roomgen {
     [CustomEditor(typeof(Room))]
     public class RoomEditor : Editor {
         private RoomTypeEditor m_childEditor;
+        private NavMeshSurface m_surfaceComponentCheck;
         private Room Target => (Room)target;
 
         public void OnEnable() {
@@ -168,6 +177,16 @@ namespace Roomgen {
                 }
                 return;
             }
+
+            if (m_surfaceComponentCheck) {
+                if (EditorGUIHelper.HelpBoxWithButton("NavMeshSurface found", "Bake preview", MessageType.Info)) {
+                    Target.BuildNavMeshes();
+                }
+            } else {
+                EditorGUILayout.HelpBox("Room has no NavMeshSurface. Regenerate the floor to add one automatically.", MessageType.Error);
+                m_surfaceComponentCheck = Target.GetComponentInChildren<NavMeshSurface>();
+            }
+
             if (m_childEditor == null) OnEnable();
             m_childEditor.OnPrefabInspectorGUI();
         }
