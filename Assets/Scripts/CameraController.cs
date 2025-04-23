@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private Vector3 ComputeOffset() {
-		var movementOffset = Vector3.ClampMagnitude(m_krampus.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kontroller.VelocityVector, 1) * m_lookAheadStrength;
+		var movementOffset = Vector3.ClampMagnitude(m_krampus.Kramp.Kontroller.VelocityVector, 1) * m_lookAheadStrength;
 		return m_baseOffset + movementOffset;
 	}
 
