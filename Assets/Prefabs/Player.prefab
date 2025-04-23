@@ -221,14 +221,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_tongueRenderer: {fileID: 7310454460585220596}
+  m_tongueVisualOrigin: {fileID: 8687825938405057626}
+  m_cursor: {fileID: 2800000, guid: eb5dc644672b7ea44bb58dab8559d8ea, type: 3}
   m_layerMask:
     serializedVersion: 2
-    m_Bits: 2147483647
-  m_tongueOrigin: {fileID: 8687825938405057626}
+    m_Bits: 385
+  m_tongueOrigin: {fileID: 8320024670651621678}
   m_tongueLength: 10
   m_tongueHitRadius: 0.5
-  m_cursor: {fileID: 2800000, guid: eb5dc644672b7ea44bb58dab8559d8ea, type: 3}
-  m_tng:
+  m_sequence:
     windup: 0.4
     extend: 0.2
     extendCurve:
@@ -238,45 +239,45 @@ MonoBehaviour:
         time: 0
         value: 0
         inSlope: 0
-        outSlope: 0
+        outSlope: 1
         tangentMode: 0
-        weightedMode: 3
+        weightedMode: 0
         inWeight: 0
-        outWeight: 0.33333334
+        outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 0.005354308
-        outSlope: 0.005354308
+        inSlope: 1
+        outSlope: 0
         tangentMode: 0
-        weightedMode: 3
-        inWeight: 0.8666667
+        weightedMode: 0
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    preRetreat: 0.2
-    retreat: 0.4
+    preRetreat: 0.1
+    retreat: 0.3
     retreatCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 2.8999407
-        outSlope: 2.8999407
+        inSlope: 0
+        outSlope: 1
         tangentMode: 0
-        weightedMode: 3
+        weightedMode: 0
         inWeight: 0
-        outWeight: 0.2875
+        outWeight: 0
       - serializedVersion: 3
         time: 1
-        value: 1.0022774
-        inSlope: 0.053224534
-        outSlope: 0.053224534
+        value: 1
+        inSlope: 1
+        outSlope: 0
         tangentMode: 0
-        weightedMode: 3
-        inWeight: 0.6333333
+        weightedMode: 0
+        inWeight: 0
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
