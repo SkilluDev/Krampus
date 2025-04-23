@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1378100800249621119}
   - component: {fileID: 8617459582888938018}
   - component: {fileID: 5866619465132010685}
-  - component: {fileID: 8617085324456343911}
   - component: {fileID: 1936154840412842288}
+  - component: {fileID: 1629390734376472697}
   m_Layer: 0
   m_Name: Box
   m_TagString: Untagged
@@ -72,44 +72,6 @@ MonoBehaviour:
   m_model: {fileID: 2092389784569932316}
   m_strength: 0.1
   m_duration: 1
---- !u!114 &8617085324456343911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2803177670213183579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3688ebd14a2009e88a51cf11dd6e7f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_consumeParticles: {fileID: 0}
-  m_model: {fileID: 2092389784569932316}
-  m_modelScale:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -90
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 3
-      inWeight: 0.01
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!54 &1936154840412842288
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -137,6 +99,44 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1629390734376472697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2803177670213183579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3688ebd14a2009e88a51cf11dd6e7f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_consumeParticles: {fileID: 0}
+  m_model: {fileID: 2092389784569932316}
+  m_modelScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -90
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.011
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1910388332912643575
 PrefabInstance:
   m_ObjectHideFlags: 0

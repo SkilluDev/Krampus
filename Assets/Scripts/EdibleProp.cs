@@ -15,8 +15,8 @@ public class EdibleProp : MonoBehaviour, IEdible {
     [SerializeField]
     [ShowIf("ModelSet")]
     private AnimationCurve m_modelScale = new AnimationCurve(
-        new Keyframe(0f, 1f, 0f, 0f),
-        new Keyframe(1f, 0f, -90f, 0f, 0.01f, 0f)
+        new Keyframe(0f, 1f, 0f, 0f,0f, 1f),
+        new Keyframe(1f, 0f, -90f, 0f, 0.011f, 0f)
     );
 
     private void Awake() {

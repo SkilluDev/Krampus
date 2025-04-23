@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4833912412217631631}
   - component: {fileID: 4669112267706856483}
-  - component: {fileID: 1693171804749117143}
+  - component: {fileID: 2737854093756657834}
   m_Layer: 0
   m_Name: Bed
   m_TagString: Untagged
@@ -55,7 +55,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.8248973, y: 2.3881834, z: 2.485303}
   m_Center: {x: 0.000072240844, y: 1.2344056, z: 0.010882973}
---- !u!114 &1693171804749117143
+--- !u!114 &2737854093756657834
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,9 +78,9 @@ MonoBehaviour:
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-      weightedMode: 0
+      weightedMode: 3
       inWeight: 0
-      outWeight: 0
+      outWeight: 1
     - serializedVersion: 3
       time: 1
       value: 0
@@ -88,7 +88,7 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 0
       weightedMode: 3
-      inWeight: 0.01
+      inWeight: 0.011
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
