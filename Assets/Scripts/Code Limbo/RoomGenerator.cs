@@ -43,17 +43,17 @@ public class RoomGenerator : MonoBehaviour {
 			.GroupBy(x => x.Grade)
 			.OrderByDescending((w) => w.Key);
 
-		foreach (var group in roomsByGrade) {
-			Debug.Log($"Found {group.Count()} Room Variants with Tier {group.Key}");
-
+		foreach (var gradeGroup in roomsByGrade) {
+			Debug.Log($"Found {gradeGroup.Count()} Room Variants with Tier {gradeGroup.Key}");
 			while (true) {
-				var tmp = group
+				var hardestToPlace = gradeGroup
 					.GroupBy(r => FindPossiblePlacements(r).Count)
 					.Where(gr => gr.Key > 0)
-					.MinBy(w => w.Key);
+					.NullIfEmpty()?
+					.MinBy(w => w.Key)
+					.UnityRandomElement();
 
-				Debug.Log($"{tmp.Count()} rooms can be placed in {tmp.Key} places.");
-				var hardestToPlace = tmp?.UnityRandomElement();
+
 				if (hardestToPlace == null) {
 					Debug.Log("No room could be placed");
 					break;

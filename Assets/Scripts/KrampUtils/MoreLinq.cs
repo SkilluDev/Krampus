@@ -8,22 +8,16 @@ namespace KrampUtils {
             enumerable.Aggregate((a, b) => selector(a).CompareTo(selector(b)) < 0 ? a : b);
 
         public static TItem MaxBy<TItem, TSelector>(this IEnumerable<TItem> enumerable, Func<TItem, TSelector> selector) where TSelector : IComparable<TSelector> =>
-        enumerable.Aggregate((a, b) => selector(a).CompareTo(selector(b)) > 0 ? a : b);
+            enumerable.Aggregate((a, b) => selector(a).CompareTo(selector(b)) > 0 ? a : b);
 
-
-        public static TItem Nth<TItem>(this IEnumerable<TItem> enumerable, int n) {
-            var it = enumerable.GetEnumerator();
-            for (int i = 0; i < n; i++) if (!it.MoveNext()) throw new IndexOutOfRangeException("Enumerable cannot move to n-th element.");
-            UnityEngine.Debug.Log($"Enumarate to {n} res = {it.Current}");
-            return it.Current;
-        }
+        public static IEnumerable<TItem> NullIfEmpty<TItem>(this IEnumerable<TItem> enumerable) => enumerable.Count() == 0 ? null : enumerable;
 
         public static TItem UnityRandomElement<TItem>(this IEnumerable<TItem> enumerable) =>
-            enumerable.Nth(UnityEngine.Random.Range(0, enumerable.Count()));
+            enumerable.ElementAt(UnityEngine.Random.Range(0, enumerable.Count()));
 
 
         public static TItem UnityRandomElement<TItem>(this IEnumerable<TItem> enumerable, Random rand) =>
-            enumerable.Nth(rand.Next(0, enumerable.Count()));
+            enumerable.ElementAt(rand.Next(0, enumerable.Count()));
 
     }
 }
