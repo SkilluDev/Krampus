@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -33,8 +34,9 @@ public class EdibleProp : MonoBehaviour, IEdible {
     }
 
     public void Hit(Krampus krampus) {
-        foreach (var c in GetComponentsInChildren<Collider>()) c.enabled = false;
+        foreach (var c in Physics.OverlapSphere(transform.position, 3).Select(w => w.GetComponent<Rigidbody>()).Where(w => w != null)) c.WakeUp();
         foreach (var c in GetComponentsInChildren<Rigidbody>()) c.isKinematic = true;
+        foreach (var c in GetComponentsInChildren<Collider>()) c.enabled = false;
     }
     public void Prepare(Krampus krampus) { }
     public void ReelIn(Krampus krampus, Vector3 position, float progress) {

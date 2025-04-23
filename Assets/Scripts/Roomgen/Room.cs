@@ -2,6 +2,8 @@ using UnityEngine;
 using KrampUtils;
 using System;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
+
 
 
 
@@ -51,6 +53,8 @@ namespace Roomgen {
                     m_doorGrid[i, j].SetState(doors[i + x, j + y]);
                 }
             }
+
+            if (GetComponentInChildren<NavMeshSurface>()) GetComponentInChildren<NavMeshSurface>().BuildNavMesh();
         }
 
         internal void Rotate90Clockwise() {
