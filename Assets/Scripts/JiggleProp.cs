@@ -2,7 +2,7 @@ using UnityEngine;
 
 // terrible and temporary
 
-public class JiggleTongueable : MonoBehaviour, ITongueable {
+public class JiggleProp : MonoBehaviour, ITongueable {
     [SerializeField] private Transform m_model;
     [SerializeField] private float m_strength = 1;
     [SerializeField] private float m_duration = 1;
@@ -32,11 +32,11 @@ public class JiggleTongueable : MonoBehaviour, ITongueable {
     }
 
 
-    public void DirectHit(Krampus krampus, Vector3 point) {
+    public void TongueHit(Krampus krampus, Vector3 point) {
         m_time = 0;
     }
 
 
 
-    public void Passby(Krampus krampus, Vector3 point, float tongueLength) { }
+    public void TonguePassBy(Krampus krampus, Vector3 point, float tongueLength) { }
 }
