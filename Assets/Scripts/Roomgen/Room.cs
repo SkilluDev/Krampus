@@ -178,14 +178,15 @@ namespace Roomgen {
                 return;
             }
 
-            if (m_surfaceComponentCheck) {
-                if (EditorGUIHelper.HelpBoxWithButton("NavMeshSurface found", "Bake preview", MessageType.Info)) {
-                    Target.BuildNavMeshes();
-                }
-            } else {
-                EditorGUILayout.HelpBox("Room has no NavMeshSurface. Regenerate the floor to add one automatically.", MessageType.Error);
-                m_surfaceComponentCheck = Target.GetComponentInChildren<NavMeshSurface>();
-            }
+            // Not needed
+            // if (m_surfaceComponentCheck) {
+            //     if (EditorGUIHelper.HelpBoxWithButton("NavMeshSurface found", "Bake preview", MessageType.Info)) {
+            //         Target.BuildNavMeshes();
+            //     }
+            // } else {
+            //     EditorGUILayout.HelpBox("Room has no NavMeshSurface. Regenerate the floor to add one automatically.", MessageType.Error);
+            //     m_surfaceComponentCheck = Target.GetComponentInChildren<NavMeshSurface>();
+            // }
 
             if (m_childEditor == null) OnEnable();
             m_childEditor.OnPrefabInspectorGUI();

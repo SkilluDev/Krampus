@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using KrampUtils;
 using Roomgen;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class RoomGenerator : MonoBehaviour {
@@ -43,6 +44,8 @@ public class RoomGenerator : MonoBehaviour {
 			.GroupBy(x => x.Grade)
 			.OrderByDescending((w) => w.Key);
 
+		var placedRooms = new List<Room>();
+
 		foreach (var gradeGroup in roomsByGrade) {
 			Debug.Log($"Found {gradeGroup.Count()} Room Variants with Tier {gradeGroup.Key}");
 			while (true) {
@@ -61,9 +64,12 @@ public class RoomGenerator : MonoBehaviour {
 				var placements = FindPossiblePlacements(hardestToPlace);
 
 				Debug.Log($"Placing {hardestToPlace} in one of the {placements.Count} possible spots.");
-				PlaceRoom(hardestToPlace, placements[Random.Range(0, placements.Count)]);
+				placedRooms.Add(PlaceRoom(hardestToPlace, placements[Random.Range(0, placements.Count)]));
 			}
 		}
+
+		// Todo make not suck
+		GetComponent<NavMeshSurface>().BuildNavMesh();
 
 		RoomVariantManager.Release(types);
 	}
@@ -183,7 +189,6 @@ public class RoomGenerator : MonoBehaviour {
 		}
 		var prefab = Instantiate(room.prefab, origin, Quaternion.identity, transform).GetComponent<Room>();
 		prefab.ConfigureDoors(placement.x, placement.y, m_doorGrid);
-		prefab.BuildNavMeshes();
 
 		return prefab;
 	}

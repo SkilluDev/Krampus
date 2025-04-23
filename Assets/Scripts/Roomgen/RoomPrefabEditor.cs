@@ -120,10 +120,11 @@ namespace Roomgen {
             if (meshFilter.GetComponent<MeshRenderer>() == null) {
                 meshFilter.gameObject.AddComponent<MeshRenderer>().sharedMaterial = GraphicsSettings.defaultRenderPipeline.defaultMaterial;
             }
-            if (meshFilter.GetComponent<NavMeshSurface>() == null) {
-                var nms = meshFilter.gameObject.AddComponent<NavMeshSurface>();
-                nms.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
-            }
+            // Not needed apparently
+            // if (meshFilter.GetComponent<NavMeshSurface>() == null) {
+            //     var nms = meshFilter.gameObject.AddComponent<NavMeshSurface>();
+            //     nms.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
+            // }
             if (meshFilter.GetComponent<MeshCollider>() == null) {
                 meshFilter.gameObject.AddComponent<MeshCollider>();
             }

@@ -59,7 +59,7 @@ MonoBehaviour:
   - {fileID: 3439752709109176065}
   - {fileID: 4692136406927613307}
   m_room: {fileID: 6222330747707344869}
-  m_gizmoColor: {r: 0.6, g: 0.24, b: 0.5400001, a: 0.7}
+  m_gizmoColor: {r: 0.3, g: 0.6, b: 0.50000006, a: 0.7}
 --- !u!1 &2052620050600545855
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +117,7 @@ MonoBehaviour:
   - {fileID: 6883875632047834676}
   - {fileID: 41218082558841460}
   m_room: {fileID: 6222330747707344869}
-  m_gizmoColor: {r: 0.060000017, g: 0.41999993, b: 0.6, a: 0.7}
+  m_gizmoColor: {r: 0.18, g: 0.32000008, b: 0.6, a: 0.7}
 --- !u!1 &3432882406728492717
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +214,6 @@ GameObject:
   - component: {fileID: 1957181763221851038}
   - component: {fileID: 8050184893982695674}
   - component: {fileID: 3964980269264496393}
-  - component: {fileID: 6772025681079960022}
   - component: {fileID: 8560732578595142867}
   m_Layer: 0
   m_Name: Floor
@@ -288,37 +287,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6772025681079960022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4206100886221660638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_UseGeometry: 1
-  m_DefaultArea: 0
-  m_GenerateLinks: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.25
-  m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
-  m_BuildHeightMesh: 0
 --- !u!64 &8560732578595142867
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -394,7 +362,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 7761785480426109165}
   m_room: {fileID: 6222330747707344869}
-  m_gizmoColor: {r: 0.3, g: 0.6, b: 0.6, a: 0.7}
+  m_gizmoColor: {r: 0.060000017, g: 0.060000017, b: 0.6, a: 0.7}
 --- !u!1001 &445255588487900999
 PrefabInstance:
   m_ObjectHideFlags: 0

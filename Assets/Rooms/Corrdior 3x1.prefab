@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7333941933845917910}
   - component: {fileID: 4298245574266353258}
   - component: {fileID: 9059354083444291947}
-  - component: {fileID: 2106189647669871901}
   - component: {fileID: 5404081619735006860}
   m_Layer: 0
   m_Name: Floor
@@ -85,37 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2106189647669871901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5400209162105881271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_UseGeometry: 1
-  m_DefaultArea: 0
-  m_GenerateLinks: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.25
-  m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 0}
-  m_BuildHeightMesh: 0
 --- !u!64 &5404081619735006860
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -192,7 +160,7 @@ MonoBehaviour:
   - {fileID: 6183368124509929751}
   - {fileID: 5703589836094702028}
   m_room: {fileID: 7765149782523126673}
-  m_gizmoColor: {r: 0.33, g: 0.060000017, b: 0.6, a: 0.7}
+  m_gizmoColor: {r: 0.6, g: 0.18, b: 0.5300001, a: 0.7}
 --- !u!1 &6931591923750830560
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +214,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 7914433590785570247}
   m_room: {fileID: 7765149782523126673}
-  m_gizmoColor: {r: 0.3, g: 0.6, b: 0.6, a: 0.7}
+  m_gizmoColor: {r: 0.3, g: 0.55, b: 0.6, a: 0.7}
 --- !u!1 &7392484740160910789
 GameObject:
   m_ObjectHideFlags: 0
