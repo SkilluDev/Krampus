@@ -62,17 +62,17 @@ public class KrampusTongue : KrampusBehaviour {
         if (Input.GetMouseButtonDown(0)) {
             var ray = Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hit, 1000, m_layerMask)) {
-                ShootOut(hit.point - transform.position, hit.point);
+                ShootOut(hit.point);
             } else {
                 Debug.Log("Missed!");
             }
         }
     }
 
-    public void ShootOut(Vector3 direction, Vector3 specifically) {
+    public void ShootOut(Vector3 specifically) {
         CurrentState = State.Windup;
         onStateChanged.Invoke(State.Idle, State.Windup);
-        m_tongueDirection = new Vector3(direction.x, 0, direction.z).normalized;
+
         m_tongueSpecificPoint = specifically;
         m_tongueExtensionFactor = 0;
         m_tongueTime = 0;
@@ -94,10 +94,13 @@ public class KrampusTongue : KrampusBehaviour {
                 break;
 
             case State.TargetFetch: // Actually calculate what gets caught
+                m_tongueDirection = m_tongueSpecificPoint - m_tongueOrigin.position;
+                m_tongueDirection.y = 0;
+                m_tongueDirection.Normalize();
 
                 // Actually raycast from Krampus towards where the tongue is supposed to be shot. 
                 var checkingPoint = Physics.Raycast(transform.position, m_tongueDirection, out var hit, m_tongueLength, m_layerMask) ?
-                    hit.point : transform.position + (m_tongueDirection * m_tongueLength);
+                    hit.point : m_tongueOrigin.position + (m_tongueDirection * m_tongueLength);
 
                 var hitObjects = Physics.OverlapCapsule(new Vector3(hit.point.x, Room.STANDARD_FLOOR_Y, hit.point.z), new Vector3(hit.point.x, Room.STANDARD_CEILING_Y, hit.point.z), m_tongueHitRadius);
 
