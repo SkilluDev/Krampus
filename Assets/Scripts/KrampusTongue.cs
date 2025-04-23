@@ -34,6 +34,7 @@ public class KrampusTongue : KrampusBehaviour {
     private Vector3 m_tongueDestination;
     private float m_tongueTime = 0f;
     private Vector3 m_tongueDirection;
+    private Vector3 m_tongueSpecificPoint;
     private float m_tongueExtensionFactor = 0f;
     private IInteractable m_hitInteractable;
     private ITongueable m_hitTonguable;
@@ -61,17 +62,18 @@ public class KrampusTongue : KrampusBehaviour {
         if (Input.GetMouseButtonDown(0)) {
             var ray = Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hit, 1000, m_layerMask)) {
-                ShootOut(hit.point - transform.position);
+                ShootOut(hit.point - transform.position, hit.point);
             } else {
                 Debug.Log("Missed!");
             }
         }
     }
 
-    public void ShootOut(Vector3 direction) {
+    public void ShootOut(Vector3 direction, Vector3 specifically) {
         CurrentState = State.Windup;
         onStateChanged.Invoke(State.Idle, State.Windup);
         m_tongueDirection = new Vector3(direction.x, 0, direction.z).normalized;
+        m_tongueSpecificPoint = specifically;
         m_tongueExtensionFactor = 0;
         m_tongueTime = 0;
         m_hitEdible = null;
@@ -99,7 +101,7 @@ public class KrampusTongue : KrampusBehaviour {
 
                 var hitObjects = Physics.OverlapCapsule(new Vector3(hit.point.x, Room.STANDARD_FLOOR_Y, hit.point.z), new Vector3(hit.point.x, Room.STANDARD_CEILING_Y, hit.point.z), m_tongueHitRadius);
 
-                m_hitInteractable = hitObjects.Select(w => w.GetComponent<IInteractable>()).FirstOrDefault(w => w != null && w.CanInteract(Kramp));
+                m_hitInteractable = hitObjects.Select(w => w.GetComponent<IInteractable>()).Where(w => w != null && w.CanInteract(Kramp)).NullIfEmpty()?.MinBy(w => (w.GameObject.transform.position - m_tongueSpecificPoint).sqrMagnitude);
 
                 if (m_hitInteractable is IEdible edible) {
                     m_hitEdible = edible;
@@ -171,7 +173,7 @@ public class KrampusTongue : KrampusBehaviour {
                 if (m_hitInteractable != null) m_tongueDestination = m_hitInteractable.InteractionPoint;
                 if (m_hitEdible != null) {
                     try {
-                        m_hitEdible.ReelIn(Kramp, GetTonguePositions().end);
+                        m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, 0);
                     } catch (Exception e) {
                         LogException(e, m_hitTonguable);
                         m_hitEdible = null;
@@ -184,7 +186,7 @@ public class KrampusTongue : KrampusBehaviour {
             case State.Retreating: // Tongue goes from the target to visual origin, potentially carrying an Edible
                 if (m_hitEdible != null) {
                     try {
-                        m_hitEdible.ReelIn(Kramp, GetTonguePositions().end);
+                        m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
                     } catch (Exception e) {
                         LogException(e, m_hitTonguable);
                         m_hitEdible = null;
