@@ -105,14 +105,20 @@ public class KrampusTongue : KrampusBehaviour {
                 m_hitInteractable = possibleInteractors.Select(w => w.GetComponent<IInteractable>()).FirstOrDefault(w => w != null && w.CanInteract(Kramp));
 
                 if (m_hitInteractable is IEdible edible) {
-                    edible.Prepare(Kramp);
                     m_hitEdible = edible;
+
+                    try {
+                        m_hitEdible.Prepare(Kramp);
+                    } catch (Exception e) {
+                        LogException(e, m_hitEdible);
+                        m_hitEdible = null;
+                        m_hitInteractable = null;
+                    }
                 }
 
                 if (m_hitInteractable == null || !m_hitInteractable.GameObject.TryGetComponent<ITongueable>(out m_hitTonguable)) {
                     m_hitTonguable = possibleInteractors.Select(w => w.GetComponent<ITongueable>()).FirstOrDefault(w => w != null);
                 }
-
 
                 m_tongueDestination = m_hitInteractable == null ? checkingPoint : m_hitInteractable.InteractionPoint;
 
@@ -131,7 +137,11 @@ public class KrampusTongue : KrampusBehaviour {
 
                 m_tongueExtensionFactor = m_tng.extendCurve.Evaluate(m_tng.InverseLerp(nameof(Timings.extend), m_tongueTime));
                 if (m_midwayToungables.Count > 0 && m_tongueExtensionFactor >= m_midwayToungables[0].dst) {
-                    m_midwayToungables[0].component.TonguePassBy(Kramp, Vector3.Lerp(m_tongueOrigin.position, m_tongueDestination, m_tongueExtensionFactor), m_tongueExtensionFactor);
+                    try {
+                        m_midwayToungables[0].component.TonguePassBy(Kramp, Vector3.Lerp(m_tongueOrigin.position, m_tongueDestination, m_tongueExtensionFactor), m_tongueExtensionFactor);
+                    } catch (Exception e) {
+                        LogException(e, m_midwayToungables[0].component);
+                    }
                     m_midwayToungables.RemoveAt(0);
                 }
                 AdvanceStateIfTime(nameof(Timings.extend));
@@ -140,17 +150,51 @@ public class KrampusTongue : KrampusBehaviour {
                 AdvanceStateIfTime(nameof(Timings.preRetreat));
                 break;
             case State.Full:
-                if (m_hitInteractable != null) m_hitInteractable.Interact(Kramp);
-                if (m_hitTonguable != null) m_hitTonguable.TongueHit(Kramp, m_tongueDestination);
+                if (m_hitInteractable != null) {
+                    try {
+                        m_hitInteractable.Interact(Kramp);
+                    } catch (Exception e) {
+                        LogException(e, m_hitInteractable);
+                        m_hitInteractable = null;
+                        m_hitEdible = null;
+                    }
+                }
+                if (m_hitTonguable != null) {
+                    try {
+                        m_hitTonguable.TongueHit(Kramp, m_tongueDestination);
+                    } catch (Exception e) {
+                        LogException(e, m_hitTonguable);
+                        m_hitTonguable = null;
+                    }
+                }
                 AdvanceState();
                 break;
             case State.Retreating:
-                if (m_hitEdible != null) m_hitEdible.ReelIn(Kramp, GetTonguePositions().end);
+                if (m_hitEdible != null) {
+                    try {
+                        m_hitEdible.ReelIn(Kramp, GetTonguePositions().end);
+                    } catch (Exception e) {
+                        LogException(e, m_hitTonguable);
+                        m_hitEdible = null;
+                        m_hitInteractable = null;
+                    }
+                }
                 m_tongueExtensionFactor = m_tng.retreatCurve.Evaluate(1 - m_tng.InverseLerp(nameof(Timings.retreat), m_tongueTime));
                 AdvanceStateIfTime(nameof(Timings.retreat));
                 break;
             case State.Eating:
-                if (m_hitEdible != null) m_hitEdible.Consume(Kramp);
+                if (m_hitEdible != null) {
+                    try {
+                        m_hitEdible.Consume(Kramp);
+                    } catch (Exception e) {
+                        LogException(e, m_hitEdible);
+                    }
+                }
+
+                m_hitEdible = null;
+                m_hitInteractable = null;
+                m_hitTonguable = null;
+
                 AdvanceState();
                 break;
             default:
@@ -163,6 +207,26 @@ public class KrampusTongue : KrampusBehaviour {
         m_tongueTime += CurrentState != State.Idle ? Time.deltaTime : 0;
     }
 
+    private void LogException(Exception e, object context) {
+        switch (context) {
+            case IEdible edible:
+                Debug.LogError($"Interaction error caught on Edible: {e.GetType().Name}\n{e}", edible.GameObject);
+                break;
+            case IInteractable interactable:
+                Debug.LogError($"Interaction error caught on Interactable: {e.GetType().Name}\n{e}", interactable.GameObject);
+                break;
+            case ITongueable tongueable:
+                Debug.LogError($"Interaction error caught on Tongueable: {e.GetType().Name}\n{e}", tongueable.GameObject);
+                break;
+            case UnityEngine.Object uobj:
+                Debug.LogError($"Interaction error caught on Other ({e.GetType().Name}): {e.GetType().Name}\n{e}", uobj);
+                break;
+            default:
+                Debug.LogError($"Interaction error caught on Other ({e.GetType().Name}): {e.GetType().Name}\n{e}");
+                break;
+        }
+    }
+
     private (Vector3 begin, Vector3 end) GetTonguePositions() {
         return (m_tongueOrigin.position, Vector3.Lerp(m_tongueOrigin.position, m_tongueDestination, m_tongueExtensionFactor));
     }
@@ -173,5 +237,9 @@ public class KrampusTongue : KrampusBehaviour {
         m_tongueDirection = new Vector3(direction.x, 0, direction.z).normalized;
         m_tongueExtensionFactor = 0;
         m_tongueTime = 0;
+        m_hitEdible = null;
+        m_hitInteractable = null;
+        m_hitTonguable = null;
+        m_midwayToungables = null;
     }
 }
