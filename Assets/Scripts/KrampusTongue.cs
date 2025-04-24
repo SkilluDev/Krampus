@@ -60,22 +60,16 @@ public class KrampusTongue : KrampusBehaviour {
 
     private void HandleInput() {
         if (Input.GetMouseButtonDown(0)) {
-            var ray = Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out var hit, 1000, m_layerMask)) {
-                ShootOut(hit.point);
-            } else {
-                Debug.Log("Missed!");
-            }
+	        ShootOut();
+
         }
     }
 
-    public void ShootOut(Vector3 specifically) {
+    public void ShootOut() {
         CurrentState = State.Windup;
         onStateChanged.Invoke(State.Idle, State.Windup);
-
-        m_tongueSpecificPoint = specifically;
-        m_tongueExtensionFactor = 0;
         m_tongueTime = 0;
+        m_tongueExtensionFactor = 0;
         m_hitEdible = null;
         m_hitInteractable = null;
         m_hitTonguable = null;
@@ -94,6 +88,17 @@ public class KrampusTongue : KrampusBehaviour {
                 break;
 
             case State.TargetFetch: // Actually calculate what gets caught
+
+	            var ray = Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition);
+	            if (Physics.Raycast(ray, out var mouseHit, 1000, m_layerMask)) {
+		            m_tongueSpecificPoint = mouseHit.point;
+	            } else {
+		            //reset the state machine?
+		            CurrentState = State.Idle;
+		            Debug.Log("Missed!");
+		            break;
+	            }
+
                 m_tongueDirection = m_tongueSpecificPoint - m_tongueOrigin.position;
                 m_tongueDirection.y = 0;
                 m_tongueDirection.Normalize();
@@ -239,6 +244,7 @@ public class KrampusTongue : KrampusBehaviour {
     /// <param name="nameof">Name of the time param from m_tng</param>
     /// <returns>Whether the state has been advanced</returns>
     private bool AdvanceStateIfTime(string nameof) {
+	    Debug.Log(m_tongueTime+" "+m_sequence.End(nameof));
         if (m_tongueTime >= m_sequence.End(nameof)) {
             AdvanceState();
             return true;
