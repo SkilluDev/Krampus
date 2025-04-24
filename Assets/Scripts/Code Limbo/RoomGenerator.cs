@@ -15,6 +15,7 @@ public class RoomGenerator : MonoBehaviour {
 	[SerializeField] private RoomSet m_roomSet;
 	[SerializeField] private int m_loopRectangles;
 	[SerializeField] private bool m_verbose;
+	[SerializeField] private NavMeshSurface m_navMesh;
 
 	private void Start() {
 		Generate();
@@ -68,8 +69,7 @@ public class RoomGenerator : MonoBehaviour {
 			}
 		}
 
-		// Todo make not suck
-		GetComponent<NavMeshSurface>().BuildNavMesh();
+		m_navMesh.BuildNavMesh();
 
 		RoomVariantManager.Release(types);
 	}
