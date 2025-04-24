@@ -68,7 +68,7 @@ public class Interaction : MonoBehaviour {
 
     private void Update()
     {	//Input.GetButtonDown("Fire1") //Old input //WinCondition.Instance.inputSubscribe.TongueInput
-        if (InputSubscribe.Input.Player.Tongue.triggered && canTongue && GetComponent<KrampusController>().shouldKrampusMove)
+        if (InputSubscribe.Input.Player.Tongue.triggered && canTongue && GetComponent<LegacyKrampusController>().shouldKrampusMove)
         {
             StartCoroutine(ShootTongue());
         }
