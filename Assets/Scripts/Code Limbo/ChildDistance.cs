@@ -26,7 +26,7 @@ public class ChildDistance : MonoBehaviour {
         Dist = closestOffset.sqrMagnitude;
 
         foreach (var child in m_children) {
-            if (child == null || !child.GetComponent<Child>().isBad) continue;
+            if (child == null || !child.GetComponent<LegacyChild>().isBad) continue;
             var offset = child.transform.position - transform.position;
             float sqrLen = offset.sqrMagnitude;
 

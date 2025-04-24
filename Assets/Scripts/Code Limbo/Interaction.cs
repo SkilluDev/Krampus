@@ -216,7 +216,7 @@ public class Interaction : MonoBehaviour {
     }
 
     private void GrandPoints() {
-        if (child.gameObject.GetComponent<Child>().isBad) {
+        if (child.gameObject.GetComponent<LegacyChild>().isBad) {
             badChildrenEatCount++;
             WinCondition.Instance.badChildEaten();
             WinCondition.Instance.AddScore(10);

@@ -45,7 +45,7 @@ namespace Roomgen {
             return po;
         }
 
-        public bool CanPlace(int x, int y, DoorFlags[,] grid, bool[,] occupied) {
+        public bool CanPlace(int x, int y, DoorFlags[,] grid, Room[,] occupied) {
             for (int i = 0; i < Width; i++) {
                 for (int j = 0; j < Height; j++) {
                     if (constraints[i, j] == null) continue;

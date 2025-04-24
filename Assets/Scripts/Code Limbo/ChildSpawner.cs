@@ -63,12 +63,12 @@ public class ChildSpawner : MonoBehaviour {
             tempChild.GetComponent<ChildContoller>().ResetChildDestination();*/
         }
 
-        Child newChild = CreateChild(spawnPoint.position, Math.Abs(goodColor - 1) % materials.Length, true);
+        LegacyChild newChild = CreateChild(spawnPoint.position, Math.Abs(goodColor - 1) % materials.Length, true);
         Destroy(newChild.GetComponent<Rigidbody>());
         newChild.GetComponent<ChildContoller>().isDummy = true;
         newChild.GetComponent<CapsuleCollider>().radius = 10;
         newChild.GetComponent<CapsuleCollider>().height = 50;
-//        Debug.Log(newChild.name + ": Empty child");
+        //        Debug.Log(newChild.name + ": Empty child");
         //Destroy(newChild.GetComponent<NavMeshAgent>());
         //Destroy(newChild.GetComponent<ChildContoller>());
         badChildrenCountOnStart++;
@@ -78,8 +78,8 @@ public class ChildSpawner : MonoBehaviour {
         WinCondition.Instance.SetChildCount(badChildrenCountOnStart, false);
     }
 
-    private Child CreateChild(Vector3 spawn, int colorId, bool isBad) {
-        Child newChild = Instantiate(childTemplate, spawn, Quaternion.identity).GetComponent<Child>();
+    private LegacyChild CreateChild(Vector3 spawn, int colorId, bool isBad) {
+        LegacyChild newChild = Instantiate(childTemplate, spawn, Quaternion.identity).GetComponent<LegacyChild>();
         newChild.mat = materials[colorId];
         newChild.isBad = isBad;
         Color color = colors[colorId];

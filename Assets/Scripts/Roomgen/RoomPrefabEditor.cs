@@ -126,7 +126,8 @@ namespace Roomgen {
             //     nms.useGeometry = UnityEngine.AI.NavMeshCollectGeometry.PhysicsColliders;
             // }
             if (meshFilter.GetComponent<MeshCollider>() == null) {
-                meshFilter.gameObject.AddComponent<MeshCollider>();
+                var mc = meshFilter.gameObject.AddComponent<MeshCollider>();
+                mc.sharedMesh = meshFilter.sharedMesh;
             }
             return meshFilter;
         }
@@ -228,6 +229,9 @@ namespace Roomgen {
             generation.SetTriangles(tris, 0);
             generation.RecalculateNormals();
             mf.sharedMesh = generation;
+
+            if (mf.TryGetComponent<MeshCollider>(out var col))
+                col.sharedMesh = generation;
 
             return generation;
         }

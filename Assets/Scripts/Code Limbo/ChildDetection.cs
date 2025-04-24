@@ -69,7 +69,7 @@ public class ChildDetection : MonoBehaviour {
 
         int o = 0;
         for (int i = 1; i < kids.Count; i++) {
-            if (kids[i].GetComponent<Child>().isBad == false) {
+            if (kids[i].GetComponent<LegacyChild>().isBad == false) {
                 kids.RemoveAt(i);
                 i--;
                 continue;
