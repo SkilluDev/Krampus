@@ -12,6 +12,8 @@ public class RoomGenerator : MonoBehaviour {
 	private Vector2Int m_spawnPoint;
 	private List<Room> m_placedRooms;
 
+	public IReadOnlyCollection<Room> Rooms => m_placedRooms;
+
 	[SerializeField] private int m_width, m_height;
 	[SerializeField] private RoomSet m_roomSet;
 	[SerializeField] private int m_loopRectangles;
@@ -19,7 +21,7 @@ public class RoomGenerator : MonoBehaviour {
 	[SerializeField] private NavMeshSurface m_navMesh;
 	[SerializeField] private Krampus m_krampus;
 
-	private void Start() {
+	private void Awake() {
 		Generate();
 	}
 
