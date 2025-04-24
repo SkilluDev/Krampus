@@ -98,7 +98,7 @@ public class KrampusTongue : KrampusBehaviour {
                 m_tongueDirection.y = 0;
                 m_tongueDirection.Normalize();
 
-                // Actually raycast from Krampus towards where the tongue is supposed to be shot. 
+                // Actually raycast from Krampus towards where the tongue is supposed to be shot.
                 var checkingPoint = Physics.Raycast(transform.position, m_tongueDirection, out var hit, m_tongueLength, m_layerMask) ?
                     hit.point : m_tongueOrigin.position + (m_tongueDirection * m_tongueLength);
 
@@ -270,5 +270,8 @@ public class KrampusTongue : KrampusBehaviour {
         return (m_tongueVisualOrigin.position, Vector3.Lerp(m_tongueVisualOrigin.position, m_tongueDestination, m_tongueExtensionFactor));
     }
 
+    public Vector3 GetTongueDirection() {
+	    return m_tongueDirection;
+    }
 
 }

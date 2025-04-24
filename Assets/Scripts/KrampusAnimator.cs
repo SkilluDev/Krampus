@@ -16,7 +16,7 @@ public class KrampusAnimator : KrampusBehaviour {
     }
 
     private void Update() {
-        if (Kramp.Kontroller.CurrentState != KrampusController.State.Idle) {
+        if (Kramp.Kontroller.CurrentState != KrampusController.State.Idle && Kramp.Tongue.CurrentState==KrampusTongue.State.Idle) {
             m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, Quaternion.LookRotation(Kramp.Kontroller.VelocityVector, Vector3.up), Time.deltaTime * m_rotationSmoothing);
         }
 
@@ -29,10 +29,12 @@ public class KrampusAnimator : KrampusBehaviour {
             case (KrampusTongue.State.Idle, KrampusTongue.State.Windup):
                 m_animator.SetBool(m_tongueOutProperty, true);
                 break;
-
             case (_, KrampusTongue.State.PreRetreat):
                 m_animator.SetBool(m_tongueOutProperty, false);
                 break;
+            case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
+	            RotatePlayer(Kramp.Tongue.GetTongueDirection());
+	            break;
         }
     }
 
@@ -54,5 +56,9 @@ public class KrampusAnimator : KrampusBehaviour {
                 m_minimalVelocity = 0f;
                 break;
         }
+    }
+
+    private void RotatePlayer(Vector3 direction) {
+		m_modelTransform.rotation = Quaternion.LookRotation(direction);
     }
 }

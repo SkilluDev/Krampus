@@ -236,9 +236,9 @@ public class Interaction : MonoBehaviour {
     }
 
 
-    private void RotatePlayer(Vector3 dir) {
+    private void RotatePlayer(Vector3 direction) {
         //        Debug.Log(dir);
-        Quaternion rot = Quaternion.LookRotation(new Vector3(dir.x, dir.y, dir.z));
+        Quaternion rot = Quaternion.LookRotation(direction);
 
         model.transform.rotation = Quaternion.Euler(0, rot.eulerAngles.y, 0);
     }
