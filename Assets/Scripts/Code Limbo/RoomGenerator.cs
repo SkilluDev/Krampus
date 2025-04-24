@@ -17,6 +17,7 @@ public class RoomGenerator : MonoBehaviour {
 	[SerializeField] private int m_loopRectangles;
 	[SerializeField] private bool m_verbose;
 	[SerializeField] private NavMeshSurface m_navMesh;
+	[SerializeField] private Krampus m_krampus;
 
 	private void Start() {
 		Generate();
@@ -177,6 +178,8 @@ public class RoomGenerator : MonoBehaviour {
 		m_navMesh.BuildNavMesh();
 
 		RoomVariantManager.Release(types);
+
+		MoveKrampus();
 	}
 
 	public Room GetRoomAt(Vector3 position) {
@@ -217,6 +220,11 @@ public class RoomGenerator : MonoBehaviour {
 		}
 		Debug.Log(sb.ToString());
 	}
+
+	private void MoveKrampus() {
+		m_krampus.Kramp.GetComponent<Rigidbody>().position = MoreNavmesh.RandomPoint(Vector3.zero, 200);
+	}
+
 
 
 	#region Gizmos
