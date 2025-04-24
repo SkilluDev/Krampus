@@ -224,7 +224,7 @@ public class RoomGenerator : MonoBehaviour {
 	}
 
 	private void MoveKrampus() {
-		m_krampus.Kramp.GetComponent<Rigidbody>().position = MoreNavmesh.RandomPoint(Vector3.zero, 200);
+		m_krampus.GetComponent<Rigidbody>().position = MoreNavmesh.RandomPoint(Vector3.zero, 200);
 	}
 
 
