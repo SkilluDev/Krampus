@@ -244,7 +244,6 @@ public class KrampusTongue : KrampusBehaviour {
     /// <param name="nameof">Name of the time param from m_tng</param>
     /// <returns>Whether the state has been advanced</returns>
     private bool AdvanceStateIfTime(string nameof) {
-	    Debug.Log(m_tongueTime+" "+m_sequence.End(nameof));
         if (m_tongueTime >= m_sequence.End(nameof)) {
             AdvanceState();
             return true;

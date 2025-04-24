@@ -181,7 +181,7 @@ public class RoomGenerator : MonoBehaviour {
 
 		RoomVariantManager.Release(types);
 
-		MoveKrampus();
+		MoveKrampusToRandomPlace();
 	}
 
 	public Room GetRoomAt(Vector3 position) {
@@ -223,7 +223,7 @@ public class RoomGenerator : MonoBehaviour {
 		Debug.Log(sb.ToString());
 	}
 
-	private void MoveKrampus() {
+	private void MoveKrampusToRandomPlace() {
 		m_krampus.GetComponent<Rigidbody>().position = MoreNavmesh.RandomPoint(Vector3.zero, 200);
 	}
 

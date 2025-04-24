@@ -18,6 +18,8 @@ public class Child : NPC, IEdible {
     public Child.State CurrentState { get; private set; }
 
     private void Start() {
+	    MoveChildToRandomPlace();
+	    Debug.Log(transform.position);
         SelectNewWanderLocation();
     }
 
@@ -40,6 +42,11 @@ public class Child : NPC, IEdible {
                 MoveAlongPath();
                 break;
         }
+    }
+
+    private void MoveChildToRandomPlace() {
+	    var temp = MoreNavmesh.RandomPoint(Vector3.zero, 200);
+	    GetComponent<Rigidbody>().position = new Vector3(temp.x, 0, temp.z);
     }
 
     public void Consume(Krampus krampus) => throw new System.NotImplementedException();
