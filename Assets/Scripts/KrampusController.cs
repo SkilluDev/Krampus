@@ -78,12 +78,10 @@ public class KrampusController : MonoBehaviour {
 		if (!WinCondition.Instance.isGamePausedValue()) {
 			//xMovement = Input.GetAxis("Horizontal"); //Old input
 			//zMovement = Input.GetAxis("Vertical"); //Old input
-			//xMovement = playerControls.Player.Move.ReadValue<Vector2>().y;
-			//zMovement = playerControls.Player.Move.ReadValue<Vector2>().x;
-			//xMovement = WinCondition.Instance.inputSubscribe.MoveInput.x;
-			//zMovement = WinCondition.Instance.inputSubscribe.MoveInput.y;
 			xMovement = InputSubscribe.Input.Player.Move.ReadValue<Vector2>().x;
 			zMovement = InputSubscribe.Input.Player.Move.ReadValue<Vector2>().y;
+			//xMovement = InputSubscribe.MoveInput.x;
+			//zMovement = InputSubscribe.MoveInput.y;
 
 			timerWindUp1 += Time.deltaTime;
 			timerWindUp2 += Time.deltaTime;
