@@ -3,29 +3,26 @@ using System.Linq;
 using System.Text;
 using KrampUtils;
 using Roomgen;
-using Unity.AI.Navigation;
 using UnityEngine;
 
-public class RoomGenerator : MonoBehaviour {
+public class RoomGenerator : RoomGeneratorBase {
+	[SerializeField] private int m_width, m_height;
+	[SerializeField] private RoomSet m_roomSet;
+	[SerializeField] private int m_loopRectangles;
+	[SerializeField] private Krampus m_krampus;
 	private DoorFlags[,] m_doorGrid;
 	private Room[,] m_generationGrid;
 	private Vector2Int m_spawnPoint;
 	private List<Room> m_placedRooms;
 
-	public IReadOnlyCollection<Room> Rooms => m_placedRooms;
+	public override IReadOnlyCollection<Room> Rooms => m_placedRooms;
 
-	[SerializeField] private int m_width, m_height;
-	[SerializeField] private RoomSet m_roomSet;
-	[SerializeField] private int m_loopRectangles;
-	[SerializeField] private bool m_verbose;
-	[SerializeField] private NavMeshSurface m_navMesh;
-	[SerializeField] private Krampus m_krampus;
 
 	private void Awake() {
 		Generate();
 	}
 
-	public void Generate() {
+	public override void Generate() {
 		void Init() {
 			m_doorGrid = new DoorFlags[m_width, m_height];
 			m_generationGrid = new Room[m_width, m_height];
@@ -184,7 +181,7 @@ public class RoomGenerator : MonoBehaviour {
 		MoveKrampusToRandomPlace();
 	}
 
-	public Room GetRoomAt(Vector3 position) {
+	public override Room GetRoomAt(Vector3 position) {
 		return m_generationGrid[Mathf.FloorToInt(position.x / Room.CELL_SIZE), Mathf.FloorToInt(-position.z / Room.CELL_SIZE)];
 	}
 
