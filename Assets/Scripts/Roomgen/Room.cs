@@ -3,8 +3,7 @@ using KrampUtils;
 using System;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
-using UnityEngine.Rendering.VirtualTexturing;
-using UnityEditor.SceneManagement;
+
 
 
 
@@ -24,7 +23,7 @@ namespace Roomgen {
         public const float DOOR_SIZE = 1f;
         public static readonly Vector3 DOOR_NS_SIZE = new Vector3(DOOR_SIZE, DOOR_SIZE / 2, DOOR_SIZE * 2);
         public static readonly Vector3 DOOR_EW_SIZE = new Vector3(DOOR_SIZE * 2, DOOR_SIZE / 2, DOOR_SIZE);
-        // 
+        //
         public int Width => m_doorGrid.Width;
         public int Height => m_doorGrid.Height;
 
@@ -39,7 +38,7 @@ namespace Roomgen {
         }
 
         public static Vector3 GetPleasantDoorPosition(int i, int j, QuadDirection dir) {
-            return GetCellCenter(i, j) + (dir.XZ() * (CELL_SIZE / 2 - DOOR_SIZE)); // el funky mathematico to get a nice door position; 
+            return GetCellCenter(i, j) + (dir.XZ() * (CELL_SIZE / 2 - DOOR_SIZE)); // el funky mathematico to get a nice door position;
         }
 
         public static Vector3 GetDoorPosition(int i, int j, QuadDirection dir) {
