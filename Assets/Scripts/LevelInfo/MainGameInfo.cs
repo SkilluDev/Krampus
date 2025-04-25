@@ -5,8 +5,8 @@ using UnityEngine;
 /// De-facto game controller for the main gaame scene
 /// </summary>
 public class MainGameInfo : LevelInfo {
-    public RoomGenerator RoomGenerator => m_roomGenerator;
-    [SerializeField] private RoomGenerator m_roomGenerator;
+    public RoomGeneratorBase RoomGenerator => m_roomGenerator;
+    [SerializeField] private RoomGeneratorBase m_roomGenerator;
 
     public IReadOnlyCollection<Child> Children => m_childRegistry;
     private List<Child> m_childRegistry;
