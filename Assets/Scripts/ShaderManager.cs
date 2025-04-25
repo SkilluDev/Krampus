@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class ShaderManager : MonoBehaviour
-{
+public class ShaderManager : MonoBehaviour {
 	[SerializeField] private Material m_material;
 	[SerializeField] private float m_maxIntensity = 5f;
 	private float m_intensity;
@@ -38,8 +38,7 @@ public class ShaderManager : MonoBehaviour
 		UIPPVolume.profile.TryGet(out m_splitToning);
 		m_splitToning.active = shaderOn;
 	}
-	private void Awake()
-	{
+	private void Awake() {
 		if (Instance != null) {
 			Destroy(Instance);
 		}
@@ -50,48 +49,55 @@ public class ShaderManager : MonoBehaviour
 		m_splitToning.balance.value = m_minSplitToning;
 	}
 	private bool m_fade;
-    // Start is called before the first frame update
-    [NaughtyAttributes.Button("Set Intensity")]
-    public void SetIntensity() {
-	    SetIntensity(testValue);
-    }
-    private void SetIntensity(float intensity) {
-	    m_intensity = intensity;
-	    m_currentIntensity = intensity;
-	    m_fade = true;
-    }
+	// Start is called before the first frame update
+	[NaughtyAttributes.Button("Set Intensity")]
+	public void SetIntensity() {
+		SetIntensity(testValue);
+	}
+	private void SetIntensity(float intensity) {
+		m_intensity = intensity;
+		m_currentIntensity = intensity;
+		m_fade = true;
+	}
 
-    [NaughtyAttributes.Button("Set Split Toning")]
-    public void SetSplitToning() {
-	    SetSplitToning(testValue);
-    }
-    private void SetSplitToning(float ratio) {
-	    m_splitToning.balance.value = Mathf.Lerp(m_minSplitToning, m_maxSplitToning, ratio);
-    }
+	[NaughtyAttributes.Button("Set Split Toning")]
+	public void SetSplitToning() {
+		SetSplitToning(testValue);
+	}
+	private void SetSplitToning(float ratio) {
+		m_splitToning.balance.value = Mathf.Lerp(m_minSplitToning, m_maxSplitToning, ratio);
+	}
 
 
-    // Update is called once per frame
-    private void Update() {
+	// Update is called once per frame
+	private void Update() {
 
-	    if (!m_fade) return;
-	    if (m_shaderTime <= shaderDurationIn) {
-			    m_currentIntensity = shaderCurveIn.Evaluate(m_shaderTime/shaderDurationIn)*m_intensity;
-	    } else if (m_shaderTime <= shaderDurationOut+shaderDurationIn) {
-			    m_currentIntensity = shaderCurveOut.Evaluate((m_shaderTime-shaderDurationIn)/shaderDurationOut)*m_intensity;
-	    } else {
-		    m_fade = false;
-		    m_shaderTime = 0f;
-	    }
-	    m_material.SetFloat("_Intensity", m_currentIntensity);
-	    m_shaderTime += Time.deltaTime;
-    }
+		if (!m_fade) return;
+		if (m_shaderTime <= shaderDurationIn) {
+			m_currentIntensity = shaderCurveIn.Evaluate(m_shaderTime / shaderDurationIn) * m_intensity;
+		} else if (m_shaderTime <= shaderDurationOut + shaderDurationIn) {
+			m_currentIntensity = shaderCurveOut.Evaluate((m_shaderTime - shaderDurationIn) / shaderDurationOut) * m_intensity;
+		} else {
+			m_fade = false;
+			m_shaderTime = 0f;
+		}
+		m_material.SetFloat("_Intensity", m_currentIntensity);
+		m_shaderTime += Time.deltaTime;
+	}
 
-    public void ProcessKill() {
-	    float ratio = (ChildSpawner.badChildrenCountOnStart - WinCondition.Instance.getBadChildrenCount() + 1f) /
-	                   ChildSpawner.badChildrenCountOnStart;
-	    SetIntensity(m_maxIntensity*ratio);
-	    SetSplitToning(ratio);
-    }
+	[Button("Hit")]
+	private void ProcessKillTest() {
+		float ratio = 0.6f;
+		SetIntensity(m_maxIntensity * ratio);
+		SetSplitToning(ratio);
+	}
+
+	public void ProcessKill() {
+		float ratio = (ChildSpawner.badChildrenCountOnStart - WinCondition.Instance.getBadChildrenCount() + 1f) /
+					   ChildSpawner.badChildrenCountOnStart;
+		SetIntensity(m_maxIntensity * ratio);
+		SetSplitToning(ratio);
+	}
 
 
 }
