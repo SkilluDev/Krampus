@@ -102,6 +102,7 @@ public class KrampusController : KrampusBehaviour {
 			return;
 		}
 		Kramp.Animator.MovementStateChanged(m_temporaryState, CurrentState, m_isSuddenStop);
+		onStateChange?.Invoke(m_temporaryState, CurrentState);
 		//Debug.Log("State changed to " + CurrentState+" isSuddenStop " + m_isSuddenStop);
 	}
 

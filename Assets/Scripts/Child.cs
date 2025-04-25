@@ -1,6 +1,8 @@
+using System;
 using KrampUtils;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class Child : NPC, IEdible {
     public enum State {
@@ -11,15 +13,17 @@ public class Child : NPC, IEdible {
         Dead
     }
 
+    public UnityAction<Child.State, Child.State> onStateChanged;
     [SerializeField] private float m_interactionDistance = 8;
     [SerializeField] private Transform m_dest;
     [SerializeField] private RoomGenerator m_gen;
 
-    public Child.State CurrentState { get; private set; }
+
+    public State CurrentState { get; private set; }
 
     private void Start() {
-	    MoveChildToRandomPlace();
-	    Debug.Log(transform.position);
+        MoveChildToRandomPlace();
+        Debug.Log(transform.position);
         SelectNewWanderLocation();
     }
 
@@ -45,12 +49,30 @@ public class Child : NPC, IEdible {
     }
 
     private void MoveChildToRandomPlace() {
-	    var temp = MoreNavmesh.RandomPoint(Vector3.zero, 200);
-	    GetComponent<Rigidbody>().position = new Vector3(temp.x, 0, temp.z);
+        var temp = MoreNavmesh.RandomPoint(Vector3.zero, 200);
+        GetComponent<Rigidbody>().position = new Vector3(temp.x, 0, temp.z);
     }
 
-    public void Consume(Krampus krampus) => throw new System.NotImplementedException();
-    public void Hit(Krampus krampus) => throw new System.NotImplementedException();
-    public void Prepare(Krampus krampus) => throw new System.NotImplementedException();
-    public void ReelIn(Krampus krampus, Vector3 position, float progress) => throw new System.NotImplementedException();
+    public void Consume(Krampus krampus) {
+        Destroy(gameObject);
+    }
+    public void Hit(Krampus krampus) {
+        SwitchState(State.Dead);
+    }
+
+    private void SwitchState(State previous) {
+        if (previous == CurrentState) return;
+        Debug.Log(onStateChanged);
+        onStateChanged?.Invoke(CurrentState, previous);
+        CurrentState = previous;
+    }
+
+    public void Prepare(Krampus krampus) {
+
+    }
+
+    public void ReelIn(Krampus krampus, Vector3 position, float progress) {
+        transform.position = position;
+    }
+
 }

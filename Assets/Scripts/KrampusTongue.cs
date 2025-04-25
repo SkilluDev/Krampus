@@ -235,7 +235,7 @@ public class KrampusTongue : KrampusBehaviour {
         var previous = CurrentState;
         if (CurrentState == State.Eating) CurrentState = State.Idle;
         else CurrentState++;
-        onStateChanged.Invoke(previous, CurrentState);
+        onStateChanged?.Invoke(previous, CurrentState);
     }
 
     /// <summary>
@@ -276,7 +276,7 @@ public class KrampusTongue : KrampusBehaviour {
     }
 
     public Vector3 GetTongueDirection() {
-	    return m_tongueDirection;
+        return m_tongueDirection;
     }
 
 }
