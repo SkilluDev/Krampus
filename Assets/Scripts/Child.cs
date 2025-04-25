@@ -1,4 +1,3 @@
-using System;
 using KrampUtils;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,42 +14,38 @@ public class Child : NPC, IEdible {
 
     public UnityAction<Child.State, Child.State> onStateChanged;
     [SerializeField] private float m_interactionDistance = 8;
-    [SerializeField] private Transform m_dest;
-    [SerializeField] private RoomGenerator m_gen;
 
 
     public State CurrentState { get; private set; }
 
-    private void Start() {
-        MoveChildToRandomPlace();
-        Debug.Log(transform.position);
-        SelectNewWanderLocation();
+
+    private void OnEnable() {
+        Game.MainGameInfo.RegisterChild(this);
+    }
+
+    private void OnDisable() {
+        Game.MainGameInfo.UnregisterChild(this);
     }
 
     private void SelectNewWanderLocation() {
-        if (NavMesh.SamplePosition(m_gen.Rooms.UnityRandomElement().GetMidPoint(), out var hit, 10, NavMesh.AllAreas)) {
+        if (NavMesh.SamplePosition(Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement().GetMidPoint(), out var hit, 10, NavMesh.AllAreas)) {
             SetDestination(hit.position);
-            Debug.Log("Moving to new room");
         } else {
             Debug.Log("ever considered ending your life");
         }
-
     }
 
     private void Update() {
         switch (CurrentState) {
             case State.Idle:
-                if ((CurrentDestination - transform.position).sqrMagnitude < m_interactionDistance) {
+                if (m_currentPath?.status == NavMeshPathStatus.PathInvalid || NearDestination(m_interactionDistance)) {
                     SelectNewWanderLocation();
                 }
-                MoveAlongPath();
+
+                SetVelocity(GetPathDirection());
+
                 break;
         }
-    }
-
-    private void MoveChildToRandomPlace() {
-        var temp = MoreNavmesh.RandomPoint(Vector3.zero, 200);
-        GetComponent<Rigidbody>().position = new Vector3(temp.x, 0, temp.z);
     }
 
     public void Consume(Krampus krampus) {
@@ -68,7 +63,7 @@ public class Child : NPC, IEdible {
     }
 
     public void Prepare(Krampus krampus) {
-
+        Game.MainGameInfo.UnregisterChild(this);
     }
 
     public void ReelIn(Krampus krampus, Vector3 position, float progress) {

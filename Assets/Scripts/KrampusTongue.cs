@@ -60,8 +60,7 @@ public class KrampusTongue : KrampusBehaviour {
 
     private void HandleInput() {
         if (Input.GetMouseButtonDown(0)) {
-	        ShootOut();
-
+            ShootOut();
         }
     }
 
@@ -89,15 +88,15 @@ public class KrampusTongue : KrampusBehaviour {
 
             case State.TargetFetch: // Actually calculate what gets caught
 
-	            var ray = Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition);
-	            if (Physics.Raycast(ray, out var mouseHit, 1000, m_layerMask)) {
-		            m_tongueSpecificPoint = mouseHit.point;
-	            } else {
-		            //reset the state machine?
-		            CurrentState = State.Idle;
-		            Debug.Log("Missed!");
-		            break;
-	            }
+                var ray = Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out var mouseHit, 1000, m_layerMask)) {
+                    m_tongueSpecificPoint = mouseHit.point;
+                } else {
+                    //reset the state machine?
+                    CurrentState = State.Idle;
+                    Debug.Log("Missed!");
+                    break;
+                }
 
                 m_tongueDirection = m_tongueSpecificPoint - m_tongueOrigin.position;
                 m_tongueDirection.y = 0;

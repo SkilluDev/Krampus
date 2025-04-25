@@ -1,43 +1,60 @@
+using Roomgen;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class NPC : MonoBehaviour, IInteractor {
     private const float NEAR_THRESHOLD = 0.2f;
-    [SerializeField] protected float m_baseMovementSpeed = 4;
-    [SerializeField] protected Rigidbody m_rigidbody;
 
     public Vector3 CurrentDestination { get; protected set; }
-    protected NavMeshPath CurrentPath { get; set; }
-    protected int CurrentPathPoint { get; set; }
 
+    [SerializeField] protected float m_baseMovementSpeed = 4;
+    [SerializeField] protected Rigidbody m_rigidbody;
+    protected NavMeshPath m_currentPath;
+    protected int m_currentPathPoint;
     public IInteractor.Type InteractorType => IInteractor.Type.NPC;
 
-    public virtual bool SetDestination(Vector3 destination) {
-        if (CurrentPath == null) CurrentPath = new NavMeshPath();
+    protected void Awake() {
+        m_currentPath = new NavMeshPath();
+    }
 
-        if (!NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, CurrentPath)) {
+    public Room GetCurrentRoom() {
+        return Game.MainGameInfo.RoomGenerator.GetRoomAt(transform.position);
+    }
+
+    public virtual bool SetDestination(Vector3 destination) {
+        if (m_currentPath == null) m_currentPath = new NavMeshPath();
+
+        if (!NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, m_currentPath)) {
             Debug.LogError("Could not form path");
             return false;
         }
         CurrentDestination = destination;
-        CurrentPathPoint = 0;
+        m_currentPathPoint = 0;
         return true;
     }
 
-    public virtual void MoveAlongPath() {
-        if (CurrentPath.status == NavMeshPathStatus.PathInvalid) {
+    protected void SetVelocity(Vector3 velocity) {
+        m_rigidbody.velocity = velocity;
+    }
+
+    protected Vector3 GetPathDirection() {
+        if (m_currentPath == null || m_currentPath.status == NavMeshPathStatus.PathInvalid) {
             Debug.LogError("Path invalid");
-            return;
+            return Vector3.zero;
         }
 
         var dest = CurrentDestination;
-        if (CurrentPath.corners.Length > 0 && CurrentPathPoint < CurrentPath.corners.Length - 1) {
-            if ((transform.position - CurrentPath.corners[CurrentPathPoint + 1]).sqrMagnitude < NEAR_THRESHOLD)
-                CurrentPathPoint++;
-            dest = CurrentPath.corners[CurrentPathPoint + 1];
+        if (m_currentPath.corners.Length > 0 && m_currentPathPoint < m_currentPath.corners.Length - 1) {
+            if ((transform.position - m_currentPath.corners[m_currentPathPoint + 1]).sqrMagnitude < NEAR_THRESHOLD)
+                m_currentPathPoint++;
+            dest = m_currentPath.corners[m_currentPathPoint + 1];
         }
 
-        m_rigidbody.velocity = (dest - transform.position).normalized * m_baseMovementSpeed;
+        return (dest - transform.position).normalized * m_baseMovementSpeed;
+    }
+
+    protected bool NearDestination(float distance) {
+        return (CurrentDestination - transform.position).sqrMagnitude < distance * distance;
     }
 }
