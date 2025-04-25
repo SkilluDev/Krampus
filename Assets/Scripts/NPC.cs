@@ -8,8 +8,8 @@ public class NPC : MonoBehaviour, IInteractor {
 
     public Vector3 CurrentDestination { get; protected set; }
 
-    [SerializeField] protected float m_baseMovementSpeed = 4;
     [SerializeField] protected Rigidbody m_rigidbody;
+    [SerializeField] protected float m_baseMovementSpeed = 4;
     protected NavMeshPath m_currentPath;
     protected int m_currentPathPoint;
     public IInteractor.Type InteractorType => IInteractor.Type.NPC;
