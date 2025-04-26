@@ -9,6 +9,8 @@ using UnityEngine;
 public class MainGameInfo : LevelInfo {
     public RoomGeneratorBase RoomGenerator => m_roomGenerator;
     [SerializeField] private RoomGeneratorBase m_roomGenerator;
+    [SerializeField] private string[] m_childColors; //change type to be appropriate asap
+    [SerializeField] private int m_goodChildIndex;
 
     public IReadOnlyCollection<Child> Children => m_childRegistry;
     private List<Child> m_childRegistry = new List<Child>();
