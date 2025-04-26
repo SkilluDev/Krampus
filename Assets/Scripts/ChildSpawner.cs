@@ -31,16 +31,16 @@ public class ChildSpawner : MonoBehaviour {
 
         int goodColor = Random.Range(0, materials.Length);
         if (goodColor == 0) {
-            goodChildrenText = "green shirts";
+            goodChildrenText = "white shirts";
         } else if (goodColor == 1) {
-            goodChildrenText = "blue shirts";
+            goodChildrenText = "orange shirts";
         } else if (goodColor == 2) {
-            goodChildrenText = "purple shirts";
+            goodChildrenText = "green shirts";
         } else if (goodColor == 3) {
-            goodChildrenText = "red shirts";
+            goodChildrenText = "purple shirts";
 
         } else if (goodColor == 4) {
-            goodChildrenText = "yellow shirts";
+            goodChildrenText = "red shirts";
         }
         randomSpawnPoints = new Vector3[spawnPointCount];
         for (int i = 0; i < spawnPointCount; i++) {
@@ -83,6 +83,7 @@ public class ChildSpawner : MonoBehaviour {
         newChild.mat = materials[colorId];
         newChild.isBad = isBad;
         Color color = colors[colorId];
+
         newChild.ring.materials[0].color = new Color(color.r, color.g, color.b, 0.2f);
         return newChild;
     }
