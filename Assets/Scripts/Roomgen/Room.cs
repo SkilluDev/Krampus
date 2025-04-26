@@ -68,6 +68,10 @@ namespace Roomgen {
             return transform.TransformPoint(new Vector3(Width * Room.CELL_SIZE, 0, -Height * Room.CELL_SIZE) * 0.5f);
         }
 
+        public Bounds GetBounds() {
+            return new Bounds(GetMidPoint(), new Vector3(Width * Room.CELL_SIZE, Room.STANDARD_CEILING_Y, Height * Room.CELL_SIZE));
+        }
+
         internal void Rotate90Clockwise() {
             if (m_type.basedOn == null) {
                 Debug.LogWarning("You should not be rotating Room base prefabs");
