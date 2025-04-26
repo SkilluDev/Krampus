@@ -14,12 +14,26 @@ public class NPC : MonoBehaviour, IInteractor {
     protected int m_currentPathPoint;
     public IInteractor.Type InteractorType => IInteractor.Type.NPC;
 
+    public Room CurrentRoom { get; private set; }
+
     protected void Awake() {
         m_currentPath = new NavMeshPath();
     }
 
-    public Room GetCurrentRoom() {
-        return Game.MainGameInfo.RoomGenerator.GetRoomAt(transform.position);
+
+    protected void HandleRoomRegistration() {
+        var newRoom = Game.MainGameInfo.RoomGenerator.GetRoomAt(transform.position);
+        if (CurrentRoom != newRoom) {
+            var currentRoomData = Game.MainGameInfo.GetRoomData(CurrentRoom);
+            if (currentRoomData != null)
+                currentRoomData.RemoveNPC(this);
+            CurrentRoom = newRoom;
+
+            var newRoomData = Game.MainGameInfo.GetRoomData(newRoom);
+
+            if (newRoomData != null)
+                newRoomData.AddNPC(this);
+        }
     }
 
     public virtual bool SetDestination(Vector3 destination) {

@@ -128,6 +128,7 @@ public class RoomGenerator : RoomGeneratorBase {
 				}
 			}
 
+			Game.MainGameInfo.CreateRoomData(prefab);
 			return prefab;
 		}
 

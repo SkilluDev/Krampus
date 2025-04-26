@@ -46,6 +46,8 @@ public class Child : NPC, IEdible {
 
                 break;
         }
+
+        HandleRoomRegistration();
     }
 
     public void Consume(Krampus krampus) {
