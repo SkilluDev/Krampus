@@ -26,7 +26,7 @@ public class Child : NPC, IEdible {
 
 
     public void Start() {
-        SetChildColor();
+        SetChildType(Game.MainGameInfo.Types.UnityRandomElement());
     }
 
     public State CurrentState { get; private set; }

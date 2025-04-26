@@ -162,13 +162,9 @@ MonoBehaviour:
   m_rigidbody: {fileID: 5685685448767307217}
   m_baseMovementSpeed: 8
   m_interactionDistance: 2
-  shapes:
-  - {fileID: 21300000, guid: 4a0703132eb92e74086421e553f73c31, type: 3}
-  - {fileID: 21300000, guid: 4e8af0567d8161842b91044e2430b907, type: 3}
-  - {fileID: 21300000, guid: b63f92cc2034ead468e05539133587dd, type: 3}
-  - {fileID: 21300000, guid: 25b389ee102090c428d23c3c8d69e168, type: 3}
-  - {fileID: 21300000, guid: 3e70105c3d458c34796a3d61741b4413, type: 3}
-  kidShape: {fileID: 3897806250953201494}
+  m_maxStunTimer: 0.4
+  m_detectionRange: 5
+  m_shapeRenderer: {fileID: 3897806250953201494}
 --- !u!136 &8359612323012655929
 CapsuleCollider:
   m_ObjectHideFlags: 0
