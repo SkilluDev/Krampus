@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 450891268815041506}
+  - component: {fileID: 213209870741954837}
   m_Layer: 0
   m_Name: Vase
   m_TagString: Untagged
@@ -32,6 +33,21 @@ Transform:
   - {fileID: 2478325276060920408}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &213209870741954837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7940401564212317955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76dc1b847dd6537868b10079e3e1a18b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_model: {fileID: 2478325276060920408}
+  m_strength: 0.1
+  m_duration: 1
 --- !u!1001 &2733261422590348723
 PrefabInstance:
   m_ObjectHideFlags: 0

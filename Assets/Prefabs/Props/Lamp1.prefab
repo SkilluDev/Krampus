@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3945779676758459922}
+  - component: {fileID: 171337580332069745}
+  - component: {fileID: 133196749090545755}
   m_Layer: 0
   m_Name: Lamp1
   m_TagString: Untagged
@@ -32,6 +34,36 @@ Transform:
   - {fileID: 2468316901771963749}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &171337580332069745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614549379211827650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76dc1b847dd6537868b10079e3e1a18b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_model: {fileID: 2468316901771963749}
+  m_strength: 0.1
+  m_duration: 1
+--- !u!114 &133196749090545755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614549379211827650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8689398fd36e280ccb93d70306dcac3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_switch: {fileID: 1632285665850494830}
+  m_light: {fileID: 7615078203078206739}
+  m_renderer: {fileID: 3605718608021952010}
 --- !u!1 &4398891512052675147
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,6 +257,12 @@ PrefabInstance:
 --- !u!4 &2468316901771963749 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0ccd40c21a9645046bcfdf4056b558d9,
+    type: 3}
+  m_PrefabInstance: {fileID: 2723411521656359566}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3605718608021952010 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 0ccd40c21a9645046bcfdf4056b558d9,
     type: 3}
   m_PrefabInstance: {fileID: 2723411521656359566}
   m_PrefabAsset: {fileID: 0}
