@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Roomgen;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,11 +10,26 @@ using UnityEngine;
 public class MainGameInfo : LevelInfo {
     public RoomGeneratorBase RoomGenerator => m_roomGenerator;
     [SerializeField] private RoomGeneratorBase m_roomGenerator;
-    [SerializeField] private string[] m_childColors; //change type to be appropriate asap
-    [SerializeField] private int m_goodChildIndex;
+
+    [System.Serializable]
+    public struct ChildType {
+        public Color color;
+        public Sprite shape;
+    }
+
+    public IReadOnlyList<ChildType> Types => m_types;
+    [SerializeField] private ChildType[] m_types;
+
+    public Krampus Krampus => m_krampus;
+    [SerializeField] private Krampus m_krampus;
+
+    public int GoodChildIndex { get; private set; }
 
     public IReadOnlyCollection<Child> Children => m_childRegistry;
     private List<Child> m_childRegistry = new List<Child>();
+
+    public IReadOnlyCollection<Nun> Nuns => m_nunRegistry;
+    private List<Nun> m_nunRegistry = new List<Nun>();
 
     private Dictionary<Room, RoomData> m_roomdata = new Dictionary<Room, RoomData>();
 
@@ -34,6 +50,18 @@ public class MainGameInfo : LevelInfo {
     }
 
     public void UnregisterChild(Child child) {
+        foreach (var r in m_roomdata.Values.Where(w => w.Contains(child)))
+            r.RemoveNPC(child);
         m_childRegistry.Remove(child);
+    }
+
+    public void RegisterNun(Nun nun) {
+        m_nunRegistry.Add(nun);
+    }
+
+    public void UnregisterNun(Nun nun) {
+        foreach (var r in m_roomdata.Values.Where(w => w.Contains(nun)))
+            r.RemoveNPC(nun);
+        m_nunRegistry.Remove(nun);
     }
 }

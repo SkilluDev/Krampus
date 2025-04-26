@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using KrampUtils;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,16 +17,16 @@ public class Child : NPC, IEdible {
 
     public UnityAction<Child.State, Child.State> onStateChanged;
     [SerializeField] private float m_interactionDistance = 8;
+    [SerializeField] private float m_maxStunTimer = 0.4f;
+    [SerializeField] private int m_detectionRange = 5;
+    [SerializeField] private SpriteRenderer m_shapeRenderer;
 
-
-	[SerializeField] private Sprite[] shapes = new Sprite[5];
-
-	[SerializeField] private SpriteRenderer kidShape;
+    private Nun m_selectedNun;
+    private float m_stunTimer = 0;
 
 
     public void Start() {
-	    setChildColor(Random.Range(0,4));
-
+        SetChildColor();
     }
 
     public State CurrentState { get; private set; }
@@ -41,7 +41,7 @@ public class Child : NPC, IEdible {
     }
 
     private void SelectNewWanderLocation() {
-        if (NavMesh.SamplePosition(Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement().GetMidPoint(), out var hit, 10, NavMesh.AllAreas)) {
+        if (NavMesh.SamplePosition(MoreMath.RandomInBounds(CurrentRoom.GetBounds()), out var hit, 10, NavMesh.AllAreas)) {
             SetDestination(hit.position);
         } else {
             Debug.Log("ever considered ending your life");
@@ -49,18 +49,48 @@ public class Child : NPC, IEdible {
     }
 
     private void Update() {
+        HandleRoomRegistration();
+
         switch (CurrentState) {
             case State.Idle:
                 if (m_currentPath?.status == NavMeshPathStatus.PathInvalid || NearDestination(m_interactionDistance)) {
                     SelectNewWanderLocation();
                 }
 
+
+                if ((Game.MainGameInfo.Krampus.transform.position - transform.position).sqrMagnitude < m_detectionRange * m_detectionRange) {
+                    m_stunTimer = m_maxStunTimer;
+                    SwitchState(State.Stunned);
+                }
+
+                SetVelocity(GetPathDirection());
+                break;
+
+            case State.Stunned:
+                m_stunTimer -= Time.deltaTime;
+                if (m_stunTimer <= 0) {
+                    // select nearest nun or whatevs
+                    if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
+                        m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).NPCs.First(w => w is Nun);
+                    } else {
+                        m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
+                    }
+                    SwitchState(State.Panic);
+                }
+                break;
+
+            case State.Panic:
+                SetDestination(m_selectedNun.transform.position);
                 SetVelocity(GetPathDirection());
 
+                if (NearDestination(m_interactionDistance)) {
+                    m_selectedNun.ActivateTheBitch();
+                    SwitchState(State.Alerted);
+                }
                 break;
+
         }
 
-        HandleRoomRegistration();
     }
 
     public void Consume(Krampus krampus) {
@@ -72,7 +102,6 @@ public class Child : NPC, IEdible {
 
     private void SwitchState(State previous) {
         if (previous == CurrentState) return;
-        Debug.Log(onStateChanged);
         onStateChanged?.Invoke(CurrentState, previous);
         CurrentState = previous;
     }
@@ -86,42 +115,14 @@ public class Child : NPC, IEdible {
     }
 
 
+    public void SetChildType(MainGameInfo.ChildType type) {
+        var skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        foreach (var s in skinnedMeshRenderers) {
+            s.material.SetColor("_Color", type.color);
+        }
 
-
-
-    public  void setChildColor(int type) {
-	   var skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
-
-	   Color color = Color.white;
-	   switch (type) {
-		   case 0:
-			   color = new Color(0.8f, 0.8f, 0.8f);  //szary - koło
-			   break;
-		   case 1:
-			   color = new Color(0.7529f, 0.4314f, 0f); //Pomarańczowy? - wklęsły
-			   break;
-		   case 2:
-			   color = new Color(0.2118f, 0.8549f, 0f);  //zielony
-			   break;
-		   case 3: color =  new Color(0.3412f, 0f, 0.5020f);  //purple guy omg is that a Fnaf reference  omg Mimic
-			   break;
-		   case 4: color = new Color(1.0f, 0.0f, 0.3333f); //Czerwony
-			   break;
-		   default:
-			   break;
-
-
-	   };
-
-	    foreach ( var s in skinnedMeshRenderers) {
-		    Material materialInstance =  s.material;
-
-		    materialInstance.SetColor("_Color", color);
-	    }
-
-	    kidShape.sprite = shapes[type];
-	    kidShape.color = color;
-
+        m_shapeRenderer.sprite = type.shape;
+        m_shapeRenderer.color = type.color;
     }
 
 }

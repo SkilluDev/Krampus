@@ -25,6 +25,8 @@ namespace KrampUtils {
         public static Vector3 LineClosestPoint(Ray ray, Vector3 point) {
             return ray.origin + Vector3.Project(point - ray.origin, ray.direction);
         }
+
+        public static Vector3 RandomInBounds(Bounds bounds) => new Vector3(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y), Random.Range(bounds.min.z, bounds.max.z));
     }
 
 }

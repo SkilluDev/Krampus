@@ -24,4 +24,12 @@ public class RoomData : MonoBehaviour {
 		if (npc == null) return;
 		m_npcs.Remove(npc);
 	}
+
+	public bool Contains<T>() {
+		return m_npcs.Exists(w => w is T);
+	}
+
+	public bool Contains(NPC npc) {
+		return m_npcs.Contains(npc);
+	}
 }
