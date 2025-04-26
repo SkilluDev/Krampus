@@ -10,11 +10,7 @@ public class Nun : NPC {
 
     public UnityAction<Nun.State, Nun.State> onStateChanged;
     [SerializeField] private float m_interactionDistance = 8;
-
-
     public State CurrentState { get; private set; }
-
-
 
     private void SelectNewWanderLocation() {
         if (NavMesh.SamplePosition(Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement().GetMidPoint(), out var hit, 10, NavMesh.AllAreas)) {
