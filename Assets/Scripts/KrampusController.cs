@@ -134,7 +134,7 @@ public class KrampusController : MonoBehaviour {
 				currentState = State.idle;
 				timeLerping = 0;
 			} else {
-				if (Input.GetKey(KeyCode.LeftShift)) {
+				if (Input.GetKey(KeyCode.LeftShift)|| !isTongue) {
 					currentState = State.sneaking;
 					animator.SetFloat("Speed", 1, 0.1f, Time.deltaTime);
 
@@ -227,7 +227,7 @@ public class KrampusController : MonoBehaviour {
 
 			if(shouldKrampusMove)
 				skewedInput = skewedInput * (isRunning && isTongue ? runSpeed : sneakSpeed);
-			else 
+			else
 				skewedInput = Vector3.zero;
 
 
