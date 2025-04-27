@@ -66,6 +66,7 @@ public class KrampusController : MonoBehaviour {
 		timerWindUp1 = 0f;
 		timerWindUp2 = -windUpIdleSpeed;
 
+
 		timerStep1 = 0f;
 		timerStep2 = 0f;
 
@@ -75,6 +76,7 @@ public class KrampusController : MonoBehaviour {
 
 		camera = GameObject.FindWithTag("MainCamera");
 		matrix = Matrix4x4.Rotate(Quaternion.Euler(0, camera.transform.localEulerAngles.y, 0));
+		animator.SetBool("Dead",false);
 	}
 
 	private void Update() {
@@ -273,6 +275,7 @@ public class KrampusController : MonoBehaviour {
 
 	public void Die() {
 		if (!isDead) {
+			animator.SetBool("Dead",true);
 			animator.SetTrigger("Death");
 			isDead = true;
 			rigidBody.velocity = Vector3.zero;
