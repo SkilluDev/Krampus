@@ -153,6 +153,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_state: 1
   m_roomGenerator: {fileID: 423022857}
+  m_types:
+  - color: {r: 0.8490566, g: 0.15619439, b: 0.15619439, a: 0}
+    shape: {fileID: 21300000, guid: 4a0703132eb92e74086421e553f73c31, type: 3}
   m_krampus: {fileID: 1936252573}
 --- !u!4 &358014036
 Transform:
@@ -900,8 +903,60 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6287952351036182209, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1655218854}
   m_SourcePrefab: {fileID: 100100000, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed, type: 3}
+--- !u!1 &1655218850 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6287952351036182209, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 1655218849}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1655218851 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6376730980837267106, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 1655218849}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1655218852 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 320380453199550912, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 1655218849}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1655218853 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2156001255450772181, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 1655218849}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655218850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd36f57ef81e94f4292ac4e81b543bdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1655218854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655218850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ec9c4fd5b721f8409e3bf0740103278, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_child: {fileID: 1655218853}
+  m_animator: {fileID: 1655218852}
+  m_model: {fileID: 1655218851}
+  m_speedProperty: -823668238
+  m_stunProperty: 1397128752
+  m_isPanic: 1600564886
 --- !u!1 &1766128741
 GameObject:
   m_ObjectHideFlags: 0

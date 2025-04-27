@@ -7,14 +7,18 @@ public class NPC : MonoBehaviour, IInteractor {
     private const float NEAR_THRESHOLD = 0.2f;
 
     public Vector3 CurrentDestination { get; protected set; }
+    public IInteractor.Type InteractorType => IInteractor.Type.NPC;
+    public Room CurrentRoom { get; private set; }
+    public float BaseMovementSpeed => m_baseMovementSpeed;
+    public Vector3 VelocityVector => m_rigidbody.velocity;
+    public float Velocity => VelocityVector.magnitude;
+    public float VelocitySqr => VelocityVector.sqrMagnitude;
 
-    [SerializeField] protected Rigidbody m_rigidbody;
     [SerializeField] protected float m_baseMovementSpeed = 4;
+    [SerializeField] protected Rigidbody m_rigidbody;
     protected NavMeshPath m_currentPath;
     protected int m_currentPathPoint;
-    public IInteractor.Type InteractorType => IInteractor.Type.NPC;
 
-    public Room CurrentRoom { get; private set; }
 
     protected void Awake() {
         m_currentPath = new NavMeshPath();

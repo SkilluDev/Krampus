@@ -1,35 +1,39 @@
 using System.Linq;
 using KrampUtils;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
-using Random = UnityEngine.Random;
 
 public class Child : NPC, IEdible {
+    public float RunSpeed => m_runSpeed;
+    public State CurrentState { get; private set; }
+
+    public UnityAction<Child.State, Child.State> onStateChanged;
+    [SerializeField] private float m_interactionDistance = 8;
+    [SerializeField] private float m_stunDuration = 0.4f;
+    [SerializeField] private float m_reportingDuration = 0.4f;
+    [SerializeField] private int m_detectionRange = 5;
+    [SerializeField] private SpriteRenderer m_shapeRenderer;
+
+    [SerializeField] private float m_runSpeed;
+
+    private Nun m_selectedNun;
+    private float m_timeout = 0;
+
     public enum State {
         Idle, // go to a random place
         Stunned, // do nothing.
         Panic, // go to the nearest nun
+        Reporting, // talking to another
         Alerted, // go interact with stuff
         Dead
     }
-
-    public UnityAction<Child.State, Child.State> onStateChanged;
-    [SerializeField] private float m_interactionDistance = 8;
-    [SerializeField] private float m_maxStunTimer = 0.4f;
-    [SerializeField] private int m_detectionRange = 5;
-    [SerializeField] private SpriteRenderer m_shapeRenderer;
-
-    private Nun m_selectedNun;
-    private float m_stunTimer = 0;
 
 
     public void Start() {
         SetChildType(Game.MainGameInfo.Types.UnityRandomElement());
     }
 
-    public State CurrentState { get; private set; }
 
 
     private void OnEnable() {
@@ -53,22 +57,33 @@ public class Child : NPC, IEdible {
 
         switch (CurrentState) {
             case State.Idle:
-                if (m_currentPath?.status == NavMeshPathStatus.PathInvalid || NearDestination(m_interactionDistance)) {
+                if (m_currentPath?.status == NavMeshPathStatus.PathInvalid)
+                    SelectNewWanderLocation();
+
+                if (NearDestination(m_interactionDistance) && m_timeout <= 0) {
+                    // TODO: Magic
+                    m_timeout = Random.Range(0.1f, 2f);
                     SelectNewWanderLocation();
                 }
 
 
-                if ((Game.MainGameInfo.Krampus.transform.position - transform.position).sqrMagnitude < m_detectionRange * m_detectionRange) {
-                    m_stunTimer = m_maxStunTimer;
+
+                if (CanGetKramped(transform.position)) {
+                    m_timeout = m_stunDuration;
                     SwitchState(State.Stunned);
                 }
 
-                SetVelocity(GetPathDirection());
+                if (m_timeout > 0) {
+                    m_timeout -= Time.deltaTime;
+                    SetVelocity(Vector3.zero);
+                } else {
+                    SetVelocity(GetPathDirection());
+                }
                 break;
 
             case State.Stunned:
-                m_stunTimer -= Time.deltaTime;
-                if (m_stunTimer <= 0) {
+                m_timeout -= Time.deltaTime;
+                if (m_timeout <= 0) {
                     // select nearest nun or whatevs
                     if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
                         m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).NPCs.First(w => w is Nun);
@@ -84,13 +99,29 @@ public class Child : NPC, IEdible {
                 SetVelocity(GetPathDirection());
 
                 if (NearDestination(m_interactionDistance)) {
-                    m_selectedNun.ActivateTheBitch();
+                    m_selectedNun.ActivateTheBitch(m_reportingDuration);
+                    m_timeout = m_reportingDuration;
+                    SwitchState(State.Reporting);
+                }
+                break;
+            case State.Reporting:
+                m_timeout -= Time.deltaTime;
+                if (m_timeout <= 0) {
                     SwitchState(State.Alerted);
                 }
                 break;
 
+            case State.Alerted:
+                // wander around and tell other kids
+
+                break;
+
         }
 
+    }
+
+    private bool CanGetKramped(Vector3 position) {
+        return (Game.MainGameInfo.Krampus.transform.position - position).sqrMagnitude < m_detectionRange * m_detectionRange;
     }
 
     public void Consume(Krampus krampus) {

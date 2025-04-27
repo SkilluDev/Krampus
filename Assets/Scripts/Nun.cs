@@ -60,7 +60,7 @@ public class Nun : NPC {
         CurrentState = previous;
     }
 
-    public void ActivateTheBitch() {
+    public void ActivateTheBitch(float timeout) {
         SwitchState(State.ChasingKrampus);
     }
 }
