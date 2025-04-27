@@ -77,7 +77,7 @@ public class Interaction : MonoBehaviour
     {
 
 
-        GetComponent<KrampusController>().shouldKrampusMove = false;
+        GetComponent<KrampusController>().isTongue = false;
         m_animator.SetBool("hasHit", false);
         canTongue = false;
         m_animator.SetTrigger("Shoot");
@@ -187,7 +187,7 @@ public class Interaction : MonoBehaviour
         lineRenderer.enabled = false;
         canTongue = true;
         if (!GetComponent<KrampusController>().isDead)
-            GetComponent<KrampusController>().shouldKrampusMove = true;
+            GetComponent<KrampusController>().isTongue = true;
 
     }
     private IEnumerator StopUpdateLineRenderer(float time)
@@ -204,7 +204,7 @@ public class Interaction : MonoBehaviour
         Camera.main.GetComponent<CameraFollow>().Shake();
         canTongue = true;
         if (!GetComponent<KrampusController>().isDead)
-            GetComponent<KrampusController>().shouldKrampusMove = true;
+            GetComponent<KrampusController>().isTongue = true;
         GrandPoints();
         yield break;
     }

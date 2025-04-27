@@ -25,6 +25,7 @@ public class KrampusController : MonoBehaviour {
 	private float xMovement;
 	private float zMovement;
 	public bool shouldKrampusMove = true;
+	public bool isTongue = false;
 	[SerializeField] private float lerpT;
 	private float timeLerping;
 
@@ -223,7 +224,12 @@ public class KrampusController : MonoBehaviour {
 
 			Vector3 skewedInput = matrix.MultiplyPoint3x4(velocity);
 			//Vector3 skewedInput = velocity;
-			skewedInput = skewedInput * (isRunning ? runSpeed : sneakSpeed);
+
+			if(shouldKrampusMove)
+				skewedInput = skewedInput * (isRunning && isTongue ? runSpeed : sneakSpeed);
+			else 
+				skewedInput = Vector3.zero;
+
 
 			//rigidBody.velocity = Vector3.Lerp(rigidBody.velocity, skewedInput * (isRunning ? runSpeed : sneakSpeed), lerpT * Mathf.Sqrt(timeLerping));
 			rigidBody.velocity = skewedInput;
