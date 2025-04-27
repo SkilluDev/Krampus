@@ -79,8 +79,8 @@ MonoBehaviour:
   m_baseMovementSpeed: 5
   m_rigidbody: {fileID: 5685685448767307217}
   m_interactionDistance: 2
-  m_stunDuration: 1
-  m_reportingDuration: 0.4
+  m_stunDuration: 0.4
+  m_reportingDuration: 1
   m_detectionRange: 5
   m_shapeRenderer: {fileID: 1392838229403124822}
   m_runSpeed: 8
@@ -125,6 +125,7 @@ MonoBehaviour:
   m_speedProperty: -823668238
   m_stunProperty: 1397128752
   m_panicProperty: 1600564886
+  m_reportingProperty: 365604299
 --- !u!1 &7026317583287349963
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +154,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.70710677, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.124, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5066461458853992054}

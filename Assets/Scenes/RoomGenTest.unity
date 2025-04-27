@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_state: 1
   m_roomGenerator: {fileID: 423022857}
+  m_ui: {fileID: 1174797510}
   m_types:
   - color: {r: 0.8000001, g: 0.8000001, b: 0.8000001, a: 1}
     shape: {fileID: 2800000, guid: 4a0703132eb92e74086421e553f73c31, type: 3}
@@ -211,11 +212,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_navMesh: {fileID: 423022859}
-  m_width: 3
-  m_height: 3
+  m_width: 5
+  m_height: 5
   m_roomSet: {fileID: 11400000, guid: 379eee92131fc4848b0d135988a9fe61, type: 2}
   m_loopRectangles: 9
   m_krampus: {fileID: 1936252573}
+  m_seed: 20
 --- !u!4 &423022858
 Transform:
   m_ObjectHideFlags: 0
@@ -346,8 +348,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1175,21 +1177,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2156001255450772181, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed,
-        type: 3}
-      propertyPath: m_stunDuration
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2156001255450772181, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed,
-        type: 3}
-      propertyPath: m_reportingDuration
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4999698030819085569, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed,
-        type: 3}
-      propertyPath: m_reportingProperty
-      value: 365604299
-      objectReference: {fileID: 0}
     - target: {fileID: 5066461458853992054, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed,
         type: 3}
       propertyPath: m_LocalPosition.x
