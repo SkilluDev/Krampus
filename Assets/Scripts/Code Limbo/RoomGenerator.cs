@@ -16,7 +16,7 @@ public class RoomGenerator : RoomGeneratorBase {
 	private DoorFlags[,] m_doorGrid;
 	private Room[,] m_generationGrid;
 	private Vector2Int m_spawnPoint;
-	private List<Room> m_placedRooms;
+	[SerializeField] private List<Room> m_placedRooms;
 
 	// TEMPORARY
 	[SerializeField] private GameObject m_nunPrefab, m_childPrefab;
@@ -146,15 +146,25 @@ public class RoomGenerator : RoomGeneratorBase {
 
 		void GenerateNunsAndKids() {
 			foreach (var room in m_placedRooms) {
-
+				for (int i = 0; i < Random.Range(0, 3); i++) {
+					if (NavMesh.SamplePosition(room.GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
+						Instantiate(m_childPrefab, hit.position, Quaternion.identity);
+					}
+				}
 			}
+
+			for (int i = 0; i < 3; i++) {
+				if (NavMesh.SamplePosition(m_placedRooms[Random.Range(0, m_placedRooms.Count)].GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
+					Instantiate(m_nunPrefab, hit.position, Quaternion.identity);
+				}
+			}
+
 		}
 
 		Init();
 		SelectSpawnPoint();
 		CreateGrid();
 		RemoveDeadDoors();
-		GenerateNunsAndKids();
 
 		var spawnRoom = PlaceRoom(m_roomSet.spawn, m_spawnPoint);
 		if (NavMesh.SamplePosition(spawnRoom.GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
@@ -199,7 +209,7 @@ public class RoomGenerator : RoomGeneratorBase {
 		}
 
 		m_navMesh.BuildNavMesh();
-
+		GenerateNunsAndKids();
 		RoomVariantManager.Release(types);
 	}
 
