@@ -69,7 +69,7 @@ public class NPC : MonoBehaviour, IInteractor {
             dest = m_currentPath.corners[m_currentPathPoint + 1];
         }
 
-        return (dest - transform.position).normalized * m_baseMovementSpeed;
+        return (dest - transform.position).normalized;
     }
 
     protected bool NearDestination(float distance) {

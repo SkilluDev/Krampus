@@ -14,7 +14,7 @@ public class MainGameInfo : LevelInfo {
     [System.Serializable]
     public struct ChildType {
         public Color color;
-        public Sprite shape;
+        public Texture2D shape;
     }
 
     public IReadOnlyList<ChildType> Types => m_types;

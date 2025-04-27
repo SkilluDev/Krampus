@@ -13,9 +13,9 @@ public class Child : NPC, IEdible {
     [SerializeField] private float m_stunDuration = 0.4f;
     [SerializeField] private float m_reportingDuration = 0.4f;
     [SerializeField] private int m_detectionRange = 5;
-    [SerializeField] private SpriteRenderer m_shapeRenderer;
+    [SerializeField] private MeshRenderer m_shapeRenderer;
 
-    [SerializeField] private float m_runSpeed;
+    [SerializeField] private float m_runSpeed = 8;
 
     private Nun m_selectedNun;
     private float m_timeout = 0;
@@ -77,7 +77,7 @@ public class Child : NPC, IEdible {
                     m_timeout -= Time.deltaTime;
                     SetVelocity(Vector3.zero);
                 } else {
-                    SetVelocity(GetPathDirection());
+                    SetVelocity(GetPathDirection() * m_baseMovementSpeed);
                 }
                 break;
 
@@ -96,7 +96,7 @@ public class Child : NPC, IEdible {
 
             case State.Panic:
                 SetDestination(m_selectedNun.transform.position);
-                SetVelocity(GetPathDirection());
+                SetVelocity(GetPathDirection() * m_runSpeed);
 
                 if (NearDestination(m_interactionDistance)) {
                     m_selectedNun.ActivateTheBitch(m_reportingDuration);
@@ -106,6 +106,7 @@ public class Child : NPC, IEdible {
                 break;
             case State.Reporting:
                 m_timeout -= Time.deltaTime;
+                SetVelocity(Vector3.zero);
                 if (m_timeout <= 0) {
                     SwitchState(State.Alerted);
                 }
@@ -115,7 +116,6 @@ public class Child : NPC, IEdible {
                 // wander around and tell other kids
 
                 break;
-
         }
 
     }
@@ -152,8 +152,8 @@ public class Child : NPC, IEdible {
             s.material.SetColor("_Color", type.color);
         }
 
-        m_shapeRenderer.sprite = type.shape;
-        m_shapeRenderer.color = type.color;
+        m_shapeRenderer.material.mainTexture = type.shape;
+        m_shapeRenderer.material.color = type.color;
     }
 
 }

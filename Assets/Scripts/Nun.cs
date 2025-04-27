@@ -6,14 +6,19 @@ using UnityEngine.Events;
 
 public class Nun : NPC {
     public enum State {
-        Idle, ChasingKrampus
+        Idle, Listening, ChasingKrampus
     }
+
+    public float RunSpeed => m_runSpeed;
 
     public UnityAction<Nun.State, Nun.State> onStateChanged;
     [SerializeField] private float m_interactionDistance = 8;
     [SerializeField] private float m_detectionRange = 4;
     public State CurrentState { get; private set; }
 
+    [SerializeField] private float m_runSpeed = 8;
+
+    private float m_timeout;
 
     private void OnEnable() {
         Game.MainGameInfo.RegisterNun(this);
@@ -42,11 +47,15 @@ public class Nun : NPC {
                     SwitchState(State.ChasingKrampus);
                 }
 
-                SetVelocity(GetPathDirection());
+                SetVelocity(GetPathDirection() * m_baseMovementSpeed);
+                break;
+            case State.Listening:
+                m_timeout -= Time.deltaTime;
+                if (m_timeout < 0) SwitchState(State.ChasingKrampus);
                 break;
             case State.ChasingKrampus:
                 SetDestination(Game.MainGameInfo.Krampus.transform.position);
-                SetVelocity(GetPathDirection());
+                SetVelocity(GetPathDirection() * m_runSpeed);
                 break;
         }
     }
@@ -61,6 +70,7 @@ public class Nun : NPC {
     }
 
     public void ActivateTheBitch(float timeout) {
-        SwitchState(State.ChasingKrampus);
+        m_timeout = timeout;
+        SwitchState(State.Listening);
     }
 }
