@@ -11,4 +11,6 @@ public abstract class RoomGeneratorBase : MonoBehaviour {
     public abstract IReadOnlyCollection<Room> Rooms { get; }
     public abstract void Generate();
     public abstract Room GetRoomAt(Vector3 position);
+    public abstract void Cleanup();
+
 }

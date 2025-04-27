@@ -4,12 +4,15 @@ using System.Text;
 using KrampUtils;
 using Roomgen;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class RoomGenerator : RoomGeneratorBase {
 	[SerializeField] private int m_width, m_height;
 	[SerializeField] private RoomSet m_roomSet;
 	[SerializeField] private int m_loopRectangles;
 	[SerializeField] private Krampus m_krampus;
+	[SerializeField] private int m_seed = 20;
 	private DoorFlags[,] m_doorGrid;
 	private Room[,] m_generationGrid;
 	private Vector2Int m_spawnPoint;
@@ -19,15 +22,20 @@ public class RoomGenerator : RoomGeneratorBase {
 
 
 	private void Awake() {
+		m_seed = Random.Range(0, 99999);
 		Generate();
 	}
 
 	public override void Generate() {
+		Random.InitState(m_seed);
+		Game.MainGameInfo.UI.SetSeed(m_seed);
+
 		void Init() {
 			m_doorGrid = new DoorFlags[m_width, m_height];
 			m_generationGrid = new Room[m_width, m_height];
 			m_placedRooms = new List<Room>();
 			for (int i = 0; i < m_width; i++) for (int j = 0; j < m_height; j++) m_doorGrid[i, j] = new DoorFlags();
+			Game.MainGameInfo.ClearRoomData();
 		}
 
 
@@ -129,6 +137,7 @@ public class RoomGenerator : RoomGeneratorBase {
 			}
 
 			Game.MainGameInfo.CreateRoomData(prefab);
+			m_placedRooms.Add(prefab);
 			return prefab;
 		}
 
@@ -137,7 +146,9 @@ public class RoomGenerator : RoomGeneratorBase {
 		CreateGrid();
 		RemoveDeadDoors();
 
-		PlaceRoom(m_roomSet.spawn, m_spawnPoint);
+		var spawnRoom = PlaceRoom(m_roomSet.spawn, m_spawnPoint);
+		if (NavMesh.SamplePosition(spawnRoom.GetMidPoint(), out var hit, 3, NavMesh.AllAreas))
+			m_krampus.transform.position = hit.position;
 
 		var types = new List<RoomType>();
 		foreach (var type in m_roomSet.types) {
@@ -171,7 +182,7 @@ public class RoomGenerator : RoomGeneratorBase {
 				var placements = FindPossiblePlacements(hardestToPlace);
 
 				Debug.Log($"Placing {hardestToPlace} in one of the {placements.Count} possible spots.");
-				m_placedRooms.Add(PlaceRoom(hardestToPlace, placements[Random.Range(0, placements.Count)]));
+				PlaceRoom(hardestToPlace, placements[Random.Range(0, placements.Count)]);
 			}
 		}
 
@@ -225,6 +236,19 @@ public class RoomGenerator : RoomGeneratorBase {
 		m_krampus.GetComponent<Rigidbody>().position = MoreNavmesh.RandomPoint(Vector3.zero, 200);
 	}
 
+	public override void Cleanup() {
+		foreach (var r in m_placedRooms) {
+			Destroy(r.gameObject);
+		}
+		m_placedRooms.Clear();
+		RoomVariantManager.ReleaseAll();
+	}
+
+	private void Update() {
+		if (Input.GetKeyDown(KeyCode.Y)) {
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		}
+	}
 
 
 	#region Gizmos

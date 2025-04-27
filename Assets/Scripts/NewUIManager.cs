@@ -1,32 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class NewUIManager : MonoBehaviour
-{
-    public static NewUIManager Instance {get; private set;}
+public class NewUIManager : MonoBehaviour {
 
-    [SerializeField] private static int m_badChildrenOnStart;
-    private int m_badChildAmount = m_badChildrenOnStart;
-    [SerializeField] private bool m_isGamePaused;
-    [SerializeField] private float m_currentTime;
+    [SerializeField] private TextMeshProUGUI m_remainingChildCount;
+    [SerializeField] private TextMeshProUGUI m_goodChild;
+    [SerializeField] private TextMeshProUGUI m_currentSeed;
 
-    private void Awake()
-    {
-        // If there is an instance, and it's not me, delete myself.
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-        Instance = this;
+
+    public void SetSeed(int seed) {
+        m_currentSeed.text = $"Map seed: {seed:0000000}<br>Press [y] to regenerate";
     }
 
-    public void decreaseChildAmount(){m_badChildAmount -= 1;}
-    public void setCurrentTime(float newTime){m_currentTime = newTime;}
-    public void switchGamePauseState(){m_isGamePaused = m_isGamePaused?!m_isGamePaused:m_isGamePaused;}
-
+    private void Update() {
+        var col = Game.MainGameInfo.Types[Game.MainGameInfo.GoodChildIndex];
+        m_remainingChildCount.text = $"<color=#{ColorUtility.ToHtmlStringRGB(col.color)}>Do not eat: {col.shape.name}</color><br>Remaining children: {Game.MainGameInfo.Children.Count}";
+    }
 }

@@ -8,14 +8,19 @@ using UnityEngine;
 /// De-facto game controller for the main gaame scene
 /// </summary>
 public class MainGameInfo : LevelInfo {
-    public RoomGeneratorBase RoomGenerator => m_roomGenerator;
-    [SerializeField] private RoomGeneratorBase m_roomGenerator;
-
     [System.Serializable]
     public struct ChildType {
         public Color color;
         public Texture2D shape;
     }
+
+    public RoomGeneratorBase RoomGenerator => m_roomGenerator;
+    [SerializeField] private RoomGeneratorBase m_roomGenerator;
+
+    public NewUIManager UI => m_ui;
+    [SerializeField] private NewUIManager m_ui;
+
+
 
     public IReadOnlyList<ChildType> Types => m_types;
     [SerializeField] private ChildType[] m_types;
@@ -29,9 +34,15 @@ public class MainGameInfo : LevelInfo {
     private List<Child> m_childRegistry = new List<Child>();
 
     public IReadOnlyCollection<Nun> Nuns => m_nunRegistry;
+
+
     private List<Nun> m_nunRegistry = new List<Nun>();
 
     private Dictionary<Room, RoomData> m_roomdata = new Dictionary<Room, RoomData>();
+
+    private void Awake() {
+        GoodChildIndex = Random.Range(0, Types.Count);
+    }
 
     public RoomData GetRoomData(Room r) {
         if (r == null) return null;
@@ -43,6 +54,10 @@ public class MainGameInfo : LevelInfo {
         var data = r.AddComponent<RoomData>();
         data.Init(r);
         m_roomdata.Add(r, data);
+    }
+
+    public void ClearRoomData() {
+        m_roomdata.Clear();
     }
 
     public void RegisterChild(Child child) {
