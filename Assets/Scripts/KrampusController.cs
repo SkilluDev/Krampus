@@ -25,7 +25,7 @@ public class KrampusController : MonoBehaviour {
 	private float xMovement;
 	private float zMovement;
 	public bool shouldKrampusMove = true;
-	public bool isTongue = false;
+	public bool isTongue = true;
 	[SerializeField] private float lerpT;
 	private float timeLerping;
 
