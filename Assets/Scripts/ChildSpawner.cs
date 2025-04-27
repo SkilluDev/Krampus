@@ -63,7 +63,7 @@ public class ChildSpawner : MonoBehaviour {
             tempChild.GetComponent<ChildContoller>().ResetChildDestination();*/
         }
 
-        Child newChild = CreateChild(spawnPoint.position, Math.Abs(goodColor - 1) % materials.Length, true);
+	        Child newChild = CreateChild(spawnPoint.position, Math.Abs(goodColor - 1) % materials.Length, true);
         Destroy(newChild.GetComponent<Rigidbody>());
         newChild.GetComponent<ChildContoller>().isDummy = true;
         newChild.GetComponent<CapsuleCollider>().radius = 10;
