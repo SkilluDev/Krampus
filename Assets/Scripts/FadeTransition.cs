@@ -23,6 +23,7 @@ public class FadeTransition : MonoBehaviour
 
     public void LoadSceneWithFade(string sceneName)
     {
+        if(sceneName == "Final Scene") TutorialManager.SetShowTutorials(true);
         // Trigger fade out and load the next scene
         if (fadeImage != null)
         {

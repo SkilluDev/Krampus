@@ -68,12 +68,13 @@ public class WinCondition : MonoBehaviour
         {
             Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
             if (!isGameOver) GamePauseToggle();
-            SceneManager.LoadScene("UITest"); //Goes Back to First Scene
+            SceneManager.LoadScene(0); //Goes Back to First Scene
         }
         if (Input.GetKeyDown(KeyCode.Q) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can quick restart game with Q key
         {
 	        Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
 	        if (!isGameOver) GamePauseToggle();
+            TutorialManager.SetShowTutorials(false);
 	        SceneManager.LoadScene(SceneManager.GetActiveScene().name); //Goes Back to First Scene
         }
 
@@ -178,7 +179,7 @@ public class WinCondition : MonoBehaviour
     private IEnumerator AutoQuit()
     {
         yield return new WaitForSeconds(4);
-        SceneManager.LoadScene("UITest");
+        SceneManager.LoadScene(0);
     }
 
 
