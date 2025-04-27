@@ -18,6 +18,9 @@ public class RoomGenerator : RoomGeneratorBase {
 	private Vector2Int m_spawnPoint;
 	private List<Room> m_placedRooms;
 
+	// TEMPORARY
+	[SerializeField] private GameObject m_nunPrefab, m_childPrefab;
+
 	public override IReadOnlyCollection<Room> Rooms => m_placedRooms;
 
 
@@ -141,14 +144,23 @@ public class RoomGenerator : RoomGeneratorBase {
 			return prefab;
 		}
 
+		void GenerateNunsAndKids() {
+			foreach (var room in m_placedRooms) {
+
+			}
+		}
+
 		Init();
 		SelectSpawnPoint();
 		CreateGrid();
 		RemoveDeadDoors();
+		GenerateNunsAndKids();
 
 		var spawnRoom = PlaceRoom(m_roomSet.spawn, m_spawnPoint);
-		if (NavMesh.SamplePosition(spawnRoom.GetMidPoint(), out var hit, 3, NavMesh.AllAreas))
+		if (NavMesh.SamplePosition(spawnRoom.GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
 			m_krampus.transform.position = hit.position;
+			m_krampus.GetComponent<Rigidbody>().position = hit.position;
+		}
 
 		var types = new List<RoomType>();
 		foreach (var type in m_roomSet.types) {
@@ -189,8 +201,6 @@ public class RoomGenerator : RoomGeneratorBase {
 		m_navMesh.BuildNavMesh();
 
 		RoomVariantManager.Release(types);
-
-		MoveKrampusToRandomPlace();
 	}
 
 	public override Room GetRoomAt(Vector3 position) {
@@ -242,12 +252,6 @@ public class RoomGenerator : RoomGeneratorBase {
 		}
 		m_placedRooms.Clear();
 		RoomVariantManager.ReleaseAll();
-	}
-
-	private void Update() {
-		if (Input.GetKeyDown(KeyCode.Y)) {
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-		}
 	}
 
 

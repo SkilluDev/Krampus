@@ -3,6 +3,7 @@ using System.Linq;
 using Roomgen;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// De-facto game controller for the main gaame scene
@@ -78,5 +79,14 @@ public class MainGameInfo : LevelInfo {
         foreach (var r in m_roomdata.Values.Where(w => w.Contains(nun)))
             r.RemoveNPC(nun);
         m_nunRegistry.Remove(nun);
+    }
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.Y)) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            SceneManager.LoadScene(0);
+        }
     }
 }
