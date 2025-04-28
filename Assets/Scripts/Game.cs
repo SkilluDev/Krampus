@@ -18,4 +18,5 @@ public class Game {
     private static LevelInfo m_info;
 
     public static MainGameInfo MainGameInfo => (MainGameInfo)Info;
+    public static MainMenuInfo MainMenuInfo => (MainMenuInfo)Info;
 }
