@@ -1,6 +1,5 @@
 using UnityEngine;
 using static KrampUtils.QuadDirection;
-using Unity.VisualScripting;
 using KrampUtils;
 using System.Linq;
 
@@ -355,7 +354,7 @@ namespace Roomgen {
                 m_showNote,
                 "Note"
                     + (string.IsNullOrWhiteSpace(Target.note) ? "" : ": ")
-                    + Target.note.Truncate(32).Replace("\n", " ")
+                    + Target.note.Replace("\n", " ")
             );
             if (m_showNote) {
                 DrawNoteField();

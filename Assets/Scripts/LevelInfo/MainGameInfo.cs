@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Roomgen;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -52,7 +51,7 @@ public class MainGameInfo : LevelInfo {
 
     public void CreateRoomData(Room r) {
         if (m_roomdata.ContainsKey(r)) throw new System.Exception("What the fuck");
-        var data = r.AddComponent<RoomData>();
+        var data = r.gameObject.AddComponent<RoomData>();
         data.Init(r);
         m_roomdata.Add(r, data);
     }

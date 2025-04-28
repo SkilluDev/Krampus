@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Serialization;
@@ -84,7 +83,7 @@ public class UIManager : MonoBehaviour {
 
     }
     public void UpdateTime(float time, bool positiveImapct) {
-//        Debug.Log("W");
+        //        Debug.Log("W");
         if (positiveImapct) {
             m_timeText.GetComponent<Animator>().SetTrigger("PositiveScore");
         } else {

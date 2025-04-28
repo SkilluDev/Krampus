@@ -1,16 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class InputSubscribe
-{
+public class InputSubscribe {
 
 	private static PlayerControls playerControls;
 	private static bool initialized = false;
-	public static PlayerControls  Input {
-		get{
+	public static PlayerControls Input {
+		get {
 			Init();
 			return playerControls;
 		}
@@ -78,61 +76,61 @@ public class InputSubscribe
 		playerControls = null;
 		initialized = false;
 	}
-/*
-	public static Vector2 MoveInput { get; private set; } = Vector2.zero;
-	public static Vector2 AimInput { get; private set; } = Vector2.zero;
-	public static Vector2 AimPadInput { get; private set; } = Vector2.zero;
-	public static bool CrouchInput { get; private set; } = false;
-	public static bool TongueInput { get; private set; } = false;
+	/*
+		public static Vector2 MoveInput { get; private set; } = Vector2.zero;
+		public static Vector2 AimInput { get; private set; } = Vector2.zero;
+		public static Vector2 AimPadInput { get; private set; } = Vector2.zero;
+		public static bool CrouchInput { get; private set; } = false;
+		public static bool TongueInput { get; private set; } = false;
 
-	public static Vector2 NavigateInput { get; private set; } = Vector2.zero;
-	public static bool PauseInput { get; private set; } = false;
-	public static bool AdvanceInput { get; private set; } = false;
-	public static bool RestartInput { get; private set; } = false;
+		public static Vector2 NavigateInput { get; private set; } = Vector2.zero;
+		public static bool PauseInput { get; private set; } = false;
+		public static bool AdvanceInput { get; private set; } = false;
+		public static bool RestartInput { get; private set; } = false;
 
-	public static void SetAimInput(Vector2 newValue) {
-		AimInput = newValue;
-	}
-	public static void Check() {
-		TongueInput = playerControls.Player.Tongue.WasPressedThisFrame();
-		PauseInput = playerControls.UI.Pause.WasPressedThisFrame();
-		AdvanceInput = playerControls.UI.Advance.WasPressedThisFrame();
-		RestartInput = playerControls.UI.Restart.WasPressedThisFrame();
-	}
-	public static void ResetFrameInputs()
-	{
-		TongueInput = false;
-		PauseInput = false;
-		AdvanceInput = false;
-		RestartInput = false;
-	}
-	static void SetMovement(InputAction.CallbackContext ctx) {
-		MoveInput = ctx.ReadValue<Vector2>();
-	}
+		public static void SetAimInput(Vector2 newValue) {
+			AimInput = newValue;
+		}
+		public static void Check() {
+			TongueInput = playerControls.Player.Tongue.WasPressedThisFrame();
+			PauseInput = playerControls.UI.Pause.WasPressedThisFrame();
+			AdvanceInput = playerControls.UI.Advance.WasPressedThisFrame();
+			RestartInput = playerControls.UI.Restart.WasPressedThisFrame();
+		}
+		public static void ResetFrameInputs()
+		{
+			TongueInput = false;
+			PauseInput = false;
+			AdvanceInput = false;
+			RestartInput = false;
+		}
+		static void SetMovement(InputAction.CallbackContext ctx) {
+			MoveInput = ctx.ReadValue<Vector2>();
+		}
 
-	static void SetAim(InputAction.CallbackContext ctx) {
-		AimInput = ctx.ReadValue<Vector2>();
-	}
-	static void SetAimPad(InputAction.CallbackContext ctx) {
-		AimPadInput = ctx.ReadValue<Vector2>();
-	}
-	static void SetCrouch(InputAction.CallbackContext ctx) {
-		CrouchInput = ctx.started;
-	}
-	static void SetTongue(InputAction.CallbackContext ctx) {
-		TongueInput = ctx.started;
-	}
-	static void SetNavigate(InputAction.CallbackContext ctx) {
-		NavigateInput = ctx.ReadValue<Vector2>();
-	}
-	static void SetPause(InputAction.CallbackContext ctx) {
-		PauseInput = ctx.started;
-	}
-	static void SetAdvance(InputAction.CallbackContext ctx) {
-		AdvanceInput = ctx.started;
-	}
-	static void SetRestart(InputAction.CallbackContext ctx) {
-		RestartInput = ctx.started;
-	}
-	*/
+		static void SetAim(InputAction.CallbackContext ctx) {
+			AimInput = ctx.ReadValue<Vector2>();
+		}
+		static void SetAimPad(InputAction.CallbackContext ctx) {
+			AimPadInput = ctx.ReadValue<Vector2>();
+		}
+		static void SetCrouch(InputAction.CallbackContext ctx) {
+			CrouchInput = ctx.started;
+		}
+		static void SetTongue(InputAction.CallbackContext ctx) {
+			TongueInput = ctx.started;
+		}
+		static void SetNavigate(InputAction.CallbackContext ctx) {
+			NavigateInput = ctx.ReadValue<Vector2>();
+		}
+		static void SetPause(InputAction.CallbackContext ctx) {
+			PauseInput = ctx.started;
+		}
+		static void SetAdvance(InputAction.CallbackContext ctx) {
+			AdvanceInput = ctx.started;
+		}
+		static void SetRestart(InputAction.CallbackContext ctx) {
+			RestartInput = ctx.started;
+		}
+		*/
 }

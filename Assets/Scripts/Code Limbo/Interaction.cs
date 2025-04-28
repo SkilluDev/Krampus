@@ -1,6 +1,5 @@
 using System.Collections;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -54,8 +53,7 @@ public class Interaction : MonoBehaviour {
         Instance = this;
     }
 
-    private void Start()
-    {
+    private void Start() {
         Cursor.SetCursor(cursor, new Vector2(cursor.width / 2, cursor.height / 2), CursorMode.ForceSoftware);
         lineRenderer = gameObject.GetComponent<LineRenderer>();
         trail = GetComponentInChildren<TrailRenderer>();
@@ -66,10 +64,8 @@ public class Interaction : MonoBehaviour {
 
 
 
-    private void Update()
-    {	//Input.GetButtonDown("Fire1") //Old input //WinCondition.Instance.inputSubscribe.TongueInput
-        if (InputSubscribe.Input.Player.Tongue.triggered && canTongue && GetComponent<LegacyKrampusController>().shouldKrampusMove)
-        {
+    private void Update() {	//Input.GetButtonDown("Fire1") //Old input //WinCondition.Instance.inputSubscribe.TongueInput
+        if (InputSubscribe.Input.Player.Tongue.triggered && canTongue && GetComponent<LegacyKrampusController>().shouldKrampusMove) {
             StartCoroutine(ShootTongue());
         }
     }
@@ -82,8 +78,7 @@ public class Interaction : MonoBehaviour {
         canTongue = false;
         m_animator.SetTrigger("Shoot");
         ray = m_cam.ScreenPointToRay(InputSubscribe.Input.Player.Aim.ReadValue<Vector2>()); //Input.mousePosition //Old input system //WinCondition.Instance.inputSubscribe.AimInput
-        if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child")))
-        {
+        if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child"))) {
             SoundManager.PlaySound("tongue");
             Vector3 realPoint = new Vector3(hitData.point.x, 1f, hitData.point.z);
             lastRealPosition = realPoint;
