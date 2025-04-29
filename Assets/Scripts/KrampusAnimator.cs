@@ -7,19 +7,23 @@ public class KrampusAnimator : KrampusBehaviour {
     [SerializeField] private float m_fastVelocity = 4;
     [SerializeField] private float m_rotationSmoothing = 15;
 
-    [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty;
+    [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty;
 
     private float m_minimalVelocity;
+    private Quaternion m_rotationTarget;
 
     private void Start() {
         Kramp.Tongue.onStateChanged += TongueStateChanged;
     }
 
     private void Update() {
-        if (Kramp.Kontroller.CurrentState != KrampusController.State.Idle && Kramp.Tongue.CurrentState==KrampusTongue.State.Idle) {
-            m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, Quaternion.LookRotation(Kramp.Kontroller.VelocityVector, Vector3.up), Time.deltaTime * m_rotationSmoothing);
+        if (Kramp.Kontroller.CurrentState != KrampusController.State.Idle && Kramp.Tongue.CurrentState == KrampusTongue.State.Idle) {
+            SetTargetView(Kramp.Kontroller.VelocityVector);
+        } else if (Kramp.Tongue.CurrentState == KrampusTongue.State.Windup) {
+            SetTargetView(Kramp.Tongue.TongueDirection);
         }
 
+        m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, m_rotationTarget, Time.deltaTime * m_rotationSmoothing);
         m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, Kramp.Kontroller.Velocity / Kramp.Kontroller.RunSpeed), 0.1f, Time.deltaTime);
     }
 
@@ -27,14 +31,21 @@ public class KrampusAnimator : KrampusBehaviour {
         Debug.Log("tongue change - " + previous + " -> " + current);
         switch ((previous, current)) {
             case (KrampusTongue.State.Idle, KrampusTongue.State.Windup):
+                m_animator.SetBool(m_tongueReadyProperty, true);
+                break;
+            case (KrampusTongue.State.Windup, KrampusTongue.State.Idle):
+                m_animator.SetBool(m_tongueReadyProperty, false);
+                break;
+            case (KrampusTongue.State.Windup, KrampusTongue.State.TargetFetch):
                 m_animator.SetBool(m_tongueOutProperty, true);
                 break;
             case (_, KrampusTongue.State.PreRetreat):
                 m_animator.SetBool(m_tongueOutProperty, false);
+                m_animator.SetBool(m_tongueReadyProperty, false);
                 break;
             case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
-	            RotatePlayer(Kramp.Tongue.GetTongueDirection());
-	            break;
+                SetTargetView(Kramp.Tongue.TongueDirection);
+                break;
         }
     }
 
@@ -58,7 +69,7 @@ public class KrampusAnimator : KrampusBehaviour {
         }
     }
 
-    private void RotatePlayer(Vector3 direction) {
-		m_modelTransform.rotation = Quaternion.LookRotation(direction);
+    private void SetTargetView(Vector3 direction) {
+        m_modelTransform.rotation = Quaternion.LookRotation(direction, Vector3.up);
     }
 }
