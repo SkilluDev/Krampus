@@ -12,6 +12,7 @@ public class KrampusTongue : KrampusBehaviour {
     public UnityAction<KrampusTongue.State, KrampusTongue.State> onStateChanged;
     [BoxGroup("Visual")][SerializeField] private LineRenderer m_tongueRenderer;
     [BoxGroup("Visual")][SerializeField] private Transform m_tongueVisualOrigin;
+    [BoxGroup("Visual")][SerializeField] private Transform m_tongueAimIndicator;
     [BoxGroup("Visual")][SerializeField] private Texture2D m_cursor; // TODO: cursor should not be set here!
 
     [BoxGroup("Physics")][SerializeField] private LayerMask m_layerMask = int.MaxValue;
@@ -34,7 +35,6 @@ public class KrampusTongue : KrampusBehaviour {
     private Vector3 m_tongueDestination;
     private float m_tongueTime = 0f;
     private Vector3 m_tongueDirection;
-    private Vector3 m_tongueSpecificPoint;
     private float m_tongueExtensionFactor = 0f;
     private IInteractable m_hitInteractable;
     private ITongueable m_hitTonguable;
@@ -65,8 +65,8 @@ public class KrampusTongue : KrampusBehaviour {
     }
 
     public void ShootOut() {
-        CurrentState = State.Windup;
-        onStateChanged.Invoke(State.Idle, State.Windup);
+        CurrentState = State.TargetFetch;
+        onStateChanged.Invoke(State.Windup, CurrentState);
         m_tongueTime = 0;
         m_tongueExtensionFactor = 0;
         m_hitEdible = null;
@@ -77,30 +77,33 @@ public class KrampusTongue : KrampusBehaviour {
 
 
     private void Update() {
-        if (CurrentState == State.Idle)
-            HandleInput();
-
-
         switch (CurrentState) {
+            case State.Idle:
+                if (Input.GetMouseButton(0)) AdvanceState();
+                break;
+
             case State.Windup: // Pre-shoot phase. Wait for the windup
-                AdvanceStateIfTime(nameof(Timings.windup));
+                if (MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition), Vector3.up, Vector3.zero)) {
+                    m_tongueDirection = point - m_tongueOrigin.position;
+                }
+                m_tongueDirection.y = 0;
+                m_tongueDirection.Normalize();
+                m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
+                if (IsTime(nameof(Timings.windup))) {
+                    Debug.Log("Is time " + m_tongueTime);
+                    m_tongueTime = m_sequence.End(nameof(Timings.windup));
+                    if (!Input.GetMouseButton(0)) {
+                        ShootOut();
+                    }
+                } else if (!Input.GetMouseButton(0)) {
+                    CurrentState = State.Idle;
+                    onStateChanged.Invoke(State.Windup, CurrentState);
+                    m_tongueTime = 0;
+                }
                 break;
 
             case State.TargetFetch: // Actually calculate what gets caught
 
-                var ray = Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out var mouseHit, 1000, m_layerMask)) {
-                    m_tongueSpecificPoint = mouseHit.point;
-                } else {
-                    //reset the state machine?
-                    CurrentState = State.Idle;
-                    Debug.Log("Missed!");
-                    break;
-                }
-
-                m_tongueDirection = m_tongueSpecificPoint - m_tongueOrigin.position;
-                m_tongueDirection.y = 0;
-                m_tongueDirection.Normalize();
 
                 // Actually raycast from Krampus towards where the tongue is supposed to be shot.
                 var checkingPoint = Physics.Raycast(transform.position, m_tongueDirection, out var hit, m_tongueLength, m_layerMask) ?
@@ -108,7 +111,7 @@ public class KrampusTongue : KrampusBehaviour {
 
                 var hitObjects = Physics.OverlapCapsule(new Vector3(hit.point.x, Room.STANDARD_FLOOR_Y, hit.point.z), new Vector3(hit.point.x, Room.STANDARD_CEILING_Y, hit.point.z), m_tongueHitRadius);
 
-                m_hitInteractable = hitObjects.Select(w => w.GetComponent<IInteractable>()).Where(w => w != null && w.CanInteract(Kramp)).NullIfEmpty()?.MinBy(w => (w.GameObject.transform.position - m_tongueSpecificPoint).sqrMagnitude);
+                m_hitInteractable = hitObjects.Select(w => w.GetComponent<IInteractable>()).Where(w => w != null && w.CanInteract(Kramp)).NullIfEmpty()?.FirstOrDefault();
 
                 if (m_hitInteractable is IEdible edible) {
                     m_hitEdible = edible;
@@ -218,6 +221,7 @@ public class KrampusTongue : KrampusBehaviour {
                 m_hitTonguable = null;
 
                 AdvanceState();
+                m_tongueTime = 0;
                 break;
         }
 
@@ -243,10 +247,14 @@ public class KrampusTongue : KrampusBehaviour {
     /// <param name="nameof">Name of the time param from m_tng</param>
     /// <returns>Whether the state has been advanced</returns>
     private bool AdvanceStateIfTime(string nameof) {
-        if (m_tongueTime >= m_sequence.End(nameof)) {
+        if (IsTime(nameof)) {
             AdvanceState();
             return true;
         } else return false;
+    }
+
+    private bool IsTime(string nameof) {
+        return m_tongueTime >= m_sequence.End(nameof);
     }
 
     private void LogException(Exception e, object context) {
