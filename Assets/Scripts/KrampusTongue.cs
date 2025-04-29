@@ -52,6 +52,7 @@ public class KrampusTongue : KrampusBehaviour {
         Eating
     }
     public State CurrentState { get; private set; }
+    public Vector3 TongueDirection => m_tongueDirection;
 
     private void Awake() {
         m_sequence.Init();
@@ -67,7 +68,6 @@ public class KrampusTongue : KrampusBehaviour {
     public void ShootOut() {
         CurrentState = State.TargetFetch;
         onStateChanged.Invoke(State.Windup, CurrentState);
-        m_tongueTime = 0;
         m_tongueExtensionFactor = 0;
         m_hitEdible = null;
         m_hitInteractable = null;
@@ -79,6 +79,9 @@ public class KrampusTongue : KrampusBehaviour {
     private void Update() {
         switch (CurrentState) {
             case State.Idle:
+                m_tongueTime = 0;
+                m_tongueAimIndicator.gameObject.SetActive(false);
+
                 if (Input.GetMouseButton(0)) AdvanceState();
                 break;
 
@@ -90,21 +93,21 @@ public class KrampusTongue : KrampusBehaviour {
                 m_tongueDirection.Normalize();
                 m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
                 if (IsTime(nameof(Timings.windup))) {
-                    Debug.Log("Is time " + m_tongueTime);
                     m_tongueTime = m_sequence.End(nameof(Timings.windup));
+                    m_tongueAimIndicator.gameObject.SetActive(true);
                     if (!Input.GetMouseButton(0)) {
+                        m_tongueAimIndicator.gameObject.SetActive(false);
                         ShootOut();
                     }
                 } else if (!Input.GetMouseButton(0)) {
                     CurrentState = State.Idle;
                     onStateChanged.Invoke(State.Windup, CurrentState);
                     m_tongueTime = 0;
+                    Debug.Log("Reset time to " + m_tongueTime);
                 }
                 break;
 
             case State.TargetFetch: // Actually calculate what gets caught
-
-
                 // Actually raycast from Krampus towards where the tongue is supposed to be shot.
                 var checkingPoint = Physics.Raycast(transform.position, m_tongueDirection, out var hit, m_tongueLength, m_layerMask) ?
                     hit.point : m_tongueOrigin.position + (m_tongueDirection * m_tongueLength);
@@ -228,7 +231,7 @@ public class KrampusTongue : KrampusBehaviour {
         m_tongueRenderer.SetPosition(0, GetTonguePositions().begin);
         m_tongueRenderer.SetPosition(1, GetTonguePositions().end);
 
-        m_tongueTime += CurrentState != State.Idle ? Time.deltaTime : 0;
+        m_tongueTime += Time.deltaTime;
     }
 
     /// <summary>
@@ -282,8 +285,5 @@ public class KrampusTongue : KrampusBehaviour {
         return (m_tongueVisualOrigin.position, Vector3.Lerp(m_tongueVisualOrigin.position, m_tongueDestination, m_tongueExtensionFactor));
     }
 
-    public Vector3 GetTongueDirection() {
-        return m_tongueDirection;
-    }
 
 }
