@@ -80,7 +80,7 @@ public class KrampusController : KrampusBehaviour {
 		} else if (CurrentState == State.Idle && m_rigidbody.velocity.sqrMagnitude <= m_startRunSpeed) {
 			CurrentState = State.Idle;
 		} else {
-			CurrentState = Input.GetKey(KeyCode.LeftShift) ? State.Walk : State.Run;
+			CurrentState = Input.GetKey(KeyCode.LeftShift) || Kramp.Tongue.CurrentState != KrampusTongue.State.Idle ? State.Walk : State.Run;
 		}
 
 		ApplyStateChange();

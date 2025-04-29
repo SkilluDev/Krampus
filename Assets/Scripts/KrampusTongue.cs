@@ -109,8 +109,12 @@ public class KrampusTongue : KrampusBehaviour {
 
             case State.TargetFetch: // Actually calculate what gets caught
                 // Actually raycast from Krampus towards where the tongue is supposed to be shot.
-                var checkingPoint = Physics.Raycast(transform.position, m_tongueDirection, out var hit, m_tongueLength, m_layerMask) ?
-                    hit.point : m_tongueOrigin.position + (m_tongueDirection * m_tongueLength);
+
+                var checkingPoint = Physics.CapsuleCast(
+                        new Vector3(m_tongueOrigin.position.x, Room.STANDARD_FLOOR_Y, m_tongueOrigin.position.z),
+                        new Vector3(m_tongueOrigin.position.x, Room.STANDARD_FLOOR_Y, m_tongueOrigin.position.z), m_tongueHitRadius,
+                        m_tongueDirection, out var hit, m_tongueLength, m_layerMask
+                    ) ? hit.point : m_tongueOrigin.position + (m_tongueDirection * m_tongueLength);
 
                 var hitObjects = Physics.OverlapCapsule(new Vector3(hit.point.x, Room.STANDARD_FLOOR_Y, hit.point.z), new Vector3(hit.point.x, Room.STANDARD_CEILING_Y, hit.point.z), m_tongueHitRadius);
 
