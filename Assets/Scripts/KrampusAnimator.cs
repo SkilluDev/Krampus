@@ -14,6 +14,7 @@ public class KrampusAnimator : KrampusBehaviour {
 
     private void Start() {
         Kramp.Tongue.onStateChanged += TongueStateChanged;
+        Kramp.Kontroller.onStateChanged += MovementStateChanged;
     }
 
     private void Update() {
@@ -49,10 +50,10 @@ public class KrampusAnimator : KrampusBehaviour {
         }
     }
 
-    public void MovementStateChanged(KrampusController.State previous, KrampusController.State current, bool isSudden) {
+    public void MovementStateChanged(KrampusController.State previous, KrampusController.State current, KrampusController.StateChangeReason reason) {
         switch ((previous, current)) {
             case (KrampusController.State.Run, KrampusController.State.Idle):
-                if (isSudden) {
+                if (reason == KrampusController.StateChangeReason.Rapid) {
                     m_animator.SetTrigger(m_stopProperty);
                 }
                 m_minimalVelocity = 0f;
