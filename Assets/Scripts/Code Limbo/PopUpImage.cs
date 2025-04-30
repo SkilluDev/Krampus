@@ -19,7 +19,7 @@ public class PopUpImage : MonoBehaviour {
     }
 
     private void Update() {
-        if (InputSubscribe.Input.UI.Advance.triggered) { //Input.GetKeyUp(KeyCode.G) //Old input //WinCondition.Instance.inputSubscribe.AdvanceInput
+        if (InputSubscribe.Raw.UI.Advance.triggered) { //Input.GetKeyUp(KeyCode.G) //Old input //WinCondition.Instance.inputSubscribe.AdvanceInput
             NextPanel();
         }
     }
