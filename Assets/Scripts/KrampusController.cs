@@ -2,6 +2,7 @@ using System;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class KrampusController : KrampusBehaviour {
 	public State CurrentState { get; private set; }
@@ -11,7 +12,7 @@ public class KrampusController : KrampusBehaviour {
 	public float VelocitySqr => VelocityVector.sqrMagnitude;
 	public float SneakSpeed => m_sneakSpeed;
 
-	public UnityAction<KrampusController.State, KrampusController.State> onStateChange;
+	public UnityAction<KrampusController.State, KrampusController.State, KrampusController.StateChangeReason> onStateChanged;
 
 	[SerializeField] private Rigidbody m_rigidbody;
 
@@ -23,16 +24,13 @@ public class KrampusController : KrampusBehaviour {
 	[BoxGroup("Acceleration")][SerializeField] private float m_accelerationTime = 0.2f;
 	[BoxGroup("Acceleration")][SerializeField] private AnimationCurve m_accelerationCurve = AnimationCurve.Linear(0, 0, 1, 1);
 	[BoxGroup("Acceleration")][SerializeField] private float m_movementThreshold = 0.5f;
-	[BoxGroup("Acceleration")][SerializeField] private float m_veloIdleThreshhold = 120f;
+	[BoxGroup("Acceleration")][SerializeField][FormerlySerializedAs("m_veloIdleThreshhold")] private float m_veloIdleThreshold = 120f;
 	[BoxGroup("Acceleration")][SerializeField] private float m_timeIdleThreshold = 0.2f;
 	[BoxGroup("Acceleration")][SerializeField] private float m_deltaIdleThreshold = 100f;
 	[BoxGroup("Acceleration")][SerializeField] private float m_startRunSpeed = 2f;
 	private Vector4 m_inputWeights;
-	private State m_temporaryState;
 	private float m_timeHoldingInput = 0f;
 	private float m_previousFrameVelocity = 0f;
-	private bool m_isSuddenStop;
-	private float m_veloDeltaFromLastFrame;
 
 
 	public enum State {
@@ -41,10 +39,15 @@ public class KrampusController : KrampusBehaviour {
 		Walk
 	}
 
+	public enum StateChangeReason {
+		Normal,
+		Rapid
+	}
+
 
 	// Based on @SkilluDev's inputs
 	private void Update() {
-		m_veloDeltaFromLastFrame = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;
+		float acceleration = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;
 
 		var inputs = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 		float adjustedTime = Time.deltaTime / m_accelerationTime;
@@ -62,28 +65,30 @@ public class KrampusController : KrampusBehaviour {
 		m_inputWeights.w = Mathf.Clamp01(m_inputWeights.w);
 
 
-		BeginStateChange();
 
-		m_isSuddenStop = false;
+		var state = CurrentState;
+		var reason = StateChangeReason.Normal;
+
 		//if slow and no input
-		if (inputs.sqrMagnitude == 0 && m_rigidbody.velocity.sqrMagnitude <= m_veloIdleThreshhold) {
-			//if was accelarating for some time
-			if (m_timeHoldingInput >= m_timeIdleThreshold) {
-				m_isSuddenStop = true;
+		if (inputs.sqrMagnitude == 0 && m_rigidbody.velocity.sqrMagnitude <= m_veloIdleThreshold) {
+			if (m_timeHoldingInput >= m_timeIdleThreshold) { //if was accelarating for some time
+				reason = StateChangeReason.Rapid;
 			}
-			CurrentState = State.Idle;
-			//if sudden velocity loss
-		} else if (m_veloDeltaFromLastFrame >= m_deltaIdleThreshold) {
-			m_isSuddenStop = true;
-			CurrentState = State.Idle;
-			//if was already idle with no velocity
-		} else if (CurrentState == State.Idle && m_rigidbody.velocity.sqrMagnitude <= m_startRunSpeed) {
-			CurrentState = State.Idle;
+			state = State.Idle;
+		} else if (acceleration >= m_deltaIdleThreshold) { //if sudden velocity loss
+			reason = StateChangeReason.Rapid;
+			state = State.Idle;
+		} else if (CurrentState == State.Idle && m_rigidbody.velocity.sqrMagnitude <= m_startRunSpeed) { //if was already idle with no velocity
+			state = State.Idle;
 		} else {
-			CurrentState = Input.GetKey(KeyCode.LeftShift) || Kramp.Tongue.CurrentState != KrampusTongue.State.Idle ? State.Walk : State.Run;
+			if (Input.GetKey(KeyCode.LeftShift) || Kramp.Tongue.CurrentState != KrampusTongue.State.Idle) {
+				state = State.Walk;
+			} else {
+				state = State.Run;
+			}
 		}
 
-		ApplyStateChange();
+		ChangeState(state, reason);
 
 		//Process what changed
 		if (inputs.sqrMagnitude != 0) {
@@ -93,17 +98,10 @@ public class KrampusController : KrampusBehaviour {
 		m_previousFrameVelocity = m_rigidbody.velocity.sqrMagnitude;
 	}
 
-	private void BeginStateChange() {
-		m_temporaryState = CurrentState;
-	}
-
-	private void ApplyStateChange() {
-		if (m_temporaryState == CurrentState) {
-			return;
-		}
-		Kramp.Animator.MovementStateChanged(m_temporaryState, CurrentState, m_isSuddenStop);
-		onStateChange?.Invoke(m_temporaryState, CurrentState);
-		//Debug.Log("State changed to " + CurrentState+" isSuddenStop " + m_isSuddenStop);
+	private void ChangeState(State to, StateChangeReason reason) {
+		if (to == CurrentState) return;
+		onStateChanged?.Invoke(CurrentState, to, reason);
+		CurrentState = to;
 	}
 
 	private Vector3 ComputeVelocity() {
