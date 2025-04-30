@@ -16,15 +16,11 @@ public class WinCondition : MonoBehaviour {
 
 
     [SerializeField] private UIManager manager;
-    private void Awake()
-    {
+    private void Awake() {
         // If there is an instance, and it's not me, delete myself.
-        if (Instance != null && Instance != this)
-        {
+        if (Instance != null && Instance != this) {
             Destroy(this);
-        }
-        else
-        {
+        } else {
             Instance = this;
         }
         Instance = this;
@@ -50,12 +46,9 @@ public class WinCondition : MonoBehaviour {
     }
 
     // Update is called once per frame
-    private void Update()
-    {
-        if (!isGamePaused)
-        {
-	        if (timeLimit <= 0.0f)
-            {
+    private void Update() {
+        if (!isGamePaused) {
+            if (timeLimit <= 0.0f) {
                 GameOver(LostGameCase.TimeRunOut);
             } else {
                 timeLimit -= Time.deltaTime;
@@ -65,14 +58,14 @@ public class WinCondition : MonoBehaviour {
         }
 
 
-		//Input.GetKeyDown(KeyCode.R) Input.GetKeyDown(KeyCode.G //Old input system (inputSubscribe.RestartInput || inputSubscribe.AdvanceInput)
-        if ((InputSubscribe.Input.UI.Restart.triggered || InputSubscribe.Input.UI.Advance.triggered) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
+        //Input.GetKeyDown(KeyCode.R) Input.GetKeyDown(KeyCode.G //Old input system (inputSubscribe.RestartInput || inputSubscribe.AdvanceInput)
+        if ((InputSubscribe.Raw.UI.Restart.triggered || InputSubscribe.Raw.UI.Advance.triggered) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can reload game with R key
         {
             Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
             if (!isGameOver) GamePauseToggle();
             SceneManager.LoadScene("UITest"); //Goes Back to First Scene
         }
-	        //TODO
+        //TODO
         /*if (Input.GetKeyDown(KeyCode.Q) && (isGameOver || isGamePaused)) //if the game is over or game is paused, you can quick restart game with Q key
         {
             Time.timeScale = 1; //Revert Speed to 1, so everything reverts to normal time if the game was paused
@@ -82,11 +75,11 @@ public class WinCondition : MonoBehaviour {
 
         if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game*/
 
-		//Input.GetKeyDown(KeyCode.Escape) Input.GetKeyDown(KeyCode.P) //Old input system
+        //Input.GetKeyDown(KeyCode.Escape) Input.GetKeyDown(KeyCode.P) //Old input system
         //if ((inputSubscribe.PauseInput ) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
 
-		//Input.GetKeyDown(KeyCode.Escape) Input.GetKeyDown(KeyCode.P) //Old input system // inputSubscribe.PauseInput
-        if ((InputSubscribe.Input.UI.Pause.triggered ) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
+        //Input.GetKeyDown(KeyCode.Escape) Input.GetKeyDown(KeyCode.P) //Old input system // inputSubscribe.PauseInput
+        if ((InputSubscribe.Raw.UI.Pause.triggered) && ((Time.timeScale != 0f) || isGamePausedValue())) //Pause Game
         {
             GamePauseToggle();
         }
@@ -204,6 +197,6 @@ public class WinCondition : MonoBehaviour {
     }
 
     private void OnDestroy() {
-	    InputSubscribe.Shutdown();
+        InputSubscribe.Shutdown();
     }
 }
