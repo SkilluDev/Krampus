@@ -54,16 +54,6 @@ public class KrampusTongue : KrampusBehaviour {
     public State CurrentState { get; private set; }
     public Vector3 TongueDirection => m_tongueDirection;
 
-    private void OnEnable() {
-        InputSubscribe.Raw.Player.Aim.started += _ => Debug.Log("Aim started");
-        InputSubscribe.Raw.Player.Aim.canceled += _ => Debug.Log("Aim cancelled");
-        InputSubscribe.Raw.Player.Aim.performed += _ => Debug.Log("Aim performed");
-    }
-
-    void OnDisable() {
-
-    }
-
     private void Awake() {
         m_sequence.Init();
         Cursor.SetCursor(m_cursor, new Vector2(m_cursor.width / 2, m_cursor.height / 2), CursorMode.ForceSoftware);
@@ -86,6 +76,7 @@ public class KrampusTongue : KrampusBehaviour {
     }
 
 
+
     private void Update() {
         switch (CurrentState) {
             case State.Idle:
@@ -100,16 +91,14 @@ public class KrampusTongue : KrampusBehaviour {
                 //     Debug.LogError("Something went horrendously wrong with aiming!");
                 // }
                 // m_tongueDirection = point - m_tongueOrigin.position;
-                m_tongueDirection = new Vector3(InputSubscribe.Raw.Player.Aim.ReadValue<Vector2>().x, 0, InputSubscribe.Raw.Player.Aim.ReadValue<Vector2>().y);
-                m_tongueDirection.y = 0;
-                m_tongueDirection.Normalize();
-                m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
                 if (IsTime(nameof(Timings.windup))) {
                     m_tongueTime = m_sequence.End(nameof(Timings.windup));
                     m_tongueAimIndicator.gameObject.SetActive(true);
                     if (InputSubscribe.Raw.Player.EndAiming.WasPerformedThisFrame()) {
                         m_tongueAimIndicator.gameObject.SetActive(false);
                         ShootOut();
+                        Debug.Log(m_tongueDirection);
+                        break;
                     }
                 } else if (InputSubscribe.Raw.Player.EndAiming.WasPerformedThisFrame()) {
                     CurrentState = State.Idle;
@@ -117,6 +106,10 @@ public class KrampusTongue : KrampusBehaviour {
                     m_tongueTime = 0;
                     Debug.Log("Reset time to " + m_tongueTime);
                 }
+
+                m_tongueDirection = Vector3.Lerp(m_tongueDirection, Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Raw.Player.Aim.ReadValue<Vector2>().x, 0, InputSubscribe.Raw.Player.Aim.ReadValue<Vector2>().y)), Time.deltaTime * 15);
+                m_tongueDirection.Normalize();
+                m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
                 break;
 
             case State.TargetFetch: // Actually calculate what gets caught
