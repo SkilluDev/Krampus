@@ -1,4 +1,10 @@
+using UnityEngine;
 public class InputSubscribe {
+
+	static InputSubscribe() {
+		Application.quitting += Shutdown;
+	}
+
 	private static PlayerControls m_playerControls;
 	public static PlayerControls Raw {
 		get {
@@ -7,8 +13,12 @@ public class InputSubscribe {
 		}
 	}
 
+	public static Vector2 Movement => Raw.Player.Move.ReadValue<Vector2>();
+	public static bool Sneaking => Raw.Player.Crouch.IsPressed();
+
 	public static void Init() {
 		if (m_playerControls != null) return;
+
 		m_playerControls = new PlayerControls();
 		m_playerControls.Player.Enable();
 		m_playerControls.UI.Enable();

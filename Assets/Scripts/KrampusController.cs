@@ -49,7 +49,7 @@ public class KrampusController : KrampusBehaviour {
 	private void Update() {
 		float acceleration = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;
 
-		var inputs = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+		var inputs = InputSubscribe.Movement;
 		float adjustedTime = Time.deltaTime / m_accelerationTime;
 
 
@@ -81,7 +81,7 @@ public class KrampusController : KrampusBehaviour {
 		} else if (CurrentState == State.Idle && m_rigidbody.velocity.sqrMagnitude <= m_startRunSpeed) { //if was already idle with no velocity
 			state = State.Idle;
 		} else {
-			if (Input.GetKey(KeyCode.LeftShift) || Kramp.Tongue.CurrentState != KrampusTongue.State.Idle) {
+			if (InputSubscribe.Sneaking || Kramp.Tongue.CurrentState != KrampusTongue.State.Idle) {
 				state = State.Walk;
 			} else {
 				state = State.Run;

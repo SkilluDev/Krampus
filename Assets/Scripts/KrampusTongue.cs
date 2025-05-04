@@ -54,6 +54,16 @@ public class KrampusTongue : KrampusBehaviour {
     public State CurrentState { get; private set; }
     public Vector3 TongueDirection => m_tongueDirection;
 
+    private void OnEnable() {
+        InputSubscribe.Raw.Player.Aim.started += _ => Debug.Log("Aim started");
+        InputSubscribe.Raw.Player.Aim.canceled += _ => Debug.Log("Aim cancelled");
+        InputSubscribe.Raw.Player.Aim.performed += _ => Debug.Log("Aim performed");
+    }
+
+    void OnDisable() {
+
+    }
+
     private void Awake() {
         m_sequence.Init();
         Cursor.SetCursor(m_cursor, new Vector2(m_cursor.width / 2, m_cursor.height / 2), CursorMode.ForceSoftware);
@@ -82,24 +92,26 @@ public class KrampusTongue : KrampusBehaviour {
                 m_tongueTime = 0;
                 m_tongueAimIndicator.gameObject.SetActive(false);
 
-                if (Input.GetMouseButton(0)) AdvanceState();
+                if (InputSubscribe.Raw.Player.BeginAiming.WasPerformedThisFrame()) AdvanceState();
                 break;
 
             case State.Windup: // Pre-shoot phase. Wait for the windup
-                if (MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition), Vector3.up, Vector3.zero)) {
-                    m_tongueDirection = point - m_tongueOrigin.position;
-                }
+                // if (!MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition), Vector3.up, Vector3.zero)) {
+                //     Debug.LogError("Something went horrendously wrong with aiming!");
+                // }
+                // m_tongueDirection = point - m_tongueOrigin.position;
+                m_tongueDirection = new Vector3(InputSubscribe.Raw.Player.Aim.ReadValue<Vector2>().x, 0, InputSubscribe.Raw.Player.Aim.ReadValue<Vector2>().y);
                 m_tongueDirection.y = 0;
                 m_tongueDirection.Normalize();
                 m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
                 if (IsTime(nameof(Timings.windup))) {
                     m_tongueTime = m_sequence.End(nameof(Timings.windup));
                     m_tongueAimIndicator.gameObject.SetActive(true);
-                    if (!Input.GetMouseButton(0)) {
+                    if (InputSubscribe.Raw.Player.EndAiming.WasPerformedThisFrame()) {
                         m_tongueAimIndicator.gameObject.SetActive(false);
                         ShootOut();
                     }
-                } else if (!Input.GetMouseButton(0)) {
+                } else if (InputSubscribe.Raw.Player.EndAiming.WasPerformedThisFrame()) {
                     CurrentState = State.Idle;
                     onStateChanged.Invoke(State.Windup, CurrentState);
                     m_tongueTime = 0;
