@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace InputExtension {
+namespace KrampInput {
 #if UNITY_EDITOR
     [InitializeOnLoad]
 #endif

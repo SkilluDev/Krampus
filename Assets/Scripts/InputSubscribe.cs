@@ -1,4 +1,6 @@
 using UnityEngine;
+using KrampInput;
+
 public class InputSubscribe {
 
 	static InputSubscribe() {
