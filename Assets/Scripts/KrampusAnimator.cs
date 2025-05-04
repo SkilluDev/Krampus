@@ -71,6 +71,6 @@ public class KrampusAnimator : KrampusBehaviour {
     }
 
     private void SetTargetView(Vector3 direction) {
-        m_modelTransform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        m_rotationTarget = Quaternion.LookRotation(direction, Vector3.up);
     }
 }
