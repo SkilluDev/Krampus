@@ -12,6 +12,7 @@ namespace KrampInput {
 #endif
     public class FlickInteraction : IInputInteraction {
         public float duration = 0.7f;
+        public float activationDeadzone = 0.2f;
 
         static FlickInteraction() {
             InputSystem.RegisterInteraction<FlickInteraction>("Flick Release");
@@ -35,7 +36,7 @@ namespace KrampInput {
                     break;
 
                 case InputActionPhase.Started:
-                    if (value.magnitude <= InputSystem.settings.defaultDeadzoneMin) {
+                    if (value.magnitude <= activationDeadzone) {
                         context.Performed();
                         Debug.Log("Action performed");
                     }

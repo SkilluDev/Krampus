@@ -223,7 +223,7 @@ namespace KrampInput
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard & Mouse"",
                     ""action"": ""Tongue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -234,7 +234,7 @@ namespace KrampInput
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""Tongue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -276,9 +276,9 @@ namespace KrampInput
                     ""name"": """",
                     ""id"": ""c76b7aeb-014d-419f-b92b-a17f714d147a"",
                     ""path"": ""<Gamepad>/rightStick"",
-                    ""interactions"": ""Flick"",
+                    ""interactions"": ""Flick(duration=0.1)"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""End Aiming"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -299,7 +299,7 @@ namespace KrampInput
                     ""id"": ""3780a133-b0b1-4325-96ac-afc41669d9d4"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""InvertVector2,StickDeadzone"",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Aim"",
                     ""isComposite"": false,
