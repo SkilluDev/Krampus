@@ -1406,7 +1406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f768c776ec459884588b37520706b89c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_method: 0
+  m_method: 1
 --- !u!4 &788160102
 Transform:
   m_ObjectHideFlags: 0
@@ -3057,6 +3057,11 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 2035707310}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_inputMinimumDrag
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_LocalPosition.x
