@@ -21,7 +21,10 @@ public class KrampusTongue : KrampusBehaviour {
     [BoxGroup("Physics")][SerializeField] private float m_tongueLength = 8;
     [BoxGroup("Physics")][SerializeField] private float m_tongueHitRadius = 0.5f;
     [BoxGroup("Controls")][SerializeField] private float m_inputMinimumDrag = 0.4f;
+    [BoxGroup("Controls")][SerializeField] private float m_inputMinimumMouseDistance = 1f;
+    [BoxGroup("Controls")][SerializeField] private float m_inputMaximumMouseDistance = 4f;
     [BoxGroup("Controls")][SerializeField] private float m_inputDragSmoothing = 12f;
+    [BoxGroup("Controls")][SerializeField] private float m_inputMousePlaneY = 1f;
 
     [Serializable]
     private class Timings : TimedSequence<Timings> {
@@ -54,6 +57,7 @@ public class KrampusTongue : KrampusBehaviour {
         Retreating,
         Eating
     }
+
     public State CurrentState { get; private set; }
     public Vector3 TongueDirection => m_tongueDirection;
 
@@ -62,40 +66,52 @@ public class KrampusTongue : KrampusBehaviour {
         Cursor.SetCursor(m_cursor, new Vector2(m_cursor.width / 2, m_cursor.height / 2), CursorMode.ForceSoftware);
     }
 
-    private void HandleInput() {
-        if (Input.GetMouseButtonDown(0)) {
-            ShootOut();
+
+    #region Input handling
+
+    private Vector3 GetDirectionToMouse() {
+        if (!MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition), Vector3.up, Vector3.up * m_inputMousePlaneY)) {
+            Debug.LogError("Something went horrendously wrong with aiming!");
         }
+        var ret = point - m_tongueOrigin.position;
+        ret.y = 0;
+        return ret;
     }
 
-    public void ShootOut() {
-        CurrentState = State.TargetFetch;
-        onStateChanged.Invoke(State.Windup, CurrentState);
-        m_tongueExtensionFactor = 0;
-        m_hitEdible = null;
-        m_hitInteractable = null;
-        m_hitTonguable = null;
-        m_midwayToungables = null;
-    }
-
-
-    // input method dependant
     private Vector3 InputTongueDirection() {
-        return Vector3.Lerp(m_tongueDirection, Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * m_inputDragSmoothing);
+        return InputSubscribe.InputMethod switch {
+            InputSubscribe.Method.Console => Vector3.Lerp(m_tongueDirection, Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * m_inputDragSmoothing),
+            InputSubscribe.Method.PC => GetDirectionToMouse(),
+            _ => default,
+        };
     }
 
     private bool InputWantsStartAiming() {
-        return InputSubscribe.Raw.Player.BeginAiming.WasPerformedThisFrame();
+        return InputSubscribe.InputMethod switch {
+            InputSubscribe.Method.PC => InputSubscribe.Raw.Player.BeginAiming.WasPerformedThisFrame() && !InputWantsCancelAiming(),
+            _ => InputSubscribe.Raw.Player.BeginAiming.WasPerformedThisFrame()
+        };
     }
 
     private bool InputWantsCancelAiming() {
-        return InputSubscribe.Aim.magnitude <= m_inputMinimumDrag;
+        return InputSubscribe.InputMethod switch {
+            InputSubscribe.Method.PC => GetDirectionToMouse().sqrMagnitude <= m_inputMinimumMouseDistance * m_inputMinimumMouseDistance,
+            _ => InputSubscribe.Aim.magnitude <= m_inputMinimumDrag,
+        };
+    }
+
+    private float InputGetShootFactor() {
+        return InputSubscribe.InputMethod switch {
+            InputSubscribe.Method.Console => Mathf.InverseLerp(m_inputMinimumDrag, 1f, InputSubscribe.Aim.magnitude),
+            InputSubscribe.Method.PC => Mathf.InverseLerp(m_inputMinimumMouseDistance, m_inputMaximumMouseDistance, GetDirectionToMouse().magnitude),
+            _ => 0f,
+        };
     }
 
     private bool InputWantsShoot() {
         return InputSubscribe.Raw.Player.Shoot.WasPerformedThisFrame();
     }
-
+    #endregion
 
 
     private void Update() {
@@ -108,17 +124,23 @@ public class KrampusTongue : KrampusBehaviour {
                 break;
 
             case State.Windup: // Pre-shoot phase. Wait for the windup
-                // if (!MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition), Vector3.up, Vector3.zero)) {
-                //     Debug.LogError("Something went horrendously wrong with aiming!");
-                // }
-                // m_tongueDirection = point - m_tongueOrigin.position;
+
                 if (IsTime(nameof(Timings.windup))) {
                     m_tongueTime = m_sequence.End(nameof(Timings.windup));
-                    m_tongueAimIndicator.gameObject.SetActive(true);
-                    m_tongueAimIndicator.SetBlendShapeWeight(0, Mathf.InverseLerp(m_inputMinimumDrag, 1f, InputSubscribe.Aim.magnitude) * 100f);
+
+                    m_tongueAimIndicator.gameObject.SetActive(true); // TODO: this should be done by the animator;
+                    m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
+                    m_tongueAimIndicator.SetBlendShapeWeight(0, InputGetShootFactor() * 100f);
+
                     if (InputWantsShoot()) {
+                        CurrentState = State.TargetFetch;
+                        onStateChanged.Invoke(State.Windup, CurrentState);
+                        m_tongueExtensionFactor = 0;
+                        m_hitEdible = null;
+                        m_hitInteractable = null;
+                        m_hitTonguable = null;
+                        m_midwayToungables = null;
                         m_tongueAimIndicator.gameObject.SetActive(false);
-                        ShootOut();
                         break;
                     }
                 }
@@ -129,10 +151,9 @@ public class KrampusTongue : KrampusBehaviour {
                     m_tongueTime = 0;
                 }
 
-
                 m_tongueDirection = InputTongueDirection();
+                m_tongueDirection.y = 0;
                 m_tongueDirection.Normalize();
-                m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
                 break;
 
             case State.TargetFetch: // Actually calculate what gets caught
