@@ -29,7 +29,6 @@ public class KrampusAnimator : KrampusBehaviour {
     }
 
     public void TongueStateChanged(KrampusTongue.State previous, KrampusTongue.State current) {
-        Debug.Log("tongue change - " + previous + " -> " + current);
         switch ((previous, current)) {
             case (KrampusTongue.State.Idle, KrampusTongue.State.Windup):
                 m_animator.SetBool(m_tongueReadyProperty, true);
