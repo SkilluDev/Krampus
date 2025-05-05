@@ -22,8 +22,11 @@ namespace KrampInput {
         public void Process(ref InputInteractionContext context) {
             var value = context.ReadValue<Vector2>();
             if (context.timerHasExpired) {
-                if (value.magnitude >= activationStart) context.SetTimeout(duration);
-                else context.Canceled();
+                if (value.magnitude >= activationStart) {
+                    context.SetTimeout(duration);
+                } else {
+                    context.Canceled();
+                }
                 return;
             }
 
@@ -33,14 +36,12 @@ namespace KrampInput {
                     if (value.magnitude >= activationStart) {
                         context.Started();
                         context.SetTimeout(duration);
-                        Debug.Log("Start timer");
                     }
                     break;
 
                 case InputActionPhase.Started:
                     if (value.magnitude <= activationFinish) {
                         context.Performed();
-                        Debug.Log("end timer");
                     }
                     break;
             }
