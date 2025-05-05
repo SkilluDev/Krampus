@@ -70,7 +70,7 @@ public class KrampusTongue : KrampusBehaviour {
     #region Input handling
 
     private Vector3 GetDirectionToMouse() {
-        if (!MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Raw.ScreenPointToRay(Input.mousePosition), Vector3.up, Vector3.up * m_inputMousePlaneY)) {
+        if (!MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Raw.ScreenPointToRay(InputSubscribe.Aim), Vector3.up, Vector3.up * m_inputMousePlaneY)) {
             Debug.LogError("Something went horrendously wrong with aiming!");
         }
         var ret = point - m_tongueOrigin.position;
@@ -80,9 +80,8 @@ public class KrampusTongue : KrampusBehaviour {
 
     private Vector3 InputTongueDirection() {
         return InputSubscribe.InputMethod switch {
-            InputSubscribe.Method.Console => Vector3.Lerp(m_tongueDirection, Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * m_inputDragSmoothing),
             InputSubscribe.Method.PC => GetDirectionToMouse(),
-            _ => default,
+            _ => Vector3.Lerp(m_tongueDirection, Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * m_inputDragSmoothing),
         };
     }
 
@@ -102,9 +101,8 @@ public class KrampusTongue : KrampusBehaviour {
 
     private float InputGetShootFactor() {
         return InputSubscribe.InputMethod switch {
-            InputSubscribe.Method.Console => Mathf.InverseLerp(m_inputMinimumDrag, 1f, InputSubscribe.Aim.magnitude),
             InputSubscribe.Method.PC => Mathf.InverseLerp(m_inputMinimumMouseDistance, m_inputMaximumMouseDistance, GetDirectionToMouse().magnitude),
-            _ => 0f,
+            _ => Mathf.InverseLerp(m_inputMinimumDrag, 1f, InputSubscribe.Aim.magnitude),
         };
     }
 
