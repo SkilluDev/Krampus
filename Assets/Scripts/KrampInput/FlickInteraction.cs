@@ -20,12 +20,13 @@ namespace KrampInput {
         }
 
         public void Process(ref InputInteractionContext context) {
+            var value = context.ReadValue<Vector2>();
             if (context.timerHasExpired) {
-                context.Canceled();
+                if (value.magnitude >= activationStart) context.SetTimeout(duration);
+                else context.Canceled();
                 return;
             }
 
-            var value = context.ReadValue<Vector2>();
 
             switch (context.phase) {
                 case InputActionPhase.Waiting:
