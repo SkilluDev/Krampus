@@ -20,6 +20,8 @@ public class KrampusTongue : KrampusBehaviour {
     [BoxGroup("Physics")][SerializeField] private Transform m_tongueOrigin;
     [BoxGroup("Physics")][SerializeField] private float m_tongueLength = 8;
     [BoxGroup("Physics")][SerializeField] private float m_tongueHitRadius = 0.5f;
+    [BoxGroup("Controls")][SerializeField] private float m_inputMinimumDrag = 0.4f;
+    [BoxGroup("Controls")][SerializeField] private float m_inputDragSmoothing = 12f;
 
     [Serializable]
     private class Timings : TimedSequence<Timings> {
@@ -79,7 +81,7 @@ public class KrampusTongue : KrampusBehaviour {
 
     // input method dependant
     private Vector3 InputTongueDirection() {
-        return Vector3.Lerp(m_tongueDirection, Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * 15);
+        return Vector3.Lerp(m_tongueDirection, Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * m_inputDragSmoothing);
     }
 
     private bool InputWantsStartAiming() {
@@ -87,7 +89,7 @@ public class KrampusTongue : KrampusBehaviour {
     }
 
     private bool InputWantsCancelAiming() {
-        return InputSubscribe.Aim.magnitude <= 0.4f;
+        return InputSubscribe.Aim.magnitude <= m_inputMinimumDrag;
     }
 
     private bool InputWantsShoot() {
@@ -113,7 +115,7 @@ public class KrampusTongue : KrampusBehaviour {
                 if (IsTime(nameof(Timings.windup))) {
                     m_tongueTime = m_sequence.End(nameof(Timings.windup));
                     m_tongueAimIndicator.gameObject.SetActive(true);
-                    m_tongueAimIndicator.SetBlendShapeWeight(0, Mathf.InverseLerp(0.4f, 1f, InputSubscribe.Aim.magnitude) * 100f);
+                    m_tongueAimIndicator.SetBlendShapeWeight(0, Mathf.InverseLerp(m_inputMinimumDrag, 1f, InputSubscribe.Aim.magnitude) * 100f);
                     if (InputWantsShoot()) {
                         m_tongueAimIndicator.gameObject.SetActive(false);
                         ShootOut();
