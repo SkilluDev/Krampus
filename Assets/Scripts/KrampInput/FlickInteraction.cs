@@ -30,7 +30,6 @@ namespace KrampInput {
                 case InputActionPhase.Waiting:
                     if (value.magnitude >= 0.5f) {
                         context.Started();
-                        Debug.Log("Action started");
                         context.SetTimeout(duration);
                     }
                     break;
@@ -38,7 +37,6 @@ namespace KrampInput {
                 case InputActionPhase.Started:
                     if (value.magnitude <= activationDeadzone) {
                         context.Performed();
-                        Debug.Log("Action performed");
                     }
                     break;
             }
