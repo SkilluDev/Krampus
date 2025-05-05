@@ -1,14 +1,14 @@
 using UnityEngine;
 using KrampInput;
-using System.Collections.Generic;
-using System.Linq;
-using NaughtyAttributes;
 using UnityEngine.InputSystem;
+using System;
 
 public class InputSubscribe : MonoBehaviour {
-
-	static InputSubscribe() {
-		Application.quitting += Shutdown;
+	[Serializable]
+	public enum Method {
+		PC,
+		Console,
+		Mobile
 	}
 
 	private static PlayerControls m_playerControls;
@@ -18,32 +18,37 @@ public class InputSubscribe : MonoBehaviour {
 			return m_playerControls;
 		}
 	}
-
 	public static Vector2 Movement => Raw.Player.Move.ReadValue<Vector2>();
 	public static Vector2 Aim => Raw.Player.Aim.ReadValue<Vector2>();
 	public static bool Sneaking => Raw.Player.Crouch.IsPressed();
+	public static Method InputMethod { get; private set; }
 
-	private static List<string> PossibleMethods => Raw.controlSchemes.Select(w => w.name).ToList();
+	[SerializeField] private Method m_method;
 
-	[SerializeField][Dropdown(nameof(PossibleMethods))] private string m_initialMethod;
+
+	static InputSubscribe() {
+		Application.quitting += Shutdown;
+	}
 
 	private void Awake() {
-		ChangeInputMethod(m_initialMethod);
+		ChangeInputMethod(m_method);
 	}
 
-	public static void ChangeInputMethod(string method) {
+	public static void ChangeInputMethod(Method method) {
 		Shutdown();
-		Init(method);
+		InputMethod = method;
+		Init(method.ToString());
 	}
 
-	public static void Init(string method = null) {
+	private static void Init(string method = null) {
 		if (m_playerControls != null) return;
 		m_playerControls = new PlayerControls();
 		if (method != null) m_playerControls.bindingMask = InputBinding.MaskByGroup(method);
 		m_playerControls.Player.Enable();
 		m_playerControls.UI.Enable();
 	}
-	public static void Shutdown() {
+
+	private static void Shutdown() {
 		if (m_playerControls == null) return;
 		m_playerControls.Player.Disable();
 		m_playerControls.UI.Disable();

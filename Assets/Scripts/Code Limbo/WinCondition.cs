@@ -197,6 +197,6 @@ public class WinCondition : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        InputSubscribe.Shutdown();
+        // InputSubscribe.Shutdown();
     }
 }
