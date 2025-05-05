@@ -243,7 +243,7 @@ namespace KrampInput
                     ""name"": """",
                     ""id"": ""183b5fcd-b2fd-4e32-85c1-8c99796b0a69"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Press"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
                     ""action"": ""Begin Aiming"",

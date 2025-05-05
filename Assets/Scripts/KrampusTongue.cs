@@ -87,7 +87,7 @@ public class KrampusTongue : KrampusBehaviour {
 
     private bool InputWantsStartAiming() {
         return InputSubscribe.InputMethod switch {
-            InputSubscribe.Method.PC => InputSubscribe.Raw.Player.BeginAiming.WasPerformedThisFrame() && !InputWantsCancelAiming(),
+            InputSubscribe.Method.PC => InputSubscribe.Raw.Player.BeginAiming.IsPressed() && !InputWantsCancelAiming(),
             _ => InputSubscribe.Raw.Player.BeginAiming.WasPerformedThisFrame()
         };
     }
