@@ -24,6 +24,7 @@ public class MenuCredits : MonoBehaviour {
     }
 
     private void OnDisable() {
+        if (Game.IsLoading) return;
         Game.MainMenuInfo.onStateChanged -= StateChanged;
     }
 
