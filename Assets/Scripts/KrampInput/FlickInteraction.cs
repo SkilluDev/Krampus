@@ -11,8 +11,9 @@ namespace KrampInput {
     [InitializeOnLoad]
 #endif
     public class FlickInteraction : IInputInteraction {
-        public float duration = 0.7f;
-        public float activationDeadzone = 0.2f;
+        public float duration = 0.05f;
+        public float activationStart = 0.7f;
+        public float activationFinish = 0.2f;
 
         static FlickInteraction() {
             InputSystem.RegisterInteraction<FlickInteraction>("Flick Release");
@@ -28,15 +29,17 @@ namespace KrampInput {
 
             switch (context.phase) {
                 case InputActionPhase.Waiting:
-                    if (value.magnitude >= 0.5f) {
+                    if (value.magnitude >= activationStart) {
                         context.Started();
                         context.SetTimeout(duration);
+                        Debug.Log("Start timer");
                     }
                     break;
 
                 case InputActionPhase.Started:
-                    if (value.magnitude <= activationDeadzone) {
+                    if (value.magnitude <= activationFinish) {
                         context.Performed();
+                        Debug.Log("end timer");
                     }
                     break;
             }
