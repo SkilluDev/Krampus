@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using KrampUtils;
 using NaughtyAttributes;
 using Roomgen;
@@ -12,7 +13,7 @@ public class KrampusTongue : KrampusBehaviour {
     public UnityAction<KrampusTongue.State, KrampusTongue.State> onStateChanged;
     [BoxGroup("Visual")][SerializeField] private LineRenderer m_tongueRenderer;
     [BoxGroup("Visual")][SerializeField] private Transform m_tongueVisualOrigin;
-    [BoxGroup("Visual")][SerializeField] private Transform m_tongueAimIndicator;
+    [BoxGroup("Visual")][SerializeField] private SkinnedMeshRenderer m_tongueAimIndicator;
     [BoxGroup("Visual")][SerializeField] private Texture2D m_cursor; // TODO: cursor should not be set here!
 
     [BoxGroup("Physics")][SerializeField] private LayerMask m_layerMask = int.MaxValue;
@@ -76,6 +77,24 @@ public class KrampusTongue : KrampusBehaviour {
     }
 
 
+    // input method dependant
+    private Vector3 InputTongueDirection() {
+        return Vector3.Lerp(m_tongueDirection, Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * 15);
+    }
+
+    private bool InputWantsStartAiming() {
+        return InputSubscribe.Raw.Player.BeginAiming.WasPerformedThisFrame();
+    }
+
+    private bool InputWantsCancelAiming() {
+        return InputSubscribe.Aim.magnitude <= 0.4f;
+    }
+
+    private bool InputWantsShoot() {
+        return InputSubscribe.Raw.Player.Shoot.WasPerformedThisFrame();
+    }
+
+
 
     private void Update() {
         switch (CurrentState) {
@@ -83,7 +102,7 @@ public class KrampusTongue : KrampusBehaviour {
                 m_tongueTime = 0;
                 m_tongueAimIndicator.gameObject.SetActive(false);
 
-                if (InputSubscribe.Raw.Player.BeginAiming.WasPerformedThisFrame()) AdvanceState();
+                if (InputWantsStartAiming()) AdvanceState();
                 break;
 
             case State.Windup: // Pre-shoot phase. Wait for the windup
@@ -94,20 +113,24 @@ public class KrampusTongue : KrampusBehaviour {
                 if (IsTime(nameof(Timings.windup))) {
                     m_tongueTime = m_sequence.End(nameof(Timings.windup));
                     m_tongueAimIndicator.gameObject.SetActive(true);
-                    if (InputSubscribe.Raw.Player.EndAiming.WasPerformedThisFrame()) {
+                    m_tongueAimIndicator.SetBlendShapeWeight(0, Mathf.InverseLerp(0.4f, 1f, InputSubscribe.Aim.magnitude) * 100f);
+                    if (InputWantsShoot()) {
                         m_tongueAimIndicator.gameObject.SetActive(false);
                         ShootOut();
                         Debug.Log(m_tongueDirection);
                         break;
                     }
-                } else if (InputSubscribe.Raw.Player.EndAiming.WasPerformedThisFrame()) {
+                }
+
+                if (InputWantsCancelAiming()) {
                     CurrentState = State.Idle;
                     onStateChanged.Invoke(State.Windup, CurrentState);
                     m_tongueTime = 0;
                     Debug.Log("Reset time to " + m_tongueTime);
                 }
 
-                m_tongueDirection = Vector3.Lerp(m_tongueDirection, Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Raw.Player.Aim.ReadValue<Vector2>().x, 0, InputSubscribe.Raw.Player.Aim.ReadValue<Vector2>().y)), Time.deltaTime * 15);
+
+                m_tongueDirection = InputTongueDirection();
                 m_tongueDirection.Normalize();
                 m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
                 break;

@@ -20,6 +20,7 @@ public class InputSubscribe : MonoBehaviour {
 	}
 
 	public static Vector2 Movement => Raw.Player.Move.ReadValue<Vector2>();
+	public static Vector2 Aim => Raw.Player.Aim.ReadValue<Vector2>();
 	public static bool Sneaking => Raw.Player.Crouch.IsPressed();
 
 	private static List<string> PossibleMethods => Raw.controlSchemes.Select(w => w.name).ToList();
