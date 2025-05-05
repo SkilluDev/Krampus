@@ -75,7 +75,7 @@ namespace KrampInput
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""End Aiming"",
+                    ""name"": ""Shoot"",
                     ""type"": ""Value"",
                     ""id"": ""c9cbc56f-5360-4d5d-8e19-5d9a293b03c4"",
                     ""expectedControlType"": """",
@@ -268,7 +268,7 @@ namespace KrampInput
                     ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": "";Keyboard & Mouse"",
-                    ""action"": ""End Aiming"",
+                    ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -276,10 +276,10 @@ namespace KrampInput
                     ""name"": """",
                     ""id"": ""c76b7aeb-014d-419f-b92b-a17f714d147a"",
                     ""path"": ""<Gamepad>/rightStick"",
-                    ""interactions"": ""Flick(duration=0.1)"",
+                    ""interactions"": ""Flick(duration=0.1,activationDeadzone=0.4)"",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""End Aiming"",
+                    ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -587,7 +587,7 @@ namespace KrampInput
             m_Player_Tongue = m_Player.FindAction("Tongue", throwIfNotFound: true);
             m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
             m_Player_BeginAiming = m_Player.FindAction("Begin Aiming", throwIfNotFound: true);
-            m_Player_EndAiming = m_Player.FindAction("End Aiming", throwIfNotFound: true);
+            m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -666,7 +666,7 @@ namespace KrampInput
         private readonly InputAction m_Player_Tongue;
         private readonly InputAction m_Player_Aim;
         private readonly InputAction m_Player_BeginAiming;
-        private readonly InputAction m_Player_EndAiming;
+        private readonly InputAction m_Player_Shoot;
         public struct PlayerActions
         {
             private @PlayerControls m_Wrapper;
@@ -676,7 +676,7 @@ namespace KrampInput
             public InputAction @Tongue => m_Wrapper.m_Player_Tongue;
             public InputAction @Aim => m_Wrapper.m_Player_Aim;
             public InputAction @BeginAiming => m_Wrapper.m_Player_BeginAiming;
-            public InputAction @EndAiming => m_Wrapper.m_Player_EndAiming;
+            public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -701,9 +701,9 @@ namespace KrampInput
                 @BeginAiming.started += instance.OnBeginAiming;
                 @BeginAiming.performed += instance.OnBeginAiming;
                 @BeginAiming.canceled += instance.OnBeginAiming;
-                @EndAiming.started += instance.OnEndAiming;
-                @EndAiming.performed += instance.OnEndAiming;
-                @EndAiming.canceled += instance.OnEndAiming;
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -723,9 +723,9 @@ namespace KrampInput
                 @BeginAiming.started -= instance.OnBeginAiming;
                 @BeginAiming.performed -= instance.OnBeginAiming;
                 @BeginAiming.canceled -= instance.OnBeginAiming;
-                @EndAiming.started -= instance.OnEndAiming;
-                @EndAiming.performed -= instance.OnEndAiming;
-                @EndAiming.canceled -= instance.OnEndAiming;
+                @Shoot.started -= instance.OnShoot;
+                @Shoot.performed -= instance.OnShoot;
+                @Shoot.canceled -= instance.OnShoot;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -838,7 +838,7 @@ namespace KrampInput
             void OnTongue(InputAction.CallbackContext context);
             void OnAim(InputAction.CallbackContext context);
             void OnBeginAiming(InputAction.CallbackContext context);
-            void OnEndAiming(InputAction.CallbackContext context);
+            void OnShoot(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
