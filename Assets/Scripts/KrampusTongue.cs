@@ -117,7 +117,6 @@ public class KrampusTongue : KrampusBehaviour {
                     if (InputWantsShoot()) {
                         m_tongueAimIndicator.gameObject.SetActive(false);
                         ShootOut();
-                        Debug.Log(m_tongueDirection);
                         break;
                     }
                 }
@@ -126,7 +125,6 @@ public class KrampusTongue : KrampusBehaviour {
                     CurrentState = State.Idle;
                     onStateChanged.Invoke(State.Windup, CurrentState);
                     m_tongueTime = 0;
-                    Debug.Log("Reset time to " + m_tongueTime);
                 }
 
 
