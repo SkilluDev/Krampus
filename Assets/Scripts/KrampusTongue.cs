@@ -107,7 +107,10 @@ public class KrampusTongue : KrampusBehaviour {
     }
 
     private bool InputWantsShoot() {
-        return InputSubscribe.Raw.Player.Shoot.WasPerformedThisFrame();
+        return InputSubscribe.InputMethod switch {
+            InputSubscribe.Method.PC => !InputSubscribe.Raw.Player.Shoot.IsPressed(),
+            _ => InputSubscribe.Raw.Player.Shoot.WasPerformedThisFrame(),
+        };
     }
     #endregion
 
