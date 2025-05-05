@@ -166,7 +166,7 @@
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "StickDeadzone",
-                    "groups": "Console",
+                    "groups": "Console;Mobile",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -221,7 +221,7 @@
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Console",
+                    "groups": "Console;Mobile",
                     "action": "Tongue",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -243,7 +243,7 @@
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "StickDeadzone(min=0.4)",
-                    "groups": "Console",
+                    "groups": "Console;Mobile",
                     "action": "Begin Aiming",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -272,6 +272,17 @@
                 },
                 {
                     "name": "",
+                    "id": "e19a02f9-382d-428d-97af-1746ce2e6b24",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": ";Mobile",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6609f7ef-0c8c-48b2-9cea-ac6c7ebe63f8",
                     "path": "<Mouse>/position",
                     "interactions": "",
@@ -287,7 +298,7 @@
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "InvertVector2,StickDeadzone",
-                    "groups": "Console",
+                    "groups": "Console;Mobile",
                     "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -560,6 +571,17 @@
             "devices": [
                 {
                     "devicePath": "<Gamepad>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "Mobile",
+            "bindingGroup": "Mobile",
+            "devices": [
+                {
+                    "devicePath": "<Touchscreen>",
                     "isOptional": false,
                     "isOR": false
                 }
