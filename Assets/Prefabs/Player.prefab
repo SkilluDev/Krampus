@@ -232,6 +232,8 @@ MonoBehaviour:
   m_tongueOrigin: {fileID: 8320024670651621678}
   m_tongueLength: 10
   m_tongueHitRadius: 0.7
+  m_inputMinimumDrag: 0.4
+  m_inputDragSmoothing: 12
   m_sequence:
     windup: 0.4
     extend: 0.2
@@ -672,22 +674,22 @@ PrefabInstance:
     - target: {fileID: -3887185075125053422, guid: fa0b515765d09191da10a33555caabd5,
         type: 3}
       propertyPath: m_AABB.m_Center.z
-      value: 0
+      value: 0.02636472
       objectReference: {fileID: 0}
     - target: {fileID: -3887185075125053422, guid: fa0b515765d09191da10a33555caabd5,
         type: 3}
       propertyPath: m_AABB.m_Extent.x
-      value: 0
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: -3887185075125053422, guid: fa0b515765d09191da10a33555caabd5,
         type: 3}
       propertyPath: m_AABB.m_Extent.y
-      value: 0
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: -3887185075125053422, guid: fa0b515765d09191da10a33555caabd5,
         type: 3}
       propertyPath: m_AABB.m_Extent.z
-      value: 0
+      value: 0.02636472
       objectReference: {fileID: 0}
     - target: {fileID: -3887185075125053422, guid: fa0b515765d09191da10a33555caabd5,
         type: 3}
