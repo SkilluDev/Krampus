@@ -219,6 +219,17 @@ namespace KrampInput
                 },
                 {
                     ""name"": """",
+                    ""id"": ""7a5eba1e-66e9-489f-a186-6a10447f7ac8"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Console"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""371b3fcf-ebb4-424b-8b8d-c1c76589f1fe"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
