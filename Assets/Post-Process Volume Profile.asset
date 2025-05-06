@@ -119,8 +119,8 @@ MonoBehaviour:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0
-          value: 0
+          time: 0.08779443
+          value: 1
           inSlope: 0.5067683
           outSlope: 0.5067683
           tangentMode: 0
@@ -128,8 +128,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.24265404
-          value: 0.23232275
+          time: 0.31049252
+          value: 0.67264575
           inSlope: 0.87759995
           outSlope: 0.87759995
           tangentMode: 0
@@ -137,8 +137,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.7260664
-          value: 0.85050493
+          time: 0.7152034
+          value: 0.42600894
           inSlope: 0.98605233
           outSlope: 0.98605233
           tangentMode: 0
@@ -146,8 +146,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 1
-          value: 1
+          time: 0.9700214
+          value: 0.15246636
           inSlope: 0.109527014
           outSlope: 0.109527014
           tangentMode: 0
@@ -314,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   skipIterations:
     m_OverrideState: 0
     m_Value: 1
@@ -323,7 +323,7 @@ MonoBehaviour:
     m_Value: 0.9
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.1
   scatter:
     m_OverrideState: 0
     m_Value: 0.7
@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   intensity:
     m_OverrideState: 1
     m_Value: 0.617
