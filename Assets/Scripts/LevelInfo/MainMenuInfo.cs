@@ -3,7 +3,6 @@ using UnityEngine;
 using LitMotion;
 using LitMotion.Extensions;
 using UnityEngine.Events;
-using System;
 
 public class MainMenuInfo : LevelInfo {
     public new enum State {
@@ -22,9 +21,15 @@ public class MainMenuInfo : LevelInfo {
     private MotionHandle[] m_motions;
 
 
-    private void Start() {
+    private void Ready() {
         m_motions = new MotionHandle[m_canvases.Length];
         SetState(State.Default);
+        Debug.Log("Set state default!");
+    }
+
+    private void Unready() {
+        foreach (var motion in m_motions)
+            if (motion.IsActive()) motion.Cancel();
     }
 
     public void SetState(State state) {
