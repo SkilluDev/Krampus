@@ -79,13 +79,4 @@ public class MainGameInfo : LevelInfo {
             r.RemoveNPC(nun);
         m_nunRegistry.Remove(nun);
     }
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.Y)) {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            SceneManager.LoadScene(0);
-        }
-    }
 }
