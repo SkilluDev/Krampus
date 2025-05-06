@@ -1,7 +1,8 @@
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Game {
+public class Game : MonoBehaviour {
 
     [RuntimeInitializeOnLoadMethod]
     private static void InitializeGame() {
@@ -32,12 +33,20 @@ public class Game {
 
     public static LevelInfo Info {
         get {
-            if (m_info == null) m_info = GameObject.FindObjectOfType<LevelInfo>();
-            if (m_info == null) Debug.LogError("No level info found!");
-            return m_info;
+            if (m_instance.m_info == null) m_instance.m_info = GameObject.FindObjectOfType<LevelInfo>();
+            if (m_instance.m_info == null) Debug.LogError("No level info found!");
+            return m_instance.m_info;
         }
     }
-    private static LevelInfo m_info;
+    [SerializeField][ReadOnly] private LevelInfo m_info;
+
+    public static MusicMan MusicMan {
+        get {
+            if (m_instance.m_musicMan == null) Debug.LogError("MusicMan was not assigned in " + m_instance.gameObject.name);
+            return m_instance.m_musicMan;
+        }
+    }
+    [SerializeField] private MusicMan m_musicMan;
 
     public static MainGameInfo MainGameInfo => (MainGameInfo)Info;
     public static MainMenuInfo MainMenuInfo => (MainMenuInfo)Info;
@@ -45,7 +54,9 @@ public class Game {
     public static bool IsLoading => CurrentState == State.Loading;
     public static bool RequireFullReload { get; private set; }
 
-    public static void PrepareCurrentState() {
+    private static Game m_instance;
+
+    private static void PrepareCurrentState() {
         SourceState = CurrentState;
         DestinationState = CurrentState;
         CurrentState = State.Loading;
@@ -66,5 +77,14 @@ public class Game {
         CurrentState = DestinationState;
         DestinationState = State.Loading;
         SourceState = State.Loading;
+    }
+
+    private void Awake() {
+        if (Game.m_instance != null) {
+            Destroy(gameObject);
+            return;
+        }
+        m_instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 }

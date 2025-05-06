@@ -27,14 +27,14 @@ public class DebugLoadable : MonoBehaviour, IGameLoadable {
         while (Progress < 0.5f) {
             Status = "Finding candidates";
             yield return null;
-            Progress += Time.unscaledDeltaTime / 5f;
+            Progress += Time.unscaledDeltaTime / 2f;
         }
         Status = "Found!";
         yield return new WaitForSecondsRealtime(0.1f);
         while (Progress < 0.99f) {
             Status = "Creating the kids...";
             yield return null;
-            Progress += Time.unscaledDeltaTime / 5f;
+            Progress += Time.unscaledDeltaTime / 2f;
         }
         yield return new WaitForSecondsRealtime(2);
         Status = "Satisfaction";
