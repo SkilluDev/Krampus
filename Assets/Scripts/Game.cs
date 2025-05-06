@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public static class Game {
+public class Game {
 
     [RuntimeInitializeOnLoadMethod]
     private static void InitializeGame() {
