@@ -6,22 +6,36 @@ using UnityEngine.SceneManagement;
 public class GameLoader : MonoBehaviour {
     [SerializeField] private float m_delay = 1f;
 
-    public string State { get; private set; }
+    public string Status { get; private set; }
+    public float Progress { get; private set; }
 
     private void Start() {
-        StartCoroutine(LoadingProcedure());
+        StartCoroutine(Game.RequireFullReload ? LoadingProcedure() : SoftLoadingProcedure());
+    }
+
+    private void BeginStatus(string status) {
+        Status = status;
+        Progress = 0;
     }
 
     private IEnumerator LoadingProcedure() {
-        State = "Waiting";
-        yield return new WaitForSecondsRealtime(m_delay);
+        BeginStatus("Prepare");
+
+        var unloadedScene = SceneManager.GetSceneByBuildIndex((int)Game.SourceState);
+        BroadcastAll(unloadedScene, "Unready");
+        Time.timeScale = 0;
+
+        BeginStatus("Waiting");
+        yield return Delay();
         SceneManager.SetActiveScene(gameObject.scene);
+
+        BeginStatus("Changing Scene");
         var unload = SceneManager.UnloadSceneAsync((int)Game.SourceState);
         var load = SceneManager.LoadSceneAsync((int)Game.DestinationState, LoadSceneMode.Additive);
         load.allowSceneActivation = false;
 
         while (!unload.isDone && load.progress < 0.9f) {
-            State = $"Changing scene: {unload.progress} -> {load.progress}";
+            Progress = (unload.progress + load.progress) / 2f;
             yield return null;
         }
 
@@ -31,26 +45,71 @@ public class GameLoader : MonoBehaviour {
 
         var loadedScene = SceneManager.GetSceneByBuildIndex((int)Game.DestinationState);
         SceneManager.SetActiveScene(loadedScene);
-        Time.timeScale = 0;
+        yield return UpdateLoadables(loadedScene);
 
-        var loadables = loadedScene.GetRootGameObjects().SelectMany(w => w.GetComponentsInChildren<IGameLoadable>());
-        State = $"Loading {loadables.Count()} items";
-        yield return null;
-        foreach (var w in loadables) {
-            var loader = w.Load();
-            while (loader.MoveNext()) {
-                State = $"[{w.GameObject.name}] {w.Status} {w.Progress * 100:0.0}%";
-                yield return loader.Current;
-            }
-        }
+        BeginStatus("Waiting");
+        yield return Delay();
 
-
-        State = "Waiting";
-        yield return new WaitForSecondsRealtime(m_delay);
+        BeginStatus("Finishing Scene");
         SceneManager.UnloadSceneAsync(gameObject.scene);
         Game.FinishedLoading();
         Time.timeScale = 1;
 
-        foreach (var go in loadedScene.GetRootGameObjects()) go.BroadcastMessage("Ready", SendMessageOptions.DontRequireReceiver);
+        BroadcastAll(loadedScene, "Ready");
+
+        BeginStatus("Done");
+        Progress = 1;
+    }
+
+    private IEnumerator UpdateLoadables(Scene loadedScene) {
+        var loadables = loadedScene.GetRootGameObjects().SelectMany(w => w.GetComponentsInChildren<IGameLoadable>());
+        int current = 0;
+        int count = loadables.Count();
+        BeginStatus($"Loading {count} objects");
+        yield return null;
+
+        foreach (var w in loadables) {
+            var loader = w.Load();
+            while (loader.MoveNext()) {
+                Status = $"({current}/{count}) {w.Status}";
+                Progress = w.Progress;
+                yield return loader.Current;
+            }
+            current++;
+        }
+    }
+
+    private void BroadcastAll(Scene loadedScene, string msg) {
+        foreach (var go in loadedScene.GetRootGameObjects()) go.BroadcastMessage(msg, SendMessageOptions.DontRequireReceiver);
+    }
+
+    private IEnumerator Delay() {
+        float timer = 0;
+        while (timer < m_delay) {
+            yield return null;
+            timer += Time.unscaledDeltaTime;
+            Progress = timer / m_delay;
+        }
+    }
+
+    private IEnumerator SoftLoadingProcedure() {
+        BeginStatus("Waiting");
+        Time.timeScale = 0;
+        var loadedScene = SceneManager.GetSceneByBuildIndex((int)Game.DestinationState);
+        SceneManager.SetActiveScene(loadedScene);
+        yield return UpdateLoadables(loadedScene);
+
+        BeginStatus("Waiting");
+        yield return Delay();
+
+        BeginStatus("Finishing Scene");
+        SceneManager.UnloadSceneAsync(gameObject.scene);
+        Game.FinishedLoading();
+        Time.timeScale = 1;
+
+        BroadcastAll(loadedScene, "Ready");
+
+        BeginStatus("Done");
+        Progress = 1;
     }
 }

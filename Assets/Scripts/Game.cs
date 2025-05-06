@@ -1,5 +1,3 @@
-using System;
-using Unity.Loading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +8,13 @@ public static class Game {
         DestinationState = State.Loading;
         SourceState = State.Loading;
         CurrentState = (State)SceneManager.GetActiveScene().buildIndex;
-        // LoadState(CurrentState);
+        if (CurrentState == State.Loading) {
+            Debug.LogError("We don't want you in a load loop! Booting main menu instead.");
+            CurrentState = State.MainMenu;
+            SceneManager.LoadScene((int)State.MainMenu);
+        }
+        PrepareCurrentState();
+
     }
 
     public enum State {
@@ -24,7 +28,6 @@ public static class Game {
 
     public static Game.State CurrentState { get; private set; }
     public static Game.State SourceState { get; private set; }
-
     public static Game.State DestinationState { get; private set; }
 
     public static LevelInfo Info {
@@ -40,18 +43,28 @@ public static class Game {
     public static MainMenuInfo MainMenuInfo => (MainMenuInfo)Info;
 
     public static bool IsLoading => CurrentState == State.Loading;
+    public static bool RequireFullReload { get; private set; }
+
+    public static void PrepareCurrentState() {
+        SourceState = CurrentState;
+        DestinationState = CurrentState;
+        CurrentState = State.Loading;
+        RequireFullReload = false;
+        SceneManager.LoadScene(LOADER_SCENE, LoadSceneMode.Additive);
+    }
 
     public static void LoadState(State state) {
         SourceState = CurrentState;
         DestinationState = state;
         CurrentState = State.Loading;
+        RequireFullReload = true;
         SceneManager.LoadScene(LOADER_SCENE, LoadSceneMode.Additive);
     }
 
     public static void FinishedLoading() {
         if (CurrentState != State.Loading) return;
+        CurrentState = DestinationState;
         DestinationState = State.Loading;
         SourceState = State.Loading;
-        CurrentState = DestinationState;
     }
 }
