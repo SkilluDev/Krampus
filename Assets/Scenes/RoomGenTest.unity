@@ -739,6 +739,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}
+--- !u!1 &969311667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 969311669}
+  - component: {fileID: 969311668}
+  m_Layer: 0
+  m_Name: NewSoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &969311668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969311667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 463a7aff9450495c83129ffa190bd5fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_KillSoundBite: {fileID: 11400000, guid: 5aee47a5c56a7f346ab3684363b39694, type: 2}
+  m_WindUpSoundBite: {fileID: 11400000, guid: 2aea4c776d728e746b6497467359beb6, type: 2}
+  m_StepSoundBite: {fileID: 11400000, guid: ccd711e8af1d899489c1f63664c8e6dd, type: 2}
+--- !u!4 &969311669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969311667}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.1215744, y: 53.793034, z: 3.1098673}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1098060862
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -946,12 +993,6 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 8120681167325682480, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
     type: 3}
   m_PrefabInstance: {fileID: 564137539}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1525433472 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3083306166600181781, guid: 1370af54edd30564086e0f4717044a13,
-    type: 3}
-  m_PrefabInstance: {fileID: 1891054759}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1576086820
 GameObject:
@@ -1397,11 +1438,6 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 564137540}
-    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_sequence.windup
-      value: 0.4
-      objectReference: {fileID: 0}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1455,11 +1491,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3083306166600181781, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1936252579}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1370af54edd30564086e0f4717044a13, type: 3}
 --- !u!114 &1936252573 stripped
 MonoBehaviour:
@@ -1467,26 +1499,12 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1891054759}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525433472}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1ba6cff9c26c9e99aff27ca3e23dbca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1936252579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525433472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70d07a3ee2dedc2ad9b835bf2a128df9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_room: {fileID: 0}
-  m_log: 0
 --- !u!1 &1972260560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1639,3 +1657,4 @@ SceneRoots:
   - {fileID: 1877701074}
   - {fileID: 1174797514}
   - {fileID: 511624142}
+  - {fileID: 969311669}

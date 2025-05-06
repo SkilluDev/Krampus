@@ -26,8 +26,6 @@ public class KrampusTongue : KrampusBehaviour {
     [BoxGroup("Controls")][SerializeField] private float m_inputDragSmoothing = 12f;
     [BoxGroup("Controls")][SerializeField] private float m_inputMousePlaneY = 1f;
 
-    [BoxGroup("Sounds")][SerializeField] private SoundBite m_CatchSoundBite;
-    [BoxGroup("Sounds")][SerializeField] private SoundBite m_TongueSoundBite;
     [Serializable]
     private class Timings : TimedSequence<Timings> {
         [SeqDuration] public float windup = 0.4f;
@@ -45,6 +43,8 @@ public class KrampusTongue : KrampusBehaviour {
     private Vector3 m_tongueDirection;
     private float m_tongueExtensionFactor = 0f;
     private IInteractable m_hitInteractable;
+    public IInteractable HitInteractable { get => m_hitInteractable; }
+
     private ITongueable m_hitTonguable;
     private IEdible m_hitEdible;
     private List<(float dst, ITongueable component)> m_midwayToungables;
@@ -202,12 +202,6 @@ public class KrampusTongue : KrampusBehaviour {
                 break;
 
             case State.Extending: // Tongue goes from visual origin to target, activating the tonguables along the way
-	            if (m_hitInteractable != null) {
-		            m_CatchSoundBite.Play(transform.position, 1, true);
-	            } else {
-		            m_TongueSoundBite.Play(transform.position, 1, true);
-
-	            }
                 if (m_hitInteractable != null) m_tongueDestination = m_hitInteractable.InteractionPoint;
 
                 m_tongueExtensionFactor = m_sequence.extendCurve.Evaluate(m_sequence.InverseLerp(nameof(Timings.extend), m_tongueTime));

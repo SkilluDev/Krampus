@@ -7,6 +7,9 @@ public class KrampusAnimator : KrampusBehaviour {
     [SerializeField] private float m_fastVelocity = 4;
     [SerializeField] private float m_rotationSmoothing = 15;
 
+    [BoxGroup("Sounds")][SerializeField] private SoundBite m_CatchSoundBite;
+    [BoxGroup("Sounds")][SerializeField] private SoundBite m_TongueSoundBite;
+
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty;
 
     private float m_minimalVelocity;
@@ -45,6 +48,13 @@ public class KrampusAnimator : KrampusBehaviour {
                 break;
             case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
                 SetTargetView(Kramp.Tongue.TongueDirection);
+                if (Kramp.Tongue.HitInteractable != null) {
+	                m_CatchSoundBite.Play(transform.position, 1, true);
+	                Debug.Log("played sound catch");
+                } else {
+	                m_TongueSoundBite.Play(transform.position, 1, true);
+	                Debug.Log("played sound tongue");
+                }
                 break;
         }
     }

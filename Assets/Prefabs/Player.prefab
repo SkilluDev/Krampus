@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3145118901642720459}
   - component: {fileID: 1698299321934093973}
   - component: {fileID: 6024168017209539665}
+  - component: {fileID: 3925534722009601554}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -172,10 +173,26 @@ MonoBehaviour:
   m_modelTransform: {fileID: 3264214603099680994}
   m_fastVelocity: 8
   m_rotationSmoothing: 15
+  m_CatchSoundBite: {fileID: 11400000, guid: f5689539bd96d0c48aa104c282778fb3, type: 2}
+  m_TongueSoundBite: {fileID: 11400000, guid: 632242672ef9a4241bfa9d5cfd0c546f, type: 2}
   m_speedProperty: -823668238
   m_stopProperty: 426031496
   m_tongueOutProperty: 1294476412
   m_tongueReadyProperty: 77369328
+--- !u!114 &3925534722009601554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3083306166600181781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70d07a3ee2dedc2ad9b835bf2a128df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_room: {fileID: 0}
+  m_log: 0
 --- !u!1 &4670869950198197567
 GameObject:
   m_ObjectHideFlags: 0
