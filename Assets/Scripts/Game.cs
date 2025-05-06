@@ -9,11 +9,12 @@ public static class Game {
         SourceState = State.Loading;
         CurrentState = (State)SceneManager.GetActiveScene().buildIndex;
         if (CurrentState == State.Loading) {
-            Debug.LogError("We don't want you in a load loop!");
-            LoadState(State.MainGame);
-        } else {
-            PrepareCurrentState();
+            Debug.LogError("We don't want you in a load loop! Booting main menu instead.");
+            CurrentState = State.MainMenu;
+            SceneManager.LoadScene((int)State.MainMenu);
         }
+        PrepareCurrentState();
+
     }
 
     public enum State {
