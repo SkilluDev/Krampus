@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class NewSoundManager : MonoBehaviour {
-	[SerializeField] private SoundBite m_KillSoundBite;
+
 	[SerializeField] private SoundBite m_WindUpSoundBite;
 	[SerializeField] private SoundBite m_StepSoundBite;
 
