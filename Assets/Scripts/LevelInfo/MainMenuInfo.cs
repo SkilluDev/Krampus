@@ -34,6 +34,10 @@ public class MainMenuInfo : LevelInfo {
         UpdateGroups();
     }
 
+    public void LoadGameScene() {
+        Game.LoadState(Game.State.MainGame);
+    }
+
     // bad code ahead!
     private void UpdateGroups() {
         for (int i = 0; i < m_cameras.Length; i++) {
