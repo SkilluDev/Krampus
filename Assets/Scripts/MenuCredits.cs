@@ -19,12 +19,11 @@ public class MenuCredits : MonoBehaviour {
         m_groups[0].alpha = 1;
     }
 
-    private void OnEnable() {
+    private void Ready() {
         Game.MainMenuInfo.onStateChanged += StateChanged;
     }
 
-    private void OnDisable() {
-        if (Game.IsLoading) return;
+    private void Unready() {
         Game.MainMenuInfo.onStateChanged -= StateChanged;
     }
 

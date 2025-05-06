@@ -20,10 +20,12 @@ public class MainMenuCamera : MonoBehaviour {
     private Vector3 GetTilt() {
         switch (InputSubscribe.InputMethod) {
             case InputSubscribe.Method.PC:
-                return new Vector3(InputSubscribe.Aim.x / Screen.width, InputSubscribe.Aim.y / Screen.height) - new Vector3(0.5f, 0.5f);
+                return new Vector3(InputSubscribe.UITilt.x / Screen.width, InputSubscribe.UITilt.y / Screen.height) - new Vector3(0.5f, 0.5f);
             case InputSubscribe.Method.Console:
                 var currentObjPosition = EventSystem.current.currentSelectedGameObject.GetComponent<RectTransform>().position;
                 return new Vector3(currentObjPosition.x / Screen.width, currentObjPosition.y / Screen.height) * 1.5f - new Vector3(0.5f, 0.5f);
+            case InputSubscribe.Method.Mobile:
+                return new Vector3(InputSubscribe.UITilt.x, InputSubscribe.UITilt.y);
             default:
                 return default;
         }

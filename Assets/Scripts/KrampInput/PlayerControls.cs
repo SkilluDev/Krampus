@@ -15,10 +15,13 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace KrampInput {
-    public partial class @PlayerControls : IInputActionCollection2, IDisposable {
+namespace KrampInput
+{
+    public partial class @PlayerControls: IInputActionCollection2, IDisposable
+    {
         public InputActionAsset asset { get; }
-        public @PlayerControls() {
+        public @PlayerControls()
+        {
             asset = InputActionAsset.FromJson(@"{
     ""name"": ""Player Controls"",
     ""maps"": [
@@ -365,6 +368,15 @@ namespace KrampInput {
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Tilt"",
+                    ""type"": ""Value"",
+                    ""id"": ""a5ca55ba-1105-40aa-9d9a-0fcb2be81ad6"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -565,6 +577,28 @@ namespace KrampInput {
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba11084f-8e63-4959-8d1a-98f0ce9744bd"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";PC"",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9306f2f2-74d3-4e0d-b21c-95505aca2ef5"",
+                    ""path"": ""<Gyroscope>/angularVelocity"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Mobile"",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -624,56 +658,68 @@ namespace KrampInput {
             m_UI_Advance = m_UI.FindAction("Advance", throwIfNotFound: true);
             m_UI_Restart = m_UI.FindAction("Restart", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
+            m_UI_Tilt = m_UI.FindAction("Tilt", throwIfNotFound: true);
         }
 
-        ~@PlayerControls() {
+        ~@PlayerControls()
+        {
             UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PlayerControls.Player.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PlayerControls.UI.Disable() has not been called.");
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             UnityEngine.Object.Destroy(asset);
         }
 
-        public InputBinding? bindingMask {
+        public InputBinding? bindingMask
+        {
             get => asset.bindingMask;
             set => asset.bindingMask = value;
         }
 
-        public ReadOnlyArray<InputDevice>? devices {
+        public ReadOnlyArray<InputDevice>? devices
+        {
             get => asset.devices;
             set => asset.devices = value;
         }
 
         public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
 
-        public bool Contains(InputAction action) {
+        public bool Contains(InputAction action)
+        {
             return asset.Contains(action);
         }
 
-        public IEnumerator<InputAction> GetEnumerator() {
+        public IEnumerator<InputAction> GetEnumerator()
+        {
             return asset.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
 
-        public void Enable() {
+        public void Enable()
+        {
             asset.Enable();
         }
 
-        public void Disable() {
+        public void Disable()
+        {
             asset.Disable();
         }
 
         public IEnumerable<InputBinding> bindings => asset.bindings;
 
-        public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false) {
+        public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
+        {
             return asset.FindAction(actionNameOrId, throwIfNotFound);
         }
 
-        public int FindBinding(InputBinding bindingMask, out InputAction action) {
+        public int FindBinding(InputBinding bindingMask, out InputAction action)
+        {
             return asset.FindBinding(bindingMask, out action);
         }
 
@@ -686,7 +732,8 @@ namespace KrampInput {
         private readonly InputAction m_Player_Aim;
         private readonly InputAction m_Player_BeginAiming;
         private readonly InputAction m_Player_Shoot;
-        public struct PlayerActions {
+        public struct PlayerActions
+        {
             private @PlayerControls m_Wrapper;
             public PlayerActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Player_Move;
@@ -700,7 +747,8 @@ namespace KrampInput {
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
             public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-            public void AddCallbacks(IPlayerActions instance) {
+            public void AddCallbacks(IPlayerActions instance)
+            {
                 if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
                 @Move.started += instance.OnMove;
@@ -723,7 +771,8 @@ namespace KrampInput {
                 @Shoot.canceled += instance.OnShoot;
             }
 
-            private void UnregisterCallbacks(IPlayerActions instance) {
+            private void UnregisterCallbacks(IPlayerActions instance)
+            {
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
                 @Move.canceled -= instance.OnMove;
@@ -744,12 +793,14 @@ namespace KrampInput {
                 @Shoot.canceled -= instance.OnShoot;
             }
 
-            public void RemoveCallbacks(IPlayerActions instance) {
+            public void RemoveCallbacks(IPlayerActions instance)
+            {
                 if (m_Wrapper.m_PlayerActionsCallbackInterfaces.Remove(instance))
                     UnregisterCallbacks(instance);
             }
 
-            public void SetCallbacks(IPlayerActions instance) {
+            public void SetCallbacks(IPlayerActions instance)
+            {
                 foreach (var item in m_Wrapper.m_PlayerActionsCallbackInterfaces)
                     UnregisterCallbacks(item);
                 m_Wrapper.m_PlayerActionsCallbackInterfaces.Clear();
@@ -765,19 +816,23 @@ namespace KrampInput {
         private readonly InputAction m_UI_Advance;
         private readonly InputAction m_UI_Restart;
         private readonly InputAction m_UI_Navigate;
-        public struct UIActions {
+        private readonly InputAction m_UI_Tilt;
+        public struct UIActions
+        {
             private @PlayerControls m_Wrapper;
             public UIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Pause => m_Wrapper.m_UI_Pause;
             public InputAction @Advance => m_Wrapper.m_UI_Advance;
             public InputAction @Restart => m_Wrapper.m_UI_Restart;
             public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
+            public InputAction @Tilt => m_Wrapper.m_UI_Tilt;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
             public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
-            public void AddCallbacks(IUIActions instance) {
+            public void AddCallbacks(IUIActions instance)
+            {
                 if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
                 @Pause.started += instance.OnPause;
@@ -792,9 +847,13 @@ namespace KrampInput {
                 @Navigate.started += instance.OnNavigate;
                 @Navigate.performed += instance.OnNavigate;
                 @Navigate.canceled += instance.OnNavigate;
+                @Tilt.started += instance.OnTilt;
+                @Tilt.performed += instance.OnTilt;
+                @Tilt.canceled += instance.OnTilt;
             }
 
-            private void UnregisterCallbacks(IUIActions instance) {
+            private void UnregisterCallbacks(IUIActions instance)
+            {
                 @Pause.started -= instance.OnPause;
                 @Pause.performed -= instance.OnPause;
                 @Pause.canceled -= instance.OnPause;
@@ -807,14 +866,19 @@ namespace KrampInput {
                 @Navigate.started -= instance.OnNavigate;
                 @Navigate.performed -= instance.OnNavigate;
                 @Navigate.canceled -= instance.OnNavigate;
+                @Tilt.started -= instance.OnTilt;
+                @Tilt.performed -= instance.OnTilt;
+                @Tilt.canceled -= instance.OnTilt;
             }
 
-            public void RemoveCallbacks(IUIActions instance) {
+            public void RemoveCallbacks(IUIActions instance)
+            {
                 if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
                     UnregisterCallbacks(instance);
             }
 
-            public void SetCallbacks(IUIActions instance) {
+            public void SetCallbacks(IUIActions instance)
+            {
                 foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
                     UnregisterCallbacks(item);
                 m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
@@ -823,27 +887,34 @@ namespace KrampInput {
         }
         public UIActions @UI => new UIActions(this);
         private int m_PCSchemeIndex = -1;
-        public InputControlScheme PCScheme {
-            get {
+        public InputControlScheme PCScheme
+        {
+            get
+            {
                 if (m_PCSchemeIndex == -1) m_PCSchemeIndex = asset.FindControlSchemeIndex("PC");
                 return asset.controlSchemes[m_PCSchemeIndex];
             }
         }
         private int m_ConsoleSchemeIndex = -1;
-        public InputControlScheme ConsoleScheme {
-            get {
+        public InputControlScheme ConsoleScheme
+        {
+            get
+            {
                 if (m_ConsoleSchemeIndex == -1) m_ConsoleSchemeIndex = asset.FindControlSchemeIndex("Console");
                 return asset.controlSchemes[m_ConsoleSchemeIndex];
             }
         }
         private int m_MobileSchemeIndex = -1;
-        public InputControlScheme MobileScheme {
-            get {
+        public InputControlScheme MobileScheme
+        {
+            get
+            {
                 if (m_MobileSchemeIndex == -1) m_MobileSchemeIndex = asset.FindControlSchemeIndex("Mobile");
                 return asset.controlSchemes[m_MobileSchemeIndex];
             }
         }
-        public interface IPlayerActions {
+        public interface IPlayerActions
+        {
             void OnMove(InputAction.CallbackContext context);
             void OnCrouch(InputAction.CallbackContext context);
             void OnTongue(InputAction.CallbackContext context);
@@ -851,11 +922,13 @@ namespace KrampInput {
             void OnBeginAiming(InputAction.CallbackContext context);
             void OnShoot(InputAction.CallbackContext context);
         }
-        public interface IUIActions {
+        public interface IUIActions
+        {
             void OnPause(InputAction.CallbackContext context);
             void OnAdvance(InputAction.CallbackContext context);
             void OnRestart(InputAction.CallbackContext context);
             void OnNavigate(InputAction.CallbackContext context);
+            void OnTilt(InputAction.CallbackContext context);
         }
     }
 }
