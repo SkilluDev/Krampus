@@ -14,7 +14,6 @@ public class KrampusTongue : KrampusBehaviour {
     [BoxGroup("Visual")][SerializeField] private LineRenderer m_tongueRenderer;
     [BoxGroup("Visual")][SerializeField] private Transform m_tongueVisualOrigin;
     [BoxGroup("Visual")][SerializeField] private SkinnedMeshRenderer m_tongueAimIndicator;
-    [BoxGroup("Visual")][SerializeField] private Texture2D m_cursor; // TODO: cursor should not be set here!
 
     [BoxGroup("Physics")][SerializeField] private LayerMask m_layerMask = int.MaxValue;
     [BoxGroup("Physics")][SerializeField] private Transform m_tongueOrigin;
@@ -65,7 +64,6 @@ public class KrampusTongue : KrampusBehaviour {
 
     private void Awake() {
         m_sequence.Init();
-        Cursor.SetCursor(m_cursor, new Vector2(m_cursor.width / 2, m_cursor.height / 2), CursorMode.ForceSoftware);
     }
 
 
