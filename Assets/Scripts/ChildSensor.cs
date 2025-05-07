@@ -3,16 +3,17 @@ using UnityEngine;
 
 public class ChildSensor : MonoBehaviour {
 	public float Dist { get; set; } = float.MaxValue;
-	private Transform m_closestChild;
+	private Child m_closestChild;
 
 	private void Ready() {
-		if (Game.MainGameInfo.BadChildren.Count > 0) m_closestChild = Game.MainGameInfo.GoodChildren.First().transform;
+		if (Game.MainGameInfo.BadChildren.Count > 0) m_closestChild = Game.MainGameInfo.GoodChildren.First();
 	}
 
 	private void Update() {
+		if (Game.IsLoading) return;
 		//Debug.Log($"Distance to closest naughty child: {Dist}");
 		if (Game.MainGameInfo.BadChildren.Count == 0) return;
-		if (!m_closestChild) m_closestChild = Game.MainGameInfo.GoodChildren.First().transform;
+		if (!Game.MainGameInfo.BadChildren.Contains(m_closestChild)) m_closestChild = Game.MainGameInfo.GoodChildren.First();
 		var closestOffset = m_closestChild.transform.position - transform.position;
 		Dist = closestOffset.sqrMagnitude;
 
@@ -22,7 +23,7 @@ public class ChildSensor : MonoBehaviour {
 			float sqrLen = offset.sqrMagnitude;
 
 			if (sqrLen < Dist) {
-				m_closestChild = child.transform;
+				m_closestChild = child;
 			}
 		}
 	}

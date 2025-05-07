@@ -19,7 +19,8 @@ public class GameMusicController : MonoBehaviour
     private void Update() {
 	    m_distanceToClosest = Mathf.Sqrt(m_closestChild.Dist);
 	    if (m_distanceToClosest < m_minDistance) {
-		    m_musicMan.GameMusicLayer2Volume = (m_minDistance - m_distanceToClosest) / 20;
+		    m_musicMan.GameMusicLayer2Volume = Mathf.Lerp(0,1,Mathf.Clamp((m_minDistance-m_distanceToClosest)/m_minDistance,0,1));
+
 	    } else {
 		    if (m_musicMan.GameMusicLayer2Volume > 0) {
 			    m_musicMan.GameMusicLayer2Volume -= Time.deltaTime * m_resetSpeed;
