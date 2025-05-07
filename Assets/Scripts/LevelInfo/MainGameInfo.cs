@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 /// <summary>
@@ -42,8 +44,6 @@ public class MainGameInfo : LevelInfo {
     private List<Child> m_childRegistry = new List<Child>();
 
     public IReadOnlyCollection<Nun> Nuns => m_nunRegistry;
-
-
     private List<Nun> m_nunRegistry = new List<Nun>();
 
     private Dictionary<Room, RoomData> m_roomdata = new Dictionary<Room, RoomData>();
@@ -51,20 +51,16 @@ public class MainGameInfo : LevelInfo {
     public IEnumerable<Child> BadChildren => m_childRegistry.Where(c => !c.Type.Equals(Types[GoodChildIndex]));
     public IEnumerable<Child> GoodChildren => m_childRegistry.Where(c => c.Type.Equals(Types[GoodChildIndex]));
 
-
-    [Header("Timer")]
-    [SerializeField] private int startTime;
-    public float timer = 0f;
-    [SerializeField] private int timeBonus;
-    [SerializeField] private int timePenalty;
+    [ShowNativeProperty] public float Timer { get; private set; }
 
 
-
+    [BoxGroup("Timer")][SerializeField][FormerlySerializedAs("timeBonus")] private int m_timeBonus;
+    [BoxGroup("Timer")][SerializeField][FormerlySerializedAs("timePenalty")] private int m_timePenalty;
 
 
     private void Awake() {
         GoodChildIndex = Random.Range(0, Types.Count);
-       timer =   Game.SetMan.GetValue<int>("Timer");
+        Timer = Game.SetMan.GetValue<int>("Timer");
     }
 
     public RoomData GetRoomData(Room r) {
@@ -89,7 +85,7 @@ public class MainGameInfo : LevelInfo {
 
     public void UnregisterChild(Child child) {
         foreach (var r in m_roomdata.Values.Where(w => w.Contains(child)))
-            r.RemoveNPC(child);
+            r.RemoveCharacter(child);
         m_childRegistry.Remove(child);
     }
 
@@ -99,22 +95,20 @@ public class MainGameInfo : LevelInfo {
 
     public void UnregisterNun(Nun nun) {
         foreach (var r in m_roomdata.Values.Where(w => w.Contains(nun)))
-            r.RemoveNPC(nun);
+            r.RemoveCharacter(nun);
         m_nunRegistry.Remove(nun);
     }
 
-    //===============================================================================
-
     private void Update() {
-        timer -= Time.deltaTime;
+        Timer -= Time.deltaTime;
     }
 
     public void Bonus() {
-        timer += timeBonus;
+        Timer += m_timeBonus;
     }
 
     public void Penalty() {
-        timer -= timePenalty;
+        Timer -= m_timePenalty;
     }
 
     //======================================================================

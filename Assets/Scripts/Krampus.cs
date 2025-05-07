@@ -1,7 +1,8 @@
+using Roomgen;
 using UnityEngine;
 
 [ExecuteAlways]
-public class Krampus : KrampusBehaviour, IInteractor {
+public class Krampus : KrampusBehaviour, IInteractor, ICharacter {
     public IInteractor.Type InteractorType => IInteractor.Type.Player;
 
     public CameraController Kamera => m_camera;
@@ -14,6 +15,9 @@ public class Krampus : KrampusBehaviour, IInteractor {
     [SerializeField] private KrampusAnimator m_animator;
 
     public KrampusTongue Tongue => m_tongue;
+
+    public Room CurrentRoom { get; set; }
+
     [SerializeField] private KrampusTongue m_tongue;
 
 

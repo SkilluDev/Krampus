@@ -3,6 +3,7 @@ using KrampUtils;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class Child : NPC, IEdible {
     public float RunSpeed => m_runSpeed;
@@ -14,8 +15,7 @@ public class Child : NPC, IEdible {
     [SerializeField] private float m_reportingDuration = 0.4f;
     [SerializeField] private int m_detectionRange = 5;
     [SerializeField] private MeshRenderer m_shapeRenderer;
-
-    [SerializeField] private SoundBite m_KillSoundBite;
+    [SerializeField][FormerlySerializedAs("m_KillSoundBite")] private SoundBite m_killSoundBite;
 
 
     [SerializeField] private float m_runSpeed = 8;
@@ -56,7 +56,8 @@ public class Child : NPC, IEdible {
     }
 
     private void Update() {
-        HandleRoomRegistration();
+        if (!CurrentRoom) return;
+
 
         switch (CurrentState) {
             case State.Idle:
@@ -89,7 +90,7 @@ public class Child : NPC, IEdible {
                 if (m_timeout <= 0) {
                     // select nearest nun or whatevs
                     if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
-                        m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).NPCs.First(w => w is Nun);
+                        m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.First(w => w is Nun);
                     } else {
                         m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
                     }
@@ -128,7 +129,7 @@ public class Child : NPC, IEdible {
     }
 
     public void Consume(Krampus krampus) {
-        m_KillSoundBite.Play(transform.position, 1, true);
+        m_killSoundBite.Play(transform.position, 1, true);
         Destroy(gameObject);
     }
     public void Hit(Krampus krampus) {

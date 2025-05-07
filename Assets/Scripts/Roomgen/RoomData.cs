@@ -5,31 +5,31 @@ using UnityEngine;
 
 public class RoomData : MonoBehaviour {
 	public Room Room { get; private set; }
-	public IReadOnlyCollection<NPC> NPCs => m_npcs;
-	private List<NPC> m_npcs;
+	public IReadOnlyCollection<ICharacter> Characters => m_characters;
+	private List<ICharacter> m_characters;
 
 	public void Init(Room room) {
 		Room = room;
-		m_npcs = new List<NPC>();
+		m_characters = new List<ICharacter>();
 	}
 
-	public void AddNPC(NPC npc) {
-		if (m_npcs.Contains(npc)) {
+	public void AddCharacter(ICharacter character) {
+		if (m_characters.Contains(character)) {
 			return;
 		}
-		m_npcs.Add(npc);
+		m_characters.Add(character);
 	}
 
-	public void RemoveNPC(NPC npc) {
-		if (npc == null) return;
-		m_npcs.Remove(npc);
+	public void RemoveCharacter(ICharacter character) {
+		if (character == null) return;
+		m_characters.Remove(character);
 	}
 
 	public bool Contains<T>() {
-		return m_npcs.Exists(w => w is T);
+		return m_characters.Exists(w => w is T);
 	}
 
-	public bool Contains(NPC npc) {
-		return m_npcs.Contains(npc);
+	public bool Contains(ICharacter character) {
+		return m_characters.Contains(character);
 	}
 }

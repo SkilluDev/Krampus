@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2156001255450772181}
   - component: {fileID: 8359612323012655929}
   - component: {fileID: 4999698030819085569}
+  - component: {fileID: -4198147641735832684}
   m_Layer: 7
   m_Name: Child
   m_TagString: Untagged
@@ -83,7 +84,7 @@ MonoBehaviour:
   m_reportingDuration: 1
   m_detectionRange: 5
   m_shapeRenderer: {fileID: 1392838229403124822}
-  m_KillSoundBite: {fileID: 11400000, guid: 5aee47a5c56a7f346ab3684363b39694, type: 2}
+  m_killSoundBite: {fileID: 11400000, guid: 5aee47a5c56a7f346ab3684363b39694, type: 2}
   m_runSpeed: 8
 --- !u!136 &8359612323012655929
 CapsuleCollider:
@@ -127,6 +128,18 @@ MonoBehaviour:
   m_stunProperty: 1397128752
   m_panicProperty: 1600564886
   m_reportingProperty: 365604299
+--- !u!114 &-4198147641735832684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6287952351036182209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b468b6982b9f601e3bae4db48ae6ee84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7026317583287349963
 GameObject:
   m_ObjectHideFlags: 0

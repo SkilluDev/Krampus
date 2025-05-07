@@ -3,16 +3,16 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
-public class NPC : MonoBehaviour, IInteractor {
+public class NPC : MonoBehaviour, IInteractor, ICharacter {
     private const float NEAR_THRESHOLD = 0.2f;
 
     public Vector3 CurrentDestination { get; protected set; }
     public IInteractor.Type InteractorType => IInteractor.Type.NPC;
-    public Room CurrentRoom { get; private set; }
     public float BaseMovementSpeed => m_baseMovementSpeed;
     public Vector3 VelocityVector => m_rigidbody.velocity;
     public float Velocity => VelocityVector.magnitude;
     public float VelocitySqr => VelocityVector.sqrMagnitude;
+    public Room CurrentRoom { get; set; }
 
     [SerializeField] protected float m_baseMovementSpeed = 4;
     [SerializeField] protected Rigidbody m_rigidbody;
@@ -24,21 +24,6 @@ public class NPC : MonoBehaviour, IInteractor {
         m_currentPath = new NavMeshPath();
     }
 
-
-    protected void HandleRoomRegistration() {
-        var newRoom = Game.MainGameInfo.RoomGenerator.GetRoomAt(transform.position);
-        if (CurrentRoom != newRoom) {
-            var currentRoomData = Game.MainGameInfo.GetRoomData(CurrentRoom);
-            if (currentRoomData != null)
-                currentRoomData.RemoveNPC(this);
-            CurrentRoom = newRoom;
-
-            var newRoomData = Game.MainGameInfo.GetRoomData(newRoom);
-
-            if (newRoomData != null)
-                newRoomData.AddNPC(this);
-        }
-    }
 
     public virtual bool SetDestination(Vector3 destination) {
         if (m_currentPath == null) m_currentPath = new NavMeshPath();
@@ -62,11 +47,13 @@ public class NPC : MonoBehaviour, IInteractor {
             return Vector3.zero;
         }
 
+        // absolutnie nie wiem co się tu dzieje
         var dest = CurrentDestination;
         if (m_currentPath.corners.Length > 0 && m_currentPathPoint < m_currentPath.corners.Length - 1) {
             if ((transform.position - m_currentPath.corners[m_currentPathPoint + 1]).sqrMagnitude < NEAR_THRESHOLD)
                 m_currentPathPoint++;
-            dest = m_currentPath.corners[m_currentPathPoint + 1];
+            if (m_currentPathPoint < m_currentPath.corners.Length - 1)
+                dest = m_currentPath.corners[m_currentPathPoint + 1];
         }
 
         return (dest - transform.position).normalized;
