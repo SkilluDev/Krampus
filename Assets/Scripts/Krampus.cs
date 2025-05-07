@@ -16,6 +16,9 @@ public class Krampus : KrampusBehaviour, IInteractor {
     public KrampusTongue Tongue => m_tongue;
     [SerializeField] private KrampusTongue m_tongue;
 
+    public ChildSensor ChildSensor => m_childSensor;
+    [SerializeField] private ChildSensor m_childSensor;
+
 
     private void Awake() {
         foreach (var w in gameObject.GetComponentsInChildren<KrampusBehaviour>()) {

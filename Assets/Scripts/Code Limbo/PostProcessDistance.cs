@@ -9,7 +9,6 @@ public class PostProcessDistance : MonoBehaviour {
     private ChromaticAberration aberration;
 
     [SerializeField] private float m_minDistance;
-    [SerializeField] private ChildSensor childSensor;
 
     [SerializeField] private float m_abberIntensity = 0.2f;
     [SerializeField] private float m_vignetteIntensity = 0.2f;
@@ -39,7 +38,7 @@ public class PostProcessDistance : MonoBehaviour {
     }
 
     private void Update() {
-        m_distanceToClosest = Mathf.Sqrt(childSensor.Dist);
+        m_distanceToClosest = Mathf.Sqrt(Game.MainGameInfo.Krampus.ChildSensor.Dist);
         if (m_distanceToClosest < m_minDistance) {
             if ((m_minDistance - m_distanceToClosest) / m_minDistance <= m_vignetteIntensity) {
                 //Debug.Log("1");

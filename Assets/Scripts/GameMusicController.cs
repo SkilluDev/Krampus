@@ -6,7 +6,6 @@ public class GameMusicController : MonoBehaviour
 {
     private MusicMan m_musicMan;
 
-    [SerializeField] private ChildSensor m_closestChild;
     [SerializeField] private float m_minDistance;
 
     [SerializeField] private float m_resetSpeed = 1;
@@ -17,7 +16,7 @@ public class GameMusicController : MonoBehaviour
     }
 
     private void Update() {
-	    m_distanceToClosest = Mathf.Sqrt(m_closestChild.Dist);
+	    m_distanceToClosest = Mathf.Sqrt(Game.MainGameInfo.Krampus.ChildSensor.Dist);
 	    if (m_distanceToClosest < m_minDistance) {
 		    m_musicMan.GameMusicLayer2Volume = Mathf.Lerp(0,1,Mathf.Clamp((m_minDistance-m_distanceToClosest)/m_minDistance,0,1));
 

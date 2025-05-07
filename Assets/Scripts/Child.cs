@@ -23,7 +23,8 @@ public class Child : NPC, IEdible {
     private Nun m_selectedNun;
     private float m_timeout = 0;
 
-    public MainGameInfo.ChildType Type { get; set; }
+    private MainGameInfo.ChildType m_type;
+    public MainGameInfo.ChildType Type => m_type;
 
     public enum State {
         Idle, // go to a random place
@@ -151,7 +152,7 @@ public class Child : NPC, IEdible {
 
 
     public void SetChildType(MainGameInfo.ChildType type) {
-        Type = type;
+        m_type = type;
         var skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach (var s in skinnedMeshRenderers) {
             s.material.SetColor("_Color", type.color);
