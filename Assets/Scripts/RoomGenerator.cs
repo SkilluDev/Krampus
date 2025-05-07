@@ -34,6 +34,31 @@ public class RoomGenerator : RoomGeneratorBase {
 
 		yield return null;
 		void Init() {
+
+			int mapSize = Game.SetMan.GetValue < int>("Map Size");
+			switch (mapSize) {
+				case 0:
+					m_width = 5;  m_height = 5;
+					break;
+				case 1:
+					m_width = 7;  m_height = 7;
+					break;
+				case 2:
+					m_width = 9;  m_height = 9;
+					break;
+				case 3:
+					m_width = 11;  m_height = 11;
+					break;
+				case 4:
+					m_width = 13;  m_height = 13;
+					break;
+				case 5:
+					m_width = 15;  m_height = 15;
+					break;
+				default: m_width = 7;  m_height = 7;
+					break;
+			}
+
 			m_doorGrid = new DoorFlags[m_width, m_height];
 			m_generationGrid = new Room[m_width, m_height];
 			m_placedRooms = new List<Room>();
@@ -43,6 +68,9 @@ public class RoomGenerator : RoomGeneratorBase {
 
 
 		void CreateGrid() {
+
+
+
 			void CreateRectangle(int sx, int sy, int ex, int ey) {
 				if (sx > ex) (ex, sx) = (sx, ex);
 				if (sy > ey) (ey, sy) = (sy, ey);

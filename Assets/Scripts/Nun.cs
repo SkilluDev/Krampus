@@ -74,11 +74,12 @@ public class Nun : NPC {
         SwitchState(State.Listening);
     }
 
-    void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) {
-            Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
-            Game.MainGameInfo.UI.ShowGameOverScreen();
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
+            return;
         }
+        Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
+        Game.MainGameInfo.UI.ShowGameOverScreen();
     }
 
 }

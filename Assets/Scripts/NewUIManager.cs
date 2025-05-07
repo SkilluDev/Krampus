@@ -40,7 +40,7 @@ public class NewUIManager : MonoBehaviour {
     private void Update() {
         var col = Game.MainGameInfo.Types[Game.MainGameInfo.GoodChildIndex];
         m_remainingChildCount.text = $"<color=#{ColorUtility.ToHtmlStringRGB(col.color)}>Do not eat: {col.shape.name}</color><br>Remaining children: {Game.MainGameInfo.Children.Count}";
-        m_timerText.text = Game.MainGameInfo.timer.ToString("00");
+        m_timerText.text = Game.MainGameInfo.Timer.ToString("00");
 
         if (InputSubscribe.Raw.UI.Pause.triggered) SwitchPauseMenu();
 
