@@ -93,6 +93,12 @@ namespace Settings {
                         p.SetValue(setting, (Int32)GetParamIntegral(p.Name));
                         break;
                     }
+                case Type _ when p.FieldType == typeof(bool): {
+                        p.SetValue(setting, (bool)GetParam<bool>(p.Name));
+                        break;
+                    }
+                default:
+                    throw new Exception();
             }
         }
     }

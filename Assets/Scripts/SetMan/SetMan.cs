@@ -153,6 +153,14 @@ namespace Settings {
                         parametrizedSetting.SetParam<string>(p.Name, value);
                         return true;
                     }
+                case Type _ when p.FieldType == typeof(bool): {
+                        bool original = parametrizedSetting.GetParam<bool>(p.Name);
+                        bool value = EditorGUILayout.Toggle(displayName, original);
+                        if (original == value) break;
+
+                        parametrizedSetting.SetParam<bool>(p.Name, value);
+                        return true;
+                    }
             }
 
             return false;
