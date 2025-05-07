@@ -7,12 +7,12 @@ public class SettingsRenderer : MonoBehaviour {
     private void Start() {
         float currentY = 0;
         foreach (var setting in Game.SetMan.Settings) {
-            var settingRoot = new GameObject(setting.Name);
-            settingRoot.transform.SetParent(m_rt);
+            var settingRoot = setting.CreateInstance(transform);
             var settingRt = settingRoot.GetComponent<RectTransform>();
             settingRt.anchoredPosition = new Vector2(0, -currentY);
-            settingRt.anchorMax = new Vector2(0f, 0.5f);
-            settingRt.anchorMin = new Vector2(1f, 0.5f);
+            // settingRt.anchorMax = new Vector2(0f, 0.5f);
+            // settingRt.anchorMin = new Vector2(1f, 0.5f);
+
         }
     }
 }

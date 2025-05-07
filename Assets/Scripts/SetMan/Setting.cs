@@ -9,6 +9,7 @@ namespace Settings {
 
         public abstract string Serialize();
         public abstract void Deserialize(string value);
+        public virtual void Cook() { }
         public void OnBeforeSerialize() => m_serialized = Serialize();
         public void OnAfterDeserialize() => Deserialize(m_serialized);
     }

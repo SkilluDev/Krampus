@@ -54,5 +54,36 @@ namespace Settings {
             get => parameters.ContainsKey("name") ? (string)parameters["name"] : setting.name;
             set => parameters["name"] = value;
         }
+
+        public Setting CreateInstance(Transform parent = null) {
+            var instance = GameObject.Instantiate(setting.gameObject, parent);
+            var instanceComponent = instance.GetComponent<Setting>();
+
+            var fields = GetAvailableProperties().Select(w => w.Name);
+            foreach (var param in parameters.Keys) {
+                if (!fields.Contains(param)) {
+                    Debug.LogError($"Could not set param {param} on {instanceComponent}");
+                    continue;
+                }
+                ApplyParam(instanceComponent, instanceComponent.GetType().GetField(param));
+            }
+
+            instanceComponent.Cook();
+
+            return instanceComponent;
+        }
+
+        private void ApplyParam(Setting setting, FieldInfo p) {
+            switch (p.FieldType) {
+                case Type _ when p.FieldType == typeof(string): {
+                        p.SetValue(setting, (string)GetParam<string>(p.Name));
+                        break;
+                    }
+                case Type _ when p.FieldType == typeof(Int32): {
+                        p.SetValue(setting, (Int32)GetParamIntegral(p.Name));
+                        break;
+                    }
+            }
+        }
     }
 }

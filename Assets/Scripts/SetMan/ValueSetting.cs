@@ -14,7 +14,7 @@ namespace Settings {
         public override string Serialize() => JsonConvert.SerializeObject(Value);
         public override void Deserialize(string value) => JsonConvert.DeserializeObject<T>(value);
 
-        protected virtual void Awake() {
+        public override void Cook() {
             m_label.SetText(name);
         }
     }

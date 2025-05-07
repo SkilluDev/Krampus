@@ -96,8 +96,8 @@ namespace Settings {
         private bool DrawPropertyNotify(ParametrizedSetting parametrizedSetting, FieldInfo p, string nameOverride = null) {
             string displayName = nameOverride ?? p.Name;
             switch (p.FieldType) {
-                case Type _ when p.FieldType == typeof(int): {
-                        int original = (int)parametrizedSetting.GetParamIntegral(p.Name);
+                case Type _ when p.FieldType == typeof(Int32): {
+                        int original = (Int32)parametrizedSetting.GetParamIntegral(p.Name);
                         int value = EditorGUILayout.IntField(displayName, original);
                         if (original == value) break;
 
