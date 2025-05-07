@@ -39,13 +39,11 @@ public class Child : NPC, IEdible {
         SetChildType(Game.MainGameInfo.Types.UnityRandomElement());
     }
 
-
-
-    private void OnEnable() {
+    private void Ready() {
         Game.MainGameInfo.RegisterChild(this);
     }
 
-    private void OnDisable() {
+    private void Unready() {
         Game.MainGameInfo.UnregisterChild(this);
     }
 
@@ -130,7 +128,7 @@ public class Child : NPC, IEdible {
     }
 
     public void Consume(Krampus krampus) {
-	    m_KillSoundBite.Play(transform.position, 1, true);
+        m_KillSoundBite.Play(transform.position, 1, true);
         Destroy(gameObject);
     }
     public void Hit(Krampus krampus) {
@@ -153,7 +151,7 @@ public class Child : NPC, IEdible {
 
 
     public void SetChildType(MainGameInfo.ChildType type) {
-	    Type = type;
+        Type = type;
         var skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach (var s in skinnedMeshRenderers) {
             s.material.SetColor("_Color", type.color);
