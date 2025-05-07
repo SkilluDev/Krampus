@@ -81,6 +81,7 @@ public class GameLoader : MonoBehaviour {
 
     private void BroadcastAll(Scene loadedScene, string msg) {
         foreach (var go in loadedScene.GetRootGameObjects()) go.BroadcastMessage(msg, SendMessageOptions.DontRequireReceiver);
+        Game.MusicMan.BroadcastMessage(msg, SendMessageOptions.DontRequireReceiver);
     }
 
     private IEnumerator Delay() {
