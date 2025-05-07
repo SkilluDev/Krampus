@@ -11,7 +11,11 @@ public class ChildSensor : MonoBehaviour {
 
 	private void Update() {
 		if (Game.IsLoading) return;
-		//Debug.Log($"Distance to closest naughty child: {Dist}");
+		Debug.Log($"Distance to closest naughty child: {Dist}");
+		//Debug.Log($"BadChildren");
+		//foreach (Child c in Game.MainGameInfo.GoodChildren) {
+		//	Debug.Log(c);
+		//}
 		if (Game.MainGameInfo.BadChildren.Count == 0) return;
 		if (!Game.MainGameInfo.BadChildren.Contains(m_closestChild)) m_closestChild = Game.MainGameInfo.GoodChildren.First();
 		var closestOffset = m_closestChild.transform.position - transform.position;
