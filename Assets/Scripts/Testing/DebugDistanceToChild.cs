@@ -12,7 +12,7 @@ public class DistanceToChild : MonoBehaviour {
 	private void Update() {
 		Debug.Log($"Distance to closest child: {Dist}");
 		if (Game.MainGameInfo.BadChildren.Count == 0) return;
-
+		if (!m_closestChild) m_closestChild = Game.MainGameInfo.GoodChildren.First().transform;
 		var closestOffset = m_closestChild.transform.position - transform.position;
 		Dist = closestOffset.sqrMagnitude;
 
