@@ -1,26 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DistanceToChild : MonoBehaviour
-{
+public class DistanceToChild : MonoBehaviour {
 	public float Dist { get; set; } = float.MaxValue;
 	private Transform m_closestChild;
 
 	private void Ready() {
-		if(Game.MainGameInfo.BadChildren.Count>0) m_closestChild = Game.MainGameInfo.GoodChildren.First().transform;
+		if (Game.MainGameInfo.BadChildren.Count > 0) m_closestChild = Game.MainGameInfo.GoodChildren.First().transform;
 	}
 
 	private void Update() {
-		Debug.Log(Dist);
+		Debug.Log($"Distance to closest child: {Dist}");
 		if (Game.MainGameInfo.BadChildren.Count == 0) return;
 
 		var closestOffset = m_closestChild.transform.position - transform.position;
 		Dist = closestOffset.sqrMagnitude;
 
 		foreach (var child in Game.MainGameInfo.BadChildren) {
-			if (!child ) continue;
+			if (!child) continue;
 			var offset = child.transform.position - transform.position;
 			float sqrLen = offset.sqrMagnitude;
 
