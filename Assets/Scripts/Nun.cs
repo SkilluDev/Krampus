@@ -78,6 +78,7 @@ public class Nun : NPC {
         if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
             return;
         }
+        ///Tu powinno być timer
         Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
         Game.MainGameInfo.UI.ShowGameOverScreen();
     }
