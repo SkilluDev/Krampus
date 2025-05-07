@@ -8,18 +8,18 @@ public class PostProcessDistance : MonoBehaviour {
     private Vignette vignette;
     private ChromaticAberration aberration;
 
-    public float minDistance;
-    private ChildDistance closestDist;
+    [SerializeField] private float m_minDistance;
+    [SerializeField] private ChildSensor childSensor;
 
-    public float abberIntensity = 0.2f;
-    public float vignetteIntensity = 0.2f;
+    [SerializeField] private float m_abberIntensity = 0.2f;
+    [SerializeField] private float m_vignetteIntensity = 0.2f;
 
-    public float maxVignette = 0.4f;
-    public float maxChroma = 1f;
+    [SerializeField] private float m_maxVignette = 0.4f;
+    [SerializeField] private float m_maxChroma = 1f;
 
-    public float resetSpeed = 1f;
+    [SerializeField] private float m_resetSpeed = 1f;
 
-    private float distanceToClosest;
+    private float m_distanceToClosest;
 
     private void Start() {
         vol = GetComponent<Volume>();
@@ -34,39 +34,38 @@ public class PostProcessDistance : MonoBehaviour {
         } else {
             Debug.LogError("Volume or Volume profile is missing.");
         }
-        closestDist = GameObject.Find("Player").GetComponent<ChildDistance>();
-        ChangeAberration(abberIntensity);
-        ChangeVignette(vignetteIntensity);
+        ChangeAberration(m_abberIntensity);
+        ChangeVignette(m_vignetteIntensity);
     }
 
     private void Update() {
-        distanceToClosest = Mathf.Sqrt(closestDist.Dist);
-        if (distanceToClosest < minDistance) {
-            if ((minDistance - distanceToClosest) / minDistance <= vignetteIntensity) {
+        m_distanceToClosest = Mathf.Sqrt(childSensor.Dist);
+        if (m_distanceToClosest < m_minDistance) {
+            if ((m_minDistance - m_distanceToClosest) / m_minDistance <= m_vignetteIntensity) {
                 //Debug.Log("1");
-                ChangeVignette(vignetteIntensity);
-            } else if ((minDistance - distanceToClosest) / minDistance > vignetteIntensity && (minDistance - distanceToClosest) / minDistance < maxVignette) {
+                ChangeVignette(m_vignetteIntensity);
+            } else if ((m_minDistance - m_distanceToClosest) / m_minDistance > m_vignetteIntensity && (m_minDistance - m_distanceToClosest) / m_minDistance < m_maxVignette) {
                 //Debug.Log("2");
-                ChangeVignette((minDistance - distanceToClosest) / minDistance);
+                ChangeVignette((m_minDistance - m_distanceToClosest) / m_minDistance);
             } else {
                 //Debug.Log("3");
-                ChangeVignette(maxVignette);
+                ChangeVignette(m_maxVignette);
             }
 
-            if ((minDistance - distanceToClosest) / minDistance <= abberIntensity) {
+            if ((m_minDistance - m_distanceToClosest) / m_minDistance <= m_abberIntensity) {
                 //Debug.Log("1");
-                ChangeAberration(vignetteIntensity);
-            } else if ((minDistance - distanceToClosest) / minDistance > abberIntensity && (minDistance - distanceToClosest) / minDistance < maxChroma) {
+                ChangeAberration(m_vignetteIntensity);
+            } else if ((m_minDistance - m_distanceToClosest) / m_minDistance > m_abberIntensity && (m_minDistance - m_distanceToClosest) / m_minDistance < m_maxChroma) {
                 //Debug.Log("2");
-                ChangeAberration((minDistance - distanceToClosest) / minDistance);
+                ChangeAberration((m_minDistance - m_distanceToClosest) / m_minDistance);
             } else {
                 //Debug.Log("3");
-                ChangeAberration(maxChroma);
+                ChangeAberration(m_maxChroma);
             }
 
         } else {
-            resetVignetteToDefault(vignetteIntensity);
-            resetAberrToDefault(abberIntensity);
+            resetVignetteToDefault(m_vignetteIntensity);
+            resetAberrToDefault(m_abberIntensity);
         }
     }
 
@@ -89,7 +88,7 @@ public class PostProcessDistance : MonoBehaviour {
     public void resetVignetteToDefault(float intensity) {
         if (vignette != null) {
             if (vignette.intensity.value > intensity) {
-                vignette.intensity.value -= Time.deltaTime * resetSpeed;
+                vignette.intensity.value -= Time.deltaTime * m_resetSpeed;
             }
         } else {
             Debug.Log("Vignette is null.");
@@ -98,7 +97,7 @@ public class PostProcessDistance : MonoBehaviour {
     public void resetAberrToDefault(float intensity) {
         if (aberration != null) {
             if (aberration.intensity.value > intensity) {
-                aberration.intensity.value -= Time.deltaTime * resetSpeed;
+                aberration.intensity.value -= Time.deltaTime * m_resetSpeed;
             }
         } else {
             Debug.Log("Abber is null.");
