@@ -81,12 +81,18 @@ namespace Settings {
         public override void OnInspectorGUI() {
 
             for (int i = 0; i < Target.Settings.Count; i++) {
-                EditorGUILayout.BeginToggleGroup(Target.Settings[i].setting != null ? Target.Settings[i].Name : "[none]", true);
+                bool wantsDie = EditorGUILayout.BeginToggleGroup(Target.Settings[i].setting != null ? Target.Settings[i].Name : "[none]", true);
+
+                if (!wantsDie) {
+                    Target.Settings.RemoveAt(i);
+                    return;
+                }
+
                 var setting = (Setting)EditorGUILayout.ObjectField("Setting", Target.Settings[i].setting, typeof(Setting), false);
 
                 if (setting != Target.Settings[i].setting) {
+                    if (setting == null || (Target.Settings[i].setting != null && setting.GetType() != Target.Settings[i].setting.GetType())) Target.Settings[i].parameters.Clear();
                     Target.Settings[i].setting = setting;
-                    if (setting == null) Target.Settings[i].parameters.Clear();
                     EditorUtility.SetDirty(Target);
                 }
 
