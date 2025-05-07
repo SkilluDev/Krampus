@@ -6,10 +6,15 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI m_remainingChildCount;
     [SerializeField] private TextMeshProUGUI m_goodChild;
     [SerializeField] private TextMeshProUGUI m_currentSeed;
+    [SerializeField] private GameObject m_gameOverScreen;
 
 
     public void SetSeed(int seed) {
         m_currentSeed.text = $"Map seed: {seed:0000000}<br>Press [y] to regenerate";
+    }
+
+    public void ShowGameOverScreen() {
+        m_gameOverScreen.SetActive(true);
     }
 
     private void Update() {
