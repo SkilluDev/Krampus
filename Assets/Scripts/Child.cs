@@ -15,6 +15,9 @@ public class Child : NPC, IEdible {
     [SerializeField] private int m_detectionRange = 5;
     [SerializeField] private MeshRenderer m_shapeRenderer;
 
+    [SerializeField] private SoundBite m_KillSoundBite;
+
+
     [SerializeField] private float m_runSpeed = 8;
 
     private Nun m_selectedNun;
@@ -125,6 +128,7 @@ public class Child : NPC, IEdible {
     }
 
     public void Consume(Krampus krampus) {
+	    m_KillSoundBite.Play(transform.position, 1, true);
         Destroy(gameObject);
     }
     public void Hit(Krampus krampus) {
