@@ -1,8 +1,9 @@
 using System.Linq;
 using UnityEngine;
+using NaughtyAttributes;
 
 public class ChildSensor : MonoBehaviour {
-	public float Dist { get; set; } = float.MaxValue;
+	[ShowNativeProperty] public float Dist { get; set; } = float.MaxValue;
 	private Child m_closestChild;
 
 	private void Ready() {
@@ -11,7 +12,6 @@ public class ChildSensor : MonoBehaviour {
 
 	private void Update() {
 		if (Game.IsLoading) return;
-		Debug.Log($"Distance to closest naughty child: {Dist}");
 		//Debug.Log($"BadChildren");
 		//foreach (Child c in Game.MainGameInfo.GoodChildren) {
 		//	Debug.Log(c);

@@ -8,6 +8,8 @@ namespace KrampTests {
         [ReadOnly][SerializeField] private Room m_room;
         [SerializeField] private bool m_log = false;
         private void Update() {
+            if (Game.IsLoading) return;
+
             var room = Game.MainGameInfo.RoomGenerator.GetRoomAt(transform.position);
             if (room != m_room) {
                 if (m_log) Debug.Log($"{name} changed Room {m_room} -> {room}");
