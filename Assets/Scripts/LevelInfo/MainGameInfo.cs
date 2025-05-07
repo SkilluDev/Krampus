@@ -48,15 +48,15 @@ public class MainGameInfo : LevelInfo {
 
     private Dictionary<Room, RoomData> m_roomdata = new Dictionary<Room, RoomData>();
 
-    public IReadOnlyCollection<Child> BadChildren => m_childRegistry.Where(c=>!c.Type.Equals(Types[GoodChildIndex])).ToList();
-    public IReadOnlyCollection<Child> GoodChildren => m_childRegistry.Where(c=>c.Type.Equals(Types[GoodChildIndex])).ToList();
+    public IEnumerable<Child> BadChildren => m_childRegistry.Where(c => !c.Type.Equals(Types[GoodChildIndex]));
+    public IEnumerable<Child> GoodChildren => m_childRegistry.Where(c => c.Type.Equals(Types[GoodChildIndex]));
 
 
     [Header("Timer")]
     [SerializeField] private int startTime;
-	public float timer = 0f;
-	[SerializeField] private int timeBonus;
-	[SerializeField] private int timePenalty;
+    public float timer = 0f;
+    [SerializeField] private int timeBonus;
+    [SerializeField] private int timePenalty;
 
 
 
@@ -106,14 +106,14 @@ public class MainGameInfo : LevelInfo {
     //===============================================================================
 
     private void Update() {
-	    timer-=Time.deltaTime;
+        timer -= Time.deltaTime;
     }
 
     public void Bonus() {
-	    timer += timeBonus;
+        timer += timeBonus;
     }
 
     public void Penalty() {
-	    timer -= timePenalty;
+        timer -= timePenalty;
     }
 }
