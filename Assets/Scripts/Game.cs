@@ -74,7 +74,6 @@ public class Game : MonoBehaviour {
     }
 
     public static void LoadState(State state) {
-        if (Time.timeScale != 1) Time.timeScale = 1;
         SourceState = CurrentState;
         DestinationState = state;
         CurrentState = State.Loading;
