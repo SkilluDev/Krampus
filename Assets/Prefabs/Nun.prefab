@@ -183,11 +183,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d57258f4cd213da4a943fa0f0f85e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_baseMovementSpeed: 3
+  m_baseMovementSpeed: 6
   m_rigidbody: {fileID: 5641941523303477178}
   m_interactionDistance: 8
   m_detectionRange: 4
-  m_runSpeed: 4
+  m_runSpeed: 10
 --- !u!1001 &206408225786774296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -265,6 +265,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WalterWhite
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 20cb352d6621ce84498e5dd82678f6fa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -358,7 +363,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: adfcf26fe40ab33458ee3c23afd9ac13,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

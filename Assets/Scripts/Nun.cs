@@ -73,4 +73,12 @@ public class Nun : NPC {
         m_timeout = timeout;
         SwitchState(State.Listening);
     }
+
+    void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) {
+            Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
+            Game.MainGameInfo.UI.ShowGameOverScreen();
+        }
+    }
+
 }
