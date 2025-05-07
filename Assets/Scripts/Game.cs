@@ -1,3 +1,4 @@
+using Settings;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -47,6 +48,14 @@ public class Game : MonoBehaviour {
         }
     }
     [SerializeField] private MusicMan m_musicMan;
+
+    public static Settings.SetMan SetMan {
+        get {
+            if (m_instance.m_setMan == null) Debug.LogError("SetMan was not assigned in " + m_instance.gameObject.name);
+            return m_instance.m_setMan;
+        }
+    }
+    [SerializeField] private Settings.SetMan m_setMan;
 
     public static MainGameInfo MainGameInfo => (MainGameInfo)Info;
     public static MainMenuInfo MainMenuInfo => (MainMenuInfo)Info;
