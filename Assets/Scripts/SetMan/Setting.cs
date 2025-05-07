@@ -1,9 +1,11 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Settings {
     public abstract class Setting : MonoBehaviour, ISerializationCallbackReceiver {
-        [SerializeField] private string m_serialized;
+        [SerializeField][ReadOnly] private string m_serialized;
         [SettingProperty] public new string name;
+
 
         public abstract string Serialize();
         public abstract void Deserialize(string value);
