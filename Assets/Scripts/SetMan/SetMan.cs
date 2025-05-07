@@ -10,30 +10,49 @@ using System.Reflection;
 namespace Settings {
     public class SetMan : MonoBehaviour {
         private Dictionary<string, ParametrizedSetting> m_settingDictionary;
+        private Dictionary<string, object> m_values;
 
 #if !UNITY_EDITOR // cursed? maybe. we'll see
         public IReadOnlyCollection<Setting> Settings => m_settings;
 #else 
         public List<ParametrizedSetting> Settings => m_settings;
 #endif
+        public bool Ready => m_settingDictionary != null;
 
         [SerializeField] private List<ParametrizedSetting> m_settings = new List<ParametrizedSetting>();
 
         [SerializeField] private string m_json;
 
 
+        private void Awake() {
+            Compile();
+        }
+
         private void Compile() {
             m_settingDictionary = new Dictionary<string, ParametrizedSetting>();
+            m_values = new Dictionary<string, object>();
             foreach (var w in m_settings) {
                 m_settingDictionary.Add(w.Name, w);
             }
         }
 
-        public T GetSetting<T>(string name) where T : Setting {
-            if (m_settingDictionary == null) Compile();
-
-            return (T)m_settingDictionary[name].setting;
+        public void SetValue<T>(string key, T value) {
+            if (m_settingDictionary[key].setting is not ValueSetting<T>) throw new Exception();
+            m_values[key] = value;
         }
+
+        public T GetValue<T>(string key) {
+            if (!m_values.ContainsKey(key))
+                return ((ValueSetting<T>)m_settingDictionary[key].setting).defaultValue;
+            return (T)m_values[key];
+        }
+
+        public object GetValue(string key) {
+            if (!m_values.ContainsKey(key))
+                return m_settingDictionary[key].GetParam("defaultValue");
+            return m_values[key];
+        }
+
 
         // public string ToJson() {
         //     return JsonConvert.SerializeObject(m_settings, new JsonSerializerSettings() {
@@ -79,6 +98,11 @@ namespace Settings {
                     foreach (var p in properties) {
                         if (p.Name == "name") continue;
                         if (DrawPropertyNotify(Target.Settings[i], p)) EditorUtility.SetDirty(Target);
+                    }
+
+                    if (Target.Ready) {
+                        object value = Target.GetValue(Target.Settings[i].Name);
+                        GUILayout.Label($"Current Value = ({value.GetType().Name}) {value}");
                     }
                 }
                 EditorGUILayout.EndToggleGroup();

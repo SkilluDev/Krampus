@@ -34,6 +34,12 @@ namespace Settings {
             return parameters.ContainsKey(name) ? (T)parameters[name] : (T)field.GetValue(setting);
         }
 
+        public object GetParam(string name) {
+            var field = setting.GetType().GetField(name, BindingFlags.Instance | BindingFlags.Public);
+            if (field.GetCustomAttribute<SettingPropertyAttribute>() == null) throw new Exception();
+            return parameters.ContainsKey(name) ? parameters[name] : field.GetValue(setting);
+        }
+
         public Int64 GetParamIntegral(string name) {
             var field = setting.GetType().GetField(name, BindingFlags.Instance | BindingFlags.Public);
             if (field.GetCustomAttribute<SettingPropertyAttribute>() == null) throw new Exception();
@@ -55,7 +61,7 @@ namespace Settings {
             set => parameters["name"] = value;
         }
 
-        public Setting CreateInstance(Transform parent = null) {
+        public Setting CreateInstance(SetMan manager, Transform parent = null) {
             var instance = GameObject.Instantiate(setting.gameObject, parent);
             var instanceComponent = instance.GetComponent<Setting>();
 
@@ -67,7 +73,7 @@ namespace Settings {
                 }
                 ApplyParam(instanceComponent, instanceComponent.GetType().GetField(param));
             }
-
+            instanceComponent.manager = manager;
             instanceComponent.Cook();
 
             return instanceComponent;
