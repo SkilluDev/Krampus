@@ -1,17 +1,25 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// De-facto game controller for the main gaame scene
 /// </summary>
 public class MainGameInfo : LevelInfo {
     [System.Serializable]
-    public struct ChildType {
+    public struct ChildType : IEquatable<ChildType> {
         public Color color;
         public Texture2D shape;
+
+        public bool Equals(ChildType other) => color.Equals(other.color) && Equals(shape, other.shape);
+
+        public override bool Equals(object obj) => obj is ChildType other && Equals(other);
+
+        public override int GetHashCode() => HashCode.Combine(color, shape);
     }
 
     public RoomGeneratorBase RoomGenerator => m_roomGenerator;
@@ -39,6 +47,9 @@ public class MainGameInfo : LevelInfo {
     private List<Nun> m_nunRegistry = new List<Nun>();
 
     private Dictionary<Room, RoomData> m_roomdata = new Dictionary<Room, RoomData>();
+
+    public IReadOnlyCollection<Child> BadChildren => m_childRegistry.Where(c=>!c.Type.Equals(Types[GoodChildIndex])).ToList();
+    public IReadOnlyCollection<Child> GoodChildren => m_childRegistry.Where(c=>c.Type.Equals(Types[GoodChildIndex])).ToList();
 
     private void Awake() {
         GoodChildIndex = Random.Range(0, Types.Count);
