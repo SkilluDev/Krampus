@@ -40,7 +40,7 @@ public class NewUIManager : MonoBehaviour {
 
 
     private void Update() {
-        var col = Game.MainGameInfo.Types[Game.MainGameInfo.GoodChildIndex];
+        var col = Game.MainGameInfo.GoodChildType;
         m_remainingChildCount.text = $"<color=#{ColorUtility.ToHtmlStringRGB(col.color)}>Do not eat: {col.shape.name}</color><br>Remaining children: {Game.MainGameInfo.Children.Count}";
         m_timerText.text = Game.MainGameInfo.Timer.ToString("00");
 
@@ -51,7 +51,7 @@ public class NewUIManager : MonoBehaviour {
             m_isGameWon = true;
             Time.timeScale = 0;
         }
-        if (m_isGameOver || m_isGamePaused || m_isGameWon) //if the game is over or game is paused, you can 
+        if (m_isGameOver || m_isGamePaused || m_isGameWon) //if the game is over or game is paused, you can
         {
 
             if (InputSubscribe.Raw.UI.Advance.triggered) //go back to menu with the default
