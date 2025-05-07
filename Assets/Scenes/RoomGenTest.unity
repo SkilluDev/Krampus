@@ -96,8 +96,10 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 7f2e8e3645efa5491b5fde3c8e6de443,
+    type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: c41bae64402cc5f4c9d16d88535974c0,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -592,6 +594,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 457512561598349637, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
+        type: 3}
+      propertyPath: m_RenderShadows
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1046558696505039444, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
         type: 3}
       propertyPath: m_krampus
@@ -651,6 +658,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Camera Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 7788434350452736342, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
