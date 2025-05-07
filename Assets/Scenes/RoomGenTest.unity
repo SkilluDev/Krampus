@@ -784,25 +784,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1015747016 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2740160339421588056, guid: 1370af54edd30564086e0f4717044a13,
-    type: 3}
-  m_PrefabInstance: {fileID: 1891054759}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1015747019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015747016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcfdbaa52c44e7c44aa4e09fd81aa29c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StepSoundBite: {fileID: 11400000, guid: ccd711e8af1d899489c1f63664c8e6dd, type: 2}
 --- !u!1001 &1098060862
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1455,12 +1436,6 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 564137540}
-    - target: {fileID: 6024168017209539665, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_StepSoundBite
-      value: 
-      objectReference: {fileID: 11400000, guid: ccd711e8af1d899489c1f63664c8e6dd,
-        type: 2}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1514,11 +1489,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2740160339421588056, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1015747019}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1370af54edd30564086e0f4717044a13, type: 3}
 --- !u!114 &1936252573 stripped
 MonoBehaviour:
