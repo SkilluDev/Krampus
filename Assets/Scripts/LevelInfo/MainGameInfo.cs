@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using KrampUtils;
 using NaughtyAttributes;
 using Roomgen;
 using UnityEngine;
@@ -12,13 +13,6 @@ using Random = UnityEngine.Random;
 /// De-facto game controller for the main gaame scene
 /// </summary>
 public class MainGameInfo : LevelInfo {
-    [System.Serializable]
-    public struct ChildType {
-	    public int id;
-        public Color color;
-        public Texture2D shape;
-    }
-
     public RoomGeneratorBase RoomGenerator => m_roomGenerator;
     [SerializeField] private RoomGeneratorBase m_roomGenerator;
 
@@ -33,7 +27,7 @@ public class MainGameInfo : LevelInfo {
     public Krampus Krampus => m_krampus;
     [SerializeField] private Krampus m_krampus;
 
-    public int GoodChildIndex { get; private set; }
+    public ChildType GoodChildType { get; set; }
 
     public IReadOnlyCollection<Child> Children => m_childRegistry;
     public IEnumerable<Child> BadChildren => m_badChildRegistry;
@@ -57,8 +51,11 @@ public class MainGameInfo : LevelInfo {
 
 
     private void Awake() {
-        GoodChildIndex = Random.Range(0, Types.Count);
-        Timer = Game.SetMan.GetValue<int>("Timer");
+	    GoodChildType = Types.UnityRandomElement();
+    }
+
+    public void Ready() {
+	    Timer = Game.SetMan.GetValue<int>("Timer");
     }
 
     public RoomData GetRoomData(Room r) {
@@ -79,7 +76,7 @@ public class MainGameInfo : LevelInfo {
 
     public void RegisterChild(Child child) {
         m_childRegistry.Add(child);
-        if (child.Type.id == GoodChildIndex) {
+        if (child.Type == GoodChildType) {
 	        m_goodChildRegistry.Add(child);
         } else {
 	        m_badChildRegistry.Add(child);
@@ -90,7 +87,7 @@ public class MainGameInfo : LevelInfo {
         foreach (var r in m_roomdata.Values.Where(w => w.Contains(child)))
             r.RemoveCharacter(child);
         m_childRegistry.Remove(child);
-        if (child.Type.id == GoodChildIndex) {
+        if (child.Type == GoodChildType) {
 	        m_goodChildRegistry.Remove(child);
         } else {
 	        m_badChildRegistry.Remove(child);
