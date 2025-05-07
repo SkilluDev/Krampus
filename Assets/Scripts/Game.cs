@@ -79,6 +79,7 @@ public class Game : MonoBehaviour {
         CurrentState = State.Loading;
         RequireFullReload = true;
         SceneManager.LoadScene(LOADER_SCENE, LoadSceneMode.Additive);
+
     }
 
     public static void FinishedLoading() {
