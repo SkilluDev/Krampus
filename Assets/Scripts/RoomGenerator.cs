@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -5,7 +6,6 @@ using KrampUtils;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 
 public class RoomGenerator : RoomGeneratorBase {
 	[SerializeField] private int m_width, m_height;
@@ -24,15 +24,15 @@ public class RoomGenerator : RoomGeneratorBase {
 	public override IReadOnlyCollection<Room> Rooms => m_placedRooms;
 
 
-	private void Awake() {
+	public override void Prepare() {
 		m_seed = Random.Range(0, 99999);
-		Generate();
 	}
 
-	public override void Generate() {
+	public override IEnumerator Generate() {
 		Random.InitState(m_seed);
 		Game.MainGameInfo.UI.SetSeed(m_seed);
 
+		yield return null;
 		void Init() {
 			m_doorGrid = new DoorFlags[m_width, m_height];
 			m_generationGrid = new Room[m_width, m_height];
@@ -161,10 +161,12 @@ public class RoomGenerator : RoomGeneratorBase {
 
 		}
 
+		Status = "Creating layout";
 		Init();
 		SelectSpawnPoint();
 		CreateGrid();
 		RemoveDeadDoors();
+		yield return null;
 
 		var spawnRoom = PlaceRoom(m_roomSet.spawn, m_spawnPoint);
 		if (NavMesh.SamplePosition(spawnRoom.GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
@@ -172,11 +174,14 @@ public class RoomGenerator : RoomGeneratorBase {
 			m_krampus.GetComponent<Rigidbody>().position = hit.position;
 		}
 
+		Status = "Creating variants";
 		var types = new List<RoomType>();
 		foreach (var type in m_roomSet.types) {
+			yield return null;
 			for (int i = 0; i < 4; i++) {
 				if (type.supportedRots[i]) types.Add(RoomVariantManager.CreateRotatedInstance(type, i));
 			}
+			Progress += 1 / m_roomSet.types.Count();
 		}
 
 		// Using LINQ is probably suboptimal here.
@@ -185,9 +190,13 @@ public class RoomGenerator : RoomGeneratorBase {
 			.GroupBy(x => x.Grade)
 			.OrderByDescending((w) => w.Key);
 
+		Status = "Spawning objects";
 
 		foreach (var gradeGroup in roomsByGrade) {
 			Debug.Log($"Found {gradeGroup.Count()} Room Variants with Tier {gradeGroup.Key}");
+			Status = $"Spawning objects (Part {gradeGroup.Key})";
+			Progress += 1f / roomsByGrade.Count();
+			yield return null;
 			while (true) {
 				var hardestToPlace = gradeGroup
 					.GroupBy(r => FindPossiblePlacements(r).Count)
@@ -204,6 +213,7 @@ public class RoomGenerator : RoomGeneratorBase {
 				var placements = FindPossiblePlacements(hardestToPlace);
 
 				Debug.Log($"Placing {hardestToPlace} in one of the {placements.Count} possible spots.");
+				yield return new WaitForSecondsRealtime(0.01f);
 				PlaceRoom(hardestToPlace, placements[Random.Range(0, placements.Count)]);
 			}
 		}
@@ -288,6 +298,7 @@ public class RoomGenerator : RoomGeneratorBase {
 			}
 		}
 	}
+
 
 	#endregion
 }

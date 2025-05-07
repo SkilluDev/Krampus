@@ -71,9 +71,10 @@ public class GameLoader : MonoBehaviour {
         foreach (var w in loadables) {
             var loader = w.Load();
             while (loader.MoveNext()) {
-                Status = $"({current}/{count}) {w.Status}";
-                Progress = w.Progress;
                 yield return loader.Current;
+                Progress = w.Progress;
+                Status = $"({current}/{count}) {w.Status}";
+                Debug.Log(Status);
             }
             current++;
         }
