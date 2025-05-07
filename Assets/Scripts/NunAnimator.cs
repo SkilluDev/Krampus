@@ -7,6 +7,8 @@ using UnityEngine;
 public class NunAnimator : MonoBehaviour
 {
 	[SerializeField] private Animator m_animator;
+	[SerializeField] private Transform m_modelTransform;
+	
 	[SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty;
 
 	private float m_minimalVelocity;
@@ -19,6 +21,7 @@ public class NunAnimator : MonoBehaviour
 
 	void Update() {
 		m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, nunController.Velocity / nunController.RunSpeed), 0.2f, Time.deltaTime);
+		m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, m_rotationTarget, Time.deltaTime * m_rotationSmoothing);
 	}
 
 	void MovementStateChanged(Nun.State previous, Nun.State current)
