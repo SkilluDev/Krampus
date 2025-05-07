@@ -7,9 +7,11 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI m_goodChild;
     [SerializeField] private TextMeshProUGUI m_currentSeed;
     [SerializeField] private GameObject m_gameOverScreen;
+    [SerializeField] private GameObject m_gameWinScreen;
     [SerializeField] private GameObject m_pauseScreen;
     [SerializeField] private TextMeshProUGUI m_timerText;
     [SerializeField] private bool m_isGameOver = false;
+    [SerializeField] private bool m_isGameWon = false;
     [SerializeField] private bool m_isGamePaused = false;
 
 
@@ -44,7 +46,12 @@ public class NewUIManager : MonoBehaviour {
 
         if (InputSubscribe.Raw.UI.Pause.triggered) SwitchPauseMenu();
 
-        if (m_isGameOver || m_isGamePaused) //if the game is over or game is paused, you can 
+        if (Game.MainGameInfo.Children.Count == 0 && !Game.IsLoading) {
+            m_gameWinScreen.SetActive(true);
+            m_isGameWon = true;
+            Time.timeScale = 0;
+        }
+        if (m_isGameOver || m_isGamePaused || m_isGameWon) //if the game is over or game is paused, you can 
         {
 
             if (InputSubscribe.Raw.UI.Advance.triggered) //go back to menu with the default
