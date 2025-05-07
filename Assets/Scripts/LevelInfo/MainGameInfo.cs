@@ -64,7 +64,7 @@ public class MainGameInfo : LevelInfo {
 
     private void Awake() {
         GoodChildIndex = Random.Range(0, Types.Count);
-        timer = startTime;
+       timer =   Game.SetMan.GetValue<int>("Timer");
     }
 
     public RoomData GetRoomData(Room r) {
@@ -116,4 +116,6 @@ public class MainGameInfo : LevelInfo {
     public void Penalty() {
 	    timer -= timePenalty;
     }
+
+    //======================================================================
 }
