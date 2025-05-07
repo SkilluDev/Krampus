@@ -7,6 +7,7 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI m_goodChild;
     [SerializeField] private TextMeshProUGUI m_currentSeed;
     [SerializeField] private GameObject m_gameOverScreen;
+    [SerializeField] private TextMeshProUGUI m_timerText;
 
 
     public void SetSeed(int seed) {
@@ -20,5 +21,6 @@ public class NewUIManager : MonoBehaviour {
     private void Update() {
         var col = Game.MainGameInfo.Types[Game.MainGameInfo.GoodChildIndex];
         m_remainingChildCount.text = $"<color=#{ColorUtility.ToHtmlStringRGB(col.color)}>Do not eat: {col.shape.name}</color><br>Remaining children: {Game.MainGameInfo.Children.Count}";
+        m_timerText.text =  Game.MainGameInfo.timer.ToString("00");
     }
 }

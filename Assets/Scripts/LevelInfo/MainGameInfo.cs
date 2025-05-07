@@ -51,8 +51,20 @@ public class MainGameInfo : LevelInfo {
     public IReadOnlyCollection<Child> BadChildren => m_childRegistry.Where(c=>!c.Type.Equals(Types[GoodChildIndex])).ToList();
     public IReadOnlyCollection<Child> GoodChildren => m_childRegistry.Where(c=>c.Type.Equals(Types[GoodChildIndex])).ToList();
 
+
+    [Header("Timer")]
+    [SerializeField] private int startTime;
+	public float timer = 0f;
+	[SerializeField] private int timeBonus;
+	[SerializeField] private int timePenalty;
+
+
+
+
+
     private void Awake() {
         GoodChildIndex = Random.Range(0, Types.Count);
+        timer = startTime;
     }
 
     public RoomData GetRoomData(Room r) {
@@ -89,5 +101,19 @@ public class MainGameInfo : LevelInfo {
         foreach (var r in m_roomdata.Values.Where(w => w.Contains(nun)))
             r.RemoveNPC(nun);
         m_nunRegistry.Remove(nun);
+    }
+
+    //===============================================================================
+
+    private void Update() {
+	    timer-=Time.deltaTime;
+    }
+
+    public void Bonus() {
+	    timer += timeBonus;
+    }
+
+    public void Penalty() {
+	    timer -= timePenalty;
     }
 }
