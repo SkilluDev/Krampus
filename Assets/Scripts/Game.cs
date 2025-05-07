@@ -74,11 +74,13 @@ public class Game : MonoBehaviour {
     }
 
     public static void LoadState(State state) {
+        if (Time.timeScale != 1) Time.timeScale = 1;
         SourceState = CurrentState;
         DestinationState = state;
         CurrentState = State.Loading;
         RequireFullReload = true;
         SceneManager.LoadScene(LOADER_SCENE, LoadSceneMode.Additive);
+
     }
 
     public static void FinishedLoading() {
