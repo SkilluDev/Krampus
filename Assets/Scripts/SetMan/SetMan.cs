@@ -128,6 +128,23 @@ namespace Settings {
                         parametrizedSetting.SetParam<Int32>(p.Name, value);
                         return true;
                     }
+                case Type _ when p.FieldType == typeof(string[]): {
+                        string[] original = parametrizedSetting.GetParam<string[]>(p.Name);
+                        var value = new List<string>(original);
+
+                        for (int i = 0; i < original.Length; i++) {
+                            value[i] = EditorGUILayout.TextField($"{displayName}[{i}]", value[i]);
+                        }
+                        GUILayout.BeginHorizontal();
+                        if (GUILayout.Button("+")) value.Add("");
+                        if (GUILayout.Button("-")) value.RemoveAt(value.Count - 1);
+                        GUILayout.EndHorizontal();
+
+                        if (Enumerable.SequenceEqual(original, value)) break;
+
+                        parametrizedSetting.SetParam<string[]>(p.Name, value.ToArray());
+                        return true;
+                    }
                 case Type _ when p.FieldType == typeof(string): {
                         string original = parametrizedSetting.GetParam<string>(p.Name);
                         string value = EditorGUILayout.TextField(displayName, original);

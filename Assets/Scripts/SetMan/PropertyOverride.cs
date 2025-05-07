@@ -85,6 +85,10 @@ namespace Settings {
                         p.SetValue(setting, (string)GetParam<string>(p.Name));
                         break;
                     }
+                case Type _ when p.FieldType == typeof(string[]): {
+                        p.SetValue(setting, (string[])GetParam<string[]>(p.Name));
+                        break;
+                    }
                 case Type _ when p.FieldType == typeof(Int32): {
                         p.SetValue(setting, (Int32)GetParamIntegral(p.Name));
                         break;
