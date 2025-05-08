@@ -83,7 +83,6 @@ public class CameraController : MonoBehaviour {
 
 	[Button("Shake")]
 	public void Shake() {
-
 		StartCoroutine(Shake(0.2f));
 	}
 
