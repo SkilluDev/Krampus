@@ -20,7 +20,17 @@ public class Timer : MonoBehaviour
 		GameTime = (int)Game.SetMan.GetValue<long>("Timer");
 	}
 	private void Update() {
+		Debug.Log(m_time);
 		m_time -= Time.deltaTime;
+	}
+
+	public void childBonus(ChildType childType) {
+		if (childType == Game.MainGameInfo.GoodChildType) {
+			Penalty();
+		} else {
+
+			Bonus();
+		}
 	}
 
 	public void Bonus() {

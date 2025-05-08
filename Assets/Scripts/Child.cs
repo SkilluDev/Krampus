@@ -141,6 +141,7 @@ public class Child : NPC, IEdible {
         var particle = Instantiate(m_goreParticle);
         particle.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
 
+        Game.MainGameInfo.Timer.childBonus(m_type);
         if (m_type != Game.MainGameInfo.GoodChildType) Game.MainGameInfo.ShaderManager.ProcessKill();
         Destroy(gameObject);
     }
