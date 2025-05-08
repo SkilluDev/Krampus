@@ -2,6 +2,9 @@ using Roomgen;
 using UnityEngine;
 public interface ICharacter {
     public Room CurrentRoom { get; set; }
+    public Vector3 VelocityVector { get; }
+    public float Velocity { get; }
+    public float VelocitySqr { get; }
 }
 
 public class Character : MonoBehaviour {

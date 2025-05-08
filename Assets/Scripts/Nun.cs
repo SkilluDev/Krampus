@@ -20,11 +20,11 @@ public class Nun : NPC {
 
     private float m_timeout;
 
-    private void OnEnable() {
+    private void Ready() {
         Game.MainGameInfo.RegisterNun(this);
     }
 
-    private void OnDisable() {
+    private void Unready() {
         Game.MainGameInfo.UnregisterNun(this);
     }
 
