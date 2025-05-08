@@ -34,6 +34,7 @@ public class MainGameInfo : LevelInfo {
 
     public IReadOnlyCollection<Child> Children => m_childRegistry;
     public IEnumerable<Child> BadChildren => m_badChildRegistry;
+    public int badChildCount => m_badChildRegistry.Count;
     public IEnumerable<Child> GoodChildren => m_goodChildRegistry;
     private List<Child> m_childRegistry = new List<Child>();
     private List<Child> m_badChildRegistry = new List<Child>();

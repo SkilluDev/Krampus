@@ -20,7 +20,7 @@ public class NewUIManager : MonoBehaviour {
 
 
     [SerializeField] private Image m_childIconImage;
-
+	[SerializeField] private Image m_fillBar;
 
 
     public void SetSeed(int seed) {
@@ -49,6 +49,13 @@ public class NewUIManager : MonoBehaviour {
     private void Update() {
         var col = Game.MainGameInfo.GoodChildType;
         m_remainingChildCount.text = $"<color=#{ColorUtility.ToHtmlStringRGB(col.color)}>Do not eat: {col.shape.name}</color><br>Remaining children: {Game.MainGameInfo.Children.Count}";
+        if (Game.MainGameInfo.BadChildrenCountOnStart > 0)
+        {
+	        
+	        m_fillBar.fillAmount = (float) (Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.badChildCount) /
+	                               Game.MainGameInfo.BadChildrenCountOnStart;
+        }
+
         m_timerText.text = Game.MainGameInfo.Timer.GameTime.ToString("00");
 
         if (InputSubscribe.Raw.UI.Pause.triggered) SwitchPauseMenu();
