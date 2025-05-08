@@ -79,15 +79,8 @@ public class Nun : NPC {
         if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
             return;
         }
-        ///Tu powinno być timer
-        StartCoroutine(DeathTimer());
-
         onAttack?.Invoke(CurrentState);
-        //Stop NunMovment
-
-
-
-        //Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
+        StartCoroutine(DeathTimer());
     }
 
     private IEnumerator DeathTimer() {
