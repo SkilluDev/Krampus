@@ -19,13 +19,14 @@ public class CameraController : MonoBehaviour {
 	[BoxGroup("Zoom")][SerializeField] private float m_zoomSpeed = 0.2f;
 	[BoxGroup("Zoom")][SerializeField] private float m_zoomBuffer = 0.75f;
 	[BoxGroup("Zoom")][SerializeField] private float m_unzoomSpeed = 1f;
-
+	[BoxGroup("Zoom")][SerializeField] private float m_aimZoomSpeed = 1f;
 
 
 	private float m_zoomFactor = 1;
 
 	[BoxGroup("Shake")][SerializeField] private float shakeForce = 0.7f;
 	[BoxGroup("Shake")][SerializeField] private float shakeMagnitude = 0.1f;
+
 	// The speed at which the shake decays (higher value = faster decay)
 	[BoxGroup("Shake")][SerializeField] float shakeDampingSpeed = 1.0f;
 
@@ -46,7 +47,9 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private float ComputeOrtoSize() {
-		if (m_krampus.Kontroller.CurrentState == KrampusController.State.Run) {
+		if (m_krampus.Tongue.CurrentState == KrampusTongue.State.Windup) {
+			m_zoomFactor += m_aimZoomSpeed * Time.deltaTime;
+		} else if (m_krampus.Kontroller.CurrentState == KrampusController.State.Run) {
 			m_zoomFactor -= m_unzoomSpeed * Time.deltaTime;
 		} else {
 			m_zoomFactor += m_zoomSpeed * Time.deltaTime;
