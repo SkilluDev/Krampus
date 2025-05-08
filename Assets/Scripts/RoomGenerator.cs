@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KrampUtils;
+using NaughtyAttributes;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,10 +19,12 @@ public class RoomGenerator : RoomGeneratorBase {
 	private Vector2Int m_spawnPoint;
 	[SerializeField] private List<Room> m_placedRooms;
 
-	[SerializeField] private int m_maxChildrenPerRoom;
-	[SerializeField] private int m_minChildrenPerRoom;
-	[SerializeField] private int m_maxNuns;
-	[SerializeField] private int m_minNuns;
+	[BoxGroup("EntityGen")][SerializeField] private int m_maxChildrenPerRoom;
+	[BoxGroup("EntityGen")][SerializeField] private int m_minChildrenPerRoom;
+	[BoxGroup("EntityGen")][SerializeField] private int m_maxNuns;
+	[BoxGroup("EntityGen")][SerializeField] private int m_minNuns;
+	[BoxGroup("Tags")][SerializeField] private Tag m_kidProof;
+	[BoxGroup("Tags")][SerializeField] private Tag m_nunProof;
 
 
 	// TEMPORARY
@@ -184,17 +187,22 @@ public class RoomGenerator : RoomGeneratorBase {
 		}
 
 		void GenerateNunsAndKids() {
-			foreach (var room in m_placedRooms) {
-				for (int i = 0; i < Random.Range(m_minChildrenPerRoom, m_maxChildrenPerRoom + 1); i++) {
-					if (NavMesh.SamplePosition(room.GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
-						Instantiate(m_childPrefab, hit.position, Quaternion.identity);
-					}
+			int kidCount = Random.Range(m_minChildrenPerRoom, m_maxChildrenPerRoom) * m_placedRooms.Count;
+			for (int i = 0; i < kidCount; i++) {
+				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
+				if (NavMesh.SamplePosition(room.GetMidPoint(), out var hit, 3, NavMesh.AllAreas) && !room.HasTag(m_kidProof)) {
+					Instantiate(m_childPrefab, hit.position, Quaternion.identity);
+				} else {
+					i--;
 				}
 			}
-
-			for (int i = 0; i < Random.Range(m_minNuns, m_maxNuns); i++) {
-				if (NavMesh.SamplePosition(m_placedRooms[Random.Range(0, m_placedRooms.Count)].GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
+			int nunCount = Random.Range(m_minNuns, m_maxNuns);
+			for (int i = 0; i < nunCount; i++) {
+				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
+				if (NavMesh.SamplePosition(room.GetMidPoint(), out var hit, 3, NavMesh.AllAreas) && !room.HasTag(m_nunProof)) {
 					Instantiate(m_nunPrefab, hit.position, Quaternion.identity);
+				} else {
+					i--;
 				}
 			}
 
