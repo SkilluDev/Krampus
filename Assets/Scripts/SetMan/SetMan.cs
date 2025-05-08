@@ -13,8 +13,8 @@ namespace Settings {
         private Dictionary<string, object> m_values;
 
 #if !UNITY_EDITOR // cursed? maybe. we'll see
-        public IReadOnlyCollection<Setting> Settings => m_settings;
-#else 
+		public IReadOnlyCollection<ParametrizedSetting> Settings => m_settings;
+#else
         public List<ParametrizedSetting> Settings => m_settings;
 #endif
         public bool Ready => m_settingDictionary != null;
