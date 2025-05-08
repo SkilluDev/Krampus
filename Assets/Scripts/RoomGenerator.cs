@@ -25,7 +25,11 @@ public class RoomGenerator : RoomGeneratorBase {
 
 
 	public override void Prepare() {
-		m_seed = Random.Range(0, 99999);
+		if (Game.SetMan.GetValue<bool>("Random seed overwrite")) {
+			m_seed = Game.SetMan.GetValue<int>("Custom seed");
+			Debug.Log($"Random seed overwrite: {m_seed}");
+		}
+		else m_seed = Random.Range(0, 99999);
 	}
 
 	public override IEnumerator Generate() {

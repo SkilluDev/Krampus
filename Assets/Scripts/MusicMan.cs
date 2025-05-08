@@ -1,3 +1,4 @@
+using NaughtyAttributes.Test;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,10 @@ public class MusicMan : MonoBehaviour {
 				m_gameMusicLayer1.Play();
 				m_gameMusicLayer2.volume = 0;
 				m_gameMusicLayer2.Play();
+				break;
+			default:
+				m_gameMusicLayer1.Stop();
+				m_gameMusicLayer2.Stop();
 				break;
 		}
 	}
