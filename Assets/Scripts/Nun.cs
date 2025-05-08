@@ -64,7 +64,6 @@ public class Nun : NPC {
 
     private void SwitchState(State previous) {
         if (previous == CurrentState) return;
-        Debug.Log(onStateChanged);
         onStateChanged?.Invoke(CurrentState, previous);
         CurrentState = previous;
     }
