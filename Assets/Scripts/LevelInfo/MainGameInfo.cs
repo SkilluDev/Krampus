@@ -22,8 +22,6 @@ public class MainGameInfo : LevelInfo {
     public ShaderManager ShaderManager => m_shaderManager;
     [SerializeField] private ShaderManager m_shaderManager;
 
-
-
     public IReadOnlyList<ChildType> Types => m_types;
     [SerializeField] private ChildType[] m_types;
 
@@ -34,7 +32,6 @@ public class MainGameInfo : LevelInfo {
 
     public IReadOnlyCollection<Child> Children => m_childRegistry;
     public IEnumerable<Child> BadChildren => m_badChildRegistry;
-    public int badChildCount => m_badChildRegistry.Count;
     public IEnumerable<Child> GoodChildren => m_goodChildRegistry;
     private List<Child> m_childRegistry = new List<Child>();
     private List<Child> m_badChildRegistry = new List<Child>();
@@ -53,14 +50,10 @@ public class MainGameInfo : LevelInfo {
     public Timer Timer => m_timer;
 
 
-
-
     private void Awake() {
         GoodChildType = Types.UnityRandomElement();
         UI.SetChildrenIcon(GoodChildType.uiIcon);
     }
-
-
 
     public RoomData GetRoomData(Room r) {
         if (r == null) return null;
@@ -109,8 +102,4 @@ public class MainGameInfo : LevelInfo {
             r.RemoveCharacter(nun);
         m_nunRegistry.Remove(nun);
     }
-
-
-
-    //======================================================================
 }

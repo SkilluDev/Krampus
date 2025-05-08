@@ -50,7 +50,7 @@ public class NewUIManager : MonoBehaviour {
         var col = Game.MainGameInfo.GoodChildType;
         m_remainingChildCount.text = $"<color=#{ColorUtility.ToHtmlStringRGB(col.color)}>Do not eat: {col.shape.name}</color><br>Remaining children: {Game.MainGameInfo.Children.Count}";
         if (Game.MainGameInfo.BadChildrenCountOnStart > 0) {
-            m_fillBar.fillAmount = (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.badChildCount) /
+            m_fillBar.fillAmount = (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
                                    Game.MainGameInfo.BadChildrenCountOnStart;
         }
 
