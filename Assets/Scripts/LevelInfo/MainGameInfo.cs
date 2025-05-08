@@ -49,7 +49,7 @@ public class MainGameInfo : LevelInfo {
 
 
     [SerializeField] private Timer m_timer;
-    public Timer Timer { get; }
+    public Timer Timer => m_timer;
 
 
 

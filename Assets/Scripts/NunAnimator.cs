@@ -10,7 +10,7 @@ public class NunAnimator : MonoBehaviour
 	[SerializeField] private Animator m_animator;
 	[SerializeField] private Transform m_modelTransform;
 
-	[SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_listeningProperty, m_tongueOutProperty, m_tongueReadyProperty;
+	[SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_listeningProperty, m_attackTrigger, m_tongueReadyProperty;
 
 	private float m_minimalVelocity;
 	private Nun nunController;
@@ -18,6 +18,7 @@ public class NunAnimator : MonoBehaviour
 	private void Start() {
 		nunController = GetComponent<Nun>();
 		nunController.onStateChanged += MovementStateChanged;
+		nunController.onAttack += OnNunAttack;
 	}
 
 	void Update() {
@@ -43,9 +44,10 @@ public class NunAnimator : MonoBehaviour
 				m_animator.SetBool(m_listeningProperty, false);
 				break;
 		}
+	}
 
-
-
+	void OnNunAttack(Nun.State state) {
+		m_animator.SetTrigger(m_attackTrigger);
 	}
 
 }

@@ -12,6 +12,7 @@ public class Nun : NPC {
     public float RunSpeed => m_runSpeed;
 
     public UnityAction<Nun.State, Nun.State> onStateChanged;
+    public UnityAction<Nun.State> onAttack;
     [SerializeField] private float m_interactionDistance = 8;
     [SerializeField] private float m_detectionRange = 4;
     public State CurrentState { get; private set; }
@@ -78,7 +79,13 @@ public class Nun : NPC {
             return;
         }
         ///Tu powinno być timer
-        Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
+        ///
+        onAttack?.Invoke(CurrentState);
+	    //Stop NunMovment
+
+
+
+        //Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
     }
 
 }
