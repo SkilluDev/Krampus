@@ -174,11 +174,11 @@ public class Child : NPC, IEdible {
 
     private void OnDestroy() {
         m_trailRenderer.transform.parent = null;
-        m_trailRenderer.transform.position = transform.position;
+        m_trailRenderer.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
         m_trailRenderer.autodestruct = true;
         m_trailRenderer = null;
         var particle = Instantiate(m_goreParticle);
-        particle.transform.position = Game.MainGameInfo.Krampus.transform.position;
+        particle.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
     }
 
 }
