@@ -289,6 +289,8 @@ namespace Roomgen {
             var so = new SerializedObject(Target);
             var prop = so.FindProperty("tags");
             EditorGUILayout.PropertyField(prop);
+
+            so.ApplyModifiedProperties();
         }
 
         private void DrawGradeField() {
