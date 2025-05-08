@@ -50,7 +50,7 @@ public class KrampusController : KrampusBehaviour {
 	private void Update() {
 		if (CurrentState == State.Dead) return;
 
-		if (Game.MainGameInfo.Timer < 0) {
+		if (Game.MainGameInfo.Timer.GameTime < 0) {
 			KrampTermination();
 		}
 		float acceleration = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;

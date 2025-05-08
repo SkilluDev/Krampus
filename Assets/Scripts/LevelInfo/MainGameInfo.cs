@@ -48,21 +48,17 @@ public class MainGameInfo : LevelInfo {
     private Dictionary<Room, RoomData> m_roomdata = new Dictionary<Room, RoomData>();
 
 
+    [SerializeField] private Timer m_timer;
+    public Timer Timer { get; }
 
-    [ShowNativeProperty] public float Timer { get; private set; } = 10f;
 
-
-    [BoxGroup("Timer")][SerializeField][FormerlySerializedAs("timeBonus")] private int m_timeBonus;
-    [BoxGroup("Timer")][SerializeField][FormerlySerializedAs("timePenalty")] private int m_timePenalty;
 
 
     private void Awake() {
         GoodChildType = Types.UnityRandomElement();
     }
 
-    public void Ready() {
-        Timer = (int)Game.SetMan.GetValue<long>("Timer");
-    }
+
 
     public RoomData GetRoomData(Room r) {
         if (r == null) return null;
@@ -112,17 +108,7 @@ public class MainGameInfo : LevelInfo {
         m_nunRegistry.Remove(nun);
     }
 
-    private void Update() {
-        Timer -= Time.deltaTime;
-    }
 
-    public void Bonus() {
-        Timer += m_timeBonus;
-    }
-
-    public void Penalty() {
-        Timer -= m_timePenalty;
-    }
 
     //======================================================================
 }

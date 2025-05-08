@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 358014037}
   - component: {fileID: 358014038}
   - component: {fileID: 358014039}
+  - component: {fileID: 358014040}
   m_Layer: 0
   m_Name: '#INFO'
   m_TagString: Untagged
@@ -167,8 +168,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bc87fccbf684f06439e938e20b440f88, type: 2}
   - {fileID: 11400000, guid: 14df7b7041904fa44b4c88b4d0089b9a, type: 2}
   m_krampus: {fileID: 1936252573}
-  m_timeBonus: 10
-  m_timePenalty: 15
+  m_timer: {fileID: 358014040}
 --- !u!4 &358014036
 Transform:
   m_ObjectHideFlags: 0
@@ -279,6 +279,20 @@ MonoBehaviour:
   UIPPVolume: {fileID: 624625530}
   m_universalRendererData: {fileID: 11400000, guid: 9d8c6a20683a7204a9746847c67e3991,
     type: 2}
+--- !u!114 &358014040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358014034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e523f6e2528c1ee49974b4f64eaca409, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_timeBonus: 0
+  m_timePenalty: 0
 --- !u!1 &423022856
 GameObject:
   m_ObjectHideFlags: 0
