@@ -77,7 +77,7 @@ public class NewUIManager : MonoBehaviour {
         m_gameOverScreen.SetActive(false);
     }
 
-    public void setChildrenIcon(Sprite icon) {
+    public void SetChildrenIcon(Sprite icon) {
         m_childIconImage.sprite = icon;
     }
 }
