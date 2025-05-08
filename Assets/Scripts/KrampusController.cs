@@ -114,14 +114,13 @@ public class KrampusController : KrampusBehaviour {
 		onStateChanged?.Invoke(CurrentState, to, reason);
 		CurrentState = to;
 	}
+
 	public void KrampTermination() {
 		ChangeState(State.Dead, StateChangeReason.Rapid);
 		m_rigidbody.velocity = Vector3.zero;
 		m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 
 		Kramp.Kamera.Shake();
-
-
 	}
 
 	private Vector3 ComputeVelocity() {
@@ -134,19 +133,18 @@ public class KrampusController : KrampusBehaviour {
 
 	private void FixedUpdate() {
 		if (CurrentState == State.Dead) return;
+
 		var computedVelocity = ComputeVelocity();
 		computedVelocity = computedVelocity.normalized * Mathf.Max(Mathf.Abs(computedVelocity.x), Mathf.Abs(computedVelocity.z));
 		var skewedInput = Kramp.Kamera.Matrix.MultiplyPoint3x4(computedVelocity);
 		m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed : m_runSpeed);
 		if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength)) {
 			if (m_avoidableObjects == (m_avoidableObjects | 1 << hit.transform.gameObject.layer)) {
-
 				if (!Physics.Raycast(transform.position, Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
 					m_rigidbody.velocity = Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector);
 				} else if (!Physics.Raycast(transform.position, Quaternion.Euler(0, m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
 					m_rigidbody.velocity = Quaternion.Euler(0, m_assistValue, 0) * (VelocityVector);
 				}
-
 			}
 		}
 	}
