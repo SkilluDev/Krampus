@@ -34,8 +34,7 @@ public class RoomGenerator : RoomGeneratorBase {
 		if (Game.SetMan.GetValue<bool>("Random seed overwrite")) {
 			m_seed = Game.SetMan.GetValue<int>("Custom seed");
 			Debug.Log($"Random seed overwrite: {m_seed}");
-		}
-		else m_seed = Random.Range(0, 99999);
+		} else m_seed = Random.Range(0, 99999);
 	}
 
 	public override IEnumerator Generate() {
@@ -186,14 +185,14 @@ public class RoomGenerator : RoomGeneratorBase {
 
 		void GenerateNunsAndKids() {
 			foreach (var room in m_placedRooms) {
-				for (int i = 0; i < Random.Range(m_minChildrenPerRoom, m_maxChildrenPerRoom+1); i++) {
+				for (int i = 0; i < Random.Range(m_minChildrenPerRoom, m_maxChildrenPerRoom + 1); i++) {
 					if (NavMesh.SamplePosition(room.GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
 						Instantiate(m_childPrefab, hit.position, Quaternion.identity);
 					}
 				}
 			}
 
-			for (int i = 0; i < Random.Range(m_minNuns,m_maxNuns); i++) {
+			for (int i = 0; i < Random.Range(m_minNuns, m_maxNuns); i++) {
 				if (NavMesh.SamplePosition(m_placedRooms[Random.Range(0, m_placedRooms.Count)].GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
 					Instantiate(m_nunPrefab, hit.position, Quaternion.identity);
 				}
@@ -204,11 +203,27 @@ public class RoomGenerator : RoomGeneratorBase {
 		void GenerateDoors() {
 			for (int i = 0; i < m_width; i++) {
 				for (int j = 0; j < m_height; j++) {
-					if (j != m_height - 1 && m_doorGrid[i, j].South && m_generationGrid[i, j] != m_generationGrid[i, j + 1]) {
-						Instantiate(m_roomSet.doorPrefabs.UnityRandomElement(), Room.GetCellCenter(i, j) - new Vector3(0, 0, Room.CELL_SIZE / 2f), Quaternion.Euler(0, 0, 0));
+					if (j != m_height - 1 && m_doorGrid[i, j].South && m_generationGrid[i, j] != m_generationGrid[i, j + 1] && m_generationGrid[i, j] != null) {
+						var psg = Instantiate(
+							m_roomSet.doorPrefabs.UnityRandomElement().gameObject,
+							Room.GetCellCenter(i, j) - new Vector3(0, 0, Room.CELL_SIZE / 2f),
+							Quaternion.Euler(0, 0, 0)
+						).GetComponent<Passage>();
+
+						Game.MainGameInfo.GetRoomData(m_generationGrid[i, j + 1]).AddPassage(psg);
+						Game.MainGameInfo.GetRoomData(m_generationGrid[i, j]).AddPassage(psg);
+						psg.Initialize(m_generationGrid[i, j], m_generationGrid[i, j + 1], Passage.Direction.Vertical);
 					}
-					if (i != m_width - 1 && m_doorGrid[i, j].East && m_generationGrid[i, j] != m_generationGrid[i + 1, j]) {
-						Instantiate(m_roomSet.doorPrefabs.UnityRandomElement(), Room.GetCellCenter(i, j) + new Vector3(Room.CELL_SIZE / 2f, 0, 0), Quaternion.Euler(0, 90, 0));
+					if (i != m_width - 1 && m_doorGrid[i, j].East && m_generationGrid[i, j] != m_generationGrid[i + 1, j] && m_generationGrid[i, j] != null) {
+						var psg = Instantiate(
+							m_roomSet.doorPrefabs.UnityRandomElement().gameObject,
+							Room.GetCellCenter(i, j) + new Vector3(Room.CELL_SIZE / 2f, 0, 0),
+							Quaternion.Euler(0, 90, 0)
+						).GetComponent<Passage>();
+
+						Game.MainGameInfo.GetRoomData(m_generationGrid[i, j]).AddPassage(psg);
+						Game.MainGameInfo.GetRoomData(m_generationGrid[i + 1, j]).AddPassage(psg);
+						psg.Initialize(m_generationGrid[i, j], m_generationGrid[i + 1, j], Passage.Direction.Horizontal);
 					}
 				}
 			}
@@ -217,8 +232,8 @@ public class RoomGenerator : RoomGeneratorBase {
 		Status = "Creating layout";
 		Init();
 		SelectSpawnPoint();
-		CreateGrid();
 		RemoveDeadDoors();
+		CreateGrid();
 		yield return null;
 
 		var spawnRoom = PlaceRoom(m_roomSet.spawn, m_spawnPoint);

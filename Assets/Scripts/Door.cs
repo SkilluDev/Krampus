@@ -5,7 +5,7 @@ using NaughtyAttributes;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class Door : MonoBehaviour, IInteractable {
+public class Door : Passage, IInteractable {
     public bool IsOpen { get; private set; }
 
     [SerializeField] private Animator m_animator;

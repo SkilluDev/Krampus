@@ -2,15 +2,19 @@ using System.Collections.Generic;
 using System.Collections;
 using Roomgen;
 using UnityEngine;
+using System;
 
 public class RoomData : MonoBehaviour {
 	public Room Room { get; private set; }
 	public IReadOnlyCollection<ICharacter> Characters => m_characters;
 	private List<ICharacter> m_characters;
+	public IReadOnlyCollection<Passage> Passages => m_passages;
+	private List<Passage> m_passages;
 
 	public void Init(Room room) {
 		Room = room;
 		m_characters = new List<ICharacter>();
+		m_passages = new List<Passage>();
 	}
 
 	public void AddCharacter(ICharacter character) {
@@ -31,5 +35,9 @@ public class RoomData : MonoBehaviour {
 
 	public bool Contains(ICharacter character) {
 		return m_characters.Contains(character);
+	}
+
+	public void AddPassage(Passage psg) {
+		m_passages.Add(psg);
 	}
 }
