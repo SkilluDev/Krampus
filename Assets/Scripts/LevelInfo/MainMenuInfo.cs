@@ -52,6 +52,15 @@ public class MainMenuInfo : LevelInfo {
 
         StartCoroutine(Internal());
     }
+    public void LoadGameEnd() {
+        IEnumerator Internal() {
+            SetState(State.Transitioning);
+            yield return new WaitForSecondsRealtime(1.2f);
+            Application.Quit();
+        }
+
+        StartCoroutine(Internal());
+    }
 
     // bad code ahead!
     private void UpdateGroups() {
