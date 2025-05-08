@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -61,5 +62,10 @@ public class NewUIManager : MonoBehaviour {
             if (InputSubscribe.Raw.UI.Restart.triggered) //restart with R
                 Game.LoadState(Game.State.MainGame);
         }
+    }
+
+    private void Awake() {
+	    m_isGameOver = false;
+	    m_gameOverScreen.SetActive(false);
     }
 }

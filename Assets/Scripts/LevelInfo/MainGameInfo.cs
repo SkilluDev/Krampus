@@ -49,7 +49,7 @@ public class MainGameInfo : LevelInfo {
 
 
 
-    [ShowNativeProperty] public float Timer { get; private set; }
+    [ShowNativeProperty] public float Timer { get; private set; } = 10f;
 
 
     [BoxGroup("Timer")][SerializeField][FormerlySerializedAs("timeBonus")] private int m_timeBonus;
