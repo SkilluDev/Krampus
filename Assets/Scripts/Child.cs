@@ -133,7 +133,6 @@ public class Child : NPC, IEdible {
 
     public void Consume(Krampus krampus) {
         m_killSoundBite.Play(transform.position, 1, true);
-        Instantiate(m_goreParticle);
         if (m_type != Game.MainGameInfo.GoodChildType) Game.MainGameInfo.ShaderManager.ProcessKill();
         Destroy(gameObject);
     }
@@ -178,6 +177,8 @@ public class Child : NPC, IEdible {
         m_trailRenderer.transform.position = transform.position;
         m_trailRenderer.autodestruct = true;
         m_trailRenderer = null;
+        var particle = Instantiate(m_goreParticle);
+        particle.transform.position = Game.MainGameInfo.Krampus.transform.position;
     }
 
 }
