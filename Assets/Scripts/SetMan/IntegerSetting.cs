@@ -4,9 +4,9 @@ using Settings;
 using UnityEngine;
 
 namespace Settings {
-    public class IntegerSetting : TextInputSetting<int> {
+    public class IntegerSetting : TextInputSetting<long> {
         protected override void InputValueChanged(string newValue) {
-            manager.SetValue<int>(name, int.Parse(newValue));
+            manager.SetValue<long>(name, long.Parse(newValue));
         }
     }
 

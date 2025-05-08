@@ -35,7 +35,7 @@ public class RoomGenerator : RoomGeneratorBase {
 
 	public override void Prepare() {
 		if (Game.SetMan.GetValue<bool>("Random seed overwrite")) {
-			m_seed = Game.SetMan.GetValue<int>("Custom seed");
+			m_seed = (int)Game.SetMan.GetValue<long>("Custom seed");
 			Debug.Log($"Random seed overwrite: {m_seed}");
 		} else m_seed = Random.Range(0, 99999);
 	}
@@ -47,7 +47,7 @@ public class RoomGenerator : RoomGeneratorBase {
 		yield return null;
 		void Init() {
 
-			int mapSize = Game.SetMan.GetValue<int>("Map Size");
+			int mapSize = (int)Game.SetMan.GetValue<long>("Map Size");
 			switch (mapSize) {
 				case 0:
 					m_width = 5; m_height = 5;

@@ -43,9 +43,11 @@ namespace Settings {
 
         public T GetValue<T>(string key) {
             if (!m_values.ContainsKey(key))
-                return ((ValueSetting<T>)m_settingDictionary[key].setting).defaultValue;
+                return m_settingDictionary[key].GetParam<T>("defaultValue");
             return (T)m_values[key];
         }
+
+
 
         public object GetValue(string key) {
             if (!m_values.ContainsKey(key))
@@ -126,12 +128,12 @@ namespace Settings {
         private bool DrawPropertyNotify(ParametrizedSetting parametrizedSetting, FieldInfo p, string nameOverride = null) {
             string displayName = nameOverride ?? p.Name;
             switch (p.FieldType) {
-                case Type _ when p.FieldType == typeof(Int32): {
-                        int original = (Int32)parametrizedSetting.GetParamIntegral(p.Name);
-                        int value = EditorGUILayout.IntField(displayName, original);
+                case Type _ when p.FieldType == typeof(Int64): {
+                        long original = (Int64)parametrizedSetting.GetParamIntegral(p.Name);
+                        long value = EditorGUILayout.LongField(displayName, original);
                         if (original == value) break;
 
-                        parametrizedSetting.SetParam<Int32>(p.Name, value);
+                        parametrizedSetting.SetParam<Int64>(p.Name, value);
                         return true;
                     }
                 case Type _ when p.FieldType == typeof(string[]): {

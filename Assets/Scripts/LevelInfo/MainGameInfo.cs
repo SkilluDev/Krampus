@@ -57,11 +57,11 @@ public class MainGameInfo : LevelInfo {
 
 
     private void Awake() {
-	    GoodChildType = Types.UnityRandomElement();
+        GoodChildType = Types.UnityRandomElement();
     }
 
     public void Ready() {
-	    Timer = Game.SetMan.GetValue<int>("Timer");
+        Timer = (int)Game.SetMan.GetValue<long>("Timer");
     }
 
     public RoomData GetRoomData(Room r) {
@@ -83,11 +83,11 @@ public class MainGameInfo : LevelInfo {
     public void RegisterChild(Child child) {
         m_childRegistry.Add(child);
         if (child.Type == GoodChildType) {
-	        m_goodChildRegistry.Add(child);
-	        GoodChildrenCountOnStart += 1;
+            m_goodChildRegistry.Add(child);
+            GoodChildrenCountOnStart += 1;
         } else {
-	        m_badChildRegistry.Add(child);
-	        BadChildrenCountOnStart += 1;
+            m_badChildRegistry.Add(child);
+            BadChildrenCountOnStart += 1;
         }
     }
 
@@ -96,9 +96,9 @@ public class MainGameInfo : LevelInfo {
             r.RemoveCharacter(child);
         m_childRegistry.Remove(child);
         if (child.Type == GoodChildType) {
-	        m_goodChildRegistry.Remove(child);
+            m_goodChildRegistry.Remove(child);
         } else {
-	        m_badChildRegistry.Remove(child);
+            m_badChildRegistry.Remove(child);
         }
     }
 

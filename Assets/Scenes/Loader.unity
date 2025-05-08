@@ -179,7 +179,7 @@ MonoBehaviour:
       type: 3}
     m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
       mscorlib],[System.Object, mscorlib]], mscorlib","options":{"$type":"System.String[],
-      mscorlib","$values":["5 X 5","7 X 7","9 X 9","11 X 11","13 X 13","15 X 15"]},"defaultValue":0,"name":"Map
+      mscorlib","$values":["5 X 5","7 X 7","9 X 9","11 X 11","13 X 13","15 X 15"]},"defaultValue":1,"name":"Map
       Size"}'
   - setting: {fileID: 5415522017811518503, guid: f887e235ff0f18992b46cdb3b4a5617d,
       type: 3}
@@ -193,6 +193,11 @@ MonoBehaviour:
       type: 3}
     m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
       mscorlib],[System.Object, mscorlib]], mscorlib","name":"Custom seed","defaultValue":5726787}'
+  - setting: {fileID: 4971484281591837886, guid: 3da37353e1c2ece528181e65646b7359,
+      type: 3}
+    m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
+      mscorlib],[System.Object, mscorlib]], mscorlib","name":"Quality","options":{"$type":"System.String[],
+      mscorlib","$values":["High","Low"]},"defaultValue":2}'
   m_json: 
 --- !u!1 &331384707
 GameObject:
@@ -729,7 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7edbd378b331b2e9c9fbb2a1aab97d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_delay: 1
+  m_delay: 0.5
 --- !u!4 &951086462
 Transform:
   m_ObjectHideFlags: 0
@@ -1251,6 +1256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1553979833}
   - component: {fileID: 1553979834}
+  - component: {fileID: 1553979835}
   m_Layer: 0
   m_Name: '#GAME'
   m_TagString: Untagged
@@ -1290,6 +1296,18 @@ MonoBehaviour:
   m_info: {fileID: 0}
   m_musicMan: {fileID: 828710175}
   m_setMan: {fileID: 117939619}
+--- !u!114 &1553979835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553979832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d6dbba42f875f54e871ddc170b5e5e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1571651735
 GameObject:
   m_ObjectHideFlags: 0
