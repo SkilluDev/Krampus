@@ -116,6 +116,11 @@ public class KrampusController : KrampusBehaviour {
 	}
 	public void KrampTermination() {
 		ChangeState(State.Dead, StateChangeReason.Rapid);
+		m_rigidbody.velocity = Vector3.zero;
+		m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+
+		Kramp.Kamera.Shake();
+
 
 	}
 
