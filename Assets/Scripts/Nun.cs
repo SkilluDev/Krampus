@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using KrampUtils;
 using UnityEngine;
 using UnityEngine.AI;
@@ -79,13 +80,21 @@ public class Nun : NPC {
             return;
         }
         ///Tu powinno być timer
-        ///
+        StartCoroutine(DeathTimer());
+
         onAttack?.Invoke(CurrentState);
-	    //Stop NunMovment
+        //Stop NunMovment
 
 
 
         //Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
+    }
+
+    private IEnumerator DeathTimer() {
+        Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
+        SwitchState(State.Listening);
+        yield return new WaitForSeconds(2);
+        Game.MainGameInfo.UI.ShowGameOverScreen();
     }
 
 }

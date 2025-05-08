@@ -116,7 +116,6 @@ public class KrampusController : KrampusBehaviour {
 	}
 	public void KrampTermination() {
 		ChangeState(State.Dead, StateChangeReason.Rapid);
-		Game.MainGameInfo.UI.ShowGameOverScreen();
 	}
 
 	private Vector3 ComputeVelocity() {
