@@ -61,7 +61,7 @@ public class MainGameInfo : LevelInfo {
     }
 
     public void Ready() {
-        Timer = (int)Game.SetMan.GetValueIntegral("Timer");
+        Timer = (int)Game.SetMan.GetValue<long>("Timer");
     }
 
     public RoomData GetRoomData(Room r) {
