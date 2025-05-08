@@ -80,7 +80,6 @@ public class Nun : NPC {
         }
         ///Tu powinno być timer
         Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
-        Game.MainGameInfo.UI.ShowGameOverScreen();
     }
 
 }
