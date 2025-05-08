@@ -35,27 +35,28 @@ public class RoomGenerator : RoomGeneratorBase {
 		yield return null;
 		void Init() {
 
-			int mapSize = Game.SetMan.GetValue < int>("Map Size");
+			int mapSize = Game.SetMan.GetValue<int>("Map Size");
 			switch (mapSize) {
 				case 0:
-					m_width = 5;  m_height = 5;
+					m_width = 5; m_height = 5;
 					break;
 				case 1:
-					m_width = 7;  m_height = 7;
+					m_width = 7; m_height = 7;
 					break;
 				case 2:
-					m_width = 9;  m_height = 9;
+					m_width = 9; m_height = 9;
 					break;
 				case 3:
-					m_width = 11;  m_height = 11;
+					m_width = 11; m_height = 11;
 					break;
 				case 4:
-					m_width = 13;  m_height = 13;
+					m_width = 13; m_height = 13;
 					break;
 				case 5:
-					m_width = 15;  m_height = 15;
+					m_width = 15; m_height = 15;
 					break;
-				default: m_width = 7;  m_height = 7;
+				default:
+					m_width = 7; m_height = 7;
 					break;
 			}
 
@@ -162,7 +163,8 @@ public class RoomGenerator : RoomGeneratorBase {
 			prefab.ConfigureDoors(placement.x, placement.y, m_doorGrid);
 			for (int i = placement.x; i < placement.x + room.Width; i++) {
 				for (int j = placement.y; j < placement.y + room.Height; j++) {
-					if (room.constraints[i - placement.x, j - placement.y] == null || room.constraints[i - placement.x, j - placement.y].phantom) continue;
+					var constraints = room.constraints[i - placement.x, j - placement.y];
+					if (constraints == null || constraints.phantom) continue;
 					m_generationGrid[i, j] = prefab;
 				}
 			}
@@ -187,6 +189,19 @@ public class RoomGenerator : RoomGeneratorBase {
 				}
 			}
 
+		}
+
+		void GenerateDoors() {
+			for (int i = 0; i < m_width; i++) {
+				for (int j = 0; j < m_height; j++) {
+					if (j != m_height - 1 && m_doorGrid[i, j].South && m_generationGrid[i, j] != m_generationGrid[i, j + 1]) {
+						Instantiate(m_roomSet.doorPrefabs.UnityRandomElement(), Room.GetCellCenter(i, j) - new Vector3(0, 0, Room.CELL_SIZE / 2f), Quaternion.Euler(0, 0, 0));
+					}
+					if (i != m_width - 1 && m_doorGrid[i, j].East && m_generationGrid[i, j] != m_generationGrid[i + 1, j]) {
+						Instantiate(m_roomSet.doorPrefabs.UnityRandomElement(), Room.GetCellCenter(i, j) + new Vector3(Room.CELL_SIZE / 2f, 0, 0), Quaternion.Euler(0, 90, 0));
+					}
+				}
+			}
 		}
 
 		Status = "Creating layout";
@@ -248,6 +263,7 @@ public class RoomGenerator : RoomGeneratorBase {
 
 		m_navMesh.BuildNavMesh();
 		GenerateNunsAndKids();
+		GenerateDoors();
 		RoomVariantManager.Release(types);
 	}
 
