@@ -49,8 +49,8 @@ public class CameraController : MonoBehaviour {
 	private float ComputeOrtoSize() {
 		if (m_krampus.Tongue.CurrentState == KrampusTongue.State.Windup) {
 			m_zoomFactor += m_aimZoomSpeed * Time.deltaTime;
-		} else if (m_krampus.Kontroller.CurrentState == KrampusController.State.Run) {
-			m_zoomFactor -= m_unzoomSpeed * Time.deltaTime;
+		} else if (m_krampus.Kontroller.CurrentState == KrampusController.State.Run || m_krampus.Kontroller.CurrentState == KrampusController.State.Dead) {
+			m_zoomFactor -= m_unzoomSpeed * Time.deltaTime;	
 		} else {
 			m_zoomFactor += m_zoomSpeed * Time.deltaTime;
 		}
