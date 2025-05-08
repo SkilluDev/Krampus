@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using NaughtyAttributes;
 
@@ -19,7 +20,14 @@ public class CameraController : MonoBehaviour {
 	[BoxGroup("Zoom")][SerializeField] private float m_zoomBuffer = 0.75f;
 	[BoxGroup("Zoom")][SerializeField] private float m_unzoomSpeed = 1f;
 
+
+
 	private float m_zoomFactor = 1;
+
+	[BoxGroup("Shake")][SerializeField] private float shakeForce = 0.7f;
+	[BoxGroup("Shake")][SerializeField] private float shakeMagnitude = 0.1f;
+	// The speed at which the shake decays (higher value = faster decay)
+	[BoxGroup("Shake")][SerializeField] float shakeDampingSpeed = 1.0f;
 
 	private void Awake() {
 		Matrix = Matrix4x4.Rotate(Quaternion.Euler(0, transform.eulerAngles.y, 0));
@@ -67,5 +75,27 @@ public class CameraController : MonoBehaviour {
 
 		transform.position = m_krampus.transform.position + ComputeOffset();
 		m_camera.orthographicSize = ComputeOrtoSize();
+	}
+
+
+	[Button("Shake")]
+	public void Shake() {
+
+		StartCoroutine(Shake(0.2f));
+	}
+
+	private IEnumerator Shake(float duration) {
+		Vector3 originalPosition = transform.localPosition;
+		float elapsedTime = 0f;
+
+		shakeMagnitude = shakeForce;
+		while (elapsedTime < duration) {
+			var shakeOffset = Random.insideUnitSphere * shakeMagnitude;
+			transform.localPosition = originalPosition + shakeOffset;
+			elapsedTime += Time.deltaTime;
+			shakeMagnitude = Mathf.Lerp(shakeMagnitude, 0f, elapsedTime / duration);
+			yield return null;
+		}
+		transform.localPosition = originalPosition;
 	}
 }

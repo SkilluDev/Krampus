@@ -13,6 +13,9 @@ public class CameraFollow : MonoBehaviour {
 	private Camera m_camera;
 	private float m_originalCameraSize;
 	private bool m_zoomOut;
+
+
+
 	[SerializeField] private float m_cameraSizeAddition;
 	[SerializeField] private float m_velocityLookAheadDamp;
 	//[SerializeField] private float cameraZoomDivider; //part of velocity based camera

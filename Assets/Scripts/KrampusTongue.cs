@@ -47,6 +47,8 @@ public class KrampusTongue : KrampusBehaviour {
     private IInteractable m_hitInteractable;
 
     private ITongueable m_hitTonguable;
+
+
     private IEdible m_hitEdible;
     private List<(float dst, ITongueable component)> m_midwayToungables;
 
@@ -270,6 +272,7 @@ public class KrampusTongue : KrampusBehaviour {
                 if (m_hitEdible != null) {
                     try {
                         m_hitEdible.Consume(Kramp);
+                        Kramp.Kamera.Shake();
                     } catch (Exception e) {
                         LogException(e, m_hitEdible);
                     }

@@ -10,7 +10,7 @@ public class KrampusAnimator : KrampusBehaviour {
     [BoxGroup("Sounds")][SerializeField] private SoundBite m_CatchSoundBite;
     [BoxGroup("Sounds")][SerializeField] private SoundBite m_TongueSoundBite;
 
-    [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty;
+    [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty,m_tongueShouldEatProperty;
 
     private float m_minimalVelocity;
     private Quaternion m_rotationTarget;
@@ -46,6 +46,7 @@ public class KrampusAnimator : KrampusBehaviour {
             case (_, KrampusTongue.State.PreRetreat):
                 m_animator.SetBool(m_tongueOutProperty, false);
                 m_animator.SetBool(m_tongueReadyProperty, false);
+                m_animator.SetBool(m_tongueShouldEatProperty,false);
 
                 break;
             case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
@@ -54,6 +55,7 @@ public class KrampusAnimator : KrampusBehaviour {
             case (KrampusTongue.State.PreRetreat, KrampusTongue.State.Retreating):
 	            if (Kramp.Tongue.HitInteractable != null) {
 		            m_CatchSoundBite.Play(transform.position, 1, true);
+
 	            }
 	            break;
 

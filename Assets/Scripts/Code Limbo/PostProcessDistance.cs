@@ -21,6 +21,9 @@ public class PostProcessDistance : MonoBehaviour {
     private float m_distanceToClosest;
 
     private void Start() {
+
+		    bool b  = Game.SetMan.GetValue<bool>("Motion Blur");
+		    MotionBlur blur;
         vol = GetComponent<Volume>();
         if (vol != null && vol.profile != null) {
             // Try to get Vignette effect
@@ -30,6 +33,14 @@ public class PostProcessDistance : MonoBehaviour {
             // Try to get Chromatic Aberration effect
             if (!vol.profile.TryGet(out aberration))
                 Debug.LogError("Chromatic Aberration effect not found in Volume profile.");
+
+            if (!vol.profile.TryGet(out blur))
+	            Debug.LogError("Chromatic Aberration effect not found in Volume profile.");
+            else {
+	            blur.active = b;
+            }
+
+
         } else {
             Debug.LogError("Volume or Volume profile is missing.");
         }
