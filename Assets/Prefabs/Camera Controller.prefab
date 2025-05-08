@@ -76,12 +76,12 @@ MonoBehaviour:
   m_zoomedOrtoSize: 8
   m_unzoomedOrtoSize: 12
   m_cameraSpeed: 3
-  m_zoomSpeed: 0.2
+  m_zoomSpeed: 0.5
   m_zoomBuffer: 0.2
   m_unzoomSpeed: 5
-  m_aimZoomSpeed: 4
+  m_aimZoomSpeed: 1.5
   shakeForce: 0.7
-  shakeMagnitude: 0.1
+  shakeMagnitude: 0
   shakeDampingSpeed: 1
 --- !u!1001 &6863357316461397224
 PrefabInstance:
@@ -240,6 +240,11 @@ PrefabInstance:
         type: 3}
       propertyPath: orthographic size
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6601408027468723432, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
+        type: 3}
+      propertyPath: m_OcclusionCulling
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9051758320400250971, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
         type: 3}
