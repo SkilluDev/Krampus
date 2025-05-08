@@ -546,6 +546,7 @@ GameObject:
   - component: {fileID: 4431945048689341331}
   - component: {fileID: 3366375867633268914}
   - component: {fileID: 4393738974593842998}
+  - component: {fileID: 4564692973449143229}
   m_Layer: 5
   m_Name: Digit3
   m_TagString: Untagged
@@ -610,6 +611,31 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4564692973449143229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3312982095489534305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 506b364399316cd428424d50b6011893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_decimalPlace: 1
+  m_spriteSheet:
+  - {fileID: 992906133, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 203626332, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 2072818294, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 1614388532, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 977431158, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 2015987792, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: -1719890601, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 1285687529, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: -97858657, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: -995206338, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  m_image: {fileID: 4393738974593842998}
 --- !u!1 &3830035187360872240
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,6 +1246,7 @@ GameObject:
   - component: {fileID: 1550750321877516905}
   - component: {fileID: 8370808368345877862}
   - component: {fileID: 8204502241762389321}
+  - component: {fileID: 6996880060746990052}
   m_Layer: 5
   m_Name: Digit1
   m_TagString: Untagged
@@ -1284,6 +1311,31 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6996880060746990052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6870146082577031335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 506b364399316cd428424d50b6011893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_decimalPlace: 100
+  m_spriteSheet:
+  - {fileID: 992906133, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 203626332, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 2072818294, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 1614388532, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 977431158, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 2015987792, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: -1719890601, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 1285687529, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: -97858657, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: -995206338, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  m_image: {fileID: 8204502241762389321}
 --- !u!1 &7172931892233990810
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,6 +1468,7 @@ MonoBehaviour:
   m_isGameOver: 0
   m_isGameWon: 0
   m_isGamePaused: 0
+  m_childIconImage: {fileID: 2094201919006516398}
 --- !u!1 &7173605854049669422
 GameObject:
   m_ObjectHideFlags: 0
@@ -1427,6 +1480,7 @@ GameObject:
   - component: {fileID: 4719080686409558370}
   - component: {fileID: 2809526507846162153}
   - component: {fileID: 194071966502731873}
+  - component: {fileID: 3163927638589072454}
   m_Layer: 5
   m_Name: Digit2
   m_TagString: Untagged
@@ -1491,6 +1545,31 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3163927638589072454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7173605854049669422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 506b364399316cd428424d50b6011893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_decimalPlace: 10
+  m_spriteSheet:
+  - {fileID: 992906133, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 203626332, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 2072818294, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 1614388532, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 977431158, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 2015987792, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: -1719890601, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: 1285687529, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: -97858657, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  - {fileID: -995206338, guid: 512c7a9f4aaa5244e838240a17417ac2, type: 3}
+  m_image: {fileID: 194071966502731873}
 --- !u!1 &7894128773903819640
 GameObject:
   m_ObjectHideFlags: 0
