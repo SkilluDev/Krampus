@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace Settings {
             base.Cook();
             foreach (string w in options) m_dropdown.options.Add(new TMP_Dropdown.OptionData(w));
             m_dropdown.onValueChanged.AddListener(InputValueChanged);
+            m_dropdown.value = (int)manager.GetValueIntegral(name);
+            m_dropdown.RefreshShownValue();
         }
 
         protected virtual void InputValueChanged(int newValue) {

@@ -47,6 +47,26 @@ namespace Settings {
             return (T)m_values[key];
         }
 
+        public Int64 GetValueIntegral(string key) {
+            if (m_values.ContainsKey(key)) {
+                return m_values[key] switch {
+                    Int64 i64 => i64,
+                    Int32 i32 => i32,
+                    Int16 i16 => i16,
+                    Byte i8 => i8,
+                    _ => throw new Exception()
+                };
+            } else {
+                return m_settingDictionary[key].setting switch {
+                    ValueSetting<Int64> i64 => i64.defaultValue,
+                    ValueSetting<Int32> i32 => i32.defaultValue,
+                    ValueSetting<Int16> i16 => i16.defaultValue,
+                    ValueSetting<Byte> i8 => i8.defaultValue,
+                    _ => throw new Exception()
+                };
+            }
+        }
+
         public object GetValue(string key) {
             if (!m_values.ContainsKey(key))
                 return m_settingDictionary[key].GetParam("defaultValue");
