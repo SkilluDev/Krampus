@@ -56,6 +56,8 @@ public class KrampusAnimator : KrampusBehaviour {
 	            if (Kramp.Tongue.HitInteractable != null) {
 		            m_CatchSoundBite.Play(transform.position, 1, true);
 
+			            m_animator.SetBool(m_tongueShouldEatProperty, (Kramp.Tongue.m_isConsuming));
+
 	            }
 	            break;
 

@@ -48,7 +48,7 @@ public class KrampusTongue : KrampusBehaviour {
 
     private ITongueable m_hitTonguable;
 
-
+    public bool m_isConsuming  =>  m_hitEdible != null;
     private IEdible m_hitEdible;
     private List<(float dst, ITongueable component)> m_midwayToungables;
 
@@ -258,6 +258,7 @@ public class KrampusTongue : KrampusBehaviour {
                 if (m_hitEdible != null) {
                     try {
                         m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
+
                     } catch (Exception e) {
                         LogException(e, m_hitTonguable);
                         m_hitEdible = null;
