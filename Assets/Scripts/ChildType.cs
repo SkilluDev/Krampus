@@ -7,4 +7,5 @@ public class ChildType : ScriptableObject
 {
 	public Color color;
 	public Texture2D shape;
+	public Sprite uiIcon;
 }

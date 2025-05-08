@@ -56,6 +56,7 @@ public class MainGameInfo : LevelInfo {
 
     private void Awake() {
         GoodChildType = Types.UnityRandomElement();
+        UI.setChildrenIcon(GoodChildType.uiIcon);
     }
 
 

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NewUIManager : MonoBehaviour {
 
@@ -15,6 +16,10 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private bool m_isGameOver = false;
     [SerializeField] private bool m_isGameWon = false;
     [SerializeField] private bool m_isGamePaused = false;
+
+
+
+    [SerializeField] private Image m_childIconImage;
 
 
 
@@ -68,4 +73,8 @@ public class NewUIManager : MonoBehaviour {
 	    m_isGameOver = false;
 	    m_gameOverScreen.SetActive(false);
     }
+
+   public void setChildrenIcon(Sprite icon) {
+	   m_childIconImage.sprite = icon;
+   }
 }
