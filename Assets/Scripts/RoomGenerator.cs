@@ -245,10 +245,9 @@ public class RoomGenerator : RoomGeneratorBase {
 		yield return null;
 
 		var spawnRoom = PlaceRoom(m_roomSet.spawn, m_spawnPoint);
-		if (NavMesh.SamplePosition(spawnRoom.GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
-			m_krampus.transform.position = hit.position;
-			m_krampus.GetComponent<Rigidbody>().position = hit.position;
-		}
+		m_krampus.transform.position = spawnRoom.GetMidPoint();
+		m_krampus.GetComponent<Rigidbody>().position = spawnRoom.GetMidPoint();
+
 
 		Status = "Creating variants";
 		var types = new List<RoomType>();
