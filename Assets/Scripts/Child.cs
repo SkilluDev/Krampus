@@ -178,7 +178,7 @@ public class Child : NPC, IEdible {
         m_trailRenderer.autodestruct = true;
         m_trailRenderer = null;
         var particle = Instantiate(m_goreParticle);
-        particle.transform.position = transform.position;
+        particle.transform.position = Game.MainGameInfo.Krampus.transform.position;
     }
 
 }
