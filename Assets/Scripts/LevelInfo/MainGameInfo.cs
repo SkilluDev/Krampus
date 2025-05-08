@@ -19,6 +19,9 @@ public class MainGameInfo : LevelInfo {
     public NewUIManager UI => m_ui;
     [SerializeField] private NewUIManager m_ui;
 
+    public ShaderManager ShaderManager => m_shaderManager;
+    [SerializeField] private ShaderManager m_shaderManager;
+
 
 
     public IReadOnlyList<ChildType> Types => m_types;
@@ -36,6 +39,9 @@ public class MainGameInfo : LevelInfo {
     private List<Child> m_badChildRegistry = new List<Child>();
     private List<Child> m_goodChildRegistry = new List<Child>();
 
+    public int BadChildrenCountOnStart { get; private set; }
+    public int GoodChildrenCountOnStart { get; private set; }
+
     public IReadOnlyCollection<Nun> Nuns => m_nunRegistry;
     private List<Nun> m_nunRegistry = new List<Nun>();
 
@@ -43,7 +49,7 @@ public class MainGameInfo : LevelInfo {
 
 
 
-    [ShowNativeProperty] public float Timer { get; private set; }
+    [ShowNativeProperty] public float Timer { get; private set; } = 10f;
 
 
     [BoxGroup("Timer")][SerializeField][FormerlySerializedAs("timeBonus")] private int m_timeBonus;
@@ -78,8 +84,10 @@ public class MainGameInfo : LevelInfo {
         m_childRegistry.Add(child);
         if (child.Type == GoodChildType) {
 	        m_goodChildRegistry.Add(child);
+	        GoodChildrenCountOnStart += 1;
         } else {
 	        m_badChildRegistry.Add(child);
+	        BadChildrenCountOnStart += 1;
         }
     }
 

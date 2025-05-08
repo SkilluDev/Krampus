@@ -48,6 +48,11 @@ public class KrampusController : KrampusBehaviour {
 
 	// Based on @SkilluDev's inputs
 	private void Update() {
+		if (CurrentState == State.Dead) return;
+
+		if (Game.MainGameInfo.Timer < 0) {
+			KrampTermination();
+		}
 		float acceleration = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;
 
 		var inputs = InputSubscribe.Movement;
@@ -109,7 +114,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 	public void KrampTermination() {
 		ChangeState(State.Dead, StateChangeReason.Rapid);
-
+		Game.MainGameInfo.UI.ShowGameOverScreen();
 	}
 
 	private Vector3 ComputeVelocity() {
@@ -121,21 +126,20 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	private void FixedUpdate() {
-		if (CurrentState != State.Dead) {
-			var computedVelocity = ComputeVelocity();
-			computedVelocity = computedVelocity.normalized * Mathf.Max(Mathf.Abs(computedVelocity.x), Mathf.Abs(computedVelocity.z));
-			var skewedInput = Kramp.Kamera.Matrix.MultiplyPoint3x4(computedVelocity);
-			m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed : m_runSpeed);
-			if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength)) {
-				if (m_avoidableObjects == (m_avoidableObjects | 1 << hit.transform.gameObject.layer)) {
+		if (CurrentState == State.Dead) return;
+		var computedVelocity = ComputeVelocity();
+		computedVelocity = computedVelocity.normalized * Mathf.Max(Mathf.Abs(computedVelocity.x), Mathf.Abs(computedVelocity.z));
+		var skewedInput = Kramp.Kamera.Matrix.MultiplyPoint3x4(computedVelocity);
+		m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed : m_runSpeed);
+		if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength)) {
+			if (m_avoidableObjects == (m_avoidableObjects | 1 << hit.transform.gameObject.layer)) {
 
-					if (!Physics.Raycast(transform.position, Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
-						m_rigidbody.velocity = Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector);
-					} else if (!Physics.Raycast(transform.position, Quaternion.Euler(0, m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
-						m_rigidbody.velocity = Quaternion.Euler(0, m_assistValue, 0) * (VelocityVector);
-					}
-
+				if (!Physics.Raycast(transform.position, Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
+					m_rigidbody.velocity = Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector);
+				} else if (!Physics.Raycast(transform.position, Quaternion.Euler(0, m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
+					m_rigidbody.velocity = Quaternion.Euler(0, m_assistValue, 0) * (VelocityVector);
 				}
+
 			}
 		}
 	}

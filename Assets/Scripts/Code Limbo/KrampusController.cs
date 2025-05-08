@@ -178,7 +178,7 @@ public class LegacyKrampusController : MonoBehaviour {
 				timerStep2 = -stepSpeed;
 			}
 
-			//winding up sounds playing
+			/*//winding up sounds playing
 			if (timerWindUp1 >= windUpSpeed) {
 				SoundManager.PlaySound("windup1");
 				timerWindUp1 = -windUpSpeed;
@@ -195,7 +195,7 @@ public class LegacyKrampusController : MonoBehaviour {
 			if (timerStep2 >= stepSpeed) {
 				SoundManager.PlaySound("step2");
 				timerStep2 = -stepSpeed;
-			}
+			}*/
 		}
 	}
 

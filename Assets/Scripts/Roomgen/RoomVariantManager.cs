@@ -41,6 +41,9 @@ namespace Roomgen {
             var prefabInstance = Object.Instantiate(original.prefab, FakePrefabRoot.transform);
             var roomInstance = prefabInstance.GetComponent<Room>();
 
+            // TODO: move this out of here
+            roomInstance.gameObject.AddComponent<Tags>().SetTags(typeInstance.tags.ToArray());
+
             typeInstance.prefab = prefabInstance;
             typeInstance.basedOn = original;
             roomInstance.m_type = typeInstance;
@@ -56,7 +59,7 @@ namespace Roomgen {
         }
 
         public static void Release(RoomType type) {
-	        if (!m_typeInstances.Contains(type)) return;
+            if (!m_typeInstances.Contains(type)) return;
             m_prefabInstances.Remove(type.prefab);
             m_typeInstances.Remove(type);
 

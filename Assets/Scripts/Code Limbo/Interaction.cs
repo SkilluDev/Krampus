@@ -79,7 +79,7 @@ public class Interaction : MonoBehaviour {
         m_animator.SetTrigger("Shoot");
         ray = m_cam.ScreenPointToRay(InputSubscribe.Raw.Player.Aim.ReadValue<Vector2>()); //Input.mousePosition //Old input system //WinCondition.Instance.inputSubscribe.AimInput
         if (Physics.Raycast(ray, out hitData, 1000, LayerMask.GetMask("MapCollider", "Child"))) {
-            SoundManager.PlaySound("tongue");
+            //SoundManager.PlaySound("tongue");
             Vector3 realPoint = new Vector3(hitData.point.x, 1f, hitData.point.z);
             lastRealPosition = realPoint;
             dir = (realPoint - transform.position);
@@ -107,7 +107,7 @@ public class Interaction : MonoBehaviour {
                         //                        Debug.Log(child.transform.name);
                         //                        Debug.Log(child.transform.gameObject.layer);
                         child.GetComponent<ChildContoller>().Eat();
-                        SoundManager.PlaySound("catch");
+                        //SoundManager.PlaySound("catch");
                         trail.enabled = true;
                         trail.gameObject.transform.position = child.transform.position;
                         float time = 0.85f;
@@ -115,8 +115,8 @@ public class Interaction : MonoBehaviour {
                         m_tongueCoroutine = StartCoroutine(UpdateLineRenderer());
                         StartCoroutine(StopUpdateLineRenderer(time));
                         lineRenderer.enabled = true;
-                        trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
-                        child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
+                        //trail.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
+                        //child.transform.DOMoveInTargetLocalSpace(transform, Vector3.zero, time).SetEase(Ease.InExpo);
                     }
                 } else {
 
@@ -180,8 +180,8 @@ public class Interaction : MonoBehaviour {
         lineRenderer.enabled = false;
         trail.enabled = false;
         StopCoroutine(m_tongueCoroutine);
-        SoundManager.PlaySound("kill");
-        ShaderManager.Instance.ProcessKill();
+        //SoundManager.PlaySound("kill");
+        //ShaderManager.Instance.ProcessKill();
         Destroy(child);
         Camera.main.GetComponent<CameraFollow>().Shake();
         canTongue = true;

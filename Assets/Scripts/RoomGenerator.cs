@@ -18,6 +18,12 @@ public class RoomGenerator : RoomGeneratorBase {
 	private Vector2Int m_spawnPoint;
 	[SerializeField] private List<Room> m_placedRooms;
 
+	[SerializeField] private int m_maxChildrenPerRoom;
+	[SerializeField] private int m_minChildrenPerRoom;
+	[SerializeField] private int m_maxNuns;
+	[SerializeField] private int m_minNuns;
+
+
 	// TEMPORARY
 	[SerializeField] private GameObject m_nunPrefab, m_childPrefab;
 
@@ -25,7 +31,10 @@ public class RoomGenerator : RoomGeneratorBase {
 
 
 	public override void Prepare() {
-		m_seed = Random.Range(0, 99999);
+		if (Game.SetMan.GetValue<bool>("Random seed overwrite")) {
+			m_seed = Game.SetMan.GetValue<int>("Custom seed");
+			Debug.Log($"Random seed overwrite: {m_seed}");
+		} else m_seed = Random.Range(0, 99999);
 	}
 
 	public override IEnumerator Generate() {
@@ -35,27 +44,28 @@ public class RoomGenerator : RoomGeneratorBase {
 		yield return null;
 		void Init() {
 
-			int mapSize = Game.SetMan.GetValue < int>("Map Size");
+			int mapSize = Game.SetMan.GetValue<int>("Map Size");
 			switch (mapSize) {
 				case 0:
-					m_width = 5;  m_height = 5;
+					m_width = 5; m_height = 5;
 					break;
 				case 1:
-					m_width = 7;  m_height = 7;
+					m_width = 7; m_height = 7;
 					break;
 				case 2:
-					m_width = 9;  m_height = 9;
+					m_width = 9; m_height = 9;
 					break;
 				case 3:
-					m_width = 11;  m_height = 11;
+					m_width = 11; m_height = 11;
 					break;
 				case 4:
-					m_width = 13;  m_height = 13;
+					m_width = 13; m_height = 13;
 					break;
 				case 5:
-					m_width = 15;  m_height = 15;
+					m_width = 15; m_height = 15;
 					break;
-				default: m_width = 7;  m_height = 7;
+				default:
+					m_width = 7; m_height = 7;
 					break;
 			}
 
@@ -162,7 +172,8 @@ public class RoomGenerator : RoomGeneratorBase {
 			prefab.ConfigureDoors(placement.x, placement.y, m_doorGrid);
 			for (int i = placement.x; i < placement.x + room.Width; i++) {
 				for (int j = placement.y; j < placement.y + room.Height; j++) {
-					if (room.constraints[i - placement.x, j - placement.y] == null || room.constraints[i - placement.x, j - placement.y].phantom) continue;
+					var constraints = room.constraints[i - placement.x, j - placement.y];
+					if (constraints == null || constraints.phantom) continue;
 					m_generationGrid[i, j] = prefab;
 				}
 			}
@@ -174,14 +185,14 @@ public class RoomGenerator : RoomGeneratorBase {
 
 		void GenerateNunsAndKids() {
 			foreach (var room in m_placedRooms) {
-				for (int i = 0; i < Random.Range(0, 3); i++) {
+				for (int i = 0; i < Random.Range(m_minChildrenPerRoom, m_maxChildrenPerRoom + 1); i++) {
 					if (NavMesh.SamplePosition(room.GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
 						Instantiate(m_childPrefab, hit.position, Quaternion.identity);
 					}
 				}
 			}
 
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < Random.Range(m_minNuns, m_maxNuns); i++) {
 				if (NavMesh.SamplePosition(m_placedRooms[Random.Range(0, m_placedRooms.Count)].GetMidPoint(), out var hit, 3, NavMesh.AllAreas)) {
 					Instantiate(m_nunPrefab, hit.position, Quaternion.identity);
 				}
@@ -189,11 +200,40 @@ public class RoomGenerator : RoomGeneratorBase {
 
 		}
 
+		void GenerateDoors() {
+			for (int i = 0; i < m_width; i++) {
+				for (int j = 0; j < m_height; j++) {
+					if (j != m_height - 1 && m_doorGrid[i, j].South && m_generationGrid[i, j] != m_generationGrid[i, j + 1] && m_generationGrid[i, j] != null) {
+						var psg = Instantiate(
+							m_roomSet.doorPrefabs.UnityRandomElement().gameObject,
+							Room.GetCellCenter(i, j) - new Vector3(0, 0, Room.CELL_SIZE / 2f),
+							Quaternion.Euler(0, 0, 0)
+						).GetComponent<Passage>();
+
+						Game.MainGameInfo.GetRoomData(m_generationGrid[i, j + 1]).AddPassage(psg);
+						Game.MainGameInfo.GetRoomData(m_generationGrid[i, j]).AddPassage(psg);
+						psg.Initialize(m_generationGrid[i, j], m_generationGrid[i, j + 1], Passage.Direction.Vertical);
+					}
+					if (i != m_width - 1 && m_doorGrid[i, j].East && m_generationGrid[i, j] != m_generationGrid[i + 1, j] && m_generationGrid[i, j] != null) {
+						var psg = Instantiate(
+							m_roomSet.doorPrefabs.UnityRandomElement().gameObject,
+							Room.GetCellCenter(i, j) + new Vector3(Room.CELL_SIZE / 2f, 0, 0),
+							Quaternion.Euler(0, 90, 0)
+						).GetComponent<Passage>();
+
+						Game.MainGameInfo.GetRoomData(m_generationGrid[i, j]).AddPassage(psg);
+						Game.MainGameInfo.GetRoomData(m_generationGrid[i + 1, j]).AddPassage(psg);
+						psg.Initialize(m_generationGrid[i, j], m_generationGrid[i + 1, j], Passage.Direction.Horizontal);
+					}
+				}
+			}
+		}
+
 		Status = "Creating layout";
 		Init();
 		SelectSpawnPoint();
-		CreateGrid();
 		RemoveDeadDoors();
+		CreateGrid();
 		yield return null;
 
 		var spawnRoom = PlaceRoom(m_roomSet.spawn, m_spawnPoint);
@@ -248,6 +288,7 @@ public class RoomGenerator : RoomGeneratorBase {
 
 		m_navMesh.BuildNavMesh();
 		GenerateNunsAndKids();
+		GenerateDoors();
 		RoomVariantManager.Release(types);
 	}
 

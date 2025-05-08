@@ -37,12 +37,14 @@ public class KrampusTongue : KrampusBehaviour {
     [SerializeField] private Timings m_sequence;
 
 
+    public Vector3 HitPoint => m_tongueDestination;
     private Vector3 m_tongueDestination;
     private float m_tongueTime = 0f;
+    public Vector3 TongueDirection => m_tongueDirection;
     private Vector3 m_tongueDirection;
     private float m_tongueExtensionFactor = 0f;
+    public IInteractable HitInteractable => m_hitInteractable;
     private IInteractable m_hitInteractable;
-    public IInteractable HitInteractable { get => m_hitInteractable; }
 
     private ITongueable m_hitTonguable;
     private IEdible m_hitEdible;
@@ -60,7 +62,6 @@ public class KrampusTongue : KrampusBehaviour {
     }
 
     public State CurrentState { get; private set; }
-    public Vector3 TongueDirection => m_tongueDirection;
 
     private void Awake() {
         m_sequence.Init();
@@ -166,9 +167,10 @@ public class KrampusTongue : KrampusBehaviour {
                         m_tongueDirection, out var hit, m_tongueLength, m_layerMask
                     ) ? hit.point : m_tongueOrigin.position + (m_tongueDirection * m_tongueLength);
 
+                m_tongueDestination = checkingPoint;
                 var hitObjects = Physics.OverlapCapsule(new Vector3(hit.point.x, Room.STANDARD_FLOOR_Y, hit.point.z), new Vector3(hit.point.x, Room.STANDARD_CEILING_Y, hit.point.z), m_tongueHitRadius);
 
-                m_hitInteractable = hitObjects.Select(w => w.GetComponent<IInteractable>()).Where(w => w != null && w.CanInteract(Kramp)).NullIfEmpty()?.FirstOrDefault();
+                m_hitInteractable = hitObjects.Select(w => w.GetComponentInParent<IInteractable>()).Where(w => w != null && w.CanInteract(Kramp)).NullIfEmpty()?.FirstOrDefault();
 
                 if (m_hitInteractable is IEdible edible) {
                     m_hitEdible = edible;
@@ -183,7 +185,7 @@ public class KrampusTongue : KrampusBehaviour {
 
                 // Determine the primary Tongueable - if we have already hit something, we give priority to the previously hit Interactable
                 if (m_hitInteractable == null || !m_hitInteractable.GameObject.TryGetComponent<ITongueable>(out m_hitTonguable)) {
-                    m_hitTonguable = hitObjects.Select(w => w.GetComponent<ITongueable>()).FirstOrDefault(w => w != null);
+                    m_hitTonguable = hitObjects.Select(w => w.GetComponentInParent<ITongueable>()).FirstOrDefault(w => w != null);
                 }
 
                 m_tongueDestination = m_hitInteractable == null ? checkingPoint : m_hitInteractable.InteractionPoint;

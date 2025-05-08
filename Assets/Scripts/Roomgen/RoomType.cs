@@ -2,6 +2,8 @@ using UnityEngine;
 using static KrampUtils.QuadDirection;
 using KrampUtils;
 using System.Linq;
+using System.Collections.Generic;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,6 +17,7 @@ namespace Roomgen {
         public RoomType basedOn;
         public string note = "";
         public int gradeOffset;
+        public List<Tag> tags;
         public bool[] supportedRots = new bool[4] { true, true, true, true };
         public int Width => constraints.Width;
         public int Height => constraints.Height;
@@ -139,7 +142,19 @@ namespace Roomgen {
             int gw = Target.Width;
             int gh = Target.Height;
 
-            var workArea = GUILayoutUtility.GetAspectRect(gw / (float)gh);
+            float maxWidth = EditorGUIUtility.currentViewWidth - 32;
+            float aspect = gw / (float)gh;
+
+            float tw = maxWidth;
+            float th = maxWidth / aspect;
+
+            if (th > 800) {
+                tw /= (th / 800f);
+                th = 800;
+            }
+
+            var workArea = GUILayoutUtility.GetRect(maxWidth, th);
+            workArea.width = tw;
 
             workArea.x += 16;
             workArea.width -= 32;
@@ -270,6 +285,14 @@ namespace Roomgen {
             EditorGUILayout.HelpBox("Which ways can this room get rotated in generation?", MessageType.Info);
         }
 
+        private void DrawTagsField() {
+            var so = new SerializedObject(Target);
+            var prop = so.FindProperty("tags");
+            EditorGUILayout.PropertyField(prop);
+
+            so.ApplyModifiedProperties();
+        }
+
         private void DrawGradeField() {
             GUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Grade");
@@ -367,6 +390,9 @@ namespace Roomgen {
             DrawPrefabField();
 
             GUILayout.Space(10);
+            DrawTagsField();
+
+            GUILayout.Space(10);
             DrawRotationFields();
 
             if (Target.prefab != dirtyPrefab || Target.note != dirtyNote || !Enumerable.SequenceEqual(Target.supportedRots, dirtyRotations)) {
@@ -386,6 +412,8 @@ namespace Roomgen {
                 DrawConstraintGrid();
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
+
+            DrawTagsField();
 
             if (!string.IsNullOrWhiteSpace(Target.note)) {
                 EditorGUILayout.HelpBox(Target.note, MessageType.None);

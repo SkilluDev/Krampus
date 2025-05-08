@@ -6,6 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Set", menuName = "Game/Room Set")]
 public class RoomSet : ScriptableObject {
     public RoomType[] types;
-    public GameObject[] doorPrefabs;
+    public Passage[] doorPrefabs;
     public RoomType spawn;
 }

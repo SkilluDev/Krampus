@@ -12,7 +12,7 @@ Shader "Test/ColorBlit"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" "RenderPipeline" = "UniversalPipeline"}
+        Tags { "RenderType"="Transparent" "RenderPipeline" = "UniversalPipeline"}
         LOD 100
         ZWrite Off
         Cull Off
@@ -116,8 +116,10 @@ Shader "Test/ColorBlit"
                 // Sample the color from the input texture
                 float4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_BlitTexture, input.texcoord);
                 color.rgb = floor(color.rgb * _Levels) / _Levels;
+                color.rgb *= 2;
+                color.rgb = saturate(color);
                 // Output the color from the texture, with the green value set to the chosen intensity
-                half4 finalColor = lerp(color, _OutlineColor, edgeFactor);
+                half4 finalColor = lerp(color, _OutlineColor, saturate(edgeFactor * _Intensity));
                 finalColor.a = color.a;
                 finalColor.a = finalColor.a*_Intensity;
                 return finalColor;

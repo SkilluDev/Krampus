@@ -16,6 +16,7 @@ public class Child : NPC, IEdible {
     [SerializeField] private int m_detectionRange = 5;
     [SerializeField] private MeshRenderer m_shapeRenderer;
     [SerializeField][FormerlySerializedAs("m_KillSoundBite")] private SoundBite m_killSoundBite;
+    [SerializeField] private TrailRenderer m_trailRenderer;
 
 
     [SerializeField] private float m_runSpeed = 8;
@@ -131,6 +132,7 @@ public class Child : NPC, IEdible {
 
     public void Consume(Krampus krampus) {
         m_killSoundBite.Play(transform.position, 1, true);
+        if(m_type!=Game.MainGameInfo.GoodChildType) Game.MainGameInfo.ShaderManager.ProcessKill();
         Destroy(gameObject);
     }
     public void Hit(Krampus krampus) {
@@ -161,6 +163,19 @@ public class Child : NPC, IEdible {
 
         m_shapeRenderer.material.mainTexture = type.shape;
         m_shapeRenderer.material.color = type.color;
+        m_trailRenderer.colorGradient = new Gradient() {
+	        alphaKeys = new GradientAlphaKey[] { new(1, 0), new(1, 1) },
+	        colorKeys = new GradientColorKey[] { new(Type.color, 0.5f), new(Type.color+new Color(0.25f,0.25f,0.25f), 1) },
+	        colorSpace = ColorSpace.Linear,
+	        mode = GradientMode.Blend
+        };
+    }
+
+    private void OnDestroy() {
+	    m_trailRenderer.transform.parent = null;
+	    m_trailRenderer.transform.position = transform.position;
+	    m_trailRenderer.autodestruct = true;
+	    m_trailRenderer = null;
     }
 
 }

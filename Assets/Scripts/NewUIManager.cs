@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -46,7 +48,8 @@ public class NewUIManager : MonoBehaviour {
 
         if (InputSubscribe.Raw.UI.Pause.triggered) SwitchPauseMenu();
 
-        if (Game.MainGameInfo.Children.Count == 0 && !Game.IsLoading) {
+        if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
+	        Debug.Log("won");
             m_gameWinScreen.SetActive(true);
             m_isGameWon = true;
             Time.timeScale = 0;
@@ -59,5 +62,10 @@ public class NewUIManager : MonoBehaviour {
             if (InputSubscribe.Raw.UI.Restart.triggered) //restart with R
                 Game.LoadState(Game.State.MainGame);
         }
+    }
+
+    private void Awake() {
+	    m_isGameOver = false;
+	    m_gameOverScreen.SetActive(false);
     }
 }
