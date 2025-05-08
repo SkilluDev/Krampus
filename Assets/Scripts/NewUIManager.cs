@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -46,7 +47,8 @@ public class NewUIManager : MonoBehaviour {
 
         if (InputSubscribe.Raw.UI.Pause.triggered) SwitchPauseMenu();
 
-        if (Game.MainGameInfo.Children.Count == 0 && !Game.IsLoading) {
+        if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
+	        Debug.Log("won");
             m_gameWinScreen.SetActive(true);
             m_isGameWon = true;
             Time.timeScale = 0;

@@ -131,6 +131,7 @@ public class Child : NPC, IEdible {
 
     public void Consume(Krampus krampus) {
         m_killSoundBite.Play(transform.position, 1, true);
+        if(m_type!=Game.MainGameInfo.GoodChildType) Game.MainGameInfo.ShaderManager.ProcessKill();
         Destroy(gameObject);
     }
     public void Hit(Krampus krampus) {

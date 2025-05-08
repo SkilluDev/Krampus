@@ -181,7 +181,7 @@ public class Interaction : MonoBehaviour {
         trail.enabled = false;
         StopCoroutine(m_tongueCoroutine);
         SoundManager.PlaySound("kill");
-        ShaderManager.Instance.ProcessKill();
+        //ShaderManager.Instance.ProcessKill();
         Destroy(child);
         Camera.main.GetComponent<CameraFollow>().Shake();
         canTongue = true;

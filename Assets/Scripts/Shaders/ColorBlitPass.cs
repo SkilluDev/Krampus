@@ -13,7 +13,7 @@ namespace Shaders {
 
 		public ColorBlitPass(Material material) {
 			m_Material = material;
-			renderPassEvent = RenderPassEvent.BeforeRenderingTransparents;
+			renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
 		}
 
 		public void SetTarget(RTHandle colorHandle) //, float intensity, float levels)
