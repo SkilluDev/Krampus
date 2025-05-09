@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3527446672335916520}
   - component: {fileID: 3248978696117376871}
   - component: {fileID: 7787641682293697395}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Post-Process Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10.546063, y: -3.315938, z: 20.526852}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -62,9 +62,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0151f53e8de743cd9d53a276fd1f5d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDistance: 15
-  abberIntensity: 0.1
-  vignetteIntensity: 0.125
-  maxVignette: 0.35
-  maxChroma: 0.33
-  resetSpeed: 0.5
+  m_minDistance: 15
+  m_abberIntensity: 0.2
+  m_vignetteIntensity: 0.2
+  m_maxVignette: 0.3
+  m_maxChroma: 1
+  m_resetSpeed: 1
