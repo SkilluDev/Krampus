@@ -70,10 +70,14 @@ public class NewUIManager : MonoBehaviour {
             Time.timeScale = 0;
         }
         if (m_currentGameState == MainGameInfo.State.Over || m_currentGameState == MainGameInfo.State.Paused || m_currentGameState == MainGameInfo.State.Won) {//if the game is over, won, or paused, you can
-            if (InputSubscribe.Raw.UI.MenuReturn.triggered) //go back to menu with M
+            if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
+                Game.MainGameInfo.setState(MainGameInfo.State.Ongoing);
                 Game.LoadState(Game.State.MainMenu);
-            if (InputSubscribe.Raw.UI.Restart.triggered) //restart with R
+            }
+            if (InputSubscribe.Raw.UI.Restart.triggered) { //restart with R
+                Game.MainGameInfo.setState(MainGameInfo.State.Ongoing);
                 Game.LoadState(Game.State.MainGame);
+            }
         }
     }
 

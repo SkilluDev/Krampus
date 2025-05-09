@@ -45,7 +45,7 @@ public class Door : Passage, IInteractable {
     }
 
     public void Interact(IInteractor interactor) {
-        Close();
+        Close(true);
     }
 
     // TODO: redo
@@ -60,8 +60,9 @@ public class Door : Passage, IInteractable {
         IsOpen = true;
     }
 
-    private void Close() {
+    private void Close(bool swiftly) {
         if (!IsOpen) return;
+        m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_openProperty, false);
         m_blocking.enabled = true;
         m_interactionLeft.enabled = false;
@@ -72,6 +73,11 @@ public class Door : Passage, IInteractable {
     private void OnTriggerExit(Collider other) {
         if (!other.TryGetComponent<ICharacter>(out var character)) return;
         m_charactersInDoor.Remove(character);
+        if (character is Nun or Child) {
+            if (character.VelocitySqr < m_fastOpenObjectVelocity * m_fastOpenObjectVelocity) {
+                Close(false);
+            }
+        }
     }
 
     private void OnTriggerStay(Collider other) {
