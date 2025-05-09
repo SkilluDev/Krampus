@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.Collections;
+using System.Linq;
 using Roomgen;
 using UnityEngine;
-using System;
 
 public class RoomData : MonoBehaviour {
 	public Room Room { get; private set; }
@@ -39,5 +38,15 @@ public class RoomData : MonoBehaviour {
 
 	public void AddPassage(Passage psg) {
 		m_passages.Add(psg);
+	}
+
+	public void MakeNoise(Vector3 place, float alertDistance) {
+		var colliders = Physics.OverlapSphere(place, alertDistance)
+			.Where(w => Room.IsPointInRoom(w.transform.position))
+			.Select(w => w.GetComponent<INoiseReactor>())
+			.Where(w => w != null);
+
+		foreach (var reactor in colliders)
+			reactor.Alert(this, place);
 	}
 }
