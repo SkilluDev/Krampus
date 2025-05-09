@@ -12,9 +12,13 @@ public class SoundBite : ScriptableObject {
 	[SerializeField] private float m_pitch = 0.91f;
 	[SerializeField] private float m_volume = 1f;
 	private float m_deviation = 0.1f;
-	public float GetPitch(bool random = false) => random?Random.Range(m_pitch-m_deviation, m_pitch+m_deviation):m_pitch;
-	public float GetVolume(bool random = false) => random?Random.Range(m_volume-m_deviation, m_volume+m_deviation):m_volume;
-	public AudioClip GetClip(bool sequential = false) => clips[sequential?Random.Range(0, clips.Length):m_nextIndex];
+	public float GetPitch(bool random = false) => random ? Random.Range(m_pitch - m_deviation, m_pitch + m_deviation) : m_pitch;
+	public float GetVolume(bool random = false) => random ? Random.Range(m_volume - m_deviation, m_volume + m_deviation) : m_volume;
+	public AudioClip GetClip(bool sequential = false) => clips[sequential ? Random.Range(0, clips.Length) : m_nextIndex];
+
+	//TODO: remove
+	[System.Obsolete]
+	public void SetVolume(float a) => m_volume = a;
 
 	public void Play(Vector3 location, float threed, bool sequential = false, bool random = false) {
 		m_nextIndex = (m_nextIndex + 1) % clips.Length;

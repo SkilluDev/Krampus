@@ -37,6 +37,11 @@ public class Door : Passage, IInteractable {
     public Vector3 InteractionPoint => m_hitRight ? m_interactionRight.transform.position + m_interactionRight.transform.up : m_interactionLeft.transform.position + m_interactionLeft.transform.up;
 
 
+    [System.Obsolete]
+    private float CalculateVolumeOverride() {
+        return Mathf.InverseLerp(50, 20, Vector3.Distance(Game.MainGameInfo.Krampus.transform.position, transform.position)) * 0.5f;
+    }
+
     private void Start() {
         m_animator.SetBool(m_openProperty, false);
         m_blocking.enabled = true;
@@ -51,6 +56,7 @@ public class Door : Passage, IInteractable {
     // TODO: redo
     private void Open(bool swiftly, bool flip) {
         if (IsOpen) return;
+        m_doorOpen.SetVolume(CalculateVolumeOverride());
         m_doorOpen.Play(transform.position, 1f);
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_invertProperty, flip);
@@ -63,6 +69,8 @@ public class Door : Passage, IInteractable {
 
     private void Close(bool swiftly) {
         if (!IsOpen) return;
+        m_doorClose.SetVolume(CalculateVolumeOverride());
+
         m_doorClose.Play(transform.position, 1f);
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_openProperty, false);
