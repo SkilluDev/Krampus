@@ -377,6 +377,15 @@ namespace KrampInput
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MenuReturn"",
+                    ""type"": ""Button"",
+                    ""id"": ""a53242a2-c83c-4799-b9de-c265026c4282"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -599,6 +608,28 @@ namespace KrampInput
                     ""action"": ""Tilt"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cbc5252c-7f5c-4a04-b8ee-ff2890ec17c2"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";PC"",
+                    ""action"": ""MenuReturn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e841f26-1d24-405f-997a-a82e56d7ed9f"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Console"",
+                    ""action"": ""MenuReturn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -659,6 +690,7 @@ namespace KrampInput
             m_UI_Restart = m_UI.FindAction("Restart", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
             m_UI_Tilt = m_UI.FindAction("Tilt", throwIfNotFound: true);
+            m_UI_MenuReturn = m_UI.FindAction("MenuReturn", throwIfNotFound: true);
         }
 
         ~@PlayerControls()
@@ -817,6 +849,7 @@ namespace KrampInput
         private readonly InputAction m_UI_Restart;
         private readonly InputAction m_UI_Navigate;
         private readonly InputAction m_UI_Tilt;
+        private readonly InputAction m_UI_MenuReturn;
         public struct UIActions
         {
             private @PlayerControls m_Wrapper;
@@ -826,6 +859,7 @@ namespace KrampInput
             public InputAction @Restart => m_Wrapper.m_UI_Restart;
             public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
             public InputAction @Tilt => m_Wrapper.m_UI_Tilt;
+            public InputAction @MenuReturn => m_Wrapper.m_UI_MenuReturn;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -850,6 +884,9 @@ namespace KrampInput
                 @Tilt.started += instance.OnTilt;
                 @Tilt.performed += instance.OnTilt;
                 @Tilt.canceled += instance.OnTilt;
+                @MenuReturn.started += instance.OnMenuReturn;
+                @MenuReturn.performed += instance.OnMenuReturn;
+                @MenuReturn.canceled += instance.OnMenuReturn;
             }
 
             private void UnregisterCallbacks(IUIActions instance)
@@ -869,6 +906,9 @@ namespace KrampInput
                 @Tilt.started -= instance.OnTilt;
                 @Tilt.performed -= instance.OnTilt;
                 @Tilt.canceled -= instance.OnTilt;
+                @MenuReturn.started -= instance.OnMenuReturn;
+                @MenuReturn.performed -= instance.OnMenuReturn;
+                @MenuReturn.canceled -= instance.OnMenuReturn;
             }
 
             public void RemoveCallbacks(IUIActions instance)
@@ -929,6 +969,7 @@ namespace KrampInput
             void OnRestart(InputAction.CallbackContext context);
             void OnNavigate(InputAction.CallbackContext context);
             void OnTilt(InputAction.CallbackContext context);
+            void OnMenuReturn(InputAction.CallbackContext context);
         }
     }
 }

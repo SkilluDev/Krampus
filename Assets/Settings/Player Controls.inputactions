@@ -353,6 +353,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "MenuReturn",
+                    "type": "Button",
+                    "id": "a53242a2-c83c-4799-b9de-c265026c4282",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -573,6 +582,28 @@
                     "processors": "",
                     "groups": ";Mobile",
                     "action": "Tilt",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cbc5252c-7f5c-4a04-b8ee-ff2890ec17c2",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC",
+                    "action": "MenuReturn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4e841f26-1d24-405f-997a-a82e56d7ed9f",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Console",
+                    "action": "MenuReturn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
