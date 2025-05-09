@@ -12,12 +12,12 @@ public class Door : Passage, IInteractable {
     [SerializeField] private Collider m_blocking;
     [SerializeField] private Collider m_interactionLeft;
     [SerializeField] private Collider m_interactionRight;
+    [SerializeField] private SoundBite m_doorClose;
+    [SerializeField] private SoundBite m_doorOpen;
     [SerializeField] private float m_fastOpenObjectVelocity = 6f;
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_openProperty, m_openSuddenProperty, m_invertProperty;
 
-
     [SerializeField] private float m_stunDuration;
-    [SerializeField] private float m_StunDelay;
 
 
     private List<ICharacter> m_charactersInDoor = new List<ICharacter>();
@@ -51,6 +51,7 @@ public class Door : Passage, IInteractable {
     // TODO: redo
     private void Open(bool swiftly, bool flip) {
         if (IsOpen) return;
+        m_doorOpen.Play(transform.position, 1f);
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_invertProperty, flip);
         m_animator.SetBool(m_openProperty, true);
@@ -62,6 +63,7 @@ public class Door : Passage, IInteractable {
 
     private void Close(bool swiftly) {
         if (!IsOpen) return;
+        m_doorClose.Play(transform.position, 1f);
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_openProperty, false);
         m_blocking.enabled = true;

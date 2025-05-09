@@ -43,6 +43,12 @@ namespace Roomgen {
             return new Vector3(CELL_SIZE * i, 0, -CELL_SIZE * j);
         }
 
+        public static Vector2Int GetCellPosition(Vector3 position) {
+            int x = Mathf.FloorToInt(position.x / CELL_SIZE);
+            int y = Mathf.FloorToInt(-position.z / CELL_SIZE);
+            return new Vector2Int(x, y);
+        }
+
         public void ConfigureDoors(int x, int y, DoorFlags[,] doors) {
             for (int i = 0; i < Width; i++) {
                 for (int j = 0; j < Height; j++) {
@@ -70,6 +76,14 @@ namespace Roomgen {
             var randomCell = GetRandomCell();
             var corner = Room.GetCellCenter(randomCell.x, randomCell.y);
             return transform.position + corner + new Vector3(Random.Range(Room.CELL_SIZE / -2f, Room.CELL_SIZE / 2f), 0, Random.Range(Room.CELL_SIZE / -2f, Room.CELL_SIZE / 2f));
+        }
+
+        public bool IsPointInRoom(Vector3 position) {
+            var pt = transform.InverseTransformPoint(position);
+            var cell = GetCellPosition(pt);
+            if (cell.x < 0 || cell.x >= Width) return false;
+            if (cell.y < 0 || cell.y >= Height) return false;
+            return m_type.constraints[cell.x, cell.y] != null && !m_type.constraints[cell.x, cell.y].phantom;
         }
 
         public Bounds GetBounds() {
