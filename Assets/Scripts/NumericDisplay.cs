@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,19 +9,37 @@ public class NumericDisplay : MonoBehaviour {
     [SerializeField] private Image[] m_integralPlaces;
     [SerializeField] private Image[] m_fractionalPlaces;
 
-    private float m_value;
+    [SerializeField] private float m_value;
+    [SerializeField] private Color m_color;
 
     public float Value {
         get => m_value;
         set => SetValue(value);
     }
 
+    public Color Color {
+        get => m_color;
+        set => SetColor(value);
+    }
+
+    private void SetColor(Color value) {
+        foreach (var w in m_integralPlaces) {
+            w.color = value;
+        }
+        foreach (var w in m_fractionalPlaces) {
+            w.color = value;
+        }
+    }
+
     private void Awake() {
-        SetValue(69.24f);
+        SetValue(m_value);
+        SetColor(m_color);
     }
 
 
     public void SetValue(float value) {
+        if (value < 0) value = 0;
+
         int integral = Mathf.FloorToInt(value);
         int fractional = Mathf.RoundToInt((value - integral) * Mathf.Pow(10, m_fractionalPlaces.Length));
 
