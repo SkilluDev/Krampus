@@ -45,10 +45,7 @@ public class KrampusTongue : KrampusBehaviour {
     private float m_tongueExtensionFactor = 0f;
     public IInteractable HitInteractable => m_hitInteractable;
     private IInteractable m_hitInteractable;
-
     private ITongueable m_hitTonguable;
-
-    public bool m_isConsuming  =>  m_hitEdible != null;
     private IEdible m_hitEdible;
     private List<(float dst, ITongueable component)> m_midwayToungables;
 

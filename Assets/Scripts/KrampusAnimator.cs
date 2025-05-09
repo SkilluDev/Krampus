@@ -55,7 +55,7 @@ public class KrampusAnimator : KrampusBehaviour {
             case (KrampusTongue.State.PreRetreat, KrampusTongue.State.Retreating):
                 if (Kramp.Tongue.HitInteractable != null) {
                     m_catchSoundBite.Play(transform.position, 1, true);
-                    m_animator.SetBool(m_tongueShouldEatProperty, (Kramp.Tongue.m_isConsuming));
+                    m_animator.SetBool(m_tongueShouldEatProperty, Kramp.Tongue.HitInteractable is IEdible);
                 }
                 break;
 
