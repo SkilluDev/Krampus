@@ -28,6 +28,10 @@ public class ViewCone : MonoBehaviour {
         return false;
     }
 
+    public void SetFacing(Vector3 direction) {
+        transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+    }
+
     private void Awake() {
         m_frameCounter = Random.Range(0, m_additionalRaycastDelta);
     }

@@ -20,6 +20,8 @@ public class Nun : NPC {
 
     [SerializeField] private float m_runSpeed = 8;
 
+    private bool m_oldBehaviour = true;
+
     private float m_timeout;
 
     private void Ready() {
@@ -39,31 +41,35 @@ public class Nun : NPC {
     }
 
     private void Update() {
-        switch (CurrentState) {
-            case State.Idle:
-                if (m_currentPath.status == NavMeshPathStatus.PathInvalid || NearDestination(m_interactionDistance)) {
-                    SelectNewWanderLocation();
-                }
+        if (m_oldBehaviour) {
+            switch (CurrentState) {
+                case State.Idle:
+                    if (m_currentPath.status == NavMeshPathStatus.PathInvalid || NearDestination(m_interactionDistance)) {
+                        SelectNewWanderLocation();
+                    }
 
-                if ((Game.MainGameInfo.Krampus.transform.position - transform.position).sqrMagnitude < m_detectionRange * m_detectionRange) {
-                    SwitchState(State.ChasingKrampus);
-                }
+                    if ((Game.MainGameInfo.Krampus.transform.position - transform.position).sqrMagnitude < m_detectionRange * m_detectionRange) {
+                        SwitchState(State.ChasingKrampus);
+                    }
 
-                SetVelocity(GetPathDirection() * m_baseMovementSpeed);
-                break;
-            case State.Listening:
-                m_timeout -= Time.deltaTime;
-                if (m_timeout < 0) SwitchState(State.ChasingKrampus);
-                break;
-            case State.ChasingKrampus:
-                SetDestination(Game.MainGameInfo.Krampus.transform.position);
-                SetVelocity(GetPathDirection() * m_runSpeed);
-                break;
-            case State.Stunned:
-                m_timeout -= Time.deltaTime;
-                if (m_timeout < 0) SwitchState(State.Idle);
-                SetVelocity(Vector3.zero);
-                break;
+                    SetVelocity(GetPathDirection() * m_baseMovementSpeed);
+                    break;
+                case State.Listening:
+                    m_timeout -= Time.deltaTime;
+                    if (m_timeout < 0) SwitchState(State.ChasingKrampus);
+                    break;
+                case State.ChasingKrampus:
+                    SetDestination(Game.MainGameInfo.Krampus.transform.position);
+                    SetVelocity(GetPathDirection() * m_runSpeed);
+                    break;
+                case State.Stunned:
+                    m_timeout -= Time.deltaTime;
+                    if (m_timeout < 0) SwitchState(State.Idle);
+                    SetVelocity(Vector3.zero);
+                    break;
+            }
+        } else {
+            //
         }
     }
 
@@ -76,22 +82,35 @@ public class Nun : NPC {
     }
 
     public void ActivateTheBitch(float timeout) {
-        m_timeout = timeout;
-        SwitchState(State.Listening);
+        if (m_oldBehaviour) {
+            m_timeout = timeout;
+            SwitchState(State.Listening);
+        } else {
+            //
+        }
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
-            return;
+        if (m_oldBehaviour) {
+            if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
+                return;
+            }
+            onAttack?.Invoke(CurrentState);
+            SwitchState(State.Listening);
+            Game.MainGameInfo.Krampus.Kontroller.KrampTermination();
+        } else {
+            //
+
         }
-        onAttack?.Invoke(CurrentState);
-        SwitchState(State.Listening);
-        Game.MainGameInfo.Krampus.Kontroller.KrampTermination();
     }
 
     public void Stun(float duration) {
-        m_timeout = duration;
-        SwitchState(State.Stunned);
+        if (m_oldBehaviour) {
+            m_timeout = duration;
+            SwitchState(State.Stunned);
+        } else {
+            //
+        }
     }
 
 }
