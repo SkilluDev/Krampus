@@ -17,7 +17,7 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private bool m_isGameWon = false;
     [SerializeField] private bool m_isGamePaused = false;
 
-
+    [SerializeField] private NumericDisplay m_timerDisplay;
 
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
@@ -55,6 +55,7 @@ public class NewUIManager : MonoBehaviour {
         }
 
         m_timerText.text = Game.MainGameInfo.Timer.GameTime.ToString("00");
+        m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
 
         if (InputSubscribe.Raw.UI.Pause.triggered) SwitchPauseMenu();
 
