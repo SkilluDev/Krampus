@@ -1,5 +1,4 @@
 using System.Collections;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -147,7 +146,7 @@ public class Interaction : MonoBehaviour {
 
 
     private IEnumerator EmptyTongueOut(float time) {
-        empty.transform.DOMove(tonguePoint, time).SetEase(Ease.OutExpo);
+        //empty.transform.DOMove(tonguePoint, time).SetEase(Ease.OutExpo);
         lineRenderer.enabled = true;
         canTongue = false;
         while (true) {
@@ -160,7 +159,7 @@ public class Interaction : MonoBehaviour {
     private IEnumerator EmptyTongueIn(float time) {
         yield return new WaitForSeconds(time + 0.1f);
         //StartCoroutine(Dash(new Vector3(empty.transform.position.x, 1f, empty.transform.position.z)));
-        empty.transform.DOMove(m_tonguePosition.position, time).SetEase(Ease.InExpo);
+        //empty.transform.DOMove(m_tonguePosition.position, time).SetEase(Ease.InExpo);
 
 
         yield return new WaitForSeconds(time);
