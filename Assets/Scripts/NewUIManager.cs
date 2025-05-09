@@ -22,20 +22,22 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private Image m_fillBar;
     private MainGameInfo.State m_currentGameState;
 
-    [SerializeField] private Color m_goodColor = new Color(1.0f, 1.0f, 1.0f); // Or use Color.white
-    [SerializeField] private Color m_badColor = new Color(0.7529412f, 0.0f, 0.03529412f);
-
+    private Color m_originalTimerColor;
+    [SerializeField] private Color m_goodTimerColor;
+    [SerializeField] private Color m_badTimerColor;
 
 
     private void OnChildEaten(ChildType childType) {
 	    Color destinationColor;
-	    if (childType == Game.MainGameInfo.GoodChildType) {
-		    destinationColor = m_goodColor;
+	    if (childType != Game.MainGameInfo.GoodChildType) {
+		    destinationColor = m_goodTimerColor;
 	    } else {
-			destinationColor = m_badColor;
+			destinationColor = m_badTimerColor;
 	    }
 
-	    //LMotion.Create(m_timerDisplay.Color, destinationColor, 1).WithEase(Ease.InOutCubic).WithLoops(2, LoopType.Yoyo).Bind(m_timerDisplay.SetColor);
+	    LMotion.Create(m_timerDisplay.Color, destinationColor, 0.1f).WithEase(Ease.InOutCubic).WithOnComplete(
+		    ()=>LMotion.Create(destinationColor, m_originalTimerColor, 1.2f).WithEase(Ease.InOutCubic).Bind(m_timerDisplay.SetColor)
+			    ).Bind(m_timerDisplay.SetColor);
 
     }
 
@@ -102,5 +104,6 @@ public class NewUIManager : MonoBehaviour {
 
     private void Ready() {
 	    Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
+	    m_originalTimerColor = m_timerDisplay.Color;
     }
 }
