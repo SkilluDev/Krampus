@@ -181,7 +181,7 @@ public class Child : NPC, IEdible {
                     m_timeout -= Time.deltaTime;
                     SetVelocity(Vector3.zero);
                     if (m_timeout <= 0) {
-                        SwitchState(State.Alerted);
+                        SwitchState(State.Idle);
                     }
                     break;
 
