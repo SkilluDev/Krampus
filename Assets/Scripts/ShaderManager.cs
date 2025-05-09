@@ -73,6 +73,7 @@ public class ShaderManager : MonoBehaviour {
 		} else {
 			m_fade = false;
 			m_shaderTime = 0f;
+			m_currentIntensity = 0f;
 		}
 		m_material.SetFloat("_Intensity", m_currentIntensity);
 		m_shaderTime += Time.deltaTime;
