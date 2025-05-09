@@ -27,6 +27,10 @@ namespace KrampUtils {
         }
 
         public static Vector3 RandomInBounds(Bounds bounds) => new Vector3(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y), Random.Range(bounds.min.z, bounds.max.z));
+
+        public static Vector3 NoX(this Vector3 vector) => new Vector3(0, vector.y, vector.z);
+        public static Vector3 NoY(this Vector3 vector) => new Vector3(vector.x, 0, vector.z);
+        public static Vector3 NoZ(this Vector3 vector) => new Vector3(vector.x, vector.y, 0);
     }
 
 }

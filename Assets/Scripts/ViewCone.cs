@@ -1,0 +1,60 @@
+using KrampUtils;
+using NaughtyAttributes;
+using Roomgen;
+using UnityEngine;
+
+public class ViewCone : MonoBehaviour {
+    [BoxGroup("Cone")] public float fov = 60;
+    [BoxGroup("Cone")] public float range = 15;
+    [BoxGroup("Cone")] public Transform trackedObject;
+    [BoxGroup("Cone")] public LayerMask visionMask;
+
+    [SerializeField] private LineRenderer m_renderer;
+    [SerializeField] private int m_additionalRaycastDelta = 1;
+    [SerializeField] private float m_displaySmoothing = 4;
+
+    private Vector3[] m_targetConePositions = new Vector3[5];
+    private Vector3[] m_previousTargetConePositions = new Vector3[5];
+    private Vector3[] m_conePositions = new Vector3[5];
+    private int m_frameCounter = 0;
+
+    public bool Detect() {
+        if (Vector3.SqrMagnitude(trackedObject.position - transform.position) > range * range) return false;
+        if (Vector3.Angle(transform.forward, (trackedObject.transform.position - transform.position).NoY()) > fov / 2) return false;
+
+        if (Physics.Raycast(transform.position, trackedObject.transform.position - transform.position, out var hit, range, visionMask, QueryTriggerInteraction.Ignore)) {
+            if (hit.collider.transform == trackedObject) return true;
+        }
+        return false;
+    }
+
+    private void Awake() {
+        m_frameCounter = Random.Range(0, m_additionalRaycastDelta);
+    }
+
+    private Vector3 GetRaycastedPosition(float angle) {
+        var direction = Quaternion.Euler(0, angle, 0) * transform.forward;
+        var point = Physics.Raycast(transform.position, direction, out var hit, range, visionMask, QueryTriggerInteraction.Ignore) ? hit.point : transform.position + direction * range;
+        point = transform.InverseTransformPoint(point);
+        return point.NoY();
+    }
+
+    private void Update() {
+        for (int i = 0; i < m_conePositions.Length; i++) {
+            m_conePositions[i] = Vector3.Lerp(m_conePositions[i], Vector3.Lerp(m_previousTargetConePositions[i], m_targetConePositions[i], (m_frameCounter % m_additionalRaycastDelta) / (float)m_additionalRaycastDelta), Time.deltaTime * m_displaySmoothing);
+        }
+        m_renderer.positionCount = m_conePositions.Length;
+        m_renderer.SetPositions(m_conePositions);
+    }
+
+    private void FixedUpdate() {
+        m_frameCounter++;
+        if (m_frameCounter % m_additionalRaycastDelta != 0) return;
+        System.Array.Copy(m_targetConePositions, m_previousTargetConePositions, m_targetConePositions.Length);
+        m_targetConePositions[0] = new Vector3(0, Room.STANDARD_FLOOR_Y + 0.05f, 0);
+        m_targetConePositions[1] = GetRaycastedPosition(-fov / 2f);
+        m_targetConePositions[2] = GetRaycastedPosition(Mathf.Clamp(Vector3.SignedAngle(transform.forward, (trackedObject.transform.position - transform.position).NoY(), Vector3.up), -fov / 2f + 1f, fov / 2f - 1f));
+        m_targetConePositions[3] = GetRaycastedPosition(fov / 2f);
+        m_targetConePositions[4] = new Vector3(0, Room.STANDARD_FLOOR_Y + 0.05f, 0);
+    }
+}
