@@ -10,7 +10,8 @@ public class TimerSpriteChanger : MonoBehaviour {
     private Sprite currentSprite;
 
     void Update() {
-        currentSprite = m_spriteSheet[(int)(Game.MainGameInfo.Timer.GameTime / m_decimalPlace) % 10];
+	    var index = (int)(Game.MainGameInfo.Timer.GameTime / m_decimalPlace) % 10;
+        currentSprite = m_spriteSheet[index<0?0:index];
         m_image.sprite = currentSprite;
     }
 }

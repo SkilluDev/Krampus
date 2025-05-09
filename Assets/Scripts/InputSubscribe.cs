@@ -2,6 +2,7 @@ using UnityEngine;
 using KrampInput;
 using UnityEngine.InputSystem;
 using System;
+using System.Linq;
 
 public class InputSubscribe : MonoBehaviour {
 	[Serializable]
@@ -18,6 +19,9 @@ public class InputSubscribe : MonoBehaviour {
 			return m_playerControls;
 		}
 	}
+
+
+
 	public static Vector2 Movement => Raw.Player.Move.ReadValue<Vector2>();
 
 	public static Vector2 Aim => Raw.Player.Aim.ReadValue<Vector2>();
@@ -37,6 +41,7 @@ public class InputSubscribe : MonoBehaviour {
 	}
 
 	public static void ChangeInputMethod(Method method) {
+		if (InputMethod == method) return;
 		Shutdown();
 		InputMethod = method;
 		Init(method.ToString());
@@ -45,7 +50,9 @@ public class InputSubscribe : MonoBehaviour {
 	private static void Init(string method = null) {
 		if (m_playerControls != null) return;
 		m_playerControls = new PlayerControls();
-		if (method != null) m_playerControls.bindingMask = InputBinding.MaskByGroup(method);
+		if (method != null) {
+			m_playerControls.bindingMask = InputBinding.MaskByGroup(method);
+		}
 		m_playerControls.Player.Enable();
 		m_playerControls.UI.Enable();
 	}

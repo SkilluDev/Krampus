@@ -50,7 +50,7 @@ public class KrampusController : KrampusBehaviour {
 	private void Update() {
 		if (CurrentState == State.Dead) return;
 
-		Debug.LogWarning(Game.MainGameInfo.Timer);
+//		Debug.LogWarning(Game.MainGameInfo.Timer);
 		if (Game.MainGameInfo.Timer.GameTime < 0) {
 			Debug.Log("dead as hell");
 			KrampTermination();
