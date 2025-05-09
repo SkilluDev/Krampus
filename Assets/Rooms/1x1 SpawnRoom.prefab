@@ -93,7 +93,6 @@ GameObject:
   - component: {fileID: 4314776611565629856}
   - component: {fileID: 4404262684039328325}
   - component: {fileID: 4155700772930809905}
-  - component: {fileID: 1771649204257536301}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -188,22 +187,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 6d5d7153bce7c4445a589575b200b2dc, type: 2}
---- !u!208 &1771649204257536301
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1357932435284627332}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 7.5000005, y: 0.5, z: 7.5000005}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 7.5000005, y: 0, z: -7.5000005}
-  m_TimeToStationary: 0.5
 --- !u!1 &2677311227784641254
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,7 +242,7 @@ MonoBehaviour:
   - {fileID: 1232274546274138324}
   - {fileID: 1470137157213200737}
   m_room: {fileID: 7770416744503100645}
-  m_gizmoColor: {r: 0.6, g: 0.28, b: 0.12, a: 0.7}
+  m_gizmoColor: {r: 0.6, g: 0.51000005, b: 0.060000017, a: 0.7}
 --- !u!1 &5851143194266592450
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +354,7 @@ MonoBehaviour:
   - {fileID: 1759401282866061956}
   - {fileID: 291788335975175927}
   m_room: {fileID: 7770416744503100645}
-  m_gizmoColor: {r: 0.5, g: 0.6, b: 0.3, a: 0.7}
+  m_gizmoColor: {r: 0.39000002, g: 0.6, b: 0.18, a: 0.7}
 --- !u!1 &8150221635183466446
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,7 +527,7 @@ MonoBehaviour:
   - {fileID: 8065643983676140599}
   - {fileID: 5715531860918819653}
   m_room: {fileID: 7770416744503100645}
-  m_gizmoColor: {r: 0.060000017, g: 0.6, b: 0.060000017, a: 0.7}
+  m_gizmoColor: {r: 0.6, g: 0.3, b: 0.45000002, a: 0.7}
 --- !u!1001 &2472032231142126470
 PrefabInstance:
   m_ObjectHideFlags: 0

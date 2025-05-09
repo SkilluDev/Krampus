@@ -88,8 +88,7 @@ public class ShaderManager : MonoBehaviour {
 
 	public void ProcessKill() {
 		float ratio = (Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count() + 1f) /
-		              Game.MainGameInfo.BadChildrenCountOnStart;
-		Debug.Log(ratio+"ratio");
+					  Game.MainGameInfo.BadChildrenCountOnStart;
 		SetIntensity(m_maxIntensity * ratio);
 		SetSplitToning(ratio);
 	}

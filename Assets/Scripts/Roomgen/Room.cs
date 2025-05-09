@@ -1,14 +1,8 @@
 using UnityEngine;
 using KrampUtils;
-using System;
+
 using System.Collections.Generic;
 using Unity.AI.Navigation;
-
-
-
-
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -58,14 +52,24 @@ namespace Roomgen {
             }
         }
 
-        public void BuildNavMeshes() {
-            foreach (var m in GetComponentsInChildren<NavMeshSurface>()) {
-                m.BuildNavMesh();
-            }
-        }
-
         public Vector3 GetMidPoint() {
             return transform.TransformPoint(new Vector3(Width * Room.CELL_SIZE, 0, -Height * Room.CELL_SIZE) * 0.5f);
+        }
+
+        public Vector2Int GetRandomCell() {
+            int i, j;
+
+            do {
+                i = Random.Range(0, Width);
+                j = Random.Range(0, Height);
+            } while (m_doorGrid[i, j] == null || m_doorGrid[i, j].phantom);
+            return new Vector2Int(i, j);
+        }
+
+        public Vector3 GetRandomPointOnFloor() {
+            var randomCell = GetRandomCell();
+            var corner = Room.GetCellCenter(randomCell.x, randomCell.y);
+            return transform.position + corner + new Vector3(Random.Range(Room.CELL_SIZE / -2f, Room.CELL_SIZE / 2f), 0, Random.Range(Room.CELL_SIZE / -2f, Room.CELL_SIZE / 2f));
         }
 
         public Bounds GetBounds() {
@@ -217,7 +221,7 @@ namespace Roomgen {
 
             string prefPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(Target.gameObject);
             if (string.IsNullOrWhiteSpace(prefPath)) prefPath = UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage().assetPath;
-            if (string.IsNullOrWhiteSpace(prefPath)) throw new Exception("Failed to create the type");
+            if (string.IsNullOrWhiteSpace(prefPath)) throw new System.Exception("Failed to create the type");
 
             var tmpPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefPath);
 

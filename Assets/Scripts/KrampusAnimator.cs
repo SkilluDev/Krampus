@@ -1,5 +1,6 @@
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class KrampusAnimator : KrampusBehaviour {
     [SerializeField] private Animator m_animator;
@@ -7,10 +8,10 @@ public class KrampusAnimator : KrampusBehaviour {
     [SerializeField] private float m_fastVelocity = 4;
     [SerializeField] private float m_rotationSmoothing = 15;
 
-    [BoxGroup("Sounds")][SerializeField] private SoundBite m_CatchSoundBite;
-    [BoxGroup("Sounds")][SerializeField] private SoundBite m_TongueSoundBite;
+    [BoxGroup("Sounds")][SerializeField][FormerlySerializedAs("m_CatchSoundBite")] private SoundBite m_catchSoundBite;
+    [BoxGroup("Sounds")][SerializeField][FormerlySerializedAs("m_TongueSoundBite")] private SoundBite m_tongueSoundBite;
 
-    [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty,m_tongueShouldEatProperty,m_deathTrigger;
+    [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathTrigger;
 
     private float m_minimalVelocity;
     private Quaternion m_rotationTarget;
@@ -41,25 +42,22 @@ public class KrampusAnimator : KrampusBehaviour {
                 break;
             case (KrampusTongue.State.Windup, KrampusTongue.State.TargetFetch):
                 m_animator.SetBool(m_tongueOutProperty, true);
-                m_TongueSoundBite.Play(transform.position, 1, true);
+                m_tongueSoundBite.Play(transform.position, 1, true);
                 break;
             case (_, KrampusTongue.State.PreRetreat):
                 m_animator.SetBool(m_tongueOutProperty, false);
                 m_animator.SetBool(m_tongueReadyProperty, false);
-                m_animator.SetBool(m_tongueShouldEatProperty,false);
-
+                m_animator.SetBool(m_tongueShouldEatProperty, false);
                 break;
             case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
                 SetTargetView(Kramp.Tongue.TongueDirection);
                 break;
             case (KrampusTongue.State.PreRetreat, KrampusTongue.State.Retreating):
-	            if (Kramp.Tongue.HitInteractable != null) {
-		            m_CatchSoundBite.Play(transform.position, 1, true);
-
-			            m_animator.SetBool(m_tongueShouldEatProperty, (Kramp.Tongue.m_isConsuming));
-
-	            }
-	            break;
+                if (Kramp.Tongue.HitInteractable != null) {
+                    m_catchSoundBite.Play(transform.position, 1, true);
+                    m_animator.SetBool(m_tongueShouldEatProperty, (Kramp.Tongue.m_isConsuming));
+                }
+                break;
 
 
         }
@@ -82,9 +80,9 @@ public class KrampusAnimator : KrampusBehaviour {
             case (_, KrampusController.State.Idle):
                 m_minimalVelocity = 0f;
                 break;
-            case(_,KrampusController.State.Dead):
-	            m_animator.SetTrigger(m_deathTrigger);
-	            break;
+            case (_, KrampusController.State.Dead):
+                m_animator.SetTrigger(m_deathTrigger);
+                break;
         }
     }
 

@@ -186,19 +186,34 @@ public class RoomGenerator : RoomGeneratorBase {
 			int kidCount = Random.Range(m_minChildrenPerRoom, m_maxChildrenPerRoom) * m_placedRooms.Count;
 			for (int i = 0; i < kidCount; i++) {
 				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
-				if (NavMesh.SamplePosition(room.GetMidPoint(), out var hit, 3, NavMesh.AllAreas) && !room.HasTag(m_kidProof)) {
+				if (room.HasTag(m_kidProof)) {
+					i--;
+					continue;
+				}
+
+				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 3, NavMesh.AllAreas)) {
 					Instantiate(m_childPrefab, hit.position, Quaternion.identity);
 				} else {
+					Debug.LogWarning("Could not spawn Child in " + room.name);
 					i--;
+					continue;
 				}
 			}
 			int nunCount = Random.Range(m_minNuns, m_maxNuns);
 			for (int i = 0; i < nunCount; i++) {
 				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
-				if (NavMesh.SamplePosition(room.GetMidPoint(), out var hit, 3, NavMesh.AllAreas) && !room.HasTag(m_nunProof)) {
+
+				if (room.HasTag(m_nunProof)) {
+					i--;
+					continue;
+				}
+
+				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 3, NavMesh.AllAreas)) {
 					Instantiate(m_nunPrefab, hit.position, Quaternion.identity);
 				} else {
+					Debug.LogWarning("Could not spawn Nun in " + room.name);
 					i--;
+					continue;
 				}
 			}
 

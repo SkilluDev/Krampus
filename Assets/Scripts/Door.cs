@@ -75,6 +75,14 @@ public class Door : Passage, IInteractable {
         m_charactersInDoor.Remove(character);
     }
 
+    private void OnTriggerStay(Collider other) {
+        if (!other.TryGetComponent<Nun>(out var character)) return;
+        if (character.CurrentState != Nun.State.Stunned) Open(
+            character.VelocitySqr > m_fastOpenObjectVelocity * m_fastOpenObjectVelocity,
+            Vector3.Dot(transform.forward, transform.position - other.transform.position) > 0
+        );
+    }
+
     private void OnTriggerEnter(Collider other) {
         if (!other.TryGetComponent<ICharacter>(out var character)) return;
         m_charactersInDoor.Add(character);
