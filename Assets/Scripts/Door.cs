@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Door : Passage, IInteractable {
     public bool IsOpen { get; private set; }
@@ -70,6 +71,10 @@ public class Door : Passage, IInteractable {
     private void Close(bool swiftly) {
         if (!IsOpen) return;
         m_doorClose.SetVolume(CalculateVolumeOverride());
+
+        foreach (var w in m_charactersInDoor) {
+            if (w is Nun n) n.Stun(m_stunDuration);
+        }
 
         m_doorClose.Play(transform.position, 1f);
         m_animator.SetBool(m_openSuddenProperty, swiftly);

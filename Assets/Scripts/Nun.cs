@@ -111,8 +111,8 @@ public class Nun : NPC {
                     break;
                 case State.Stunned:
                     m_timeout -= Time.deltaTime;
-                    if (m_timeout < 0) SwitchState(State.Idle);
                     SetVelocity(Vector3.zero);
+                    if (m_timeout < 0) SwitchState(State.Idle);
                     break;
             }
         } else {
@@ -122,6 +122,7 @@ public class Nun : NPC {
                     m_timeout -= Time.deltaTime;
                     if (m_timeout < 0) SwitchState(State.Patrolling);
                     CurrentDestination = transform.position;
+                    m_viewCone.SetActive(true);
                     Debug.Log("[Nun] Begin patrolling");
                     break;
                 case State.Patrolling:
@@ -167,6 +168,7 @@ public class Nun : NPC {
                     m_timeout -= Time.deltaTime;
                     if (m_timeout < 0) SwitchState(State.Idle);
                     SetVelocity(Vector3.zero);
+                    m_viewCone.SetActive(false);
                     break;
             }
         }
