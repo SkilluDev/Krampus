@@ -116,7 +116,7 @@ public class KrampusTongue : KrampusBehaviour {
 
 
     private void Update() {
-        if (Game.MainGameInfo.m_state == MainGameInfo.State.Ongoing) {
+        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Ongoing) {
             switch (CurrentState) {
                 case State.Idle:
                     m_tongueTime = 0;

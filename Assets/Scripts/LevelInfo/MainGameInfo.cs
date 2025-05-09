@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 /// De-facto game controller for the main gaame scene
 /// </summary>
 public class MainGameInfo : LevelInfo {
-    public State m_state = State.Ongoing;
+    public State CurrentState { get; private set; }
     public RoomGeneratorBase RoomGenerator => m_roomGenerator;
     [SerializeField] private RoomGeneratorBase m_roomGenerator;
 
@@ -57,10 +57,13 @@ public class MainGameInfo : LevelInfo {
         Won
     }
 
-
+    public void setState(State state) {
+        CurrentState = state;
+    }
     private void Awake() {
         GoodChildType = Types.UnityRandomElement();
         UI.SetChildrenIcon(GoodChildType.uiIcon);
+        CurrentState = State.Ongoing;
     }
 
     public RoomData GetRoomData(Room r) {
