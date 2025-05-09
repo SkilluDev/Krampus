@@ -19,6 +19,7 @@ public class ViewCone : MonoBehaviour {
     private int m_frameCounter = 0;
 
     public bool Detect() {
+        if (!m_renderer.enabled) return false;
         if (Vector3.SqrMagnitude(trackedObject.position - transform.position) > range * range) return false;
         if (Vector3.Angle(transform.forward, (trackedObject.transform.position - transform.position).NoY()) > fov / 2) return false;
 
@@ -52,6 +53,7 @@ public class ViewCone : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        if (!m_renderer.enabled) return;
         m_frameCounter++;
         if (m_frameCounter % m_additionalRaycastDelta != 0) return;
         System.Array.Copy(m_targetConePositions, m_previousTargetConePositions, m_targetConePositions.Length);
@@ -60,5 +62,9 @@ public class ViewCone : MonoBehaviour {
         m_targetConePositions[2] = GetRaycastedPosition(Mathf.Clamp(Vector3.SignedAngle(transform.forward, (trackedObject.transform.position - transform.position).NoY(), Vector3.up), -fov / 2f + 1f, fov / 2f - 1f));
         m_targetConePositions[3] = GetRaycastedPosition(fov / 2f);
         m_targetConePositions[4] = new Vector3(0, Room.STANDARD_FLOOR_Y + 0.05f, 0);
+    }
+
+    public void SetActive(bool v) {
+        m_renderer.enabled = v;
     }
 }

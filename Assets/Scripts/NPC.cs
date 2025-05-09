@@ -29,7 +29,7 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
         if (m_currentPath == null) m_currentPath = new NavMeshPath();
 
         if (!NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, m_currentPath)) {
-            Debug.LogError("Could not form path");
+            Debug.LogError($"[NPC] {name} Could not form path");
             return false;
         }
         CurrentDestination = destination;
