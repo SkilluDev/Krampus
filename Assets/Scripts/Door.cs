@@ -67,19 +67,6 @@ public class Door : Passage, IInteractable {
         m_interactionLeft.enabled = false;
         m_interactionRight.enabled = false;
         IsOpen = false;
-
-        StartCoroutine(stunDealeier());
-
-
-    }
-
-    IEnumerator stunDealeier() {
-
-	    yield return new WaitForSeconds(m_StunDelay);
-	    foreach (var c in m_charactersInDoor) {
-		    if (c is not Nun nun) continue;
-		    nun.Stun(m_stunDuration);
-	    }
     }
 
     private void OnTriggerExit(Collider other) {
