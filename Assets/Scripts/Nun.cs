@@ -41,7 +41,7 @@ public class Nun : NPC {
     private void Ready() {
         Game.MainGameInfo.RegisterNun(this);
 
-        m_oldBehaviour = false;
+        m_oldBehaviour = !Game.SetMan.GetValue<bool>("Experimental AI");
 
         if (!m_oldBehaviour) {
             CreatePatrolPath();
@@ -145,7 +145,7 @@ public class Nun : NPC {
             m_timeout = timeout;
             SwitchState(State.Listening);
         } else {
-            //
+
         }
     }
 
