@@ -80,14 +80,10 @@ public class Nun : NPC {
             return;
         }
         onAttack?.Invoke(CurrentState);
-        StartCoroutine(DeathTimer());
+        SwitchState(State.Listening);
+        Game.MainGameInfo.Krampus.Kontroller.KrampTermination();
     }
 
-    private IEnumerator DeathTimer() {
-        Game.MainGameInfo.Krampus.Kramp.Kontroller.KrampTermination();
-        SwitchState(State.Listening);
-        yield return new WaitForSeconds(2);
-        Game.MainGameInfo.UI.ShowGameOverScreen();
-    }
+
 
 }

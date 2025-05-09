@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
@@ -116,11 +116,15 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void KrampTermination() {
+
+
 		ChangeState(State.Dead, StateChangeReason.Rapid);
 		m_rigidbody.velocity = Vector3.zero;
 		m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 
 		Kramp.Kamera.Shake();
+		
+		StartCoroutine(DeathTimer());
 	}
 
 	private Vector3 ComputeVelocity() {
@@ -147,5 +151,10 @@ public class KrampusController : KrampusBehaviour {
 				}
 			}
 		}
+	}
+
+	private IEnumerator DeathTimer() {
+		yield return new WaitForSeconds(2);
+		Game.MainGameInfo.UI.ShowGameOverScreen();
 	}
 }
