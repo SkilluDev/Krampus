@@ -24,7 +24,7 @@ public class NumericDisplay : MonoBehaviour {
         set => SetColor(value);
     }
 
-    private void SetColor(Color value) {
+    public void SetColor(Color value) {
         foreach (var w in m_integralPlaces) {
             w.color = value;
         }

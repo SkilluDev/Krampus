@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
+using LitMotion;
+using LitMotion.Extensions;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,10 +22,22 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private Image m_fillBar;
     private MainGameInfo.State m_currentGameState;
 
-    [SerializeField] private Color m_normalColor = new Color(0x1B,0xC0,0x00);
-    [SerializeField] private Color m_goodColor = new Color(0xFF,0xFF,0xFF);
-    [SerializeField] private Color m_badColor = new Color(0xC0,0x00,0x09);
+    [SerializeField] private Color m_goodColor = new Color(1.0f, 1.0f, 1.0f); // Or use Color.white
+    [SerializeField] private Color m_badColor = new Color(0.7529412f, 0.0f, 0.03529412f);
 
+
+
+    private void OnChildEaten(ChildType childType) {
+	    Color destinationColor;
+	    if (childType == Game.MainGameInfo.GoodChildType) {
+		    destinationColor = m_goodColor;
+	    } else {
+			destinationColor = m_badColor;
+	    }
+
+	    //LMotion.Create(m_timerDisplay.Color, destinationColor, 1).WithEase(Ease.InOutCubic).WithLoops(2, LoopType.Yoyo).Bind(m_timerDisplay.SetColor);
+
+    }
 
     public void SetSeed(int seed) {
         m_currentSeed.text = $"Map seed: {seed:0000000}<br>Press [y] to regenerate";
@@ -83,5 +98,9 @@ public class NewUIManager : MonoBehaviour {
 
     public void SetChildrenIcon(Sprite icon) {
         m_childIconImage.sprite = icon;
+    }
+
+    private void Ready() {
+	    Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
     }
 }

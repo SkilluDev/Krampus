@@ -28,10 +28,7 @@ public class ShaderManager : MonoBehaviour {
 	private bool shaderOn = true;
 
 
-	private void Awake() {
-		Game.MainGameInfo.GlobalEvents.onChildEaten += ProcessKill;
 
-	}
 	[NaughtyAttributes.Button("Toggle Shader")]
 	public void ToggleShader() {
 		shaderOn = !shaderOn;
@@ -116,6 +113,7 @@ public class ShaderManager : MonoBehaviour {
 		m_intensity = 0f;
 		m_currentIntensity = 0f;
 		m_material.SetFloat("_Intensity", m_currentIntensity);
+		Game.MainGameInfo.GlobalEvents.onChildEaten += ProcessKill;
 	}
 
 

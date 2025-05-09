@@ -8,9 +8,7 @@ public class Timer : MonoBehaviour {
 
 	[ShowNativeProperty] public float GameTime { get; private set; } = 10f;
 
-	private void Awake() {
-		Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
-	}
+
 
 	private void OnChildEaten(ChildType childType) {
 		if (childType == Game.MainGameInfo.GoodChildType) {
@@ -22,6 +20,8 @@ public class Timer : MonoBehaviour {
 
 	public void Ready() {
 		GameTime = (int)Game.SetMan.GetValue<long>("Timer");
+		Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
+		//hey
 	}
 
 	private void Update() {
