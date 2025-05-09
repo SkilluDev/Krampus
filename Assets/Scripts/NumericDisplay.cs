@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using LitMotion;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class NumericDisplay : MonoBehaviour {
 
     [SerializeField] private float m_value;
     [SerializeField] private Color m_color;
+
 
     public float Value {
         get => m_value;

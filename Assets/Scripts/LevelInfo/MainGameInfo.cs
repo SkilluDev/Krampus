@@ -29,6 +29,9 @@ public class MainGameInfo : LevelInfo {
     public Krampus Krampus => m_krampus;
     [SerializeField] private Krampus m_krampus;
 
+    public GlobalEvents GlobalEvents => m_globalEvents;
+    [SerializeField] private GlobalEvents m_globalEvents;
+
     public ChildType GoodChildType { get; set; }
 
     public IReadOnlyCollection<Child> Children => m_childRegistry;

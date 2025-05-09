@@ -19,6 +19,10 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private Image m_fillBar;
     private MainGameInfo.State m_currentGameState;
 
+    [SerializeField] private Color m_normalColor = new Color(0x1B,0xC0,0x00);
+    [SerializeField] private Color m_goodColor = new Color(0xFF,0xFF,0xFF);
+    [SerializeField] private Color m_badColor = new Color(0xC0,0x00,0x09);
+
 
     public void SetSeed(int seed) {
         m_currentSeed.text = $"Map seed: {seed:0000000}<br>Press [y] to regenerate";

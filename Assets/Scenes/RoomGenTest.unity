@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 358014040}
   - component: {fileID: 358014041}
   - component: {fileID: 358014042}
+  - component: {fileID: 358014043}
   m_Layer: 0
   m_Name: '#INFO'
   m_TagString: Untagged
@@ -170,6 +171,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bc87fccbf684f06439e938e20b440f88, type: 2}
   - {fileID: 11400000, guid: 14df7b7041904fa44b4c88b4d0089b9a, type: 2}
   m_krampus: {fileID: 1936252573}
+  m_globalEvents: {fileID: 358014043}
   m_timer: {fileID: 358014040}
 --- !u!4 &358014036
 Transform:
@@ -382,6 +384,18 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &358014043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358014034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eee50207e79f436409cff01df69acf04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &423022856
 GameObject:
   m_ObjectHideFlags: 0

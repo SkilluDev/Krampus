@@ -28,6 +28,10 @@ public class ShaderManager : MonoBehaviour {
 	private bool shaderOn = true;
 
 
+	private void Awake() {
+		Game.MainGameInfo.GlobalEvents.onChildEaten += ProcessKill;
+
+	}
 	[NaughtyAttributes.Button("Toggle Shader")]
 	public void ToggleShader() {
 		shaderOn = !shaderOn;
@@ -86,7 +90,8 @@ public class ShaderManager : MonoBehaviour {
 		SetSplitToning(ratio);
 	}
 
-	public void ProcessKill() {
+	public void ProcessKill(ChildType childType) {
+		if (childType == Game.MainGameInfo.GoodChildType) return;
 		float ratio = (Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count() + 1f) /
 					  Game.MainGameInfo.BadChildrenCountOnStart;
 		SetIntensity(m_maxIntensity * ratio);

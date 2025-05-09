@@ -142,8 +142,7 @@ public class Child : NPC, IEdible {
         var particle = Instantiate(m_goreParticle);
         particle.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
         Game.MainGameInfo.UnregisterChild(this);
-        Game.MainGameInfo.Timer.ChildBonus(m_type);
-        if (m_type != Game.MainGameInfo.GoodChildType) Game.MainGameInfo.ShaderManager.ProcessKill();
+        Game.MainGameInfo.GlobalEvents.onChildEaten?.Invoke(Type);
         Destroy(gameObject);
     }
     public void Hit(Krampus krampus) {
