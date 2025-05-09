@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public class Nun : NPC {
     public enum State {
-        Idle, Listening, ChasingKrampus
+        Idle, Listening, ChasingKrampus, Stunned
     }
 
     public float RunSpeed => m_runSpeed;
@@ -59,6 +59,11 @@ public class Nun : NPC {
                 SetDestination(Game.MainGameInfo.Krampus.transform.position);
                 SetVelocity(GetPathDirection() * m_runSpeed);
                 break;
+            case State.Stunned:
+                m_timeout -= Time.deltaTime;
+                if (m_timeout < 0) SwitchState(State.Idle);
+                SetVelocity(Vector3.zero);
+                break;
         }
     }
 
@@ -84,6 +89,9 @@ public class Nun : NPC {
         Game.MainGameInfo.Krampus.Kontroller.KrampTermination();
     }
 
-
+    public void Stun(float duration) {
+        m_timeout = duration;
+        SwitchState(State.Stunned);
+    }
 
 }

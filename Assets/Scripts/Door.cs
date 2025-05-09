@@ -14,6 +14,9 @@ public class Door : Passage, IInteractable {
     [SerializeField] private Collider m_interactionRight;
     [SerializeField] private float m_fastOpenObjectVelocity = 6f;
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_openProperty, m_openSuddenProperty, m_invertProperty;
+    [SerializeField] private float m_stunDuration;
+
+    private List<ICharacter> m_charactersInDoor = new List<ICharacter>();
 
     public IInteractor.Type InteractorMask => IInteractor.Type.Player;
 
@@ -60,10 +63,22 @@ public class Door : Passage, IInteractable {
         m_interactionLeft.enabled = false;
         m_interactionRight.enabled = false;
         IsOpen = false;
+
+        foreach (var c in m_charactersInDoor) {
+            if (c is not Nun nun) continue;
+            nun.Stun(m_stunDuration);
+        }
+    }
+
+    private void OnTriggerExit(Collider other) {
+        if (!other.TryGetComponent<ICharacter>(out var character)) return;
+        m_charactersInDoor.Remove(character);
     }
 
     private void OnTriggerEnter(Collider other) {
         if (!other.TryGetComponent<ICharacter>(out var character)) return;
+        m_charactersInDoor.Add(character);
+
         Open(
             character.VelocitySqr > m_fastOpenObjectVelocity * m_fastOpenObjectVelocity,
             Vector3.Dot(transform.forward, transform.position - other.transform.position) > 0

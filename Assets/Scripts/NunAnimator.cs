@@ -1,53 +1,40 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.AI;
 
-public class NunAnimator : MonoBehaviour
-{
+public class NunAnimator : MonoBehaviour {
+	[SerializeField] private Nun m_nun;
 	[SerializeField] private Animator m_animator;
 	[SerializeField] private Transform m_modelTransform;
 
-	[SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_listeningProperty, m_attackTrigger, m_tongueReadyProperty;
+	[SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_listeningProperty, m_attackProperty, m_stunnedProperty;
 
 	private float m_minimalVelocity;
-	private Nun nunController;
 
 	private void Start() {
-		nunController = GetComponent<Nun>();
-		nunController.onStateChanged += MovementStateChanged;
-		nunController.onAttack += OnNunAttack;
+		m_nun.onStateChanged += MovementStateChanged;
+		m_nun.onAttack += OnNunAttack;
 	}
 
-	void Update() {
-		m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, nunController.Velocity / nunController.RunSpeed), 0.2f, Time.deltaTime);
-		if (nunController.VelocitySqr > 0.4f) {
-			m_modelTransform.rotation = Quaternion.LookRotation(nunController.VelocityVector, Vector3.up);
+	private void Update() {
+		if (m_nun.VelocitySqr > 0.2f) {
+			m_modelTransform.rotation = Quaternion.LookRotation(m_nun.VelocityVector, Vector3.up);
 		}
+
+		m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, m_nun.Velocity / m_nun.RunSpeed), 0.2f, Time.deltaTime);
+		m_animator.SetBool(m_listeningProperty, m_nun.CurrentState == Nun.State.Listening);
+		m_animator.SetBool(m_stunnedProperty, m_nun.CurrentState == Nun.State.Stunned);
 	}
 
-	void MovementStateChanged(Nun.State previous, Nun.State current)
-	{
+	private void MovementStateChanged(Nun.State previous, Nun.State current) {
 		switch (previous, current) {
-			case (Nun.State.Idle,Nun.State.ChasingKrampus):
+			case (Nun.State.Idle, Nun.State.ChasingKrampus):
 				m_minimalVelocity = 1f;
 				break;
-			case(Nun.State.Idle,Nun.State.Listening):
-				m_animator.SetBool(m_listeningProperty, true);
-				break;
-			case (Nun.State.Listening,Nun.State.Idle):
-				m_animator.SetBool(m_listeningProperty, false);
-				break;
-			case (Nun.State.Listening,Nun.State.ChasingKrampus):
-				m_animator.SetBool(m_listeningProperty, false);
-				break;
 		}
 	}
 
-	void OnNunAttack(Nun.State state) {
-		m_animator.SetTrigger(m_attackTrigger);
+	private void OnNunAttack(Nun.State state) {
+		m_animator.SetTrigger(m_attackProperty);
 	}
 
 }
