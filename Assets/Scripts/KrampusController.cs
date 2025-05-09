@@ -122,8 +122,9 @@ public class KrampusController : KrampusBehaviour {
 		m_rigidbody.velocity = Vector3.zero;
 		m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 
+		Game.MusicMan.StopMusic();
 		Kramp.Kamera.Shake();
-		
+
 		StartCoroutine(DeathTimer());
 	}
 

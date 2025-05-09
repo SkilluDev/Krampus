@@ -18,6 +18,7 @@ public class Child : NPC, IEdible {
     [SerializeField][FormerlySerializedAs("m_KillSoundBite")] private SoundBite m_killSoundBite;
     [SerializeField] private ParticleSystem m_goreParticle;
     [SerializeField] private TrailRenderer m_trailRenderer;
+    public Transform pinTarget;
 
 
     [SerializeField] private float m_runSpeed = 8;
@@ -140,7 +141,7 @@ public class Child : NPC, IEdible {
         m_trailRenderer = null;
         var particle = Instantiate(m_goreParticle);
         particle.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
-
+        Game.MainGameInfo.UnregisterChild(this);
         Game.MainGameInfo.Timer.ChildBonus(m_type);
         if (m_type != Game.MainGameInfo.GoodChildType) Game.MainGameInfo.ShaderManager.ProcessKill();
         Destroy(gameObject);
@@ -156,7 +157,7 @@ public class Child : NPC, IEdible {
     }
 
     public void Prepare(Krampus krampus) {
-        Game.MainGameInfo.UnregisterChild(this);
+      //  Game.MainGameInfo.UnregisterChild(this);
     }
 
     public void ReelIn(Krampus krampus, Vector3 position, float progress) {

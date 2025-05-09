@@ -21,5 +21,10 @@ public class MusicMan : MonoBehaviour {
 		}
 	}
 
+	public void StopMusic() {
+		m_gameMusicLayer1.Stop();
+		m_gameMusicLayer2.Stop();
+	}
+
 
 }

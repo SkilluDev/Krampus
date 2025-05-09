@@ -14,7 +14,11 @@ public class Door : Passage, IInteractable {
     [SerializeField] private Collider m_interactionRight;
     [SerializeField] private float m_fastOpenObjectVelocity = 6f;
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_openProperty, m_openSuddenProperty, m_invertProperty;
+
+
     [SerializeField] private float m_stunDuration;
+    [SerializeField] private float m_StunDelay;
+
 
     private List<ICharacter> m_charactersInDoor = new List<ICharacter>();
 
@@ -64,10 +68,18 @@ public class Door : Passage, IInteractable {
         m_interactionRight.enabled = false;
         IsOpen = false;
 
-        foreach (var c in m_charactersInDoor) {
-            if (c is not Nun nun) continue;
-            nun.Stun(m_stunDuration);
-        }
+        StartCoroutine(stunDealeier());
+
+
+    }
+
+    IEnumerator stunDealeier() {
+
+	    yield return new WaitForSeconds(m_StunDelay);
+	    foreach (var c in m_charactersInDoor) {
+		    if (c is not Nun nun) continue;
+		    nun.Stun(m_stunDuration);
+	    }
     }
 
     private void OnTriggerExit(Collider other) {

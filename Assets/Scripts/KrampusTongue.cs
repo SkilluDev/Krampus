@@ -174,7 +174,7 @@ public class KrampusTongue : KrampusBehaviour {
                 if (m_hitInteractable is IEdible edible) {
                     m_hitEdible = edible;
                     try {
-                        m_hitEdible.Prepare(Kramp);
+
                     } catch (Exception e) {
                         LogException(e, m_hitEdible);
                         m_hitEdible = null;
