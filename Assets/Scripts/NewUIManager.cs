@@ -13,14 +13,11 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private GameObject m_gameWinScreen;
     [SerializeField] private GameObject m_pauseScreen;
     [SerializeField] private TextMeshProUGUI m_timerText;
-    [SerializeField] private bool m_isGameOver = false;
-    [SerializeField] private bool m_isGameWon = false;
-    [SerializeField] private bool m_isGamePaused = false;
-
     [SerializeField] private NumericDisplay m_timerDisplay;
 
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
+    private MainGameInfo.State m_currentGameState;
 
 
     public void SetSeed(int seed) {
@@ -30,23 +27,26 @@ public class NewUIManager : MonoBehaviour {
     public void ShowGameOverScreen() {
         m_gameOverScreen.SetActive(true);
         m_timerText.gameObject.SetActive(false);
-        m_isGameOver = true;
+        Game.MainGameInfo.m_state = MainGameInfo.State.Over;
     }
 
     public void SwitchPauseMenu() {
-        if (!m_isGameOver) {
-            if (m_isGamePaused) {
+        if (m_currentGameState != MainGameInfo.State.Over) {
+            if (m_currentGameState == MainGameInfo.State.Paused) {
+                Game.MainGameInfo.m_state = MainGameInfo.State.Ongoing;
                 m_pauseScreen.SetActive(false);
             } else {
+                Game.MainGameInfo.m_state = MainGameInfo.State.Paused;
                 m_pauseScreen.SetActive(true);
+                Debug.Log("relrrellrelrlelrel");
             }
-            Time.timeScale = m_isGamePaused ? 1 : 0;
-            m_isGamePaused = !m_isGamePaused;
+            Time.timeScale = m_currentGameState == MainGameInfo.State.Paused ? 1 : 0;
         }
     }
 
 
     private void Update() {
+        m_currentGameState = Game.MainGameInfo.m_state;
         var col = Game.MainGameInfo.GoodChildType;
         m_remainingChildCount.text = $"<color=#{ColorUtility.ToHtmlStringRGB(col.color)}>Do not eat: {col.shape.name}</color><br>Remaining children: {Game.MainGameInfo.Children.Count}";
         if (Game.MainGameInfo.BadChildrenCountOnStart > 0) {
@@ -62,20 +62,15 @@ public class NewUIManager : MonoBehaviour {
         if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
             Debug.Log("won");
             m_gameWinScreen.SetActive(true);
-            m_isGameWon = true;
+            Game.MainGameInfo.m_state = MainGameInfo.State.Won;
             Time.timeScale = 0;
         }
-        if (m_isGameOver || m_isGamePaused || m_isGameWon) {//if the game is over or game is paused, you can
+        if (m_currentGameState == MainGameInfo.State.Over || m_currentGameState == MainGameInfo.State.Paused || m_currentGameState == MainGameInfo.State.Won) {//if the game is over, won, or paused, you can
             if (InputSubscribe.Raw.UI.Advance.triggered) //go back to menu with the default
                 Game.LoadState(Game.State.MainMenu);
             if (InputSubscribe.Raw.UI.Restart.triggered) //restart with R
                 Game.LoadState(Game.State.MainGame);
         }
-    }
-
-    private void Awake() {
-        m_isGameOver = false;
-        m_gameOverScreen.SetActive(false);
     }
 
     public void SetChildrenIcon(Sprite icon) {

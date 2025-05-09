@@ -13,6 +13,7 @@ using Random = UnityEngine.Random;
 /// De-facto game controller for the main gaame scene
 /// </summary>
 public class MainGameInfo : LevelInfo {
+    public State m_state = State.Ongoing;
     public RoomGeneratorBase RoomGenerator => m_roomGenerator;
     [SerializeField] private RoomGeneratorBase m_roomGenerator;
 
@@ -48,6 +49,13 @@ public class MainGameInfo : LevelInfo {
 
     [SerializeField] private Timer m_timer;
     public Timer Timer => m_timer;
+
+    public new enum State {
+        Ongoing,
+        Paused,
+        Over,
+        Won
+    }
 
 
     private void Awake() {
