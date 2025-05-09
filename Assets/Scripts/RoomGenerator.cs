@@ -50,21 +50,21 @@ public class RoomGenerator : RoomGeneratorBase {
 			int mapSize = (int)Game.SetMan.GetValue<long>("Map Size");
 			switch (mapSize) {
 				case 0:
-					m_width = 5; m_height = 5; m_loopRectangles = 4;
+					m_width = 5; m_height = 5; m_loopRectangles = 4; m_minNuns = 1; m_maxNuns = 1;
 					break;
 
 				// 1: default
 				case 2:
-					m_width = 9; m_height = 9; m_loopRectangles = 8;
+					m_width = 9; m_height = 9; m_loopRectangles = 8; m_minNuns = 1; m_maxNuns = 2;
 					break;
 				case 3:
-					m_width = 11; m_height = 11; m_loopRectangles = 12;
+					m_width = 11; m_height = 11; m_loopRectangles = 12; m_minNuns = 3; m_maxNuns = 4;
 					break;
 				case 4:
-					m_width = 13; m_height = 13; m_loopRectangles = 16;
+					m_width = 13; m_height = 13; m_loopRectangles = 16; m_minNuns = 3; m_maxNuns = 4;
 					break;
 				case 5:
-					m_width = 15; m_height = 15; m_loopRectangles = 20;
+					m_width = 15; m_height = 15; m_loopRectangles = 20; m_minNuns = 3; m_maxNuns = 4;
 					break;
 				default:
 					m_width = 7; m_height = 7; m_loopRectangles = 4;
