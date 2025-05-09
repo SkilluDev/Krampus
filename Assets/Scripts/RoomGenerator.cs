@@ -187,11 +187,12 @@ public class RoomGenerator : RoomGeneratorBase {
 			for (int i = 0; i < kidCount; i++) {
 				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
 				if (room.HasTag(m_kidProof)) {
+					Debug.LogWarning(room.name + "is Kid-Proof - cannot spawn Child.");
 					i--;
 					continue;
 				}
 
-				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 3, NavMesh.AllAreas)) {
+				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 0.2f, NavMesh.AllAreas)) {
 					Instantiate(m_childPrefab, hit.position, Quaternion.identity);
 				} else {
 					Debug.LogWarning("Could not spawn Child in " + room.name);
@@ -204,11 +205,12 @@ public class RoomGenerator : RoomGeneratorBase {
 				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
 
 				if (room.HasTag(m_nunProof)) {
+					Debug.LogWarning(room.name + "is Nun-Proof - cannot spawn Nun.");
 					i--;
 					continue;
 				}
 
-				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 3, NavMesh.AllAreas)) {
+				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 0.2f, NavMesh.AllAreas)) {
 					Instantiate(m_nunPrefab, hit.position, Quaternion.identity);
 				} else {
 					Debug.LogWarning("Could not spawn Nun in " + room.name);
@@ -255,9 +257,11 @@ public class RoomGenerator : RoomGeneratorBase {
 		CreateGrid();
 		yield return null;
 
-		var spawnRoom = PlaceRoom(m_roomSet.spawn, m_spawnPoint);
+		var spawnInstance = RoomVariantManager.CreateRotatedInstance(m_roomSet.spawn, 0); // TODO: This is to fix the tagging issue. Remove!
+		var spawnRoom = PlaceRoom(spawnInstance, m_spawnPoint);
 		m_krampus.transform.position = spawnRoom.GetMidPoint();
 		m_krampus.GetComponent<Rigidbody>().position = spawnRoom.GetMidPoint();
+		RoomVariantManager.Release(spawnInstance);
 
 
 		Status = "Creating variants";
