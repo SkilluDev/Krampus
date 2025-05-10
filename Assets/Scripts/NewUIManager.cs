@@ -31,8 +31,10 @@ public class NewUIManager : MonoBehaviour {
 	    Color destinationColor;
 	    if (childType != Game.MainGameInfo.GoodChildType) {
 		    destinationColor = m_goodTimerColor;
+		    ChangeChildCounter();
 	    } else {
 			destinationColor = m_badTimerColor;
+
 	    }
 
 	    LMotion.Create(m_timerDisplay.Color, destinationColor, 0.1f).WithEase(Ease.InOutCubic).WithOnComplete(
@@ -71,8 +73,7 @@ public class NewUIManager : MonoBehaviour {
         var col = Game.MainGameInfo.GoodChildType;
         m_remainingChildCount.text = $"<color=#{ColorUtility.ToHtmlStringRGB(col.color)}>Do not eat: {col.shape.name}</color><br>Remaining children: {Game.MainGameInfo.Children.Count}";
         if (Game.MainGameInfo.BadChildrenCountOnStart > 0) {
-            m_fillBar.fillAmount = (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
-                                   Game.MainGameInfo.BadChildrenCountOnStart;
+
         }
 
         m_timerText.text = Game.MainGameInfo.Timer.GameTime.ToString("00");
@@ -105,5 +106,12 @@ public class NewUIManager : MonoBehaviour {
     private void Ready() {
 	    Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
 	    m_originalTimerColor = m_timerDisplay.Color;
+    }
+
+    public void ChangeChildCounter() {
+	    var oldValue = m_fillBar.fillAmount;
+		Debug.Log("Zmiana");
+	    LMotion.Create(oldValue, 0.1f+(float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
+	                             Game.MainGameInfo.BadChildrenCountOnStart*0.9f, 0.1f).BindToFillAmount(m_fillBar);
     }
 }

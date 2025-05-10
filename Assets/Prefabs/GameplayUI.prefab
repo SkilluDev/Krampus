@@ -1679,6 +1679,8 @@ MonoBehaviour:
   m_timerDisplay: {fileID: 5340612051506087238}
   m_childIconImage: {fileID: 2094201919006516398}
   m_fillBar: {fileID: 5801898832723597714}
+  m_goodTimerColor: {r: 0, g: 0, b: 0, a: 0}
+  m_badTimerColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &7173605854049669422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2055,7 +2057,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &155474801295605467
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2096,7 +2098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.8674295, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.10625484, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2107,8 +2109,8 @@ MonoBehaviour:
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 0.778
+  m_FillMethod: 1
+  m_FillAmount: 0.1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
