@@ -3,6 +3,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.VFX;
 
 public class KrampusController : KrampusBehaviour {
 	public State CurrentState { get; private set; }
@@ -28,6 +29,9 @@ public class KrampusController : KrampusBehaviour {
 	[BoxGroup("Acceleration")][SerializeField] private float m_timeIdleThreshold = 0.2f;
 	[BoxGroup("Acceleration")][SerializeField] private float m_deltaIdleThreshold = 100f;
 	[BoxGroup("Acceleration")][SerializeField] private float m_startRunSpeed = 2f;
+
+
+
 	private Vector4 m_inputWeights;
 	private float m_timeHoldingInput = 0f;
 	private float m_previousFrameVelocity = 0f;
@@ -87,8 +91,10 @@ public class KrampusController : KrampusBehaviour {
 			}
 			state = State.Idle;
 		} else if (acceleration >= m_deltaIdleThreshold) { //if sudden velocity loss
+
 			reason = StateChangeReason.Rapid;
 			state = State.Idle;
+
 		} else if (CurrentState == State.Idle && m_rigidbody.velocity.sqrMagnitude <= m_startRunSpeed) { //if was already idle with no velocity
 			state = State.Idle;
 		} else {
@@ -113,6 +119,7 @@ public class KrampusController : KrampusBehaviour {
 		if (to == CurrentState) return;
 		onStateChanged?.Invoke(CurrentState, to, reason);
 		CurrentState = to;
+
 	}
 
 	public void KrampTermination() {

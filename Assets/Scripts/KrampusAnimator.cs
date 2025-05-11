@@ -1,6 +1,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.VFX;
 
 public class KrampusAnimator : KrampusBehaviour {
     [SerializeField] private Animator m_animator;
@@ -8,10 +9,15 @@ public class KrampusAnimator : KrampusBehaviour {
     [SerializeField] private float m_fastVelocity = 4;
     [SerializeField] private float m_rotationSmoothing = 15;
 
+
+    [SerializeField] private VisualEffect m_runningEffect;
+
     [BoxGroup("Sounds")][SerializeField][FormerlySerializedAs("m_CatchSoundBite")] private SoundBite m_catchSoundBite;
     [BoxGroup("Sounds")][SerializeField][FormerlySerializedAs("m_TongueSoundBite")] private SoundBite m_tongueSoundBite;
 
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathTrigger;
+
+
 
     private float m_minimalVelocity;
     private Quaternion m_rotationTarget;
@@ -19,6 +25,7 @@ public class KrampusAnimator : KrampusBehaviour {
     private void Start() {
         Kramp.Tongue.onStateChanged += TongueStateChanged;
         Kramp.Kontroller.onStateChanged += MovementStateChanged;
+        m_runningEffect.Stop();
     }
 
     private void Update() {
@@ -27,6 +34,7 @@ public class KrampusAnimator : KrampusBehaviour {
         } else if (Kramp.Tongue.CurrentState == KrampusTongue.State.Windup) {
             SetTargetView(Kramp.Tongue.TongueDirection);
         }
+        m_runningEffect.SetFloat("Rotation",m_modelTransform.rotation.eulerAngles.y);
 
         m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, m_rotationTarget, Time.deltaTime * m_rotationSmoothing);
         m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, Kramp.Kontroller.Velocity / Kramp.Kontroller.RunSpeed), 0.2f, Time.deltaTime);
@@ -69,18 +77,24 @@ public class KrampusAnimator : KrampusBehaviour {
                 if (reason == KrampusController.StateChangeReason.Rapid) {
                     m_animator.SetTrigger(m_stopProperty);
                 }
+                m_runningEffect.Stop();
                 m_minimalVelocity = 0f;
                 break;
-            case (KrampusController.State.Idle, KrampusController.State.Run):
+            case (_, KrampusController.State.Run):
+	            m_runningEffect.Play();
                 m_minimalVelocity = 1f;
                 break;
+
             case (_, KrampusController.State.Walk):
+	            m_runningEffect.Stop();
                 m_minimalVelocity = 0.05f;
                 break;
             case (_, KrampusController.State.Idle):
+	            m_runningEffect.Stop();
                 m_minimalVelocity = 0f;
                 break;
             case (_, KrampusController.State.Dead):
+	            m_runningEffect.Stop();
                 m_animator.SetTrigger(m_deathTrigger);
                 break;
         }
