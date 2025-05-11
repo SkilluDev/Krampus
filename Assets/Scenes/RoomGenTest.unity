@@ -164,8 +164,8 @@ MonoBehaviour:
   m_roomGenerator: {fileID: 423022857}
   m_ui: {fileID: 506269742}
   m_shaderManager: {fileID: 358014039}
-  m_goodChildrenColor: {r: 0.6981132, g: 0, b: 0.60503155, a: 1}
-  m_badChildrenColor: {r: 0.9680062, g: 0.990566, b: 0, a: 1}
+  m_goodChildrenColor: {r: 0, g: 0, b: 0, a: 0}
+  m_badChildrenColor: {r: 0, g: 0, b: 0, a: 0}
   m_types:
   - {fileID: 11400000, guid: 63ab45d866ec5be42bcf362fbffafbec, type: 2}
   - {fileID: 11400000, guid: aa74c9f2fd15da540ad9a9824cd7de3e, type: 2}
@@ -603,71 +603,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1950784952141585171, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3291479740578676430, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 89.1462
-      objectReference: {fileID: 0}
-    - target: {fileID: 3291479740578676430, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 89.1462
-      objectReference: {fileID: 0}
-    - target: {fileID: 5093741672480031102, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5093741672480031102, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.00012207031
-      objectReference: {fileID: 0}
-    - target: {fileID: 5340612051506087238, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_color.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5340612051506087238, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_color.g
-      value: 0.71127695
-      objectReference: {fileID: 0}
-    - target: {fileID: 5340612051506087238, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_color.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6046000731669869797, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 1828036243}
-    - target: {fileID: 6803140620708373658, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_pauseScreen
-      value: 
-      objectReference: {fileID: 1294073967}
-    - target: {fileID: 6803140620708373658, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_goodTimerColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6803140620708373658, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_goodTimerColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6803140620708373658, guid: f0b7c5050b2137f448c51fc46427748b,
-        type: 3}
-      propertyPath: m_goodTimerColor.r
-      value: 0.3790493
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 726490842}
     - target: {fileID: 7172931892233990810, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_Name
@@ -774,8 +714,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 7727727167829259436, guid: f0b7c5050b2137f448c51fc46427748b, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0b7c5050b2137f448c51fc46427748b, type: 3}
@@ -787,41 +726,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 334219363675402240, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-        type: 3}
-      propertyPath: orthographic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 334219363675402240, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-        type: 3}
-      propertyPath: field of view
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 334219363675402240, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-        type: 3}
-      propertyPath: near clip plane
-      value: 0.01
-      objectReference: {fileID: 0}
     - target: {fileID: 1046558696505039444, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
         type: 3}
       propertyPath: m_krampus
       value: 
       objectReference: {fileID: 1936252573}
-    - target: {fileID: 1046558696505039444, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-        type: 3}
-      propertyPath: m_baseOffset.x
-      value: -12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1046558696505039444, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-        type: 3}
-      propertyPath: m_baseOffset.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 1046558696505039444, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-        type: 3}
-      propertyPath: m_baseOffset.z
-      value: 12
-      objectReference: {fileID: 0}
     - target: {fileID: 6203640059110789737, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -906,11 +815,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1294073967 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1950784952141585171, guid: f0b7c5050b2137f448c51fc46427748b,
+--- !u!20 &726490842 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8120681167325682480, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
     type: 3}
-  m_PrefabInstance: {fileID: 528492264}
+  m_PrefabInstance: {fileID: 564137539}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1766128741
 GameObject:
@@ -1030,12 +939,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!20 &1828036243 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 334219363675402240, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-    type: 3}
-  m_PrefabInstance: {fileID: 564137539}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1891054759
 PrefabInstance:
   m_ObjectHideFlags: 0
