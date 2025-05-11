@@ -7,11 +7,14 @@ public class LoadingUI : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI m_loadingText;
     [SerializeField] private TextMeshProUGUI m_statusText;
     [SerializeField] private Slider m_slider;
+    [SerializeField] private Image m_loadingImage;
+    private float m_totalRotation = 180f;
 
     private void Update() {
         m_statusText.text = m_loader.Status;
         m_loadingText.text = Game.RequireFullReload ? "Loading" : "Debug Loading";
         m_slider.value = m_loader.Progress;
+        m_loadingImage.transform.eulerAngles = new Vector3(0,m_totalRotation*m_loader.Progress,0);
     }
 
 }

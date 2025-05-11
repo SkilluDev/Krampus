@@ -44,7 +44,7 @@ public class NewUIManager : MonoBehaviour {
     }
 
     public void SetSeed(int seed) {
-        m_currentSeed.text = $"Map seed: {seed:0000000}<br>Press [y] to regenerate";
+        m_currentSeed.text = $"Map seed: {seed:0000000}<br>";
     }
 
     public void ShowGameOverScreen() {
