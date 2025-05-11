@@ -29,7 +29,7 @@ public class MenuCredits : MonoBehaviour {
 
     private void Stop() {
         if (m_handle.IsActive()) m_handle.Cancel();
-        foreach (var group in m_groups.Skip(1)) {
+        foreach (var group in m_groups) {
             group.gameObject.SetActive(true);
             group.alpha = 0;
         }
