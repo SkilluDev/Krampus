@@ -23,6 +23,15 @@ public class MainGameInfo : LevelInfo {
     public ShaderManager ShaderManager => m_shaderManager;
     [SerializeField] private ShaderManager m_shaderManager;
 
+
+    //====== CHILDREN COLOR
+
+    public Color GoodChildrenColor => m_goodChildrenColor;
+    [SerializeField] private Color m_goodChildrenColor;
+
+    public Color BadChildrenColor => m_badChildrenColor;
+    [SerializeField] private Color m_badChildrenColor;
+
     public IReadOnlyList<ChildType> Types => m_types;
     [SerializeField] private ChildType[] m_types;
 
