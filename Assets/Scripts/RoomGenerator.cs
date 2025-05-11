@@ -253,8 +253,8 @@ public class RoomGenerator : RoomGeneratorBase {
 		Status = "Creating layout";
 		Init();
 		SelectSpawnPoint();
-		RemoveDeadDoors();
 		CreateGrid();
+		RemoveDeadDoors();
 		yield return null;
 
 		var spawnInstance = RoomVariantManager.CreateRotatedInstance(m_roomSet.spawn, 0); // TODO: This is to fix the tagging issue. Remove!
