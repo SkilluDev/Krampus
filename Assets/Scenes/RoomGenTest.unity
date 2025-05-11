@@ -436,6 +436,7 @@ MonoBehaviour:
   m_krampus: {fileID: 1936252573}
   m_seed: 20
   m_placedRooms: []
+  m_minSpacesOnMap: 0
   m_maxChildrenPerRoom: 2
   m_minChildrenPerRoom: 1
   m_maxNuns: 1
@@ -646,7 +647,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 1828036243}
+      objectReference: {fileID: 564137541}
     - target: {fileID: 6803140620708373658, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_pauseScreen
@@ -902,6 +903,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48f408d6630ecf9489019e1be798dc8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!20 &564137541 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8120681167325682480, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
+    type: 3}
+  m_PrefabInstance: {fileID: 564137539}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &624625530 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8350823170219140063, guid: 80b3fc1d17616324d999bd3796fd0e5b,
@@ -1038,12 +1045,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!20 &1828036243 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 334219363675402240, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-    type: 3}
-  m_PrefabInstance: {fileID: 564137539}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1891054759
 PrefabInstance:
   m_ObjectHideFlags: 0
