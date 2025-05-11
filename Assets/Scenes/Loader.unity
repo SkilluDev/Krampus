@@ -883,7 +883,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -949,6 +949,7 @@ MonoBehaviour:
   m_statusText: {fileID: 1571651736}
   m_slider: {fileID: 631795402}
   m_loadingImage: {fileID: 201788025}
+  m_rotateSpeed: 270
 --- !u!1 &1433303300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,8 +1013,8 @@ RectTransform:
   m_GameObject: {fileID: 1435703730}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.05, y: 1.05, z: 1.05}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 201788023}
   - {fileID: 1503329757}
@@ -1024,7 +1025,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -200, y: -200}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1435703732
 MonoBehaviour:

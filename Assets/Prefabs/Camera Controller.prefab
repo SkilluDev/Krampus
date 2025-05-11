@@ -71,7 +71,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_baseOffset: {x: -10, y: 12, z: 10}
+  m_baseOffset: {x: -12, y: 30, z: 12}
   m_lookAheadStrength: 3
   m_zoomedOrtoSize: 8
   m_unzoomedOrtoSize: 12
@@ -119,7 +119,7 @@ PrefabInstance:
     - target: {fileID: 3686645837442385342, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4406614928033031978, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
         type: 3}
@@ -228,13 +228,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6601408027468723432, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
         type: 3}
+      propertyPath: orthographic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6601408027468723432, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
+        type: 3}
+      propertyPath: field of view
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6601408027468723432, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
+        type: 3}
       propertyPath: far clip plane
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6601408027468723432, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
         type: 3}
       propertyPath: near clip plane
-      value: -10
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 6601408027468723432, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
         type: 3}
