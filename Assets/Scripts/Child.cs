@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.VFX;
 
 public class Child : NPC, IEdible {
     public float RunSpeed => m_runSpeed;
@@ -16,7 +17,7 @@ public class Child : NPC, IEdible {
     [SerializeField] private int m_detectionRange = 5;
     [SerializeField] private MeshRenderer m_shapeRenderer;
     [SerializeField][FormerlySerializedAs("m_KillSoundBite")] private SoundBite m_killSoundBite;
-    [SerializeField] private ParticleSystem m_goreParticle;
+    [SerializeField] private VisualEffect m_goreParticle;
     [SerializeField] private TrailRenderer m_trailRenderer;
     public Transform pinTarget;
 
@@ -200,7 +201,9 @@ public class Child : NPC, IEdible {
         m_trailRenderer.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
         m_trailRenderer.autodestruct = true;
         m_trailRenderer = null;
+
         var particle = Instantiate(m_goreParticle);
+        particle.SetVector4("Particle Color",m_type == Game.MainGameInfo.GoodChildType?  Game.MainGameInfo.GoodChildrenColor:Game.MainGameInfo.BadChildrenColor);
         particle.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
         Game.MainGameInfo.UnregisterChild(this);
         Game.MainGameInfo.GlobalEvents.onChildEaten?.Invoke(Type);
