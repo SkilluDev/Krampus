@@ -18,6 +18,7 @@ public class RoomGenerator : RoomGeneratorBase {
 	private Room[,] m_generationGrid;
 	private Vector2Int m_spawnPoint;
 	[SerializeField] private List<Room> m_placedRooms;
+	[SerializeField] private int m_minSpacesOnMap;
 
 	[BoxGroup("EntityGen")][SerializeField] private int m_maxChildrenPerRoom;
 	[BoxGroup("EntityGen")][SerializeField] private int m_minChildrenPerRoom;
@@ -132,7 +133,7 @@ public class RoomGenerator : RoomGeneratorBase {
 			}
 		}
 
-		void RemoveDeadDoors() {
+		int RemoveDeadDoors() {
 			bool[,] floodFill = new bool[m_width, m_height];
 
 			void FillCell(int x, int y) {
@@ -146,13 +147,18 @@ public class RoomGenerator : RoomGeneratorBase {
 
 			FillCell(m_spawnPoint.x, m_spawnPoint.y);
 
+			int filledSpaces = 0;
+
 			for (int i = 0; i < m_width; i++) {
 				for (int j = 0; j < m_height; j++) {
 					if (!floodFill[i, j]) {
 						m_doorGrid[i, j].Reset();
+					} else {
+						filledSpaces++;
 					}
 				}
 			}
+			return filledSpaces;
 		}
 
 		List<Vector2Int> FindPossiblePlacements(RoomType room) {
@@ -251,10 +257,13 @@ public class RoomGenerator : RoomGeneratorBase {
 		}
 
 		Status = "Creating layout";
-		Init();
-		SelectSpawnPoint();
-		CreateGrid();
-		RemoveDeadDoors();
+		int filledSpaces = 0;
+		while (filledSpaces <= m_minSpacesOnMap) {
+			Init();
+			SelectSpawnPoint();
+			CreateGrid();
+			filledSpaces = RemoveDeadDoors();
+		}
 		yield return null;
 
 		var spawnInstance = RoomVariantManager.CreateRotatedInstance(m_roomSet.spawn, 0); // TODO: This is to fix the tagging issue. Remove!

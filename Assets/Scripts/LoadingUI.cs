@@ -14,6 +14,7 @@ public class LoadingUI : MonoBehaviour {
         m_statusText.text = m_loader.Status;
         m_loadingText.text = Game.RequireFullReload ? "Loading" : "Debug Loading";
         m_slider.value = m_loader.Progress;
+        //Time.unscaledDeltaTime
         m_loadingImage.transform.eulerAngles = new Vector3(0,m_totalRotation*m_loader.Progress,0);
     }
 
