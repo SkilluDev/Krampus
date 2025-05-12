@@ -63,19 +63,23 @@ public class MainGameInfo : LevelInfo {
     public Timer Timer => m_timer;
 
     public new enum State {
-        Ongoing,
+        Intro,
+        Game,
         Paused,
         Over,
         Won
     }
 
-    public void setState(State state) {
+    public bool Ballin => CurrentState == State.Game;
+
+    public void SetState(State state) {
         CurrentState = state;
     }
+
     private void Awake() {
         GoodChildType = Types.UnityRandomElement();
         UI.SetChildrenIcon(GoodChildType.uiIcon);
-        CurrentState = State.Ongoing;
+        CurrentState = State.Intro;
     }
 
     public RoomData GetRoomData(Room r) {

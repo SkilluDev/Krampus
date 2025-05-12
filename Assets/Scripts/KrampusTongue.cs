@@ -116,7 +116,12 @@ public class KrampusTongue : KrampusBehaviour {
 
 
     private void Update() {
-        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Ongoing) {
+        if (!Game.Balling) {
+            m_tongueAimIndicator.gameObject.SetActive(false);
+            return;
+        }
+
+        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Game) {
             switch (CurrentState) {
                 case State.Idle:
                     m_tongueTime = 0;

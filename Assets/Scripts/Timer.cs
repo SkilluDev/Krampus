@@ -8,8 +8,6 @@ public class Timer : MonoBehaviour {
 
 	[ShowNativeProperty] public float GameTime { get; private set; } = 10f;
 
-
-
 	private void OnChildEaten(ChildType childType) {
 		if (childType == Game.MainGameInfo.GoodChildType) {
 			Penalty();
@@ -25,6 +23,7 @@ public class Timer : MonoBehaviour {
 	}
 
 	private void Update() {
+		if (!Game.Balling) return;
 		GameTime -= Time.deltaTime;
 	}
 

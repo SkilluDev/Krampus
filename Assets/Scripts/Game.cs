@@ -60,6 +60,8 @@ public class Game : MonoBehaviour {
     public static MainGameInfo MainGameInfo => (MainGameInfo)Info;
     public static MainMenuInfo MainMenuInfo => (MainMenuInfo)Info;
 
+    public static bool Balling => CurrentState == State.MainGame && MainGameInfo.Ballin;
+
     public static bool IsLoading => CurrentState == State.Loading;
     public static bool RequireFullReload { get; private set; }
 

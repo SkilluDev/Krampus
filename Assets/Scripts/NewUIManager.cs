@@ -28,18 +28,18 @@ public class NewUIManager : MonoBehaviour {
 
 
     private void OnChildEaten(ChildType childType) {
-	    Color destinationColor;
-	    if (childType != Game.MainGameInfo.GoodChildType) {
-		    destinationColor = m_goodTimerColor;
-		    ChangeChildCounter();
-	    } else {
-			destinationColor = m_badTimerColor;
+        Color destinationColor;
+        if (childType != Game.MainGameInfo.GoodChildType) {
+            destinationColor = m_goodTimerColor;
+            ChangeChildCounter();
+        } else {
+            destinationColor = m_badTimerColor;
 
-	    }
+        }
 
-	    LMotion.Create(m_timerDisplay.Color, destinationColor, 0.1f).WithEase(Ease.InOutCubic).WithOnComplete(
-		    ()=>LMotion.Create(destinationColor, m_originalTimerColor, 1.2f).WithEase(Ease.InOutCubic).Bind(m_timerDisplay.SetColor)
-			    ).Bind(m_timerDisplay.SetColor);
+        LMotion.Create(m_timerDisplay.Color, destinationColor, 0.1f).WithEase(Ease.InOutCubic).WithOnComplete(
+            () => LMotion.Create(destinationColor, m_originalTimerColor, 1.2f).WithEase(Ease.InOutCubic).Bind(m_timerDisplay.SetColor)
+                ).Bind(m_timerDisplay.SetColor);
 
     }
 
@@ -50,16 +50,16 @@ public class NewUIManager : MonoBehaviour {
     public void ShowGameOverScreen() {
         m_gameOverScreen.SetActive(true);
         m_timerText.gameObject.SetActive(false);
-        Game.MainGameInfo.setState(MainGameInfo.State.Over);
+        Game.MainGameInfo.SetState(MainGameInfo.State.Over);
     }
 
     public void SwitchPauseMenu() {
         if (m_currentGameState != MainGameInfo.State.Over) {
             if (m_currentGameState == MainGameInfo.State.Paused) {
-                Game.MainGameInfo.setState(MainGameInfo.State.Ongoing);
+                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
                 m_pauseScreen.SetActive(false);
             } else {
-                Game.MainGameInfo.setState(MainGameInfo.State.Paused);
+                Game.MainGameInfo.SetState(MainGameInfo.State.Paused);
                 m_pauseScreen.SetActive(true);
                 Debug.Log("relrrellrelrlelrel");
             }
@@ -76,6 +76,12 @@ public class NewUIManager : MonoBehaviour {
 
         }
 
+        if (!Game.Balling) {
+            m_timerDisplay.gameObject.SetActive(Mathf.RoundToInt(Time.unscaledTime * 2) % 2 == 0);
+        } else {
+            m_timerDisplay.gameObject.SetActive(true);
+        }
+
         m_timerText.text = Game.MainGameInfo.Timer.GameTime.ToString("00");
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
 
@@ -84,16 +90,16 @@ public class NewUIManager : MonoBehaviour {
         if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
             Debug.Log("won");
             m_gameWinScreen.SetActive(true);
-            Game.MainGameInfo.setState(MainGameInfo.State.Won);
+            Game.MainGameInfo.SetState(MainGameInfo.State.Won);
             Time.timeScale = 0;
         }
         if (m_currentGameState == MainGameInfo.State.Over || m_currentGameState == MainGameInfo.State.Paused || m_currentGameState == MainGameInfo.State.Won) {//if the game is over, won, or paused, you can
             if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
-                Game.MainGameInfo.setState(MainGameInfo.State.Ongoing);
+                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
                 Game.LoadState(Game.State.MainMenu);
             }
             if (InputSubscribe.Raw.UI.Restart.triggered) { //restart with R
-                Game.MainGameInfo.setState(MainGameInfo.State.Ongoing);
+                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
                 Game.LoadState(Game.State.MainGame);
             }
         }
@@ -104,14 +110,14 @@ public class NewUIManager : MonoBehaviour {
     }
 
     private void Ready() {
-	    Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
-	    m_originalTimerColor = m_timerDisplay.Color;
+        Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
+        m_originalTimerColor = m_timerDisplay.Color;
     }
 
     public void ChangeChildCounter() {
-	    var oldValue = m_fillBar.fillAmount;
-		Debug.Log("Zmiana");
-	    LMotion.Create(oldValue, 0.1f+(float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
-	                             Game.MainGameInfo.BadChildrenCountOnStart*0.9f, 0.1f).BindToFillAmount(m_fillBar);
+        var oldValue = m_fillBar.fillAmount;
+        Debug.Log("Zmiana");
+        LMotion.Create(oldValue, 0.1f + (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
+                                 Game.MainGameInfo.BadChildrenCountOnStart * 0.9f, 0.1f).BindToFillAmount(m_fillBar);
     }
 }

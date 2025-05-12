@@ -39,6 +39,7 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
 
     protected void SetVelocity(Vector3 velocity) {
         m_rigidbody.velocity = velocity;
+        if (!Game.Balling) m_rigidbody.velocity = Vector3.zero;
     }
 
     protected Vector3 GetPathDirection() {

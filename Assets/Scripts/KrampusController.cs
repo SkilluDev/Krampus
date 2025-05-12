@@ -52,6 +52,7 @@ public class KrampusController : KrampusBehaviour {
 
 	// Based on @SkilluDev's inputs
 	private void Update() {
+		if (!Game.Balling) return;
 		if (CurrentState == State.Dead) return;
 
 		//		Debug.LogWarning(Game.MainGameInfo.Timer);
@@ -81,11 +82,8 @@ public class KrampusController : KrampusBehaviour {
 		var state = CurrentState;
 		var reason = StateChangeReason.Normal;
 
-		if (CurrentState == State.Dead) {
-
-		}
 		//if slow and no input
-		else if (inputs.sqrMagnitude == 0 && m_rigidbody.velocity.sqrMagnitude <= m_veloIdleThreshold) {
+		if (inputs.sqrMagnitude == 0 && m_rigidbody.velocity.sqrMagnitude <= m_veloIdleThreshold) {
 			if (m_timeHoldingInput >= m_timeIdleThreshold) { //if was accelarating for some time
 				reason = StateChangeReason.Rapid;
 			}
@@ -119,7 +117,6 @@ public class KrampusController : KrampusBehaviour {
 		if (to == CurrentState) return;
 		onStateChanged?.Invoke(CurrentState, to, reason);
 		CurrentState = to;
-
 	}
 
 	public void KrampTermination() {
@@ -140,6 +137,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	private void FixedUpdate() {
+		if (!Game.Balling) return;
 		if (CurrentState == State.Dead) return;
 
 		var computedVelocity = ComputeVelocity();
