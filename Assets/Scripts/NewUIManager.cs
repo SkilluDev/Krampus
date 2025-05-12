@@ -30,10 +30,11 @@ public class NewUIManager : MonoBehaviour {
 
     [BoxGroup("ButtonSets")]
     [SerializeField] private ButtonSet[] m_ButtonSets;
-
+    [BoxGroup("In Game Layout")] [SerializeField] private  Image m_pauseImage;
 
     [BoxGroup("GameOver Screen")] [SerializeField] private  Image m_menuImage;
     [BoxGroup("GameOver Screen")] [SerializeField] private  Image m_resetImage;
+
 
     private void OnChildEaten(ChildType childType) {
         Color destinationColor;
@@ -143,6 +144,8 @@ public class NewUIManager : MonoBehaviour {
 		    }
 	    }
 		if(bs == null) return;
+
+		m_pauseImage.sprite = bs.pause_Button;
 	    m_resetImage.sprite = bs.restart_Button;
 	    m_menuImage.sprite = bs.backToMenu_Button;
     }
