@@ -1,13 +1,16 @@
 using System.Collections;
 using UnityEngine;
 using NaughtyAttributes;
+using Cinemachine;
 
 // Based on @WalkanFL's camera
 public class CameraController : MonoBehaviour {
 	public Matrix4x4 Matrix { get; private set; }
-	public Camera Raw => m_camera;
-	[SerializeField] private Krampus m_krampus;
-	[SerializeField] private Camera m_camera;
+	public CinemachineVirtualCamera Raw => m_camera;
+	public Camera Rendering => m_renderingCamera;
+	private Krampus m_krampus;
+	[SerializeField] private CinemachineVirtualCamera m_camera;
+	[SerializeField] private Camera m_renderingCamera;
 	[SerializeField] private AnimationCurve m_zoomCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
 	[SerializeField] private Vector3 m_baseOffset = Vector3.one * 10;
@@ -20,25 +23,22 @@ public class CameraController : MonoBehaviour {
 	[BoxGroup("Zoom")][SerializeField] private float m_zoomBuffer = 0.75f;
 	[BoxGroup("Zoom")][SerializeField] private float m_unzoomSpeed = 1f;
 	[BoxGroup("Zoom")][SerializeField] private float m_aimZoomSpeed = 1f;
-
-
 	private float m_zoomFactor = 1;
 
-	[BoxGroup("Shake")][SerializeField] private float shakeForce = 0.7f;
-	[BoxGroup("Shake")][SerializeField] private float shakeMagnitude = 0.1f;
-
-	// The speed at which the shake decays (higher value = faster decay)
-	[BoxGroup("Shake")][SerializeField] float shakeDampingSpeed = 1.0f;
 
 	private void Awake() {
 		Matrix = Matrix4x4.Rotate(Quaternion.Euler(0, transform.eulerAngles.y, 0));
+	}
+
+	private void Ready() {
+		m_krampus = Game.MainGameInfo.Krampus;
 	}
 
 	private void LateUpdate() {
 		if (m_krampus == null || m_camera == null) return;
 
 		transform.position = Vector3.Lerp(transform.position, m_krampus.transform.position + ComputeOffset(), m_cameraSpeed * Time.deltaTime);
-		m_camera.orthographicSize = ComputeOrtoSize();
+		m_camera.m_Lens.FieldOfView = ComputeOrtoSize();
 	}
 
 	private Vector3 ComputeOffset() {
@@ -65,10 +65,10 @@ public class CameraController : MonoBehaviour {
 		if (m_krampus == null || m_camera == null)
 			throw new System.Exception("Objects are not assigned to the CameraController");
 
-		transform.SetPositionAndRotation(m_camera.transform.position, m_camera.transform.rotation);
-		m_camera.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+		//transform.SetPositionAndRotation(m_camera.transform.position, m_camera.transform.rotation);
+		//m_camera.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 		m_baseOffset = transform.position - m_krampus.transform.position;
-		m_zoomedOrtoSize = m_camera.orthographicSize;
+		m_zoomedOrtoSize = m_camera.m_Lens.FieldOfView;
 	}
 
 	[Button("Show Base")]
@@ -77,27 +77,13 @@ public class CameraController : MonoBehaviour {
 			throw new System.Exception("Objects are not assigned to the CameraController");
 
 		transform.position = m_krampus.transform.position + ComputeOffset();
-		m_camera.orthographicSize = ComputeOrtoSize();
+		m_camera.m_Lens.FieldOfView = ComputeOrtoSize();
 	}
 
 
 	[Button("Shake")]
 	public void Shake() {
-		StartCoroutine(Shake(0.2f));
+
 	}
 
-	private IEnumerator Shake(float duration) {
-		Vector3 originalPosition = transform.localPosition;
-		float elapsedTime = 0f;
-
-		shakeMagnitude = shakeForce;
-		while (elapsedTime < duration) {
-			var shakeOffset = Random.insideUnitSphere * shakeMagnitude;
-			transform.localPosition = originalPosition + shakeOffset;
-			elapsedTime += Time.deltaTime;
-			shakeMagnitude = Mathf.Lerp(shakeMagnitude, 0f, elapsedTime / duration);
-			yield return null;
-		}
-		transform.localPosition = originalPosition;
-	}
 }

@@ -70,7 +70,7 @@ public class KrampusTongue : KrampusBehaviour {
     #region Input handling
 
     private Vector3 GetDirectionToMouse() {
-        if (!MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Raw.ScreenPointToRay(InputSubscribe.Aim), Vector3.up, Vector3.up * m_inputMousePlaneY)) {
+        if (!MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Rendering.ScreenPointToRay(InputSubscribe.Aim), Vector3.up, Vector3.up * m_inputMousePlaneY)) {
             Debug.LogError("Something went horrendously wrong with aiming!");
         }
         var ret = point - m_tongueOrigin.position;

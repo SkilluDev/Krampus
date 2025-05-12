@@ -197,13 +197,13 @@ public class Child : NPC, IEdible {
     public void Consume(Krampus krampus) {
         m_killSoundBite.Play(transform.position, 1, true);
 
-        m_trailRenderer.transform.parent = null;
-        m_trailRenderer.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
-        m_trailRenderer.autodestruct = true;
-        m_trailRenderer = null;
+        //m_trailRenderer.transform.parent = null;
+        //m_trailRenderer.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
+        //m_trailRenderer.autodestruct = true;
+        //m_trailRenderer = null;
 
         var particle = Instantiate(m_goreParticle);
-        particle.SetVector4("Particle Color",m_type == Game.MainGameInfo.GoodChildType?  Game.MainGameInfo.GoodChildrenColor:Game.MainGameInfo.BadChildrenColor);
+        particle.SetVector4("Particle Color", m_type == Game.MainGameInfo.GoodChildType ? Game.MainGameInfo.GoodChildrenColor : Game.MainGameInfo.BadChildrenColor);
         particle.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
         Game.MainGameInfo.UnregisterChild(this);
         Game.MainGameInfo.GlobalEvents.onChildEaten?.Invoke(Type);
@@ -237,12 +237,12 @@ public class Child : NPC, IEdible {
 
         m_shapeRenderer.material.mainTexture = type.shape;
         m_shapeRenderer.material.color = type.color;
-        m_trailRenderer.colorGradient = new Gradient() {
-            alphaKeys = new GradientAlphaKey[] { new(1, 0), new(1, 1) },
-            colorKeys = new GradientColorKey[] { new(Type.color, 0.5f), new(Type.color + new Color(0.25f, 0.25f, 0.25f), 1) },
-            colorSpace = ColorSpace.Linear,
-            mode = GradientMode.Blend
-        };
+        // m_trailRenderer.colorGradient = new Gradient() {
+        //     alphaKeys = new GradientAlphaKey[] { new(1, 0), new(1, 1) },
+        //     colorKeys = new GradientColorKey[] { new(Type.color, 0.5f), new(Type.color + new Color(0.25f, 0.25f, 0.25f), 1) },
+        //     colorSpace = ColorSpace.Linear,
+        //     mode = GradientMode.Blend
+        // };
     }
 
 }
