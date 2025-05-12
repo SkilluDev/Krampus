@@ -124,12 +124,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &12770932 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7157081869192087284, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-    type: 3}
-  m_PrefabInstance: {fileID: 1991711018}
-  m_PrefabAsset: {fileID: 0}
 --- !u!20 &88622794 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 6601408027468723432, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
@@ -1059,11 +1053,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1046558696505039444, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
         type: 3}
-      propertyPath: m_krampus
-      value: 
-      objectReference: {fileID: 1936252573}
-    - target: {fileID: 1046558696505039444, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-        type: 3}
       propertyPath: m_renderingCamera
       value: 
       objectReference: {fileID: 88622794}
@@ -1125,11 +1114,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7157081869192087284, guid: 5e1ef8c7adb366a48a67bdfaf599b517,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1991711022}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e1ef8c7adb366a48a67bdfaf599b517, type: 3}
 --- !u!114 &1991711019 stripped
 MonoBehaviour:
@@ -1137,35 +1122,12 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1991711018}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 12770932}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48f408d6630ecf9489019e1be798dc8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1991711022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 12770932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ApplyAfter: 2
-  m_ChannelMask: 1
-  m_Gain: 1
-  m_Use2DDistance: 0
-  m_UseCameraSpace: 1
-  m_ReactionSettings:
-    m_SecondaryNoise: {fileID: 0}
-    m_AmplitudeGain: 1
-    m_FrequencyGain: 1
-    m_Duration: 1
-    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1001 &8712803145751646492
 PrefabInstance:
   m_ObjectHideFlags: 0

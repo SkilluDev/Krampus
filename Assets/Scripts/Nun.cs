@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using KrampUtils;
 using UnityEngine;
 using UnityEngine.AI;
@@ -38,6 +39,8 @@ public class Nun : NPC {
     private List<Vector3> m_patrolPath;
     private int m_currentControlPoint = 0;
     [SerializeField] private float m_patrolTimeout;
+
+    [SerializeField] private CinemachineImpulseSource m_shake;
 
     // new behaviour <<<<<<<
 
@@ -215,11 +218,11 @@ public class Nun : NPC {
     }
 
     public void Stun(float duration) {
-        Game.MainGameInfo.Krampus.Kamera.Shake();
         if (m_oldBehaviour) {
             m_timeout = duration;
             SwitchState(State.Stunned);
         } else {
+            Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
             m_timeout = duration;
             SwitchState(State.Stunned);
         }

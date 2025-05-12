@@ -54,7 +54,7 @@ public class KrampusController : KrampusBehaviour {
 	private void Update() {
 		if (CurrentState == State.Dead) return;
 
-//		Debug.LogWarning(Game.MainGameInfo.Timer);
+		//		Debug.LogWarning(Game.MainGameInfo.Timer);
 		if (Game.MainGameInfo.Timer.GameTime < 0) {
 			Debug.Log("dead as hell");
 			KrampTermination();
@@ -123,15 +123,11 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void KrampTermination() {
-
-
 		ChangeState(State.Dead, StateChangeReason.Rapid);
+		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
 		m_rigidbody.velocity = Vector3.zero;
 		m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-
 		Game.MusicMan.StopMusic();
-		Kramp.Kamera.Shake();
-
 		StartCoroutine(DeathTimer());
 	}
 

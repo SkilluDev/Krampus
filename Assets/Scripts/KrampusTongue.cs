@@ -270,8 +270,8 @@ public class KrampusTongue : KrampusBehaviour {
                 case State.Eating: // Tongue is back at origin, if caught something - eat it
                     if (m_hitEdible != null) {
                         try {
+                            Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
                             m_hitEdible.Consume(Kramp);
-                            Kramp.Kamera.Shake();
                         } catch (Exception e) {
                             LogException(e, m_hitEdible);
                         }

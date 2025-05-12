@@ -8,9 +8,11 @@ public class CameraController : MonoBehaviour {
 	public Matrix4x4 Matrix { get; private set; }
 	public CinemachineVirtualCamera Raw => m_camera;
 	public Camera Rendering => m_renderingCamera;
+	public CinemachineImpulseSource DefaultShake => m_defaultImpulse;
 	private Krampus m_krampus;
 	[SerializeField] private CinemachineVirtualCamera m_camera;
 	[SerializeField] private Camera m_renderingCamera;
+	[SerializeField] private CinemachineImpulseSource m_defaultImpulse;
 	[SerializeField] private AnimationCurve m_zoomCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
 	[SerializeField] private Vector3 m_baseOffset = Vector3.one * 10;
@@ -79,11 +81,4 @@ public class CameraController : MonoBehaviour {
 		transform.position = m_krampus.transform.position + ComputeOffset();
 		m_camera.m_Lens.FieldOfView = ComputeOrtoSize();
 	}
-
-
-	[Button("Shake")]
-	public void Shake() {
-
-	}
-
 }
