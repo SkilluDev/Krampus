@@ -31,6 +31,9 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("ButtonSets")]
     [SerializeField] private ButtonSet[] m_ButtonSets;
     [BoxGroup("In Game Layout")] [SerializeField] private  Image m_pauseImage;
+    [BoxGroup("In Game Layout")] [SerializeField] private  Image m_attackImage;
+    [BoxGroup("In Game Layout")] [SerializeField] private  Image m_SneakImage;
+
 
     [BoxGroup("GameOver Screen")] [SerializeField] private  Image m_menuImage;
     [BoxGroup("GameOver Screen")] [SerializeField] private  Image m_resetImage;
@@ -148,5 +151,7 @@ public class NewUIManager : MonoBehaviour {
 		m_pauseImage.sprite = bs.pause_Button;
 	    m_resetImage.sprite = bs.restart_Button;
 	    m_menuImage.sprite = bs.backToMenu_Button;
+	    m_SneakImage.sprite = bs.sneak_Button;
+	    m_attackImage.sprite = bs.attack_Button;
     }
 }

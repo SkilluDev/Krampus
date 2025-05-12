@@ -12,7 +12,8 @@ public class ButtonSet : ScriptableObject {
 	public  Sprite backToMenu_Button;
 	public Sprite restart_Button;
 	public Sprite pause_Button;
-
+	public Sprite sneak_Button;
+	public Sprite attack_Button;
 
 
 }
