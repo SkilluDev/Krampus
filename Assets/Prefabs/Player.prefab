@@ -165,7 +165,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3083306166600181781}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 50
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -298,7 +298,8 @@ MonoBehaviour:
   m_tongueOutProperty: 1294476412
   m_tongueReadyProperty: 77369328
   m_tongueShouldEatProperty: 1032857757
-  m_deathTrigger: 646380074
+  m_deathProperty: 646380074
+  m_wakeupProperty: 1049384824
 --- !u!114 &3925534722009601554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,17 +632,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5b9de2e272d8b7a47834edf56cdc74c3,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5112291
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5b9de2e272d8b7a47834edf56cdc74c3,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5112291
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5b9de2e272d8b7a47834edf56cdc74c3,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5112291
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5b9de2e272d8b7a47834edf56cdc74c3,
         type: 3}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
@@ -38,6 +39,7 @@ public class KrampusController : KrampusBehaviour {
 
 
 	public enum State {
+		Intro,
 		Idle,
 		Run,
 		Walk,
@@ -53,6 +55,7 @@ public class KrampusController : KrampusBehaviour {
 	// Based on @SkilluDev's inputs
 	private void Update() {
 		if (!Game.Balling) return;
+		if (CurrentState == State.Intro) ChangeState(State.Idle, StateChangeReason.Normal);
 		if (CurrentState == State.Dead) return;
 
 		//		Debug.LogWarning(Game.MainGameInfo.Timer);
@@ -158,5 +161,9 @@ public class KrampusController : KrampusBehaviour {
 	private IEnumerator DeathTimer() {
 		yield return new WaitForSeconds(2);
 		Game.MainGameInfo.UI.ShowGameOverScreen();
+	}
+
+	public void MoveTo(Vector3 position) {
+		m_rigidbody.position = position;
 	}
 }
