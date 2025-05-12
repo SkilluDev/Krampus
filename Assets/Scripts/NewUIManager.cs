@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using LitMotion;
 using LitMotion.Extensions;
+using NaughtyAttributes;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -26,6 +27,13 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private Color m_goodTimerColor;
     [SerializeField] private Color m_badTimerColor;
 
+
+    [BoxGroup("ButtonSets")]
+    [SerializeField] private ButtonSet[] m_ButtonSets;
+
+
+    [BoxGroup("GameOver Screen")] [SerializeField] private  Image m_menuImage;
+    [BoxGroup("GameOver Screen")] [SerializeField] private  Image m_resetImage;
 
     private void OnChildEaten(ChildType childType) {
         Color destinationColor;
@@ -69,6 +77,10 @@ public class NewUIManager : MonoBehaviour {
 
 
     private void Update() {
+
+
+	    SetButtonSet();
+
         m_currentGameState = Game.MainGameInfo.CurrentState;
         var col = Game.MainGameInfo.GoodChildType;
         m_remainingChildCount.text = $"<color=#{ColorUtility.ToHtmlStringRGB(col.color)}>Do not eat: {col.shape.name}</color><br>Remaining children: {Game.MainGameInfo.Children.Count}";
@@ -119,5 +131,19 @@ public class NewUIManager : MonoBehaviour {
         Debug.Log("Zmiana");
         LMotion.Create(oldValue, 0.1f + (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
                                  Game.MainGameInfo.BadChildrenCountOnStart * 0.9f, 0.1f).BindToFillAmount(m_fillBar);
+    }
+
+    public void SetButtonSet() {
+
+	    ButtonSet bs = null;
+	    foreach (var b in m_ButtonSets) {
+		    if (b.method == InputSubscribe.InputMethod) {
+			    bs = b;
+			    break;
+		    }
+	    }
+		if(bs == null) return;
+	    m_resetImage.sprite = bs.restart_Button;
+	    m_menuImage.sprite = bs.backToMenu_Button;
     }
 }
