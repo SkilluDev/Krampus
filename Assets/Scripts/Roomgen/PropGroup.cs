@@ -61,7 +61,7 @@ namespace Roomgen {
 
 
         public void SetState(bool enabled) {
-            if (m_generated) throw new System.Exception("Attempting to regenerate a generated door");
+            //if (m_generated) throw new System.Exception("Attempting to regenerate a generated door");
 
             if (!enabled) {
                 foreach (var go in m_disableList) {

@@ -26,6 +26,8 @@ namespace Roomgen {
         [SerializeField][HideInInspector] internal MeshFilter m_floorMeshFilter;
         [SerializeField][HideInInspector] internal List<GameObject> m_autoWalls;
 
+        private Vector2Int m_placePosition = Vector2Int.zero;
+
 
         public static Vector3 GetCellCenter(int i, int j) {
             return new Vector3((CELL_SIZE * i) + CELL_SIZE / 2f, 0, (-CELL_SIZE * j) - CELL_SIZE / 2f);
@@ -50,6 +52,8 @@ namespace Roomgen {
         }
 
         public void ConfigureDoors(int x, int y, DoorFlags[,] doors) {
+            m_placePosition.x = x;
+            m_placePosition.y = y;
             for (int i = 0; i < Width; i++) {
                 for (int j = 0; j < Height; j++) {
                     if (m_doorGrid[i, j] == null) continue;
@@ -113,6 +117,9 @@ namespace Roomgen {
                 child.position += newCenter - oldCenter;
             }
         }
+        public GridRoomConstraint GetConstraint(int i, int j) {
+            return m_type.constraints[i - m_placePosition.x, j - m_placePosition.y];
+        }
 
 
 
@@ -166,6 +173,7 @@ namespace Roomgen {
                 }
             }
         }
+
 
         #endregion
     }

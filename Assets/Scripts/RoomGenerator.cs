@@ -260,17 +260,12 @@ public class RoomGenerator : RoomGeneratorBase {
 		int filledSpaces = 0;
 		while (filledSpaces <= m_minSpacesOnMap) {
 			Init();
-			SelectSpawnPoint();
 			CreateGrid();
 			filledSpaces = RemoveDeadDoors();
 		}
 		yield return null;
 
-		var spawnInstance = RoomVariantManager.CreateRotatedInstance(m_roomSet.spawn, 0); // TODO: This is to fix the tagging issue. Remove!
-		var spawnRoom = PlaceRoom(spawnInstance, m_spawnPoint);
-		m_krampus.transform.position = spawnRoom.GetMidPoint();
-		m_krampus.GetComponent<Rigidbody>().position = spawnRoom.GetMidPoint();
-		RoomVariantManager.Release(spawnInstance);
+
 
 
 		Status = "Creating variants";
@@ -317,20 +312,52 @@ public class RoomGenerator : RoomGeneratorBase {
 			}
 		}
 
+		void PlaceSpawnRoom(Vector2Int pos, int rot) {
+			var spawnInstance = RoomVariantManager.CreateRotatedInstance(m_roomSet.spawn, rot); // TODO: This is to fix the tagging issue. Remove!
+			var spawnRoom = PlaceRoom(spawnInstance, pos);
+			RoomVariantManager.Release(spawnInstance);
+		}
+
+		void FindAndPlaceSpawnPoint() {
+			for (int i = 0; i < m_width; i++) {
+				for (int j = 0; j < m_height; j++) {
+					if (m_generationGrid[i, j] == null) {
+						if (i - 1 >= 0 && m_generationGrid[i - 1, j] != null && m_generationGrid[i - 1, j].GetConstraint(i - 1, j).optionalDoors.East) {
+							m_spawnPoint = new Vector2Int(i, j);
+							m_doorGrid[i - 1, j].East = true;
+							m_doorGrid[i, j].West = true;
+							m_generationGrid[i - 1, j].ConfigureDoors(i - 1, j, m_doorGrid);
+
+							PlaceSpawnRoom(m_spawnPoint, 2);
+							return;
+						} else if (i + 1 < m_width && m_generationGrid[i + 1, j] != null && m_generationGrid[i + 1, j].GetConstraint(i + 1, j).optionalDoors.West) {
+							m_spawnPoint = new Vector2Int(i, j);
+							m_doorGrid[i + 1, j].West = true;
+							m_doorGrid[i, j].East = true;
+							m_generationGrid[i + 1, j].ConfigureDoors(i + 1, j, m_doorGrid);
+
+							PlaceSpawnRoom(m_spawnPoint, 0);
+							return;
+						}
+					}
+				}
+			}
+		}
+
+		FindAndPlaceSpawnPoint();
+
 		m_navMesh.BuildNavMesh();
 		GenerateNunsAndKids();
 		GenerateDoors();
 		RoomVariantManager.Release(types);
+
+
 	}
 
 	public override Room GetRoomAt(Vector3 position) {
 		return m_generationGrid[Mathf.FloorToInt(position.x / Room.CELL_SIZE), Mathf.FloorToInt(-position.z / Room.CELL_SIZE)];
 	}
 
-	private void SelectSpawnPoint() {
-		m_spawnPoint = new Vector2Int(m_width / 2, m_height / 2);
-		//m_generationGrid[m_width / 2, m_height / 2] = true;
-	}
 
 	private void DebugLogDoorset() {
 		var sb = new StringBuilder();
@@ -360,10 +387,6 @@ public class RoomGenerator : RoomGeneratorBase {
 			sb.Append('\n');
 		}
 		Debug.Log(sb.ToString());
-	}
-
-	private void MoveKrampusToRandomPlace() {
-		m_krampus.GetComponent<Rigidbody>().position = MoreNavmesh.RandomPoint(Vector3.zero, 200);
 	}
 
 	public override void Cleanup() {
