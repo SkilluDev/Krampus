@@ -138,10 +138,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3426675690133807064, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
+        type: 3}
+      propertyPath: orthographic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4406614928033031978, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
         type: 3}
       propertyPath: m_RenderPostProcessing
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4406614928033031978, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
+        type: 3}
+      propertyPath: m_VolumeLayerMask.m_Bits
+      value: 32768
       objectReference: {fileID: 0}
     - target: {fileID: 6305475839831874194, guid: 3a6136c6e03d0aa40b7d77752acf62e2,
         type: 3}
@@ -503,6 +513,7 @@ GameObject:
   - component: {fileID: 423022858}
   - component: {fileID: 423022857}
   - component: {fileID: 423022859}
+  - component: {fileID: 423022860}
   m_Layer: 0
   m_Name: Room Generator
   m_TagString: Untagged
@@ -523,12 +534,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_navMesh: {fileID: 423022859}
+  m_roomGenInfo: {fileID: 423022860}
   m_width: 5
   m_height: 5
   m_roomSet: {fileID: 11400000, guid: 379eee92131fc4848b0d135988a9fe61, type: 2}
   m_loopRectangles: 9
   m_krampus: {fileID: 1936252573}
-  m_seed: 20
   m_placedRooms: []
   m_minSpacesOnMap: 15
   m_maxChildrenPerRoom: 2
@@ -587,6 +598,18 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
+--- !u!114 &423022860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423022856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5078776aba9b4d8ea5c0c106cc76cb5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &506269742 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6803140620708373658, guid: f0b7c5050b2137f448c51fc46427748b,
@@ -1141,6 +1164,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Post-Process Volume
       objectReference: {fileID: 0}
+    - target: {fileID: 1450898293340295822, guid: 9c87e1a7f3729588ebea7e417d9cfe64,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3248978696117376871, guid: 9c87e1a7f3729588ebea7e417d9cfe64,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3527446672335916520, guid: 9c87e1a7f3729588ebea7e417d9cfe64,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1209,6 +1242,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Post-Process Volume
       objectReference: {fileID: 0}
+    - target: {fileID: 5390815124609361462, guid: 80b3fc1d17616324d999bd3796fd0e5b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7928208413355899216, guid: 80b3fc1d17616324d999bd3796fd0e5b,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1273,6 +1311,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8350823170219140063, guid: 80b3fc1d17616324d999bd3796fd0e5b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

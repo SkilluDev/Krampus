@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,13 @@ using NaughtyAttributes;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class RoomGenerator : RoomGeneratorBase {
 	[SerializeField] private int m_width, m_height;
 	[SerializeField] private RoomSet m_roomSet;
 	[SerializeField] private int m_loopRectangles;
 	[SerializeField] private Krampus m_krampus;
-	[SerializeField] private int m_seed = 20;
 	private DoorFlags[,] m_doorGrid;
 	private Room[,] m_generationGrid;
 	private Vector2Int m_spawnPoint;
@@ -33,17 +34,25 @@ public class RoomGenerator : RoomGeneratorBase {
 
 	public override IReadOnlyCollection<Room> Rooms => m_placedRooms;
 
-
 	public override void Prepare() {
-		if ((int)Game.SetMan.GetValue<long>("Custom seed") != -1) {
-			m_seed = (int)Game.SetMan.GetValue<long>("Custom seed");
-			Debug.Log($"Random seed overwrite: {m_seed}");
-		} else m_seed = Random.Range(0, 99999);
+		switch (Game.RoomGenInfo.Regenerate)
+		{
+			case RoomGenerationType.First:
+				Game.RoomGenInfo.SetInitialSeed();
+				break;
+			case RoomGenerationType.New:
+				Game.RoomGenInfo.SetNewSeed();
+				break;
+			case RoomGenerationType.Old:
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
 	}
 
 	public override IEnumerator Generate() {
-		Random.InitState(m_seed);
-		Game.MainGameInfo.UI.SetSeed(m_seed);
+		Random.InitState(Game.RoomGenInfo.Seed);
+		Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
 
 		yield return null;
 		void Init() {

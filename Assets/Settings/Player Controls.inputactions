@@ -362,6 +362,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Restart And Regen",
+                    "type": "Button",
+                    "id": "e50998c0-f311-4809-b567-2707abd5587a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -604,6 +613,28 @@
                     "processors": "",
                     "groups": ";Console",
                     "action": "MenuReturn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d0695985-8105-42ff-a63b-8da9ca503aa3",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Restart And Regen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7d1ef2f6-3ab6-4e20-91b0-0f4885a1e338",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Restart And Regen",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
