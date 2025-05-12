@@ -72,8 +72,10 @@ public class Door : Passage, IInteractable {
         if (!IsOpen) return;
         m_doorClose.SetVolume(CalculateVolumeOverride());
 
-        foreach (var w in m_charactersInDoor) {
-            if (w is Nun n) n.Stun(m_stunDuration);
+        if (swiftly) {
+            foreach (var w in m_charactersInDoor) {
+                if (w is Nun n) n.Stun(m_stunDuration);
+            }
         }
 
         m_doorClose.Play(transform.position, 1f);
