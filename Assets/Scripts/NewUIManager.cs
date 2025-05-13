@@ -172,7 +172,6 @@ public class NewUIManager : MonoBehaviour {
         m_scoreboard.SetActive(true);
         float time = Game.MainGameInfo.timeFromStart / 60;
         float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
-        Debug.Log(val);
         LMotion.Create(0, val, 2)
             .BindToText(m_childPerMinutText);
     }
