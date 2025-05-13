@@ -279,6 +279,7 @@ MonoBehaviour:
   m_krampus: {fileID: 1936252573}
   m_globalEvents: {fileID: 358014043}
   m_timer: {fileID: 358014040}
+  timeFromStart: 0
 --- !u!4 &358014036
 Transform:
   m_ObjectHideFlags: 0
@@ -513,7 +514,6 @@ GameObject:
   - component: {fileID: 423022858}
   - component: {fileID: 423022857}
   - component: {fileID: 423022859}
-  - component: {fileID: 423022860}
   m_Layer: 0
   m_Name: Room Generator
   m_TagString: Untagged
@@ -534,7 +534,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_navMesh: {fileID: 423022859}
-  m_roomGenInfo: {fileID: 423022860}
   m_width: 5
   m_height: 5
   m_roomSet: {fileID: 11400000, guid: 379eee92131fc4848b0d135988a9fe61, type: 2}
@@ -598,18 +597,6 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
---- !u!114 &423022860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 423022856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5078776aba9b4d8ea5c0c106cc76cb5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &506269742 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6803140620708373658, guid: f0b7c5050b2137f448c51fc46427748b,
