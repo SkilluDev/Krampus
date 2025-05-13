@@ -197,7 +197,7 @@ public class Nun : NPC {
         }
     }
 
-    private void OnCollisionStay(Collision collision) {
+    private void OnCollisionEnter(Collision collision) {
         if (m_oldBehaviour) {
             if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
                 return;

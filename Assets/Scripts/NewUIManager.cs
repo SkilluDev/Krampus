@@ -69,7 +69,6 @@ public class NewUIManager : MonoBehaviour {
         m_gameOverScreen.SetActive(true);
         m_timerText.gameObject.SetActive(false);
         DisplayScoreBoard();
-        Game.MainGameInfo.SetState(MainGameInfo.State.Over);
     }
 
     public void SwitchPauseMenu() {

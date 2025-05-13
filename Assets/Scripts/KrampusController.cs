@@ -136,6 +136,13 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void KrampTermination() {
+		if (Game.MainGameInfo.CurrentState==MainGameInfo.State.Over) {
+			Debug.Log("already dead");
+			return;
+		}
+
+		Debug.Log("termination");
+        Game.MainGameInfo.SetState(MainGameInfo.State.Over);
 		ChangeState(State.Dead, StateChangeReason.Rapid);
 		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
 		m_rigidbody.velocity = Vector3.zero;
