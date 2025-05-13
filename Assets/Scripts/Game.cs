@@ -1,5 +1,6 @@
 using Settings;
 using NaughtyAttributes;
+using Roomgen;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,6 +19,13 @@ public class Game : MonoBehaviour {
         PrepareCurrentState();
 
     }
+    public static RoomGenInfo RoomGenInfo {
+	    get {
+		    if (m_instance.m_roomGenInfo == null) Debug.LogError("RoomGenInfo was not assigned in " + m_instance.gameObject.name);
+		    return m_instance.m_roomGenInfo;
+	    }
+    }
+    [SerializeField] private RoomGenInfo m_roomGenInfo;
 
     public enum State {
         MainMenu = 0,

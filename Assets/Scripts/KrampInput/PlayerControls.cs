@@ -386,6 +386,15 @@ namespace KrampInput
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart And Regen"",
+                    ""type"": ""Button"",
+                    ""id"": ""e50998c0-f311-4809-b567-2707abd5587a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -630,6 +639,28 @@ namespace KrampInput
                     ""action"": ""MenuReturn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d0695985-8105-42ff-a63b-8da9ca503aa3"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart And Regen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d1ef2f6-3ab6-4e20-91b0-0f4885a1e338"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart And Regen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -691,6 +722,7 @@ namespace KrampInput
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
             m_UI_Tilt = m_UI.FindAction("Tilt", throwIfNotFound: true);
             m_UI_MenuReturn = m_UI.FindAction("MenuReturn", throwIfNotFound: true);
+            m_UI_RestartAndRegen = m_UI.FindAction("Restart And Regen", throwIfNotFound: true);
         }
 
         ~@PlayerControls()
@@ -850,6 +882,7 @@ namespace KrampInput
         private readonly InputAction m_UI_Navigate;
         private readonly InputAction m_UI_Tilt;
         private readonly InputAction m_UI_MenuReturn;
+        private readonly InputAction m_UI_RestartAndRegen;
         public struct UIActions
         {
             private @PlayerControls m_Wrapper;
@@ -860,6 +893,7 @@ namespace KrampInput
             public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
             public InputAction @Tilt => m_Wrapper.m_UI_Tilt;
             public InputAction @MenuReturn => m_Wrapper.m_UI_MenuReturn;
+            public InputAction @RestartAndRegen => m_Wrapper.m_UI_RestartAndRegen;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -887,6 +921,9 @@ namespace KrampInput
                 @MenuReturn.started += instance.OnMenuReturn;
                 @MenuReturn.performed += instance.OnMenuReturn;
                 @MenuReturn.canceled += instance.OnMenuReturn;
+                @RestartAndRegen.started += instance.OnRestartAndRegen;
+                @RestartAndRegen.performed += instance.OnRestartAndRegen;
+                @RestartAndRegen.canceled += instance.OnRestartAndRegen;
             }
 
             private void UnregisterCallbacks(IUIActions instance)
@@ -909,6 +946,9 @@ namespace KrampInput
                 @MenuReturn.started -= instance.OnMenuReturn;
                 @MenuReturn.performed -= instance.OnMenuReturn;
                 @MenuReturn.canceled -= instance.OnMenuReturn;
+                @RestartAndRegen.started -= instance.OnRestartAndRegen;
+                @RestartAndRegen.performed -= instance.OnRestartAndRegen;
+                @RestartAndRegen.canceled -= instance.OnRestartAndRegen;
             }
 
             public void RemoveCallbacks(IUIActions instance)
@@ -970,6 +1010,7 @@ namespace KrampInput
             void OnNavigate(InputAction.CallbackContext context);
             void OnTilt(InputAction.CallbackContext context);
             void OnMenuReturn(InputAction.CallbackContext context);
+            void OnRestartAndRegen(InputAction.CallbackContext context);
         }
     }
 }

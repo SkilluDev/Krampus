@@ -3,6 +3,7 @@ using System.Linq;
 using LitMotion;
 using LitMotion.Extensions;
 using NaughtyAttributes;
+using Roomgen;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -115,8 +116,15 @@ public class NewUIManager : MonoBehaviour {
                 Game.LoadState(Game.State.MainMenu);
             }
             if (InputSubscribe.Raw.UI.Restart.triggered) { //restart with R
+	            Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
                 Game.MainGameInfo.SetState(MainGameInfo.State.Game);
                 Game.LoadState(Game.State.MainGame);
+            }
+
+            if (InputSubscribe.Raw.UI.RestartAndRegen.triggered) { //generate and restart with G
+	            Game.RoomGenInfo.Regenerate = RoomGenerationType.New;
+	            Game.MainGameInfo.SetState(MainGameInfo.State.Game);
+	            Game.LoadState(Game.State.MainGame);
             }
         }
     }

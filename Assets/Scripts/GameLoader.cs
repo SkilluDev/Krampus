@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using Roomgen;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,8 @@ public class GameLoader : MonoBehaviour {
 
     public string Status { get; private set; }
     public float Progress { get; private set; }
+
+
 
     private void Start() {
         StartCoroutine(Game.RequireFullReload ? LoadingProcedure() : SoftLoadingProcedure());

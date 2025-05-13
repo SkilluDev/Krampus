@@ -63,8 +63,8 @@ public class Door : Passage, IInteractable {
         m_animator.SetBool(m_invertProperty, flip);
         m_animator.SetBool(m_openProperty, true);
         m_blocking.enabled = false;
-        m_interactionLeft.enabled = true;
-        m_interactionRight.enabled = true;
+        //m_interactionLeft.enabled = true;
+        //m_interactionRight.enabled = true;
         IsOpen = true;
     }
 
@@ -82,8 +82,8 @@ public class Door : Passage, IInteractable {
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_openProperty, false);
         m_blocking.enabled = true;
-        m_interactionLeft.enabled = false;
-        m_interactionRight.enabled = false;
+        //m_interactionLeft.enabled = false;
+        //m_interactionRight.enabled = false;
         IsOpen = false;
     }
 
