@@ -35,8 +35,7 @@ public class RoomGenerator : RoomGeneratorBase {
 	public override IReadOnlyCollection<Room> Rooms => m_placedRooms;
 
 	public override void Prepare() {
-		switch (Game.RoomGenInfo.Regenerate)
-		{
+		switch (Game.RoomGenInfo.Regenerate) {
 			case RoomGenerationType.First:
 				Game.RoomGenInfo.SetInitialSeed();
 				break;
@@ -335,17 +334,19 @@ public class RoomGenerator : RoomGeneratorBase {
 							m_spawnPoint = new Vector2Int(i, j);
 							m_doorGrid[i - 1, j].East = true;
 							m_doorGrid[i, j].West = true;
-							m_generationGrid[i - 1, j].ConfigureDoors(i - 1, j, m_doorGrid);
+							m_generationGrid[i - 1, j].ConfigureDoors(m_doorGrid);
 
+							Debug.Log("Orient : " + 2);
 							PlaceSpawnRoom(m_spawnPoint, 2);
 							return;
-						} else if (i + 1 < m_width && m_generationGrid[i + 1, j] != null && m_generationGrid[i + 1, j].GetConstraint(i + 1, j).optionalDoors.West) {
+						} else if (j - 1 >= 0 && m_generationGrid[i, j - 1] != null && m_generationGrid[i, j - 1].GetConstraint(i, j - 1).optionalDoors.South) {
 							m_spawnPoint = new Vector2Int(i, j);
-							m_doorGrid[i + 1, j].West = true;
-							m_doorGrid[i, j].East = true;
-							m_generationGrid[i + 1, j].ConfigureDoors(i + 1, j, m_doorGrid);
+							m_doorGrid[i, j - 1].South = true;
+							m_doorGrid[i, j].North = true;
+							m_generationGrid[i, j - 1].ConfigureDoors(m_doorGrid);
 
-							PlaceSpawnRoom(m_spawnPoint, 0);
+							Debug.Log("Orient : " + 3);
+							PlaceSpawnRoom(m_spawnPoint, 3);
 							return;
 						}
 					}

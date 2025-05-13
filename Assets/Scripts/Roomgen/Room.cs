@@ -62,6 +62,17 @@ namespace Roomgen {
             }
         }
 
+        public void ConfigureDoors(DoorFlags[,] doors) {
+            int x = m_placePosition.x;
+            int y = m_placePosition.y;
+            for (int i = 0; i < Width; i++) {
+                for (int j = 0; j < Height; j++) {
+                    if (m_doorGrid[i, j] == null) continue;
+                    m_doorGrid[i, j].SetState(doors[i + x, j + y]);
+                }
+            }
+        }
+
         public Vector3 GetMidPoint() {
             return transform.TransformPoint(new Vector3(Width * Room.CELL_SIZE, 0, -Height * Room.CELL_SIZE) * 0.5f);
         }
