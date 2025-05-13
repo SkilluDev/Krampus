@@ -17,7 +17,7 @@ public class MenuCredits : MonoBehaviour {
     private void Awake() {
         m_groups = GetComponentsInChildren<CanvasGroup>().OrderBy(w => w.transform.GetSiblingIndex()).ToArray();
         Stop();
-        m_groups[0].alpha = 1;
+        //m_groups[0].alpha = 1;
     }
 
     private void Ready() {
@@ -31,10 +31,11 @@ public class MenuCredits : MonoBehaviour {
     private void Stop() {
         m_audio.Stop();
         if (m_handle.IsActive()) m_handle.Cancel();
-        foreach (var group in m_groups) {
+        foreach (var group in m_groups.Skip(1)) {
             group.gameObject.SetActive(true);
             group.alpha = 0;
         }
+        m_groups[0].alpha = 1;
     }
 
     private void StateChanged(MainMenuInfo.State previous, MainMenuInfo.State current) {
@@ -73,6 +74,7 @@ public class MenuCredits : MonoBehaviour {
             lSequence.Append(LMotion.Create(1f, 0f, m_fadeDuration).BindToAlpha(w));
         }
         lSequence.Append(LMotion.Create(0f, 1f, m_fadeDuration).BindToAlpha(m_groups[0]));
+        Stop();
         m_handle = lSequence.Run();
     }
 }
