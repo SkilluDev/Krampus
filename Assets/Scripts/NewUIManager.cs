@@ -29,6 +29,7 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private Color m_badTimerColor;
 
 
+
     [BoxGroup("ButtonSets")]
     [SerializeField] private ButtonSet[] m_buttonSets;
     [BoxGroup("In Game Layout")][SerializeField] private Image m_pauseImage;
@@ -41,9 +42,8 @@ public class NewUIManager : MonoBehaviour {
 
     [BoxGroup("Score Board")][SerializeField] private GameObject m_scoreboard;
 
-    [BoxGroup("Score Board")]
-    [SerializeField]
-    private TextMeshProUGUI m_childPerMinutText;
+
+    [BoxGroup("Score Board")][SerializeField] private TextMeshProUGUI m_childPerMinuteText;
 
 
     private void OnChildEaten(ChildType childType) {
@@ -108,6 +108,7 @@ public class NewUIManager : MonoBehaviour {
         m_timerText.text = Game.MainGameInfo.Timer.GameTime.ToString("00");
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
 
+
         if (InputSubscribe.Raw.UI.Pause.triggered) SwitchPauseMenu();
 
         if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
@@ -169,10 +170,11 @@ public class NewUIManager : MonoBehaviour {
     }
 
     public void DisplayScoreBoard() {
-        m_scoreboard.SetActive(true);
-        float time = Game.MainGameInfo.timeFromStart / 60;
-        float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
-        LMotion.Create(0, val, 2)
-            .BindToText(m_childPerMinutText);
+	    m_scoreboard.SetActive(true);
+	    float time = (Game.MainGameInfo.timeFromStart / 60);
+	    float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
+	    Debug.Log(val);
+	    LMotion.Create(0, val , 2).WithEase(Ease.OutExpo)
+        .Bind(x => m_childPerMinuteText.SetText(x.ToString("#.00")));
     }
 }
