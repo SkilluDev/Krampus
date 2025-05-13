@@ -20,14 +20,13 @@ public class Timer : MonoBehaviour {
 		GameTime = (int)Game.SetMan.GetValue<long>("Timer");
 		Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
 		//hey
+		// hey!
 	}
 
 	private void Update() {
 		if (!Game.Balling) return;
 		GameTime -= Time.deltaTime;
-
 		Game.MainGameInfo.timeFromStart += Time.deltaTime;
-		Debug.Log(Game.MainGameInfo.timeFromStart);
 	}
 
 	public void Bonus() {
