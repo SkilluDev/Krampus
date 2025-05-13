@@ -30,16 +30,19 @@ public class KrampusController : KrampusBehaviour {
 	[BoxGroup("Acceleration")][SerializeField] private float m_timeIdleThreshold = 0.2f;
 	[BoxGroup("Acceleration")][SerializeField] private float m_deltaIdleThreshold = 100f;
 	[BoxGroup("Acceleration")][SerializeField] private float m_startRunSpeed = 2f;
+	[BoxGroup("Intro")][SerializeField] private float m_getUpDuration = 1f;
 
 
 
 	private Vector4 m_inputWeights;
+	private float m_timeout;
 	private float m_timeHoldingInput = 0f;
 	private float m_previousFrameVelocity = 0f;
 
 
 	public enum State {
 		Intro,
+		GetUp,
 		Idle,
 		Run,
 		Walk,
@@ -55,7 +58,17 @@ public class KrampusController : KrampusBehaviour {
 	// Based on @SkilluDev's inputs
 	private void Update() {
 		if (!Game.Balling) return;
-		if (CurrentState == State.Intro) ChangeState(State.Idle, StateChangeReason.Normal);
+		if (CurrentState == State.Intro) {
+			m_timeout = m_getUpDuration;
+			ChangeState(State.GetUp, StateChangeReason.Normal);
+		}
+
+		if (CurrentState == State.GetUp) {
+			m_timeout -= Time.deltaTime;
+			if (m_timeout <= 0) ChangeState(State.Idle, StateChangeReason.Normal);
+			return;
+		}
+
 		if (CurrentState == State.Dead) return;
 
 		//		Debug.LogWarning(Game.MainGameInfo.Timer);

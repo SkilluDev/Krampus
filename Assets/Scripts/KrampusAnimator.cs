@@ -26,6 +26,7 @@ public class KrampusAnimator : KrampusBehaviour {
         Kramp.Tongue.onStateChanged += TongueStateChanged;
         Kramp.Kontroller.onStateChanged += MovementStateChanged;
         m_runningEffect.Stop();
+        m_modelTransform.gameObject.SetActive(false);
     }
 
     private void Update() {
@@ -82,6 +83,7 @@ public class KrampusAnimator : KrampusBehaviour {
                 break;
 
             case (KrampusController.State.Intro, _):
+                m_modelTransform.gameObject.SetActive(true);
                 m_animator.SetTrigger(m_wakeupProperty);
                 break;
             case (_, KrampusController.State.Run):
