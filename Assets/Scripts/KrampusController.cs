@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
 public class KrampusController : KrampusBehaviour {
-	public State CurrentState { get; private set; }
+	[ShowNativeProperty] public State CurrentState { get; private set; }
 	public Vector3 VelocityVector => m_rigidbody.velocity;
 	public float RunSpeed => m_runSpeed;
 	public float Velocity => VelocityVector.magnitude;
@@ -57,7 +57,10 @@ public class KrampusController : KrampusBehaviour {
 
 	// Based on @SkilluDev's inputs
 	private void Update() {
-		if (!Game.Balling) return;
+		if (!Game.Balling) {
+			Debug.Log("Not balling");
+			return;
+		}
 		if (CurrentState == State.Intro) {
 			m_timeout = m_getUpDuration;
 			ChangeState(State.GetUp, StateChangeReason.Normal);
@@ -136,13 +139,13 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void KrampTermination() {
-		if (Game.MainGameInfo.CurrentState==MainGameInfo.State.Over) {
+		if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Over) {
 			Debug.Log("already dead");
 			return;
 		}
 
 		Debug.Log("termination");
-        Game.MainGameInfo.SetState(MainGameInfo.State.Over);
+		Game.MainGameInfo.SetState(MainGameInfo.State.Over);
 		ChangeState(State.Dead, StateChangeReason.Rapid);
 		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
 		m_rigidbody.velocity = Vector3.zero;

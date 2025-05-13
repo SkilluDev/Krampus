@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 /// De-facto game controller for the main gaame scene
 /// </summary>
 public class MainGameInfo : LevelInfo {
-    public State CurrentState { get; private set; }
+    [ShowNativeProperty] public State CurrentState { get; private set; }
     public RoomGeneratorBase RoomGenerator => m_roomGenerator;
     [SerializeField] private RoomGeneratorBase m_roomGenerator;
 
@@ -55,9 +55,8 @@ public class MainGameInfo : LevelInfo {
 
     public IReadOnlyCollection<Nun> Nuns => m_nunRegistry;
     private List<Nun> m_nunRegistry = new List<Nun>();
-
     private Dictionary<Room, RoomData> m_roomdata = new Dictionary<Room, RoomData>();
-
+    [SerializeField] private bool m_skipIntro = false;
 
     [SerializeField] private Timer m_timer;
     public Timer Timer => m_timer;
@@ -65,8 +64,8 @@ public class MainGameInfo : LevelInfo {
     public float timeFromStart = 0;
 
 
-	private float m_score;
-     public float Score => m_score;
+    private float m_score;
+    public float Score => m_score;
 
 
 
@@ -85,9 +84,15 @@ public class MainGameInfo : LevelInfo {
     }
 
     private void Awake() {
-        GoodChildType = Types.UnityRandomElement();
-        UI.SetChildrenIcon(GoodChildType.uiIcon);
         CurrentState = State.Intro;
+        GoodChildType = Types.NullIfEmpty()?.UnityRandomElement();
+        UI.SetChildrenIcon(GoodChildType.uiIcon);
+    }
+
+    private void Ready() {
+        if (m_skipIntro) {
+            SetState(State.Game);
+        }
     }
 
     public RoomData GetRoomData(Room r) {

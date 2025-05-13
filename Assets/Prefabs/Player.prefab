@@ -388,13 +388,16 @@ MonoBehaviour:
   m_tongueRenderer: {fileID: 7310454460585220596}
   m_tongueVisualOrigin: {fileID: 8687825938405057626}
   m_tongueAimIndicator: {fileID: 8821230663668433133}
-  m_layerMask:
+  m_interactionSearchMask:
     serializedVersion: 2
-    m_Bits: 456
+    m_Bits: 2147483647
+  m_interactionBlockerMask:
+    serializedVersion: 2
+    m_Bits: 64
   m_tongueOrigin: {fileID: 8320024670651621678}
   m_tongueLength: 10
-  m_tongueHitRadius: 1
-  m_inputMinimumDrag: 0.4
+  m_tongueHitRadius: 0.3
+  m_inputMinimumDrag: 0.5
   m_inputMinimumMouseDistance: 2
   m_inputMaximumMouseDistance: 8
   m_inputDragSmoothing: 10
