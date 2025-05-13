@@ -25,6 +25,9 @@ public class Timer : MonoBehaviour {
 	private void Update() {
 		if (!Game.Balling) return;
 		GameTime -= Time.deltaTime;
+
+		Game.MainGameInfo.timeFromStart += Time.deltaTime;
+		Debug.Log(Game.MainGameInfo.timeFromStart);
 	}
 
 	public void Bonus() {

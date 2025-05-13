@@ -62,6 +62,14 @@ public class MainGameInfo : LevelInfo {
     [SerializeField] private Timer m_timer;
     public Timer Timer => m_timer;
 
+    public float timeFromStart = 0;
+
+
+	private float m_score;
+     public float Score => m_score;
+
+
+
     public new enum State {
         Intro,
         Game,
@@ -117,6 +125,7 @@ public class MainGameInfo : LevelInfo {
             m_goodChildRegistry.Remove(child);
         } else {
             m_badChildRegistry.Remove(child);
+            m_score++;
         }
     }
 

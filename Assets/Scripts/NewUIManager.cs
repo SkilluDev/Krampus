@@ -39,6 +39,11 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("GameOver Screen")] [SerializeField] private  Image m_menuImage;
     [BoxGroup("GameOver Screen")] [SerializeField] private  Image m_resetImage;
 
+    [BoxGroup("Score Board")] [SerializeField] private  GameObject m_scoreboard;
+
+    [BoxGroup("Score Board")] [SerializeField]
+    private TextMeshProUGUI m_childPerMinutText;
+
 
     private void OnChildEaten(ChildType childType) {
         Color destinationColor;
@@ -63,6 +68,7 @@ public class NewUIManager : MonoBehaviour {
     public void ShowGameOverScreen() {
         m_gameOverScreen.SetActive(true);
         m_timerText.gameObject.SetActive(false);
+        DisplayScoreBoard();
         Game.MainGameInfo.SetState(MainGameInfo.State.Over);
     }
 
@@ -161,5 +167,14 @@ public class NewUIManager : MonoBehaviour {
 	    m_menuImage.sprite = bs.backToMenu_Button;
 	    m_SneakImage.sprite = bs.sneak_Button;
 	    m_attackImage.sprite = bs.attack_Button;
+    }
+
+    public void DisplayScoreBoard() {
+	    m_scoreboard.SetActive(true);
+	    float time = (Game.MainGameInfo.timeFromStart / 60);
+	    float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
+	    Debug.Log(val);
+	    LMotion.Create(0, val , 2)
+		    .BindToText(m_childPerMinutText);
     }
 }
