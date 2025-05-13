@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using LitMotion;
 using LitMotion.Extensions;
+using Unity.Collections;
 using UnityEngine;
 
 public class TutorialHandler : MonoBehaviour
@@ -14,7 +15,9 @@ public class TutorialHandler : MonoBehaviour
     [SerializeField] private float m_rotateAngle;
     [SerializeField] private float m_slideLength;
 
-    private float m_distanceBetween = 10f;
+    private float m_distanceBetween = 1f;
+
+    private bool m_isMoving = false;
 
 
 
@@ -27,13 +30,15 @@ public class TutorialHandler : MonoBehaviour
 	}
 	void Update()
     {
-        if (InputSubscribe.Raw.Player.Move.WasPerformedThisFrame()) {
-            StartCoroutine(MoveBack(m_tutorialCounter++%m_tutorials.Length));
+        if (InputSubscribe.Raw.Player.Move.WasPerformedThisFrame() && !m_isMoving) {
+            MoveBack(m_tutorialCounter++%m_tutorials.Length);
         }
         
     }
 
-    IEnumerator MoveBack(int id){
+    void MoveBack(int id){
+
+        m_isMoving = true;
         
         var page = m_tutorials[id].transform;
         var oldLocalPosition = page.localPosition;
@@ -46,7 +51,7 @@ public class TutorialHandler : MonoBehaviour
         
 
         
-        lSequence.Append(LMotion.Create(page.rotation, Quaternion.Euler(new Vector3(0,0,m_rotateAngle)), m_transitionLength).WithEase(Ease.InOutCubic)
+        lSequence.Append(LMotion.Create(page.rotation, page.rotation*Quaternion.Euler(new Vector3(0,0,m_rotateAngle)), m_transitionLength).WithEase(Ease.InOutCubic)
         .BindToRotation(page));
 
         var currentLocalPagePosition = oldLocalPosition;
@@ -65,10 +70,10 @@ public class TutorialHandler : MonoBehaviour
         currentLocalPagePosition = nextLocalPagePosition;
         nextLocalPagePosition = currentLocalPagePosition-Vector3.forward*(m_tutorials.Length+1)*m_distanceBetween;
 
-        lSequence.Append(LMotion.Create(currentLocalPagePosition,nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToLocalPosition(page));
+        lSequence.Append(LMotion.Create(currentLocalPagePosition,nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic).
+        WithOnComplete(()=>page.SetAsFirstSibling()).BindToLocalPosition(page));
 
-        lSequence.Append(LMotion.Create(Quaternion.Euler(new Vector3(0,0,m_rotateAngle)), page.rotation, m_transitionLength).WithEase(Ease.InOutCubic)
+        lSequence.Append(LMotion.Create(page.rotation*Quaternion.Euler(new Vector3(0,0,m_rotateAngle)), page.rotation, m_transitionLength).WithEase(Ease.InOutCubic)
         .BindToRotation(page));
 
         currentLocalPagePosition = nextLocalPagePosition;
@@ -87,7 +92,7 @@ public class TutorialHandler : MonoBehaviour
         nextLocalMainPosition = currentLocalMainPosition+Vector3.forward*m_distanceBetween;
 
         lSequence.Append(LMotion.Create(currentLocalMainPosition, nextLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToLocalPosition(transform));
+        .WithOnComplete(()=>m_isMoving=false).BindToLocalPosition(transform));
 
         m_tutorials[id].transform.position = oldPosition;
         m_tutorials[id].transform.localPosition = oldLocalPosition;
@@ -96,7 +101,5 @@ public class TutorialHandler : MonoBehaviour
         transform.localPosition = oldLocalMainPosition;
 
         lSequence.Run();
-        yield return new WaitForSeconds(m_transitionLength*2);
-        page.SetAsFirstSibling();
     }
 }
