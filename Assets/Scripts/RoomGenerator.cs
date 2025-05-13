@@ -202,7 +202,7 @@ public class RoomGenerator : RoomGeneratorBase {
 			for (int i = 0; i < kidCount; i++) {
 				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
 				if (room.HasTag(m_kidProof)) {
-					Debug.LogWarning(room.name + "is Kid-Proof - cannot spawn Child.");
+					Debug.LogWarning("[Roomgen]" + room.name + "is Kid-Proof - cannot spawn Child.");
 					i--;
 					continue;
 				}
@@ -210,7 +210,7 @@ public class RoomGenerator : RoomGeneratorBase {
 				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 0.2f, NavMesh.AllAreas)) {
 					Instantiate(m_childPrefab, hit.position, Quaternion.identity);
 				} else {
-					Debug.LogWarning("Could not spawn Child in " + room.name);
+					Debug.LogWarning("[Roomgen] Could not spawn Child in " + room.name);
 					i--;
 					continue;
 				}
@@ -220,7 +220,7 @@ public class RoomGenerator : RoomGeneratorBase {
 				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
 
 				if (room.HasTag(m_nunProof)) {
-					Debug.LogWarning(room.name + "is Nun-Proof - cannot spawn Nun.");
+					Debug.LogWarning("[Roomgen]" + room.name + "is Nun-Proof - cannot spawn Nun.");
 					i--;
 					continue;
 				}
@@ -228,7 +228,7 @@ public class RoomGenerator : RoomGeneratorBase {
 				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 0.2f, NavMesh.AllAreas)) {
 					Instantiate(m_nunPrefab, hit.position, Quaternion.identity);
 				} else {
-					Debug.LogWarning("Could not spawn Nun in " + room.name);
+					Debug.LogWarning("[Roomgen] Could not spawn Nun in " + room.name);
 					i--;
 					continue;
 				}
@@ -273,36 +273,27 @@ public class RoomGenerator : RoomGeneratorBase {
 							m_spawnPoint = new Vector2Int(i, j);
 							m_doorGrid[i - 1, j].East = true;
 							m_doorGrid[i, j].West = true;
-							//m_generationGrid[i - 1, j].ConfigureDoors(m_doorGrid);
 							m_spawnOrient = 2;
-
-							//Debug.Log("Orient : " + 2);
-							Debug.Log("FOUND SPAWNPOINT");
 							return true;
 						} else if (j - 1 >= 0 && m_doorGrid[i, j - 1].Count != 0) {
 							m_spawnPoint = new Vector2Int(i, j);
 							m_doorGrid[i, j - 1].South = true;
 							m_doorGrid[i, j].North = true;
-							//m_generationGrid[i, j - 1].ConfigureDoors(m_doorGrid);
 							m_spawnOrient = 3;
-
-							//Debug.Log("Orient : " + 3);
-							
-							Debug.Log("FOUND SPAWNPOINT");
 							return true;
 						}
 					}
 				}
 			}
-			Debug.Log("DID NOT FIND SPAWNPOINT");
+			Debug.LogWarning("[Roomgen] DID NOT FIND SPAWNPOINT");
 			return false;
 		}
-		Debug.Log("reload pls");
+
 		int filledSpaces = 0;
 		bool foundSpawn = false;
 		int regenCounter = 1;
 		while (filledSpaces <= m_minSpacesOnMap || !foundSpawn) {
-			Status = "Creating layout attempt"+regenCounter;
+			Status = "Creating layout attempt" + regenCounter;
 			Init();
 			CreateGrid();
 			foundSpawn = FindSpawnPoint();
@@ -335,7 +326,7 @@ public class RoomGenerator : RoomGeneratorBase {
 		Status = "Spawning objects";
 
 		foreach (var gradeGroup in roomsByGrade) {
-			Debug.Log($"Found {gradeGroup.Count()} Room Variants with Tier {gradeGroup.Key}");
+			Debug.Log($"[Roomgen] Found {gradeGroup.Count()} Room Variants with Tier {gradeGroup.Key}");
 			Status = $"Spawning objects (Part {gradeGroup.Key})";
 			Progress += 1f / roomsByGrade.Count();
 			yield return null;
@@ -349,12 +340,12 @@ public class RoomGenerator : RoomGeneratorBase {
 
 
 				if (hardestToPlace == null) {
-					Debug.Log("No room could be placed");
+					Debug.Log("[Roomgen] No room could be placed");
 					break;
 				}
 				var placements = FindPossiblePlacements(hardestToPlace);
 
-				Debug.Log($"Placing {hardestToPlace} in one of the {placements.Count} possible spots.");
+				Debug.Log($"[Roomgen] Placing {hardestToPlace} in one of the {placements.Count} possible spots.");
 				yield return new WaitForSecondsRealtime(0.01f);
 				PlaceRoom(hardestToPlace, placements[Random.Range(0, placements.Count)]);
 			}
@@ -366,7 +357,7 @@ public class RoomGenerator : RoomGeneratorBase {
 			RoomVariantManager.Release(spawnInstance);
 		}
 
-		
+
 		m_navMesh.BuildNavMesh();
 		GenerateNunsAndKids();
 		GenerateDoors();

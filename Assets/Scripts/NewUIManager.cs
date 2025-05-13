@@ -30,18 +30,19 @@ public class NewUIManager : MonoBehaviour {
 
 
     [BoxGroup("ButtonSets")]
-    [SerializeField] private ButtonSet[] m_ButtonSets;
-    [BoxGroup("In Game Layout")] [SerializeField] private  Image m_pauseImage;
-    [BoxGroup("In Game Layout")] [SerializeField] private  Image m_attackImage;
-    [BoxGroup("In Game Layout")] [SerializeField] private  Image m_SneakImage;
+    [SerializeField] private ButtonSet[] m_buttonSets;
+    [BoxGroup("In Game Layout")][SerializeField] private Image m_pauseImage;
+    [BoxGroup("In Game Layout")][SerializeField] private Image m_attackImage;
+    [BoxGroup("In Game Layout")][SerializeField] private Image m_sneakImage;
 
 
-    [BoxGroup("GameOver Screen")] [SerializeField] private  Image m_menuImage;
-    [BoxGroup("GameOver Screen")] [SerializeField] private  Image m_resetImage;
+    [BoxGroup("GameOver Screen")][SerializeField] private Image m_menuImage;
+    [BoxGroup("GameOver Screen")][SerializeField] private Image m_resetImage;
 
-    [BoxGroup("Score Board")] [SerializeField] private  GameObject m_scoreboard;
+    [BoxGroup("Score Board")][SerializeField] private GameObject m_scoreboard;
 
-    [BoxGroup("Score Board")] [SerializeField]
+    [BoxGroup("Score Board")]
+    [SerializeField]
     private TextMeshProUGUI m_childPerMinutText;
 
 
@@ -89,7 +90,7 @@ public class NewUIManager : MonoBehaviour {
     private void Update() {
 
 
-	    SetButtonSet();
+        SetButtonSet();
 
         m_currentGameState = Game.MainGameInfo.CurrentState;
         var col = Game.MainGameInfo.GoodChildType;
@@ -121,15 +122,15 @@ public class NewUIManager : MonoBehaviour {
                 Game.LoadState(Game.State.MainMenu);
             }
             if (InputSubscribe.Raw.UI.Restart.triggered) { //restart with R
-	            Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
+                Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
                 Game.MainGameInfo.SetState(MainGameInfo.State.Game);
                 Game.LoadState(Game.State.MainGame);
             }
 
             if (InputSubscribe.Raw.UI.RestartAndRegen.triggered) { //generate and restart with G
-	            Game.RoomGenInfo.Regenerate = RoomGenerationType.New;
-	            Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-	            Game.LoadState(Game.State.MainGame);
+                Game.RoomGenInfo.Regenerate = RoomGenerationType.New;
+                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
+                Game.LoadState(Game.State.MainGame);
             }
         }
     }
@@ -144,36 +145,35 @@ public class NewUIManager : MonoBehaviour {
     }
 
     public void ChangeChildCounter() {
-        var oldValue = m_fillBar.fillAmount;
-        Debug.Log("Zmiana");
+        float oldValue = m_fillBar.fillAmount;
         LMotion.Create(oldValue, 0.1f + (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
                                  Game.MainGameInfo.BadChildrenCountOnStart * 0.9f, 0.1f).BindToFillAmount(m_fillBar);
     }
 
     public void SetButtonSet() {
 
-	    ButtonSet bs = null;
-	    foreach (var b in m_ButtonSets) {
-		    if (b.method == InputSubscribe.InputMethod) {
-			    bs = b;
-			    break;
-		    }
-	    }
-		if(bs == null) return;
+        ButtonSet bs = null;
+        foreach (var b in m_buttonSets) {
+            if (b.method == InputSubscribe.InputMethod) {
+                bs = b;
+                break;
+            }
+        }
+        if (bs == null) return;
 
-		m_pauseImage.sprite = bs.pause_Button;
-	    m_resetImage.sprite = bs.restart_Button;
-	    m_menuImage.sprite = bs.backToMenu_Button;
-	    m_SneakImage.sprite = bs.sneak_Button;
-	    m_attackImage.sprite = bs.attack_Button;
+        m_pauseImage.sprite = bs.pause_Button;
+        m_resetImage.sprite = bs.restart_Button;
+        m_menuImage.sprite = bs.backToMenu_Button;
+        m_sneakImage.sprite = bs.sneak_Button;
+        m_attackImage.sprite = bs.attack_Button;
     }
 
     public void DisplayScoreBoard() {
-	    m_scoreboard.SetActive(true);
-	    float time = (Game.MainGameInfo.timeFromStart / 60);
-	    float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
-	    Debug.Log(val);
-	    LMotion.Create(0, val , 2)
-		    .BindToText(m_childPerMinutText);
+        m_scoreboard.SetActive(true);
+        float time = Game.MainGameInfo.timeFromStart / 60;
+        float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
+        Debug.Log(val);
+        LMotion.Create(0, val, 2)
+            .BindToText(m_childPerMinutText);
     }
 }
