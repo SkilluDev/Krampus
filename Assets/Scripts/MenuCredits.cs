@@ -10,6 +10,7 @@ public class MenuCredits : MonoBehaviour {
 
     [SerializeField] private float m_fadeDuration = 0.5f;
     [SerializeField] private float m_defaultInterval = 2f;
+    [SerializeField] private AudioSource m_audio;
     private CanvasGroup[] m_groups;
     private MotionHandle m_handle;
 
@@ -28,6 +29,7 @@ public class MenuCredits : MonoBehaviour {
     }
 
     private void Stop() {
+        m_audio.Stop();
         if (m_handle.IsActive()) m_handle.Cancel();
         foreach (var group in m_groups) {
             group.gameObject.SetActive(true);
@@ -57,6 +59,7 @@ public class MenuCredits : MonoBehaviour {
     [Button("Play")]
     private void PlaySequence() {
         Stop();
+        m_audio.Play();
         var lSequence = LSequence.Create();
         lSequence.AppendInterval(m_defaultInterval);
         lSequence.Append(LMotion.Create(1f, 0f, m_fadeDuration).BindToAlpha(m_groups[0]));
