@@ -18,6 +18,7 @@ public class RoomGenerator : RoomGeneratorBase {
 	private DoorFlags[,] m_doorGrid;
 	private Room[,] m_generationGrid;
 	private Vector2Int m_spawnPoint;
+	private int m_spawnOrient;
 	[SerializeField] private List<Room> m_placedRooms;
 	[SerializeField] private int m_minSpacesOnMap;
 
@@ -264,15 +265,54 @@ public class RoomGenerator : RoomGeneratorBase {
 			}
 		}
 
-		Status = "Creating layout";
+		bool FindSpawnPoint() {
+			for (int i = 0; i < m_width; i++) {
+				for (int j = 0; j < m_height; j++) {
+					if (m_doorGrid[i, j].Count == 0) {
+						if (i - 1 >= 0 && m_doorGrid[i - 1, j].Count != 0) {
+							m_spawnPoint = new Vector2Int(i, j);
+							m_doorGrid[i - 1, j].East = true;
+							m_doorGrid[i, j].West = true;
+							//m_generationGrid[i - 1, j].ConfigureDoors(m_doorGrid);
+							m_spawnOrient = 2;
+
+							//Debug.Log("Orient : " + 2);
+							Debug.Log("FOUND SPAWNPOINT");
+							return true;
+						} else if (j - 1 >= 0 && m_doorGrid[i, j - 1].Count != 0) {
+							m_spawnPoint = new Vector2Int(i, j);
+							m_doorGrid[i, j - 1].South = true;
+							m_doorGrid[i, j].North = true;
+							//m_generationGrid[i, j - 1].ConfigureDoors(m_doorGrid);
+							m_spawnOrient = 3;
+
+							//Debug.Log("Orient : " + 3);
+							
+							Debug.Log("FOUND SPAWNPOINT");
+							return true;
+						}
+					}
+				}
+			}
+			Debug.Log("DID NOT FIND SPAWNPOINT");
+			return false;
+		}
+		Debug.Log("reload pls");
 		int filledSpaces = 0;
-		while (filledSpaces <= m_minSpacesOnMap) {
+		bool foundSpawn = false;
+		int regenCounter = 1;
+		while (filledSpaces <= m_minSpacesOnMap || !foundSpawn) {
+			Status = "Creating layout attempt"+regenCounter;
 			Init();
 			CreateGrid();
+			foundSpawn = FindSpawnPoint();
 			filledSpaces = RemoveDeadDoors();
+			yield return null;
+			regenCounter++;
 		}
 		yield return null;
 
+		PlaceSpawnRoom(m_spawnPoint, m_spawnOrient);
 
 
 
@@ -326,36 +366,7 @@ public class RoomGenerator : RoomGeneratorBase {
 			RoomVariantManager.Release(spawnInstance);
 		}
 
-		void FindAndPlaceSpawnPoint() {
-			for (int i = 0; i < m_width; i++) {
-				for (int j = 0; j < m_height; j++) {
-					if (m_generationGrid[i, j] == null) {
-						if (i - 1 >= 0 && m_generationGrid[i - 1, j] != null && m_generationGrid[i - 1, j].GetConstraint(i - 1, j).optionalDoors.East) {
-							m_spawnPoint = new Vector2Int(i, j);
-							m_doorGrid[i - 1, j].East = true;
-							m_doorGrid[i, j].West = true;
-							m_generationGrid[i - 1, j].ConfigureDoors(m_doorGrid);
-
-							Debug.Log("Orient : " + 2);
-							PlaceSpawnRoom(m_spawnPoint, 2);
-							return;
-						} else if (j - 1 >= 0 && m_generationGrid[i, j - 1] != null && m_generationGrid[i, j - 1].GetConstraint(i, j - 1).optionalDoors.South) {
-							m_spawnPoint = new Vector2Int(i, j);
-							m_doorGrid[i, j - 1].South = true;
-							m_doorGrid[i, j].North = true;
-							m_generationGrid[i, j - 1].ConfigureDoors(m_doorGrid);
-
-							Debug.Log("Orient : " + 3);
-							PlaceSpawnRoom(m_spawnPoint, 3);
-							return;
-						}
-					}
-				}
-			}
-		}
-
-		FindAndPlaceSpawnPoint();
-
+		
 		m_navMesh.BuildNavMesh();
 		GenerateNunsAndKids();
 		GenerateDoors();
