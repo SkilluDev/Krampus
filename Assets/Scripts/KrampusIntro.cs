@@ -17,7 +17,7 @@ public class KrampusIntro : MonoBehaviour {
 
     private void Update() {
         if (Game.Balling || Game.MainGameInfo.CurrentState==MainGameInfo.State.Over) return;
-        if (InputSubscribe.Raw.Player.Move.WasPerformedThisFrame()) {
+        if (InputSubscribe.Raw.Player.Move.WasPressedThisFrame()) {
             m_director.Stop();
             m_spawnPoint.gameObject.SetActive(false);
             m_vcam.enabled = false;
