@@ -24,10 +24,15 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
         m_currentPath = new NavMeshPath();
     }
 
+    public virtual void OverridePathCosts() {
+
+    }
+
 
     public virtual bool SetDestination(Vector3 destination) {
         if (m_currentPath == null) m_currentPath = new NavMeshPath();
 
+        OverridePathCosts();
         if (!NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, m_currentPath)) {
             Debug.LogError($"[NPC] {name} Could not form path");
             return false;

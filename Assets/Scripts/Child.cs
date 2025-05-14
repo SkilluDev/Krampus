@@ -28,6 +28,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 
     private Nun m_selectedNun;
     private Room m_selectedRoom;
+    private Room m_lastKrampusSpotted;
 
     private float m_timeout = 0;
 
@@ -58,6 +59,10 @@ public class Child : NPC, IEdible, INoiseReactor {
         Game.MainGameInfo.UnregisterChild(this);
     }
 
+    public override void OverridePathCosts() {
+        NavMesh.SetAreaCost(NavMesh.GetAreaFromName("Kramped"), 99f);
+    }
+
     private void SelectNewWanderLocation() {
         if (NavMesh.SamplePosition(MoreMath.RandomInBounds(CurrentRoom.GetBounds()), out var hit, 10, NavMesh.AllAreas)) {
             SetDestination(hit.position);
@@ -68,6 +73,13 @@ public class Child : NPC, IEdible, INoiseReactor {
 
     private void Update() {
         if (!CurrentRoom) return;
+
+        void SelectRoomAwayFromKrampy() {
+            var passages = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
+            m_selectedRoom = passages.First().Other(CurrentRoom);
+            SetDestination(m_selectedRoom.GetRandomPointOnFloor().OnNavMesh(5));
+        }
+
         switch (CurrentState) {
             case State.Idle:
                 if (m_currentPath?.status == NavMeshPathStatus.PathInvalid)
@@ -94,38 +106,37 @@ public class Child : NPC, IEdible, INoiseReactor {
             case State.Stunned:
                 m_timeout -= Time.deltaTime;
                 if (m_timeout <= 0) {
-
-                    var passages = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
-                    m_selectedRoom = passages.First().Other(CurrentRoom);
-                    SetDestination(m_selectedRoom.GetRandomPointOnFloor().OnNavMesh(5));
+                    m_lastKrampusSpotted = CurrentRoom;
+                    Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+                    Game.MainGameInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
+                    SelectRoomAwayFromKrampy();
                     SwitchState(State.InitialPanic);
                 }
                 break;
 
             case State.InitialPanic:
-                //SetDestination(m_selectedNun.transform.position);
                 SetVelocity(GetPathDirection() * m_runSpeed);
 
-                if (CurrentRoom == m_selectedRoom) {
+                if (NearDestination(m_interactionDistance)) {
                     if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
-                        var passages = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
-                        m_selectedRoom = passages.First().Other(CurrentRoom);
-                        SetDestination(m_selectedRoom.GetRandomPointOnFloor().OnNavMesh(5));
+                        m_lastKrampusSpotted = CurrentRoom;
+                        Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+                        Game.MainGameInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
+                        SelectRoomAwayFromKrampy();
                     } else {
-                        // select nearest nun or whatevs
-                        if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
-                            m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun nun && nun.CurrentState != Nun.State.ChasingKrampus);
-                            if (m_selectedNun == null) m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
-                        } else {
-                            m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
-                        }
-                        SetDestination(m_selectedNun.transform.position);
+                        m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun);
+                        if (m_selectedNun == null) m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
+
                         SwitchState(State.Panic);
                     }
                 }
+
+
                 break;
             case State.Panic:
                 SetVelocity(GetPathDirection() * m_runSpeed);
+
+                SetDestination(m_selectedNun.transform.position);
 
                 if (NearDestination(m_interactionDistance)) {
                     m_selectedNun.ActivateTheBitch(m_reportingDuration);

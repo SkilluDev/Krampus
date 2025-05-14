@@ -7,6 +7,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshSurface))]
 public abstract class RoomGeneratorBase : MonoBehaviour, IGameLoadable {
+    public NavMeshSurface NavMeshSurface => m_navMesh;
     [SerializeField] protected NavMeshSurface m_navMesh;
     public abstract IReadOnlyCollection<Room> Rooms { get; }
 

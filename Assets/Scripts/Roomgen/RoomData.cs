@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Roomgen;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class RoomData : MonoBehaviour {
 	public Room Room { get; private set; }
@@ -9,11 +11,19 @@ public class RoomData : MonoBehaviour {
 	private List<ICharacter> m_characters;
 	public IReadOnlyCollection<Passage> Passages => m_passages;
 	private List<Passage> m_passages;
+	private NavMeshModifier m_navMeshModifier;
 
 	public void Init(Room room) {
 		Room = room;
 		m_characters = new List<ICharacter>();
 		m_passages = new List<Passage>();
+		m_navMeshModifier = gameObject.AddComponent<NavMeshModifier>();
+		m_navMeshModifier.overrideArea = true;
+		m_navMeshModifier.area = NavMesh.GetAreaFromName("Walkable");
+	}
+
+	public void MarkKramped(bool t) {
+		m_navMeshModifier.area = NavMesh.GetAreaFromName(t ? "Kramped" : "Walkable");
 	}
 
 	public void AddCharacter(ICharacter character) {

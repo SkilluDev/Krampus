@@ -19,11 +19,13 @@ public class ViewCone : MonoBehaviour {
     private int m_frameCounter = 0;
 
     public bool Detect() {
+
         if (!m_renderer.enabled) return false;
         if (Vector3.SqrMagnitude(trackedObject.position - transform.position) > range * range) return false;
         if (Vector3.Angle(transform.forward, (trackedObject.transform.position - transform.position).NoY()) > fov / 2) return false;
 
         if (Physics.Raycast(transform.position, trackedObject.transform.position - transform.position, out var hit, range, visionMask, QueryTriggerInteraction.Ignore)) {
+            Debug.Log("RAYCAST " + hit.collider);
             if (hit.collider.transform == trackedObject) return true;
         }
         return false;
