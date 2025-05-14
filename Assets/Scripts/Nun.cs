@@ -144,8 +144,6 @@ public class Nun : NPC {
                     SetFacingDirection(GetPathDirection());
                 }
 
-
-
                 break;
             case State.FoundKrampus:
                 m_viewCone.SetActive(false);

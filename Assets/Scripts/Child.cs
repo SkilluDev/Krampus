@@ -59,6 +59,11 @@ public class Child : NPC, IEdible, INoiseReactor {
         Game.MainGameInfo.UnregisterChild(this);
     }
 
+    private void SelectNun() {
+        m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun);
+        if (m_selectedNun == null) m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
+    }
+
     public override void OverridePathCosts() {
         NavMesh.SetAreaCost(NavMesh.GetAreaFromName("Kramped"), 99f);
     }
@@ -81,7 +86,7 @@ public class Child : NPC, IEdible, INoiseReactor {
         }
 
         switch (CurrentState) {
-            case State.Idle:
+            case State.Idle: // Child wanders around at random
                 if (m_currentPath?.status == NavMeshPathStatus.PathInvalid)
                     SelectNewWanderLocation();
 
@@ -114,28 +119,27 @@ public class Child : NPC, IEdible, INoiseReactor {
                 }
                 break;
 
-            case State.InitialPanic:
-                SetVelocity(GetPathDirection() * m_runSpeed);
+            case State.InitialPanic: // basically run away franticlly from krampus, however, given the opportunity to go to a nun without turning around, use it
 
-                if (NearDestination(m_interactionDistance)) {
-                    if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
+                if (!Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
+                    SelectNun();
+                    SwitchState(State.Panic);
+                } else if (NearDestination(m_interactionDistance)) {
+                    SelectNun();
+                    SetDestination(m_selectedNun.transform.position);
+                    if (Vector3.Dot(GetPathDirection(), Game.MainGameInfo.Krampus.transform.position - transform.position) > 0f) {
                         m_lastKrampusSpotted = CurrentRoom;
                         Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
                         Game.MainGameInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
                         SelectRoomAwayFromKrampy();
+                    } else {
+                        SwitchState(State.Panic);
                     }
                 }
 
-                if (!Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
-                    m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun);
-                    if (m_selectedNun == null) m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
-
-                    SwitchState(State.Panic);
-                }
-
-
+                SetVelocity(GetPathDirection() * m_runSpeed);
                 break;
-            case State.Panic:
+            case State.Panic: // regular panic. just go to the nun and report
                 SetVelocity(GetPathDirection() * m_runSpeed);
 
                 SetDestination(m_selectedNun.transform.position);
@@ -146,9 +150,13 @@ public class Child : NPC, IEdible, INoiseReactor {
                 }
 
                 if (NearDestination(m_interactionDistance)) {
-                    m_selectedNun.ActivateTheBitch(m_reportingDuration, m_lastKrampusSpotted);
-                    m_timeout = m_reportingDuration;
-                    SwitchState(State.Reporting);
+                    if (m_selectedNun.CurrentState == Nun.State.ChasingKrampus) {
+                        SwitchState(State.Idle);
+                    } else {
+                        m_selectedNun.ActivateTheBitch(m_reportingDuration, m_lastKrampusSpotted);
+                        m_timeout = m_reportingDuration;
+                        SwitchState(State.Reporting);
+                    }
                 }
                 break;
             case State.Reporting:
