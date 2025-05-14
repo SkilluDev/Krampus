@@ -44,6 +44,7 @@ public class NewUIManager : MonoBehaviour {
 
 
     [BoxGroup("Score Board")][SerializeField] private TextMeshProUGUI m_childPerMinuteText;
+    [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
 
     private void OnChildEaten(ChildType childType) {
@@ -145,6 +146,7 @@ public class NewUIManager : MonoBehaviour {
     private void Ready() {
         Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
         m_originalTimerColor = m_timerDisplay.Color;
+        m_tutorial.gameObject.transform.parent.gameObject.SetActive(true);
     }
 
     public void ChangeChildCounter() {

@@ -24,12 +24,11 @@ public class TutorialHandler : MonoBehaviour
     private MotionHandle m_handle;
 
 
-
 	private void Awake() {
         m_tutorials = new Transform[gameObject.transform.childCount];
         for (int i = 0;i<m_tutorials.Length;i++){
             m_tutorials[m_tutorials.Length-1-i] = gameObject.transform.GetChild(i);
-            m_tutorials[m_tutorials.Length-1-i].transform.position += new Vector3(0,0,m_distanceBetween*i);
+            m_tutorials[m_tutorials.Length-1-i].transform.localPosition += new Vector3(0,0,m_distanceBetween*i);
         }
 	}
 	private void Update()
@@ -62,8 +61,8 @@ public class TutorialHandler : MonoBehaviour
         
 
         
-        lSequence.Append(LMotion.Create(page.rotation, page.rotation*Quaternion.Euler(new Vector3(0,0,m_rotateAngle)), m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToRotation(page));
+        lSequence.Append(LMotion.Create(page.localRotation, page.localRotation*Quaternion.Euler(new Vector3(0,0,m_rotateAngle)), m_transitionLength).WithEase(Ease.InOutCubic)
+        .BindToLocalRotation(page));
 
         var currentLocalPagePosition = oldLocalPosition;
         var nextLocalPagePosition = currentLocalPagePosition+Vector3.right*m_slideLength*2;
@@ -84,8 +83,8 @@ public class TutorialHandler : MonoBehaviour
         lSequence.Append(LMotion.Create(currentLocalPagePosition,nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic).
         WithOnComplete(()=>page.SetAsFirstSibling()).BindToLocalPosition(page));
 
-        lSequence.Append(LMotion.Create(page.rotation*Quaternion.Euler(new Vector3(0,0,m_rotateAngle)), page.rotation, m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToRotation(page));
+        lSequence.Append(LMotion.Create(page.localRotation*Quaternion.Euler(new Vector3(0,0,m_rotateAngle)), page.localRotation, m_transitionLength).WithEase(Ease.InOutCubic)
+        .BindToLocalRotation(page));
 
         currentLocalPagePosition = nextLocalPagePosition;
         nextLocalPagePosition = currentLocalPagePosition-Vector3.right*m_slideLength*2;
