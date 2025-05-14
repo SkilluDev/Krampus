@@ -26,7 +26,6 @@ public class Child : NPC, IEdible {
 
     private Nun m_selectedNun;
 
-    private bool m_oldBehaviour = false;
     private float m_timeout = 0;
 
     private ChildType m_type;
@@ -43,7 +42,6 @@ public class Child : NPC, IEdible {
 
 
     public void Start() {
-        m_oldBehaviour = !Game.SetMan.GetValue<bool>("Experimental AI");
 
         SetChildType(Game.MainGameInfo.Types.UnityRandomElement());
     }
@@ -66,128 +64,62 @@ public class Child : NPC, IEdible {
 
     private void Update() {
         if (!CurrentRoom) return;
+        switch (CurrentState) {
+            case State.Idle:
+                if (m_currentPath?.status == NavMeshPathStatus.PathInvalid)
+                    SelectNewWanderLocation();
 
-        if (m_oldBehaviour) {
-            switch (CurrentState) {
-                case State.Idle:
-                    if (m_currentPath?.status == NavMeshPathStatus.PathInvalid)
-                        SelectNewWanderLocation();
+                if (NearDestination(m_interactionDistance) && m_timeout <= 0) {
+                    // TODO: Magic
+                    m_timeout = Random.Range(0.1f, 2f);
+                    SelectNewWanderLocation();
+                }
 
-                    if (NearDestination(m_interactionDistance) && m_timeout <= 0) {
-                        // TODO: Magic
-                        m_timeout = Random.Range(0.1f, 2f);
-                        SelectNewWanderLocation();
-                    }
+                if (CanGetKramped(transform.position)) {
+                    m_timeout = m_stunDuration;
+                    SwitchState(State.Stunned);
+                }
 
-
-
-                    if (CanGetKramped(transform.position)) {
-                        m_timeout = m_stunDuration;
-                        SwitchState(State.Stunned);
-                    }
-
-                    if (m_timeout > 0) {
-                        m_timeout -= Time.deltaTime;
-                        SetVelocity(Vector3.zero);
-                    } else {
-                        SetVelocity(GetPathDirection() * m_baseMovementSpeed);
-                    }
-                    break;
-
-                case State.Stunned:
-                    m_timeout -= Time.deltaTime;
-                    if (m_timeout <= 0) {
-                        // select nearest nun or whatevs
-                        if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
-                            m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.First(w => w is Nun);
-                        } else {
-                            m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
-                        }
-                        SwitchState(State.Panic);
-                    }
-                    break;
-
-                case State.Panic:
-                    SetDestination(m_selectedNun.transform.position);
-                    SetVelocity(GetPathDirection() * m_runSpeed);
-
-                    if (NearDestination(m_interactionDistance)) {
-                        m_selectedNun.ActivateTheBitch(m_reportingDuration);
-                        m_timeout = m_reportingDuration;
-                        SwitchState(State.Reporting);
-                    }
-                    break;
-                case State.Reporting:
+                if (m_timeout > 0) {
                     m_timeout -= Time.deltaTime;
                     SetVelocity(Vector3.zero);
-                    if (m_timeout <= 0) {
-                        SwitchState(State.Alerted);
-                    }
-                    break;
-
-                case State.Alerted:
-                    // wander around and tell other kids
-                    break;
-            }
-        } else {
-            switch (CurrentState) {
-                case State.Idle:
-                    if (m_currentPath?.status == NavMeshPathStatus.PathInvalid)
-                        SelectNewWanderLocation();
-
-                    if (NearDestination(m_interactionDistance) && m_timeout <= 0) {
-                        // TODO: Magic
-                        m_timeout = Random.Range(0.1f, 2f);
-                        SelectNewWanderLocation();
-                    }
-
-
-
-                    if (CanGetKramped(transform.position)) {
-                        m_timeout = m_stunDuration;
-                        SwitchState(State.Stunned);
-                    }
-
-                    if (m_timeout > 0) {
-                        m_timeout -= Time.deltaTime;
-                        SetVelocity(Vector3.zero);
+                } else {
+                    SetVelocity(GetPathDirection() * m_baseMovementSpeed);
+                }
+                break;
+            case State.Stunned:
+                m_timeout -= Time.deltaTime;
+                if (m_timeout <= 0) {
+                    // select nearest nun or whatevs
+                    if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
+                        m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.First(w => w is Nun);
                     } else {
-                        SetVelocity(GetPathDirection() * m_baseMovementSpeed);
+                        m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
                     }
-                    break;
-                case State.Stunned:
-                    m_timeout -= Time.deltaTime;
-                    if (m_timeout <= 0) {
-                        // select nearest nun or whatevs
-                        if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
-                            m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.First(w => w is Nun);
-                        } else {
-                            m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
-                        }
-                        SwitchState(State.Panic);
-                    }
-                    break;
+                    SwitchState(State.Panic);
+                }
+                break;
 
-                case State.Panic:
-                    SetDestination(m_selectedNun.transform.position);
-                    SetVelocity(GetPathDirection() * m_runSpeed);
+            case State.Panic:
+                SetDestination(m_selectedNun.transform.position);
+                SetVelocity(GetPathDirection() * m_runSpeed);
 
-                    if (NearDestination(m_interactionDistance)) {
-                        m_selectedNun.ActivateTheBitch(m_reportingDuration);
-                        m_timeout = m_reportingDuration;
-                        SwitchState(State.Reporting);
-                    }
-                    break;
-                case State.Reporting:
-                    m_timeout -= Time.deltaTime;
-                    SetVelocity(Vector3.zero);
-                    if (m_timeout <= 0) {
-                        SwitchState(State.Idle);
-                    }
-                    break;
+                if (NearDestination(m_interactionDistance)) {
+                    m_selectedNun.ActivateTheBitch(m_reportingDuration);
+                    m_timeout = m_reportingDuration;
+                    SwitchState(State.Reporting);
+                }
+                break;
+            case State.Reporting:
+                m_timeout -= Time.deltaTime;
+                SetVelocity(Vector3.zero);
+                if (m_timeout <= 0) {
+                    SwitchState(State.Idle);
+                }
+                break;
 
-            }
         }
+
     }
 
     private bool CanGetKramped(Vector3 position) {

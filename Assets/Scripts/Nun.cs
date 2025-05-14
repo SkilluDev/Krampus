@@ -28,7 +28,6 @@ public class Nun : NPC {
 
     [SerializeField] private float m_runSpeed = 8;
 
-    private bool m_oldBehaviour = false;
 
     // new behaviour >>>>>>>
 
@@ -49,15 +48,11 @@ public class Nun : NPC {
     private void Ready() {
         Game.MainGameInfo.RegisterNun(this);
 
-        m_oldBehaviour = !Game.SetMan.GetValue<bool>("Experimental AI");
 
-        if (!m_oldBehaviour) {
-            CreatePatrolPath();
-            m_viewCone.range = m_longDetectionRange;
-            m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.transform;
-        } else {
-            m_viewCone.SetActive(false);
-        }
+        CreatePatrolPath();
+        m_viewCone.range = m_longDetectionRange;
+        m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.transform;
+
     }
 
     private void Unready() {
@@ -91,90 +86,63 @@ public class Nun : NPC {
 
 
     private void Update() {
-        if (m_oldBehaviour) {
-            switch (CurrentState) {
-                case State.Idle:
-                    if (m_currentPath.status == NavMeshPathStatus.PathInvalid || NearDestination(m_interactionDistance)) {
-                        SelectNewWanderLocation();
-                    }
 
-                    if ((Game.MainGameInfo.Krampus.transform.position - transform.position).sqrMagnitude < m_detectionRange * m_detectionRange) {
-                        SwitchState(State.ChasingKrampus);
-                    }
+        switch (CurrentState) {
+            case State.Idle:
+                m_viewCone.SetFacing(Vector3.forward);
+                m_timeout -= Time.deltaTime;
+                if (m_timeout < 0) SwitchState(State.Patrolling);
+                CurrentDestination = transform.position;
+                m_viewCone.SetActive(true);
+                Debug.Log("[Nun] Begin patrolling");
+                break;
+            case State.Patrolling:
+                if (NearDestination(m_interactionDistance)) {
+                    m_currentControlPoint++;
+                    m_currentControlPoint %= m_patrolPath.Count;
+                    SetDestination(m_patrolPath[m_currentControlPoint]);
+                    Debug.Log("[Nun] Reached patrol point");
+                }
 
-                    SetVelocity(GetPathDirection() * m_baseMovementSpeed);
-                    break;
-                case State.Listening:
-                    m_timeout -= Time.deltaTime;
-                    if (m_timeout < 0) SwitchState(State.ChasingKrampus);
-                    break;
-                case State.ChasingKrampus:
-                    SetDestination(Game.MainGameInfo.Krampus.transform.position);
-                    SetVelocity(GetPathDirection() * m_runSpeed);
-                    break;
-                case State.Stunned:
-                    m_timeout -= Time.deltaTime;
-                    SetVelocity(Vector3.zero);
-                    if (m_timeout < 0) SwitchState(State.Idle);
-                    break;
-            }
-        } else {
-            switch (CurrentState) {
-                case State.Idle:
-                    m_viewCone.SetFacing(Vector3.forward);
-                    m_timeout -= Time.deltaTime;
-                    if (m_timeout < 0) SwitchState(State.Patrolling);
-                    CurrentDestination = transform.position;
+                if (Game.MainGameInfo.Krampus.Kontroller.CurrentState != KrampusController.State.Run) {
                     m_viewCone.SetActive(true);
-                    Debug.Log("[Nun] Begin patrolling");
-                    break;
-                case State.Patrolling:
-                    if (NearDestination(m_interactionDistance)) {
-                        m_currentControlPoint++;
-                        m_currentControlPoint %= m_patrolPath.Count;
-                        SetDestination(m_patrolPath[m_currentControlPoint]);
-                        Debug.Log("[Nun] Reached patrol point");
+                    if (m_viewCone.Detect()) {
+                        m_timeout = m_shockTimeout;
+                        SwitchState(State.FoundKrampus);
                     }
-
-                    if (Game.MainGameInfo.Krampus.Kontroller.CurrentState != KrampusController.State.Run) {
-                        m_viewCone.SetActive(true);
-                        if (m_viewCone.Detect()) {
-                            m_timeout = m_shockTimeout;
-                            SwitchState(State.FoundKrampus);
-                        }
-                    } else {
-                        if ((Game.MainGameInfo.Krampus.Kontroller.transform.position - transform.position).sqrMagnitude < m_longDetectionRange * m_longDetectionRange) {
-                            m_timeout = m_shockTimeout;
-                            SwitchState(State.FoundKrampus);
-                        }
+                } else {
+                    if ((Game.MainGameInfo.Krampus.Kontroller.transform.position - transform.position).sqrMagnitude < m_longDetectionRange * m_longDetectionRange) {
+                        m_timeout = m_shockTimeout;
+                        SwitchState(State.FoundKrampus);
                     }
+                }
 
-                    SetVelocity(GetPathDirection() * m_baseMovementSpeed);
-                    m_viewCone.SetFacing(GetPathDirection());
-                    break;
-                case State.FoundKrampus:
-                    m_viewCone.SetActive(false);
-                    m_timeout -= Time.deltaTime;
-                    if (m_timeout < 0) SwitchState(State.ChasingKrampus);
-                    break;
-                case State.Listening:
-                    m_viewCone.SetActive(false);
-                    m_timeout -= Time.deltaTime;
-                    if (m_timeout < 0) SwitchState(State.ChasingKrampus);
-                    break;
-                case State.ChasingKrampus:
-                    m_viewCone.SetActive(false);
-                    SetDestination(Game.MainGameInfo.Krampus.transform.position);
-                    SetVelocity(GetPathDirection() * m_runSpeed);
-                    break;
-                case State.Stunned:
-                    m_timeout -= Time.deltaTime;
-                    if (m_timeout < 0) SwitchState(State.Idle);
-                    SetVelocity(Vector3.zero);
-                    m_viewCone.SetActive(false);
-                    break;
-            }
+                SetVelocity(GetPathDirection() * m_baseMovementSpeed);
+                m_viewCone.SetFacing(GetPathDirection());
+                break;
+            case State.FoundKrampus:
+                m_viewCone.SetActive(false);
+                m_timeout -= Time.deltaTime;
+                if (m_timeout < 0) SwitchState(State.ChasingKrampus);
+                break;
+            case State.Listening:
+                m_viewCone.SetActive(false);
+                m_timeout -= Time.deltaTime;
+                if (m_timeout < 0) SwitchState(State.ChasingKrampus);
+                break;
+            case State.ChasingKrampus:
+                m_viewCone.SetActive(false);
+                SetDestination(Game.MainGameInfo.Krampus.transform.position);
+                SetVelocity(GetPathDirection() * m_runSpeed);
+                break;
+            case State.Stunned:
+                m_timeout -= Time.deltaTime;
+                if (m_timeout < 0) SwitchState(State.Idle);
+                SetVelocity(Vector3.zero);
+                m_viewCone.SetActive(false);
+                break;
         }
+
     }
 
 
@@ -187,45 +155,31 @@ public class Nun : NPC {
     }
 
     public void ActivateTheBitch(float timeout) {
-        if (m_oldBehaviour) {
+
+        if (CurrentState != State.ChasingKrampus)
             m_timeout = timeout;
-            SwitchState(State.Listening);
-        } else {
-            if (CurrentState != State.ChasingKrampus)
-                m_timeout = timeout;
-            SwitchState(State.Listening);
-        }
+        SwitchState(State.Listening);
+
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if (m_oldBehaviour) {
-            if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
-                return;
-            }
-            onAttack?.Invoke(CurrentState);
-            SwitchState(State.Listening);
-            Game.MainGameInfo.Krampus.Kontroller.KrampTermination();
-        } else {
-            if (CurrentState != State.ChasingKrampus) return;
 
-            if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
-                return;
-            }
-            onAttack?.Invoke(CurrentState);
-            SwitchState(State.Listening);
-            Game.MainGameInfo.Krampus.Kontroller.KrampTermination();
+        if (CurrentState != State.ChasingKrampus) return;
+
+        if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
+            return;
         }
+        onAttack?.Invoke(CurrentState);
+        SwitchState(State.Listening);
+        Game.MainGameInfo.Krampus.Kontroller.KrampTermination();
+
     }
 
     public void Stun(float duration) {
-        if (m_oldBehaviour) {
-            m_timeout = duration;
-            SwitchState(State.Stunned);
-        } else {
-            Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
-            m_timeout = duration;
-            SwitchState(State.Stunned);
-        }
+        Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
+        m_timeout = duration;
+        SwitchState(State.Stunned);
+
     }
 
 }
