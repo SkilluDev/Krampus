@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
 using KrampUtils;
 using Roomgen;
@@ -37,7 +38,8 @@ public class Nun : NPC {
     [SerializeField] private ViewCone m_viewCone;
     private List<Vector3> m_patrolPath;
     private int m_currentControlPoint = 0;
-    [SerializeField] private float m_patrolTimeout;
+    [SerializeField] private float m_patrolDetectTimeout = 1f;
+    [SerializeField] private float m_patrolIgnoreTimeout = 2f;
 
     [SerializeField] private CinemachineImpulseSource m_shake;
 
@@ -119,14 +121,23 @@ public class Nun : NPC {
             case State.LookingForKrampus:
                 m_viewCone.SetActive(false);
                 if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
-                    Debug.Log("[Nun] Alerted & detected krampy");
-                    m_timeout = m_shockTimeout;
-                    SwitchState(State.FoundKrampus);
+                    if (m_timeout > m_patrolDetectTimeout) {
+                        Debug.Log("[Nun] Alerted & detected krampy");
+                        m_timeout = m_shockTimeout;
+                        SwitchState(State.FoundKrampus);
+                    } else {
+                        m_timeout += Time.deltaTime;
+                    }
+                } else {
+                    if (NearDestination(m_interactionDistance)) {
+                        m_timeout += Time.deltaTime;
+                        if (m_timeout > m_patrolIgnoreTimeout) {
+                            SwitchState(State.Idle);
+                        }
+                    }
                 }
 
-                if (NearDestination(m_interactionDistance)) {
-                    SwitchState(State.Idle);
-                }
+
 
                 SetVelocity(GetPathDirection() * m_runSpeed);
                 break;
@@ -151,7 +162,17 @@ public class Nun : NPC {
                 break;
             case State.Stunned:
                 m_timeout -= Time.deltaTime;
-                if (m_timeout < 0) SwitchState(State.Idle);
+
+                if (m_timeout < 0) {
+                    m_reportedKrampusRoom = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages
+                                                .OrderBy(w => Vector3.SqrMagnitude(w.transform.position - transform.position))
+                                                .First()
+                                                .Other(CurrentRoom);
+
+                    SwitchState(State.LookingForKrampus);
+                    SetDestination(m_reportedKrampusRoom.GetRandomPointOnFloor().OnNavMesh(5));
+                }
+
                 SetVelocity(Vector3.zero);
                 m_viewCone.SetActive(false);
                 break;

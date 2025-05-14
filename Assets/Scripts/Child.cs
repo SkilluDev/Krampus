@@ -123,12 +123,14 @@ public class Child : NPC, IEdible, INoiseReactor {
                         Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
                         Game.MainGameInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
                         SelectRoomAwayFromKrampy();
-                    } else {
-                        m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun);
-                        if (m_selectedNun == null) m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
-
-                        SwitchState(State.Panic);
                     }
+                }
+
+                if (!Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
+                    m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun);
+                    if (m_selectedNun == null) m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
+
+                    SwitchState(State.Panic);
                 }
 
 
@@ -139,6 +141,7 @@ public class Child : NPC, IEdible, INoiseReactor {
                 SetDestination(m_selectedNun.transform.position);
 
                 if (m_selectedNun.CurrentState == Nun.State.ChasingKrampus) {
+                    SelectNewWanderLocation();
                     SwitchState(State.Idle);
                 }
 
