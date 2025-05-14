@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using KrampUtils;
+using Roomgen;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -41,6 +42,7 @@ public class Nun : NPC {
     [SerializeField] private CinemachineImpulseSource m_shake;
 
 
+    private Room m_reportedKrampusRoom;
     private float m_timeout;
 
     private void Ready() {
@@ -114,6 +116,20 @@ public class Nun : NPC {
                 SetVelocity(GetPathDirection() * m_baseMovementSpeed);
                 m_viewCone.SetFacing(GetPathDirection());
                 break;
+            case State.LookingForKrampus:
+                m_viewCone.SetActive(false);
+                if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
+                    Debug.Log("[Nun] Alerted & detected krampy");
+                    m_timeout = m_shockTimeout;
+                    SwitchState(State.FoundKrampus);
+                }
+
+                if (NearDestination(m_interactionDistance)) {
+                    SwitchState(State.Idle);
+                }
+
+                SetVelocity(GetPathDirection() * m_runSpeed);
+                break;
             case State.FoundKrampus:
                 m_viewCone.SetActive(false);
                 SetVelocity(Vector3.zero);
@@ -123,7 +139,10 @@ public class Nun : NPC {
             case State.Listening:
                 m_viewCone.SetActive(false);
                 m_timeout -= Time.deltaTime;
-                if (m_timeout < 0) SwitchState(State.ChasingKrampus);
+                if (m_timeout < 0) {
+                    SwitchState(State.LookingForKrampus);
+                    SetDestination(m_reportedKrampusRoom.GetRandomPointOnFloor().OnNavMesh(5));
+                }
                 break;
             case State.ChasingKrampus:
                 m_viewCone.SetActive(false);
@@ -149,11 +168,19 @@ public class Nun : NPC {
         Debug.Log($"[Nun] Switch state to {CurrentState}");
     }
 
-    public void ActivateTheBitch(float timeout) {
+    public void ActivateTheBitch(float timeout, Room room) {
+        foreach (var w in Game.MainGameInfo.RoomGenerator.Rooms) {
+            Game.MainGameInfo.GetRoomData(w).MarkKramped(false);
+        }
+        Game.MainGameInfo.GetRoomData(room).MarkKramped(true);
+        Game.MainGameInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
 
-        if (CurrentState != State.ChasingKrampus)
+        m_reportedKrampusRoom = room;
+
+        if (CurrentState != State.ChasingKrampus) {
             m_timeout = timeout;
-        SwitchState(State.Listening);
+            SwitchState(State.Listening);
+        }
 
     }
 

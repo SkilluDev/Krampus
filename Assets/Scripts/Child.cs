@@ -138,8 +138,12 @@ public class Child : NPC, IEdible, INoiseReactor {
 
                 SetDestination(m_selectedNun.transform.position);
 
+                if (m_selectedNun.CurrentState == Nun.State.ChasingKrampus) {
+                    SwitchState(State.Idle);
+                }
+
                 if (NearDestination(m_interactionDistance)) {
-                    m_selectedNun.ActivateTheBitch(m_reportingDuration);
+                    m_selectedNun.ActivateTheBitch(m_reportingDuration, m_lastKrampusSpotted);
                     m_timeout = m_reportingDuration;
                     SwitchState(State.Reporting);
                 }
