@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using Unity.Mathematics;
 using UnityEngine;
@@ -89,7 +90,9 @@ public class Door : Passage, IInteractable {
 
     private void OnTriggerExit(Collider other) {
         if (!other.TryGetComponent<ICharacter>(out var character)) return;
+
         m_charactersInDoor.Remove(character);
+        if (m_charactersInDoor.Any()) return;
         if (character is Nun or Child) {
             if (character.VelocitySqr < m_fastOpenObjectVelocity * m_fastOpenObjectVelocity) {
                 Close(false);
