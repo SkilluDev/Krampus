@@ -179,7 +179,7 @@ public class KrampusTongue : KrampusBehaviour {
                 );
 
                 var interactables = hitObjects.Select(w => (hit: w, interactable: w.collider.GetComponentInParent<IInteractable>()))
-                                    .Where(w => w.interactable != null)
+                                    .Where(w => w.interactable != null && w.interactable.CanInteract(Kramp))
                                     .NullIfEmpty()?
                                     .OrderBy((a, b) =>
                                         (a.interactable is IEdible && b.interactable is IEdible) || (a.interactable is not IEdible && b.interactable is not IEdible)
