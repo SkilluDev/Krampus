@@ -92,7 +92,6 @@ public class Nun : NPC {
 
         switch (CurrentState) {
             case State.Idle:
-                m_viewCone.SetFacing(Vector3.forward);
                 m_timeout -= Time.deltaTime;
                 if (m_timeout < 0) SwitchState(State.Patrolling);
                 CurrentDestination = transform.position;
@@ -117,7 +116,6 @@ public class Nun : NPC {
 
 
                 SetVelocity(GetPathDirection() * m_baseMovementSpeed);
-                m_viewCone.SetFacing(GetPathDirection());
                 SetFacingDirection(GetPathDirection());
                 break;
             case State.LookingForKrampus:
@@ -184,8 +182,8 @@ public class Nun : NPC {
                 break;
         }
 
+        m_viewCone.SetFacing(Quaternion.Euler(0, FacingAngle, 0) * Vector3.forward);
     }
-
 
 
     private void SwitchState(State previous) {
@@ -208,11 +206,9 @@ public class Nun : NPC {
             m_timeout = timeout;
             SwitchState(State.Listening);
         }
-
     }
 
     private void OnCollisionEnter(Collision collision) {
-
         if (CurrentState != State.ChasingKrampus) return;
 
         if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {

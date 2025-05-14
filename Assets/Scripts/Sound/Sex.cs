@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using System.Runtime.CompilerServices;
 
 namespace Sound {
     public abstract class Sex : ScriptableObject {
@@ -16,6 +17,13 @@ namespace Sound {
             return src;
         }
 
-        public abstract void Play(Vector3 location, float volume = 1);
+        internal abstract void PlayInternal(Vector3 location, float volume = 1);
+    }
+
+    public static class SexTention {
+        public static void Play(this Sex sex, Vector3 location, float volume = 1, [CallerMemberName] string message = null) {
+            if (sex != null) sex.Play(location, volume);
+            else Debug.LogWarning($"[Sex] No sound to play! ({message})");
+        }
     }
 }

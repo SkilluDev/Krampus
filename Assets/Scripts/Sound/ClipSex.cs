@@ -10,7 +10,7 @@ namespace Sound {
         public float spatialBlend = 1f;
         public float maxDistance = 20f;
 
-        public override void Play(Vector3 location, float volume = 1) {
+        internal override void PlayInternal(Vector3 location, float volume = 1) {
             var source = MakeSource(location, clip.length);
             source.clip = clip;
             source.volume = Random.Range(volumeRange.x, volumeRange.y) * volume;
