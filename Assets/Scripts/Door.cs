@@ -17,6 +17,7 @@ public class Door : Passage, IInteractable {
     [SerializeField] private SoundBite m_doorClose;
     [SerializeField] private SoundBite m_doorOpen;
     [SerializeField] private float m_fastOpenObjectVelocity = 6f;
+    [SerializeField] private float m_noiseDistance = 15f;
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_openProperty, m_openSuddenProperty, m_invertProperty;
 
     [SerializeField] private float m_stunDuration;
@@ -56,7 +57,7 @@ public class Door : Passage, IInteractable {
     }
 
     // TODO: redo
-    private void Open(bool swiftly, bool flip) {
+    private void Open(bool swiftly, bool flip, ICharacter actor = null) {
         if (IsOpen) return;
         m_doorOpen.SetVolume(CalculateVolumeOverride());
         m_doorOpen.Play(transform.position, 1f);
@@ -64,12 +65,17 @@ public class Door : Passage, IInteractable {
         m_animator.SetBool(m_invertProperty, flip);
         m_animator.SetBool(m_openProperty, true);
         m_blocking.enabled = false;
+
+        if (swiftly) {
+            Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
+            Game.MainGameInfo.GetRoomData(B).MakeNoise(transform.position, m_noiseDistance, actor);
+        }
         //m_interactionLeft.enabled = true;
         //m_interactionRight.enabled = true;
         IsOpen = true;
     }
 
-    private void Close(bool swiftly) {
+    private void Close(bool swiftly, ICharacter actor = null) {
         if (!IsOpen) return;
         m_doorClose.SetVolume(CalculateVolumeOverride());
 
@@ -95,7 +101,7 @@ public class Door : Passage, IInteractable {
         if (m_charactersInDoor.Any()) return;
         if (character is Nun or Child) {
             if (character.VelocitySqr < m_fastOpenObjectVelocity * m_fastOpenObjectVelocity) {
-                Close(false);
+                Close(false, character);
             }
         }
     }
@@ -114,7 +120,8 @@ public class Door : Passage, IInteractable {
 
         Open(
             character.VelocitySqr > m_fastOpenObjectVelocity * m_fastOpenObjectVelocity,
-            Vector3.Dot(transform.forward, transform.position - other.transform.position) > 0
+            Vector3.Dot(transform.forward, transform.position - other.transform.position) > 0,
+            character
         );
     }
 

@@ -40,13 +40,13 @@ public class RoomData : MonoBehaviour {
 		m_passages.Add(psg);
 	}
 
-	public void MakeNoise(Vector3 place, float alertDistance) {
+	public void MakeNoise(Vector3 place, float alertDistance, ICharacter alerter) {
 		var colliders = Physics.OverlapSphere(place, alertDistance)
 			.Where(w => Room.IsPointInRoom(w.transform.position))
 			.Select(w => w.GetComponent<INoiseReactor>())
 			.Where(w => w != null);
 
 		foreach (var reactor in colliders)
-			reactor.Alert(this, place);
+			reactor.Alert(this, place, alerter);
 	}
 }

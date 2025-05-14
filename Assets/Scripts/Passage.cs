@@ -18,4 +18,9 @@ public class Passage : MonoBehaviour {
         Orientation = orientation;
     }
 
+    public Room Other(Room that) {
+        if (that == A) return B;
+        if (that == B) return A;
+        throw new System.Exception("Room is unconnected!");
+    }
 }
