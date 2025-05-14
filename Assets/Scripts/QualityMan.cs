@@ -7,10 +7,11 @@ public class QualityManager : MonoBehaviour {
         int value = (int)Game.SetMan.GetValue<long>("Quality");
         if (value == m_lastSettingValue) return;
 
-        QualitySettings.SetQualityLevel(m_lastSettingValue);
+        QualitySettings.SetQualityLevel(value);
         m_lastSettingValue = value;
 
-        Debug.Log("Switch quality: " + value);
+
+        Debug.Log("[Quality] Switch quality: " + value);
     }
 }
 

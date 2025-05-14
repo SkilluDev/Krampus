@@ -77,7 +77,7 @@ public class GameLoader : MonoBehaviour {
                 yield return loader.Current;
                 Progress = w.Progress;
                 Status = $"({current}/{count}) {w.Status}";
-                Debug.Log(Status);
+                Debug.Log("[LOADER] " + Status);
             }
             current++;
         }

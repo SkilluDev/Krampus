@@ -30,7 +30,6 @@ public class Game : MonoBehaviour {
     public enum State {
         MainMenu = 0,
         MainGame = 1,
-        Credits = 2,
         Loading
     }
 
