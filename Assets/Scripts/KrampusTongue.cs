@@ -15,7 +15,8 @@ public class KrampusTongue : KrampusBehaviour {
     [BoxGroup("Visual")][SerializeField] private Transform m_tongueVisualOrigin;
     [BoxGroup("Visual")][SerializeField] private SkinnedMeshRenderer m_tongueAimIndicator;
 
-    [BoxGroup("Physics")][SerializeField] private LayerMask m_layerMask = int.MaxValue;
+    [BoxGroup("Physics")][SerializeField] private LayerMask m_interactionSearchMask = int.MaxValue;
+    [BoxGroup("Physics")][SerializeField] private LayerMask m_interactionBlockerMask = int.MaxValue;
     [BoxGroup("Physics")][SerializeField] private Transform m_tongueOrigin;
     [BoxGroup("Physics")][SerializeField] private float m_tongueLength = 8;
     [BoxGroup("Physics")][SerializeField] private float m_tongueHitRadius = 0.5f;
@@ -70,17 +71,21 @@ public class KrampusTongue : KrampusBehaviour {
     #region Input handling
 
     private Vector3 GetDirectionToMouse() {
-        if (!MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Rendering.ScreenPointToRay(InputSubscribe.Aim), Vector3.up, Vector3.up * m_inputMousePlaneY)) {
-            Debug.LogError("Something went horrendously wrong with aiming!");
+        Vector3 point;
+        if (!Physics.Raycast(Game.MainGameInfo.Krampus.Kamera.Rendering.ScreenPointToRay(InputSubscribe.Aim), out var info)) {
+            if (!MoreMath.LinePlaneIntersection(out point, Kramp.Kamera.Rendering.ScreenPointToRay(InputSubscribe.Aim), Vector3.up, Vector3.up * m_inputMousePlaneY)) {
+                Debug.LogError("Something went horrendously wrong with aiming!");
+                return Vector3.zero;
+            }
+        } else {
+            point = info.point;
         }
-        var ret = point - m_tongueOrigin.position;
-        ret.y = 0;
-        return ret;
+        return point.NoY() + (Vector3.up * m_tongueOrigin.position.y) - m_tongueOrigin.position;
     }
 
     private Vector3 InputTongueDirection() {
         return InputSubscribe.InputMethod switch {
-            InputSubscribe.Method.PC => GetDirectionToMouse(),
+            InputSubscribe.Method.PC => Vector3.Lerp(m_tongueDirection, GetDirectionToMouse(), Time.deltaTime * m_inputDragSmoothing),
             _ => Vector3.Lerp(m_tongueDirection, (Game.SetMan.GetValue<bool>("Controller Aim Flip") ? -1 : 1) * Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * m_inputDragSmoothing),
         };
     }
@@ -121,181 +126,216 @@ public class KrampusTongue : KrampusBehaviour {
             return;
         }
 
-        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Game) {
-            switch (CurrentState) {
-                case State.Idle:
-                    m_tongueTime = 0;
-                    m_tongueAimIndicator.gameObject.SetActive(false);
+        Debug.Log("KRAMPUS IS BALLIN");
 
-                    if (InputWantsStartAiming()) AdvanceState();
-                    break;
+        switch (CurrentState) {
+            case State.Idle:
+                m_tongueTime = 0;
+                m_tongueAimIndicator.gameObject.SetActive(false);
 
-                case State.Windup: // Pre-shoot phase. Wait for the windup
+                if (InputWantsStartAiming()) AdvanceState();
+                break;
 
-                    if (IsTime(nameof(Timings.windup))) {
-                        m_tongueTime = m_sequence.End(nameof(Timings.windup));
+            case State.Windup: // Pre-shoot phase. Wait for the windup
 
-                        m_tongueAimIndicator.gameObject.SetActive(true); // TODO: this should be done by the animator;
-                        m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
-                        m_tongueAimIndicator.SetBlendShapeWeight(0, InputGetShootFactor() * 100f);
+                if (IsTime(nameof(Timings.windup))) {
+                    m_tongueTime = m_sequence.End(nameof(Timings.windup));
 
-                        if (InputWantsShoot()) {
-                            CurrentState = State.TargetFetch;
-                            onStateChanged.Invoke(State.Windup, CurrentState);
-                            m_tongueExtensionFactor = 0;
-                            m_hitEdible = null;
-                            m_hitInteractable = null;
-                            m_hitTonguable = null;
-                            m_midwayToungables = null;
-                            m_tongueAimIndicator.gameObject.SetActive(false);
-                            break;
-                        }
-                    }
+                    m_tongueAimIndicator.gameObject.SetActive(true); // TODO: this should be done by the animator;
+                    m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
+                    m_tongueAimIndicator.SetBlendShapeWeight(0, InputGetShootFactor() * 100f);
 
-                    if (InputWantsCancelAiming()) {
-                        CurrentState = State.Idle;
+                    if (InputWantsShoot()) {
+                        CurrentState = State.TargetFetch;
                         onStateChanged.Invoke(State.Windup, CurrentState);
-                        m_tongueTime = 0;
+                        m_tongueExtensionFactor = 0;
+                        m_hitEdible = null;
+                        m_hitInteractable = null;
+                        m_hitTonguable = null;
+                        m_midwayToungables = null;
+                        m_tongueAimIndicator.gameObject.SetActive(false);
+                        break;
                     }
+                }
 
-                    m_tongueDirection = InputTongueDirection();
-                    m_tongueDirection.y = 0;
-                    m_tongueDirection.Normalize();
-                    break;
-
-                case State.TargetFetch: // Actually calculate what gets caught
-                                        // Actually raycast from Krampus towards where the tongue is supposed to be shot.
-
-                    var checkingPoint = Physics.CapsuleCast(
-                            new Vector3(m_tongueOrigin.position.x, Room.STANDARD_FLOOR_Y, m_tongueOrigin.position.z),
-                            new Vector3(m_tongueOrigin.position.x, Room.STANDARD_FLOOR_Y, m_tongueOrigin.position.z), m_tongueHitRadius,
-                            m_tongueDirection, out var hit, m_tongueLength, m_layerMask
-                        ) ? hit.point : m_tongueOrigin.position + (m_tongueDirection * m_tongueLength);
-
-                    m_tongueDestination = checkingPoint;
-                    var hitObjects = Physics.OverlapCapsule(new Vector3(hit.point.x, Room.STANDARD_FLOOR_Y, hit.point.z), new Vector3(hit.point.x, Room.STANDARD_CEILING_Y, hit.point.z), m_tongueHitRadius);
-
-                    m_hitInteractable = hitObjects.Select(w => w.GetComponentInParent<IInteractable>()).Where(w => w != null && w.CanInteract(Kramp)).NullIfEmpty()?.FirstOrDefault();
-
-                    if (m_hitInteractable is IEdible edible) {
-                        m_hitEdible = edible;
-                        try {
-
-                        } catch (Exception e) {
-                            LogException(e, m_hitEdible);
-                            m_hitEdible = null;
-                            m_hitInteractable = null;
-                        }
-                    }
-
-                    // Determine the primary Tongueable - if we have already hit something, we give priority to the previously hit Interactable
-                    if (m_hitInteractable == null || !m_hitInteractable.GameObject.TryGetComponent<ITongueable>(out m_hitTonguable)) {
-                        m_hitTonguable = hitObjects.Select(w => w.GetComponentInParent<ITongueable>()).FirstOrDefault(w => w != null);
-                    }
-
-                    m_tongueDestination = m_hitInteractable == null ? checkingPoint : m_hitInteractable.InteractionPoint;
-
-                    // Find all Tonguables to update with the extending tongue. We want to not include the main hit one, as its 'Hit' will get called separately
-                    var possibleTongueables = Physics.OverlapCapsule(transform.position, m_tongueDestination, m_tongueHitRadius);
-                    float fullLength = (m_tongueDestination - transform.position).sqrMagnitude;
-                    m_midwayToungables = possibleTongueables
-                        .Select(w => (dst: (w.transform.position - transform.position).sqrMagnitude / fullLength, component: w.GetComponent<ITongueable>()))
-                        .Where(w => w.component != null && (m_hitTonguable == null || w.component.GameObject != m_hitTonguable.GameObject))
-                        .OrderBy(w => w.dst).ToList();
-
-                    AdvanceState();
-                    break;
-
-                case State.Extending: // Tongue goes from visual origin to target, activating the tonguables along the way
-                    if (m_hitInteractable != null) m_tongueDestination = m_hitInteractable.InteractionPoint;
-
-                    m_tongueExtensionFactor = m_sequence.extendCurve.Evaluate(m_sequence.InverseLerp(nameof(Timings.extend), m_tongueTime));
-                    if (m_midwayToungables.Count > 0 && m_tongueExtensionFactor >= m_midwayToungables[0].dst) {
-                        try {
-                            m_midwayToungables[0].component.TonguePassBy(Kramp, Vector3.Lerp(m_tongueVisualOrigin.position, m_tongueDestination, m_tongueExtensionFactor), m_tongueExtensionFactor);
-                        } catch (Exception e) {
-                            LogException(e, m_midwayToungables[0].component);
-                        }
-                        m_midwayToungables.RemoveAt(0);
-                    }
-                    AdvanceStateIfTime(nameof(Timings.extend));
-                    break;
-
-                case State.Full:
-                    if (m_hitInteractable != null) {
-                        try {
-                            m_hitInteractable.Interact(Kramp);
-                        } catch (Exception e) {
-                            LogException(e, m_hitInteractable);
-                            m_hitInteractable = null;
-                            m_hitEdible = null;
-                        }
-                        m_tongueDestination = m_hitInteractable.InteractionPoint;
-                    }
-                    if (m_hitTonguable != null) {
-                        try {
-                            m_hitTonguable.TongueHit(Kramp, m_tongueDestination);
-                        } catch (Exception e) {
-                            LogException(e, m_hitTonguable);
-                            m_hitTonguable = null;
-                        }
-                    }
-                    AdvanceState();
-                    break;
-
-                case State.PreRetreat: // Tongue still attached to the hit object
-                    if (m_hitInteractable != null) m_tongueDestination = m_hitInteractable.InteractionPoint;
-                    if (m_hitEdible != null) {
-                        try {
-                            m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, 0);
-                        } catch (Exception e) {
-                            LogException(e, m_hitTonguable);
-                            m_hitEdible = null;
-                            m_hitInteractable = null;
-                        }
-                    }
-                    AdvanceStateIfTime(nameof(Timings.preRetreat));
-                    break;
-
-                case State.Retreating: // Tongue goes from the target to visual origin, potentially carrying an Edible
-                    if (m_hitEdible != null) {
-                        try {
-                            m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
-
-                        } catch (Exception e) {
-                            LogException(e, m_hitTonguable);
-                            m_hitEdible = null;
-                            m_hitInteractable = null;
-                        }
-                    }
-                    m_tongueExtensionFactor = m_sequence.retreatCurve.Evaluate(1 - m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
-                    AdvanceStateIfTime(nameof(Timings.retreat));
-                    break;
-
-                case State.Eating: // Tongue is back at origin, if caught something - eat it
-                    if (m_hitEdible != null) {
-                        try {
-                            Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
-                            m_hitEdible.Consume(Kramp);
-                        } catch (Exception e) {
-                            LogException(e, m_hitEdible);
-                        }
-                    }
-
-                    m_hitEdible = null;
-                    m_hitInteractable = null;
-                    m_hitTonguable = null;
-
-                    AdvanceState();
+                if (InputWantsCancelAiming()) {
+                    CurrentState = State.Idle;
+                    onStateChanged.Invoke(State.Windup, CurrentState);
                     m_tongueTime = 0;
-                    break;
-            }
+                }
 
-            m_tongueRenderer.SetPosition(0, GetTonguePositions().begin);
-            m_tongueRenderer.SetPosition(1, GetTonguePositions().end);
+                m_tongueDirection = InputTongueDirection();
+                m_tongueDirection.y = 0;
+                m_tongueDirection.Normalize();
+                break;
 
-            m_tongueTime += Time.deltaTime;
+            case State.TargetFetch: // Actually calculate what gets caught
+                                    // Actually raycast from Krampus towards where the tongue is supposed to be shot.
+
+                var hitObjects = Physics.CapsuleCastAll(
+                    new Vector3(m_tongueOrigin.position.x, Room.STANDARD_FLOOR_Y, m_tongueOrigin.position.z),
+                    new Vector3(m_tongueOrigin.position.x, Room.STANDARD_CEILING_Y, m_tongueOrigin.position.z), m_tongueHitRadius,
+                    m_tongueDirection, m_tongueLength, m_interactionSearchMask
+                );
+
+                var interactables = hitObjects.Select(w => (hit: w, interactable: w.collider.GetComponentInParent<IInteractable>()))
+                                    .Where(w => w.interactable != null)
+                                    .NullIfEmpty()?
+                                    .OrderBy((a, b) =>
+                                        (a.interactable is IEdible && b.interactable is IEdible) || (a.interactable is not IEdible && b.interactable is not IEdible)
+                                            ? Vector3.SqrMagnitude(m_tongueOrigin.position - a.hit.point) < Vector3.SqrMagnitude(m_tongueOrigin.position - b.hit.point) ? -1 : 1
+                                            : a.interactable is IEdible ? -1 : 1
+                                    )
+                                    .Where(w => !Physics.Linecast(m_tongueOrigin.position, w.hit.point, m_interactionBlockerMask))
+                                    .NullIfEmpty()?
+                                    .Select(w => w.interactable);
+
+
+                m_hitInteractable = interactables?.FirstOrDefault();
+
+                if (m_hitInteractable is IEdible edible) {
+                    m_hitEdible = edible;
+                    try {
+                        m_hitEdible.Prepare(Kramp);
+                    } catch (Exception e) {
+                        LogException(e, m_hitEdible);
+                        m_hitEdible = null;
+                        m_hitInteractable = null;
+                    }
+                }
+
+
+                if (m_hitInteractable == null) {
+                    if (Physics.Raycast(m_tongueOrigin.position, m_tongueDirection, out var hit, m_tongueLength, m_interactionBlockerMask)) {
+                        m_tongueDestination = hit.point;
+                    } else {
+                        m_tongueDestination = m_tongueVisualOrigin.position + (m_tongueDirection * m_tongueLength);
+                    }
+                } else {
+                    m_tongueDestination = m_hitInteractable.InteractionPoint;
+                }
+
+
+                float tongueSqrMag = Vector3.SqrMagnitude(m_tongueDestination - m_tongueOrigin.position);
+
+                var tongueables = hitObjects.Select(w => (hit: w, tongueable: w.collider.GetComponentInParent<ITongueable>()))
+                                   .Where(w => w.tongueable != null)
+                                   .NullIfEmpty()?
+                                   .Where(w => !Physics.Linecast(m_tongueOrigin.position, w.hit.point, m_interactionBlockerMask))
+                                   .NullIfEmpty()?
+                                   .Select(w => (dst: Vector3.SqrMagnitude(m_tongueOrigin.position - w.hit.point) / tongueSqrMag, tongueable: w.tongueable))
+                                   .OrderBy(w => w.dst);
+
+                // Determine the primary Tongueable - if we have already hit something, we give priority to the previously hit Interactable
+                if (m_hitInteractable == null || !m_hitInteractable.GameObject.TryGetComponent<ITongueable>(out m_hitTonguable)) {
+                    m_hitTonguable = Physics.OverlapSphere(m_tongueDestination, m_tongueHitRadius).Select(w => w.GetComponent<ITongueable>()).FirstOrDefault();
+                }
+
+                // Find all Tonguables to update with the extending tongue. We want to not include the main hit one, as its 'Hit' will get called separately
+                float fullLength = (m_tongueDestination - m_tongueOrigin.position).sqrMagnitude;
+
+                m_midwayToungables = (tongueables?.Where(w => w.tongueable != m_hitTonguable)).EmptyIfNull().ToList();
+
+                // try {
+                //     Debug.Log("Interactables " + string.Join("; ", interactables.Select(w => w.GameObject.name)));
+                //     Debug.Log("All tongies " + string.Join("; ", tongueables.Select(w => w.tongueable.GameObject.name)));
+                //     Debug.Log("MW tongies " + string.Join("; ", m_midwayToungables.Select(w => w.component.GameObject.name)));
+                // } catch {
+                //     //ignore
+                // }
+                AdvanceState();
+                break;
+
+            case State.Extending: // Tongue goes from visual origin to target, activating the tonguables along the way
+                if (m_hitInteractable != null) m_tongueDestination = m_hitInteractable.InteractionPoint;
+
+                m_tongueExtensionFactor = m_sequence.extendCurve.Evaluate(m_sequence.InverseLerp(nameof(Timings.extend), m_tongueTime));
+                if (m_midwayToungables.Count > 0 && m_tongueExtensionFactor >= m_midwayToungables[0].dst) {
+                    try {
+                        m_midwayToungables[0].component.TonguePassBy(Kramp, Vector3.Lerp(m_tongueVisualOrigin.position, m_tongueDestination, m_tongueExtensionFactor), m_tongueExtensionFactor);
+                    } catch (Exception e) {
+                        LogException(e, m_midwayToungables[0].component);
+                    }
+                    m_midwayToungables.RemoveAt(0);
+                }
+                AdvanceStateIfTime(nameof(Timings.extend));
+                break;
+
+            case State.Full:
+                if (m_hitInteractable != null) {
+                    try {
+                        m_hitInteractable.Interact(Kramp);
+                    } catch (Exception e) {
+                        LogException(e, m_hitInteractable);
+                        m_hitInteractable = null;
+                        m_hitEdible = null;
+                    }
+                    m_tongueDestination = m_hitInteractable.InteractionPoint;
+                }
+                if (m_hitTonguable != null) {
+                    try {
+                        m_hitTonguable.TongueHit(Kramp, m_tongueDestination);
+                    } catch (Exception e) {
+                        LogException(e, m_hitTonguable);
+                        m_hitTonguable = null;
+                    }
+                }
+                AdvanceState();
+                break;
+
+            case State.PreRetreat: // Tongue still attached to the hit object
+                if (m_hitInteractable != null) m_tongueDestination = m_hitInteractable.InteractionPoint;
+                if (m_hitEdible != null) {
+                    try {
+                        m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, 0);
+                    } catch (Exception e) {
+                        LogException(e, m_hitTonguable);
+                        m_hitEdible = null;
+                        m_hitInteractable = null;
+                    }
+                }
+                AdvanceStateIfTime(nameof(Timings.preRetreat));
+                break;
+
+            case State.Retreating: // Tongue goes from the target to visual origin, potentially carrying an Edible
+                if (m_hitEdible != null) {
+                    try {
+                        m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
+
+                    } catch (Exception e) {
+                        LogException(e, m_hitTonguable);
+                        m_hitEdible = null;
+                        m_hitInteractable = null;
+                    }
+                }
+                m_tongueExtensionFactor = m_sequence.retreatCurve.Evaluate(1 - m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
+                AdvanceStateIfTime(nameof(Timings.retreat));
+                break;
+
+            case State.Eating: // Tongue is back at origin, if caught something - eat it
+                if (m_hitEdible != null) {
+                    try {
+                        Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
+                        m_hitEdible.Consume(Kramp);
+                    } catch (Exception e) {
+                        LogException(e, m_hitEdible);
+                    }
+                }
+
+                m_hitEdible = null;
+                m_hitInteractable = null;
+                m_hitTonguable = null;
+
+                AdvanceState();
+                m_tongueTime = 0;
+                break;
         }
+
+        m_tongueRenderer.SetPosition(0, GetTonguePositions().begin);
+        m_tongueRenderer.SetPosition(1, GetTonguePositions().end);
+
+        m_tongueTime += Time.deltaTime;
+
     }
 
     /// <summary>

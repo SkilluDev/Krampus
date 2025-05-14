@@ -20,10 +20,10 @@ public class Game : MonoBehaviour {
 
     }
     public static RoomGenInfo RoomGenInfo {
-	    get {
-		    if (m_instance.m_roomGenInfo == null) Debug.LogError("RoomGenInfo was not assigned in " + m_instance.gameObject.name);
-		    return m_instance.m_roomGenInfo;
-	    }
+        get {
+            if (m_instance.m_roomGenInfo == null) Debug.LogError("RoomGenInfo was not assigned in " + m_instance.gameObject.name);
+            return m_instance.m_roomGenInfo;
+        }
     }
     [SerializeField] private RoomGenInfo m_roomGenInfo;
 
@@ -34,7 +34,7 @@ public class Game : MonoBehaviour {
         Loading
     }
 
-    private const int LOADER_SCENE = 3;
+    private const int LOADER_SCENE = 2;
 
     public static Game.State CurrentState { get; private set; }
     public static Game.State SourceState { get; private set; }
