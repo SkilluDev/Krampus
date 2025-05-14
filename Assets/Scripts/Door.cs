@@ -33,7 +33,7 @@ public class Door : Passage, IInteractable {
         m_hitRight =
             Vector3.SqrMagnitude(interactor.AsPlayer().Tongue.HitPoint - m_interactionLeft.ClosestPoint(interactor.AsPlayer().Tongue.HitPoint)) >
             Vector3.SqrMagnitude(interactor.AsPlayer().Tongue.HitPoint - m_interactionRight.ClosestPoint(interactor.AsPlayer().Tongue.HitPoint));
-        return true;
+        return IsOpen;
     }
 
     public Vector3 InteractionPoint => m_hitRight ? m_interactionRight.transform.position + m_interactionRight.transform.up : m_interactionLeft.transform.position + m_interactionLeft.transform.up;
