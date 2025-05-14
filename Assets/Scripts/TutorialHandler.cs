@@ -37,8 +37,7 @@ public class TutorialHandler : MonoBehaviour
         if (InputSubscribe.Raw.UI.Quit.WasPerformedThisFrame()){
             Debug.Log("Should quit tutorial now");
             if (m_handle.IsActive()) m_handle.Cancel();
-            gameObject.SetActive(false);
-            m_tutorialText.SetActive(false);
+            gameObject.transform.parent.gameObject.SetActive(false);
         }
         if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
             MoveBack(m_tutorialCounter++%m_tutorials.Length);
