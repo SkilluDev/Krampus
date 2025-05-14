@@ -15,9 +15,13 @@ public class TutorialHandler : MonoBehaviour
     [SerializeField] private float m_rotateAngle;
     [SerializeField] private float m_slideLength;
 
+    [SerializeField] private GameObject m_tutorialText;
+
     private float m_distanceBetween = 1f;
 
     private bool m_isMoving = false;
+
+    private MotionHandle m_handle;
 
 
 
@@ -30,7 +34,14 @@ public class TutorialHandler : MonoBehaviour
 	}
 	private void Update()
     {
-        if (InputSubscribe.Raw.Player.Move.WasPerformedThisFrame() && !m_isMoving) {
+        //LMB to go forward RMB to skip
+        if (InputSubscribe.Raw.UI.Quit.WasPerformedThisFrame()){
+            Debug.Log("Should quit tutorial now");
+            if (m_handle.IsActive()) m_handle.Cancel();
+            gameObject.SetActive(false);
+            m_tutorialText.SetActive(false);
+        }
+        if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
             MoveBack(m_tutorialCounter++%m_tutorials.Length);
         }
         
@@ -100,6 +111,6 @@ public class TutorialHandler : MonoBehaviour
         m_tutorials[id].transform.rotation = oldRotation;
         transform.localPosition = oldLocalMainPosition;
 
-        lSequence.Run();
+        m_handle = lSequence.Run();
     }
 }

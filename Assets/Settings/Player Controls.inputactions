@@ -328,6 +328,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Quit",
+                    "type": "Button",
+                    "id": "22bfcd56-6bd0-4d00-b11b-60464a19541e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Restart",
                     "type": "Button",
                     "id": "80631b6c-fb49-4970-ab2b-0b6d07454e98",
@@ -377,7 +386,7 @@
                 {
                     "name": "",
                     "id": "e6d736ff-0e4a-4894-867c-56c2f241abd1",
-                    "path": "<Keyboard>/g",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -388,11 +397,33 @@
                 {
                     "name": "",
                     "id": "e4a4ee4f-011f-4bd0-b184-8919651c8ba9",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Advance",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce5d77bd-2afb-4b3c-aaf7-a12c3a1325a8",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d7800985-15d5-4ed7-aab5-c5e602f95f6f",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -630,10 +661,10 @@
                 {
                     "name": "",
                     "id": "7d1ef2f6-3ab6-4e20-91b0-0f4885a1e338",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";PC",
                     "action": "Restart And Regen",
                     "isComposite": false,
                     "isPartOfComposite": false

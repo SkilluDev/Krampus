@@ -352,6 +352,15 @@ namespace KrampInput
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Quit"",
+                    ""type"": ""Button"",
+                    ""id"": ""22bfcd56-6bd0-4d00-b11b-60464a19541e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Restart"",
                     ""type"": ""Button"",
                     ""id"": ""80631b6c-fb49-4970-ab2b-0b6d07454e98"",
@@ -401,7 +410,7 @@ namespace KrampInput
                 {
                     ""name"": """",
                     ""id"": ""e6d736ff-0e4a-4894-867c-56c2f241abd1"",
-                    ""path"": ""<Keyboard>/g"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -412,11 +421,33 @@ namespace KrampInput
                 {
                     ""name"": """",
                     ""id"": ""e4a4ee4f-011f-4bd0-b184-8919651c8ba9"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Advance"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce5d77bd-2afb-4b3c-aaf7-a12c3a1325a8"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7800985-15d5-4ed7-aab5-c5e602f95f6f"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -654,10 +685,10 @@ namespace KrampInput
                 {
                     ""name"": """",
                     ""id"": ""7d1ef2f6-3ab6-4e20-91b0-0f4885a1e338"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Restart And Regen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -718,6 +749,7 @@ namespace KrampInput
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
             m_UI_Advance = m_UI.FindAction("Advance", throwIfNotFound: true);
+            m_UI_Quit = m_UI.FindAction("Quit", throwIfNotFound: true);
             m_UI_Restart = m_UI.FindAction("Restart", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
             m_UI_Tilt = m_UI.FindAction("Tilt", throwIfNotFound: true);
@@ -878,6 +910,7 @@ namespace KrampInput
         private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
         private readonly InputAction m_UI_Pause;
         private readonly InputAction m_UI_Advance;
+        private readonly InputAction m_UI_Quit;
         private readonly InputAction m_UI_Restart;
         private readonly InputAction m_UI_Navigate;
         private readonly InputAction m_UI_Tilt;
@@ -889,6 +922,7 @@ namespace KrampInput
             public UIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Pause => m_Wrapper.m_UI_Pause;
             public InputAction @Advance => m_Wrapper.m_UI_Advance;
+            public InputAction @Quit => m_Wrapper.m_UI_Quit;
             public InputAction @Restart => m_Wrapper.m_UI_Restart;
             public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
             public InputAction @Tilt => m_Wrapper.m_UI_Tilt;
@@ -909,6 +943,9 @@ namespace KrampInput
                 @Advance.started += instance.OnAdvance;
                 @Advance.performed += instance.OnAdvance;
                 @Advance.canceled += instance.OnAdvance;
+                @Quit.started += instance.OnQuit;
+                @Quit.performed += instance.OnQuit;
+                @Quit.canceled += instance.OnQuit;
                 @Restart.started += instance.OnRestart;
                 @Restart.performed += instance.OnRestart;
                 @Restart.canceled += instance.OnRestart;
@@ -934,6 +971,9 @@ namespace KrampInput
                 @Advance.started -= instance.OnAdvance;
                 @Advance.performed -= instance.OnAdvance;
                 @Advance.canceled -= instance.OnAdvance;
+                @Quit.started -= instance.OnQuit;
+                @Quit.performed -= instance.OnQuit;
+                @Quit.canceled -= instance.OnQuit;
                 @Restart.started -= instance.OnRestart;
                 @Restart.performed -= instance.OnRestart;
                 @Restart.canceled -= instance.OnRestart;
@@ -1006,6 +1046,7 @@ namespace KrampInput
         {
             void OnPause(InputAction.CallbackContext context);
             void OnAdvance(InputAction.CallbackContext context);
+            void OnQuit(InputAction.CallbackContext context);
             void OnRestart(InputAction.CallbackContext context);
             void OnNavigate(InputAction.CallbackContext context);
             void OnTilt(InputAction.CallbackContext context);

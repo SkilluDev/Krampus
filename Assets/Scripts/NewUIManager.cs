@@ -116,6 +116,8 @@ public class NewUIManager : MonoBehaviour {
             m_gameWinScreen.SetActive(true);
             Game.MainGameInfo.SetState(MainGameInfo.State.Won);
             Time.timeScale = 0;
+            DisplayScoreBoard();
+
         }
         if (m_currentGameState == MainGameInfo.State.Over || m_currentGameState == MainGameInfo.State.Paused || m_currentGameState == MainGameInfo.State.Won) {//if the game is over, won, or paused, you can
             if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
