@@ -15,5 +15,14 @@ namespace KrampUtils {
 				}
 			}
 		}
+
+		public static Vector3 OnNavMesh(this Vector3 vec, float maxDst = 0.5f) {
+			if (NavMesh.SamplePosition(vec, out var hit, maxDst, NavMesh.AllAreas)) {
+				return hit.position;
+			} else {
+				Debug.LogError($"Could not find point corresponding to {vec} on NavMesh!");
+				return Vector3.zero;
+			}
+		}
 	}
 }

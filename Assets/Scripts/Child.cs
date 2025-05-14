@@ -1,14 +1,16 @@
 using System.Linq;
 using KrampUtils;
+using NaughtyAttributes;
+using Roomgen;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
 
-public class Child : NPC, IEdible {
+public class Child : NPC, IEdible, INoiseReactor {
     public float RunSpeed => m_runSpeed;
-    public State CurrentState { get; private set; }
+    [ShowNativeProperty] public State CurrentState { get; private set; }
 
     public UnityAction<Child.State, Child.State> onStateChanged;
     [SerializeField] private float m_interactionDistance = 8;
@@ -25,6 +27,7 @@ public class Child : NPC, IEdible {
     [SerializeField] private float m_runSpeed = 8;
 
     private Nun m_selectedNun;
+    private Room m_selectedRoom;
 
     private float m_timeout = 0;
 
@@ -34,6 +37,7 @@ public class Child : NPC, IEdible {
     public enum State {
         Idle, // go to a random place
         Stunned, // do nothing.
+        InitialPanic, // go to the nearest nun
         Panic, // go to the nearest nun
         Reporting, // talking to another
         Alerted, // go interact with stuff
@@ -90,18 +94,37 @@ public class Child : NPC, IEdible {
             case State.Stunned:
                 m_timeout -= Time.deltaTime;
                 if (m_timeout <= 0) {
-                    // select nearest nun or whatevs
-                    if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
-                        m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.First(w => w is Nun);
-                    } else {
-                        m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
-                    }
-                    SwitchState(State.Panic);
+
+                    var passages = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
+                    m_selectedRoom = passages.First().Other(CurrentRoom);
+                    SetDestination(m_selectedRoom.GetRandomPointOnFloor().OnNavMesh(5));
+                    SwitchState(State.InitialPanic);
                 }
                 break;
 
+            case State.InitialPanic:
+                //SetDestination(m_selectedNun.transform.position);
+                SetVelocity(GetPathDirection() * m_runSpeed);
+
+                if (CurrentRoom == m_selectedRoom) {
+                    if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
+                        var passages = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
+                        m_selectedRoom = passages.First().Other(CurrentRoom);
+                        SetDestination(m_selectedRoom.GetRandomPointOnFloor().OnNavMesh(5));
+                    } else {
+                        // select nearest nun or whatevs
+                        if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
+                            m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun nun && nun.CurrentState != Nun.State.ChasingKrampus);
+                            if (m_selectedNun == null) m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
+                        } else {
+                            m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
+                        }
+                        SetDestination(m_selectedNun.transform.position);
+                        SwitchState(State.Panic);
+                    }
+                }
+                break;
             case State.Panic:
-                SetDestination(m_selectedNun.transform.position);
                 SetVelocity(GetPathDirection() * m_runSpeed);
 
                 if (NearDestination(m_interactionDistance)) {
@@ -177,4 +200,10 @@ public class Child : NPC, IEdible {
         // };
     }
 
+    public void Alert(RoomData roomData, Vector3 place, ICharacter actor) {
+        if (actor is not Krampus) return;
+        Debug.Log("[Child] Child alerted");
+        m_timeout = m_stunDuration;
+        SwitchState(State.Stunned);
+    }
 }
