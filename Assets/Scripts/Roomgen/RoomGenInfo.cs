@@ -7,8 +7,8 @@ namespace Roomgen {
 
 
 		public void SetInitialSeed() {
-			if ((int)Game.SetMan.GetValue<long>("Custom seed") != -1) {
-				Seed = (int)Game.SetMan.GetValue<long>("Custom seed");
+			if ((int)Game.SetMan.GetValue<long>("Custom Seed") != -1) {
+				Seed = (int)Game.SetMan.GetValue<long>("Custom Seed");
 				Debug.Log($"Random seed overwrite: {Seed}");
 			} else Seed = Random.Range(0, 99999);
 			Debug.Log($"First seed overwrite: {Seed}");
