@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 public class PostProcessDistance : MonoBehaviour {
-    private Volume vol;
-    private Vignette vignette;
-    private ChromaticAberration aberration;
+    private Volume m_vol;
+    private Vignette m_vignette;
+    private ChromaticAberration m_aberration;
 
     [SerializeField] private float m_minDistance;
 
@@ -24,17 +24,17 @@ public class PostProcessDistance : MonoBehaviour {
 
 		    bool b  = Game.SetMan.GetValue<bool>("Motion Blur");
 		    MotionBlur blur;
-        vol = GetComponent<Volume>();
-        if (vol != null && vol.profile != null) {
+        m_vol = GetComponent<Volume>();
+        if (m_vol != null && m_vol.profile != null) {
             // Try to get Vignette effect
-            if (!vol.profile.TryGet(out vignette))
+            if (!m_vol.profile.TryGet(out m_vignette))
                 Debug.LogError("Vignette effect not found in Volume profile.");
 
             // Try to get Chromatic Aberration effect
-            if (!vol.profile.TryGet(out aberration))
+            if (!m_vol.profile.TryGet(out m_aberration))
                 Debug.LogError("Chromatic Aberration effect not found in Volume profile.");
 
-            if (!vol.profile.TryGet(out blur))
+            if (!m_vol.profile.TryGet(out blur))
 	            Debug.LogError("Chromatic Aberration effect not found in Volume profile.");
             else {
 	            blur.active = b;
@@ -74,40 +74,40 @@ public class PostProcessDistance : MonoBehaviour {
             }
 
         } else {
-            resetVignetteToDefault(m_vignetteIntensity);
-            resetAberrToDefault(m_abberIntensity);
+            ResetVignetteToDefault(m_vignetteIntensity);
+            ResetAberrToDefault(m_abberIntensity);
         }
     }
 
     public void ChangeVignette(float intensity) {
-        if (vignette != null) {
-            vignette.intensity.value = intensity;
+        if (m_vignette != null) {
+            m_vignette.intensity.value = intensity;
         } else {
             Debug.Log("Vignette is null.");
         }
     }
 
     public void ChangeAberration(float intensity) {
-        if (aberration != null) {
-            aberration.intensity.value = intensity;
+        if (m_aberration != null) {
+            m_aberration.intensity.value = intensity;
         } else {
             Debug.Log("Abber is null.");
         }
     }
 
-    public void resetVignetteToDefault(float intensity) {
-        if (vignette != null) {
-            if (vignette.intensity.value > intensity) {
-                vignette.intensity.value -= Time.deltaTime * m_resetSpeed;
+    public void ResetVignetteToDefault(float intensity) {
+        if (m_vignette != null) {
+            if (m_vignette.intensity.value > intensity) {
+                m_vignette.intensity.value -= Time.deltaTime * m_resetSpeed;
             }
         } else {
             Debug.Log("Vignette is null.");
         }
     }
-    public void resetAberrToDefault(float intensity) {
-        if (aberration != null) {
-            if (aberration.intensity.value > intensity) {
-                aberration.intensity.value -= Time.deltaTime * m_resetSpeed;
+    public void ResetAberrToDefault(float intensity) {
+        if (m_aberration != null) {
+            if (m_aberration.intensity.value > intensity) {
+                m_aberration.intensity.value -= Time.deltaTime * m_resetSpeed;
             }
         } else {
             Debug.Log("Abber is null.");
