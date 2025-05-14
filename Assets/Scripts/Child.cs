@@ -166,7 +166,6 @@ public class Child : NPC, IEdible, INoiseReactor {
                     SwitchState(State.Idle);
                 }
                 break;
-
         }
 
     }

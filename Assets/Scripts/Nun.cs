@@ -204,7 +204,7 @@ public class Nun : NPC {
 
         m_reportedKrampusRoom = room;
 
-        if (CurrentState != State.ChasingKrampus) {
+        if (CurrentState is not State.ChasingKrampus or State.LookingForKrampus) {
             m_timeout = timeout;
             SwitchState(State.Listening);
         }
