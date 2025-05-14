@@ -1,3 +1,5 @@
+using KrampUtils;
+using NaughtyAttributes;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,6 +15,8 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
     public float Velocity => VelocityVector.magnitude;
     public float VelocitySqr => VelocityVector.sqrMagnitude;
     public Room CurrentRoom { get; set; }
+    [ShowNativeProperty] public float FacingAngle { get; private set; }
+
 
     [SerializeField] protected float m_baseMovementSpeed = 4;
     [SerializeField] protected Rigidbody m_rigidbody;
@@ -26,6 +30,19 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
 
     public virtual void OverridePathCosts() {
 
+    }
+
+    public void SetFacingToPoint(Vector3 towards) {
+        var direction = new Vector3(towards.x - transform.position.x, 0, towards.z - transform.position.z).normalized;
+        if (direction.sqrMagnitude > 0.001f) {
+            FacingAngle = Quaternion.LookRotation(direction, Vector3.up).eulerAngles.y;
+        }
+    }
+
+    public void SetFacingDirection(Vector3 direction) {
+        if (direction.sqrMagnitude > 0.001f) {
+            FacingAngle = Quaternion.LookRotation(direction.NoY(), Vector3.up).eulerAngles.y;
+        }
     }
 
 
@@ -68,4 +85,15 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
     protected bool NearDestination(float distance) {
         return (CurrentDestination - transform.position).sqrMagnitude < distance * distance;
     }
+
+    #region Gizmos
+
+    private void OnDrawGizmos() {
+        if (m_currentPath != null && m_currentPath.corners.Length > 1) {
+            for (int i = 0; i < m_currentPath.corners.Length - 1; i++) {
+                Debug.DrawLine(m_currentPath.corners[i], m_currentPath.corners[i + 1], Color.green);
+            }
+        }
+    }
+    #endregion
 }

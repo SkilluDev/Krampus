@@ -28,6 +28,7 @@ public class Nun : NPC {
     [SerializeField] private float m_detectionRange = 4;
     public State CurrentState { get; private set; }
 
+
     [SerializeField] private float m_runSpeed = 8;
 
 
@@ -117,6 +118,7 @@ public class Nun : NPC {
 
                 SetVelocity(GetPathDirection() * m_baseMovementSpeed);
                 m_viewCone.SetFacing(GetPathDirection());
+                SetFacingDirection(GetPathDirection());
                 break;
             case State.LookingForKrampus:
                 m_viewCone.SetActive(false);
@@ -128,23 +130,28 @@ public class Nun : NPC {
                     } else {
                         m_timeout += Time.deltaTime;
                     }
-                } else {
-                    if (NearDestination(m_interactionDistance)) {
-                        m_timeout += Time.deltaTime;
-                        if (m_timeout > m_patrolIgnoreTimeout) {
-                            SwitchState(State.Idle);
-                        }
+
+                } else if (NearDestination(m_interactionDistance)) {
+                    m_timeout += Time.deltaTime;
+                    if (m_timeout > m_patrolIgnoreTimeout) {
+                        SwitchState(State.Idle);
                     }
+                    SetVelocity(Vector3.zero);
+                    SetFacingDirection(Vector3.zero);
+
+                } else {
+                    SetVelocity(GetPathDirection() * m_runSpeed);
+                    SetFacingDirection(GetPathDirection());
                 }
 
 
 
-                SetVelocity(GetPathDirection() * m_runSpeed);
                 break;
             case State.FoundKrampus:
                 m_viewCone.SetActive(false);
                 SetVelocity(Vector3.zero);
                 m_timeout -= Time.deltaTime;
+                SetFacingToPoint(Game.MainGameInfo.Krampus.transform.position);
                 if (m_timeout < 0) SwitchState(State.ChasingKrampus);
                 break;
             case State.Listening:
@@ -158,6 +165,7 @@ public class Nun : NPC {
             case State.ChasingKrampus:
                 m_viewCone.SetActive(false);
                 SetDestination(Game.MainGameInfo.Krampus.transform.position);
+                SetFacingDirection(GetPathDirection());
                 SetVelocity(GetPathDirection() * m_runSpeed);
                 break;
             case State.Stunned:
