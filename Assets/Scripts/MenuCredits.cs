@@ -60,7 +60,6 @@ public class MenuCredits : MonoBehaviour {
     [Button("Play")]
     private void PlaySequence() {
         Stop();
-        m_audio.Play();
         var lSequence = LSequence.Create();
         lSequence.AppendInterval(m_defaultInterval);
         lSequence.Append(LMotion.Create(1f, 0f, m_fadeDuration).BindToAlpha(m_groups[0]));
@@ -75,6 +74,8 @@ public class MenuCredits : MonoBehaviour {
         }
         lSequence.Append(LMotion.Create(0f, 1f, m_fadeDuration).BindToAlpha(m_groups[0]));
         Stop();
+        m_audio.Play();
+
         m_handle = lSequence.Run();
     }
 }
