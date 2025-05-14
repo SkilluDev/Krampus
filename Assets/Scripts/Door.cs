@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
+using Sound;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,8 +15,8 @@ public class Door : Passage, IInteractable {
     [SerializeField] private Collider m_blocking;
     [SerializeField] private Collider m_interactionLeft;
     [SerializeField] private Collider m_interactionRight;
-    [SerializeField] private SoundBite m_doorClose;
-    [SerializeField] private SoundBite m_doorOpen;
+    [SerializeField] private Sex m_doorClose;
+    [SerializeField] private Sex m_doorOpen;
     [SerializeField] private float m_fastOpenObjectVelocity = 6f;
     [SerializeField] private float m_noiseDistance = 15f;
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_openProperty, m_openSuddenProperty, m_invertProperty;
@@ -59,7 +60,7 @@ public class Door : Passage, IInteractable {
     // TODO: redo
     private void Open(bool swiftly, bool flip, ICharacter actor = null) {
         if (IsOpen) return;
-        m_doorOpen.SetVolume(CalculateVolumeOverride());
+        // m_doorOpen.SetVolume(CalculateVolumeOverride());
         m_doorOpen.Play(transform.position, 1f);
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_invertProperty, flip);
@@ -77,7 +78,7 @@ public class Door : Passage, IInteractable {
 
     private void Close(bool swiftly, ICharacter actor = null) {
         if (!IsOpen) return;
-        m_doorClose.SetVolume(CalculateVolumeOverride());
+        // m_doorClose.SetVolume(CalculateVolumeOverride());
 
         if (swiftly) {
             foreach (var w in m_charactersInDoor) {
