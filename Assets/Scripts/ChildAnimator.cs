@@ -6,6 +6,8 @@ public class ChildAnimator : MonoBehaviour {
     [SerializeField] private Child m_child;
     [SerializeField] private Animator m_animator;
     [SerializeField] private Transform m_model;
+    [SerializeField] private float m_turningSpeed = 5f;
+
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stunProperty, m_panicProperty, m_reportingProperty, m_deathTriggr;
 
     [BoxGroup("State Sprites")][SerializeField] private StatusSprite m_spriteRenderer;
@@ -48,10 +50,8 @@ public class ChildAnimator : MonoBehaviour {
     }
 
     private void Update() {
-        if (m_child.VelocitySqr > 0.1f) {
-            m_rotationTarget = Quaternion.LookRotation(m_child.VelocityVector, Vector3.up);
-        }
-        m_model.rotation = Quaternion.Slerp(m_model.rotation, m_rotationTarget, Time.deltaTime * 5);
+
+        m_model.rotation = Quaternion.Slerp(m_model.rotation, Quaternion.Euler(0, m_child.FacingAngle, 0), Time.deltaTime * m_turningSpeed);
 
         m_animator.SetBool(m_panicProperty, m_child.CurrentState is Child.State.Panic or Child.State.InitialPanic);
         m_animator.SetBool(m_reportingProperty, m_child.CurrentState == Child.State.Reporting);

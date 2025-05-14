@@ -284,7 +284,6 @@ public class KrampusTongue : KrampusBehaviour {
                 break;
 
             case State.PreRetreat: // Tongue still attached to the hit object
-                if (m_hitInteractable != null) m_tongueDestination = m_hitInteractable.InteractionPoint;
                 if (m_hitEdible != null) {
                     try {
                         m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, 0);

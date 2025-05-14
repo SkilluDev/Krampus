@@ -12,6 +12,8 @@ public class Child : NPC, IEdible, INoiseReactor {
     public float RunSpeed => m_runSpeed;
     [ShowNativeProperty] public State CurrentState { get; private set; }
 
+    public Vector3 InteractionPoint => m_pinTarget.transform.position;
+
     public UnityAction<Child.State, Child.State> onStateChanged;
     [SerializeField] private float m_interactionDistance = 8;
     [SerializeField] private float m_longDetectionRange = 10;
@@ -23,7 +25,7 @@ public class Child : NPC, IEdible, INoiseReactor {
     [SerializeField] private VisualEffect m_goreParticle;
     [SerializeField] private TrailRenderer m_trailRenderer;
     [SerializeField] private ViewCone m_viewCone;
-    public Transform pinTarget;
+    [SerializeField] private Transform m_pinTarget;
 
 
     [SerializeField] private float m_runSpeed = 8;
@@ -145,9 +147,11 @@ public class Child : NPC, IEdible, INoiseReactor {
                 }
 
                 SetVelocity(GetPathDirection() * m_runSpeed);
+                SetFacingDirection(GetPathDirection());
                 break;
             case State.Panic: // regular panic. just go to the nun and report
                 SetVelocity(GetPathDirection() * m_runSpeed);
+                SetFacingDirection(GetPathDirection());
 
                 SetDestination(m_selectedNun.transform.position);
 
@@ -209,7 +213,7 @@ public class Child : NPC, IEdible, INoiseReactor {
     }
 
     public void ReelIn(Krampus krampus, Vector3 position, float progress) {
-        transform.position = position;
+        transform.position = position - transform.InverseTransformPoint(m_pinTarget.position);
     }
 
 
