@@ -1,4 +1,5 @@
 using System.Reflection;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ public class StateDisplay : MonoBehaviour {
     [SerializeField] private TextMeshPro m_statusText;
 
     [SerializeField] private MonoBehaviour m_toInspect;
-
+	[BoxGroup("StateSprites")]
     private PropertyInfo m_stateField;
 
     private void Awake() {
