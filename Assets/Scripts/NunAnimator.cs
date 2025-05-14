@@ -49,9 +49,9 @@ public class NunAnimator : MonoBehaviour {
 				m_spriteRenderer.sprite = m_stunnedSprite;
 				break;
 			case(_,Nun.State.Patrolling):
-				m_spriteRenderer.sprite = m_patrolingSprite;
+						m_spriteRenderer.sprite = m_patrolingSprite;
 				break;
-			
+
 		}
 	}
 
