@@ -70,6 +70,11 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
             return Vector3.zero;
         }
 
+        if (m_currentPath.corners.Length == 0) {
+            m_rigidbody.position = m_rigidbody.position.OnNavMesh(4);
+            SetDestination(CurrentDestination);
+        }
+
         // absolutnie nie wiem co się tu dzieje
         var dest = CurrentDestination;
         if (m_currentPath.corners.Length > 0 && m_currentPathPoint < m_currentPath.corners.Length - 1) {
@@ -88,11 +93,13 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
 
     #region Gizmos
 
-    private void OnDrawGizmos() {
+    private void OnDrawGizmosSelected() {
         if (m_currentPath != null && m_currentPath.corners.Length > 1) {
             for (int i = 0; i < m_currentPath.corners.Length - 1; i++) {
                 Debug.DrawLine(m_currentPath.corners[i], m_currentPath.corners[i + 1], Color.green);
             }
+
+            Gizmos.DrawSphere(m_currentPath.corners[m_currentPathPoint], 0.5f);
         }
     }
     #endregion

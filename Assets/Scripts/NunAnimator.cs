@@ -12,13 +12,11 @@ public class NunAnimator : MonoBehaviour {
 
 	private float m_minimalVelocity;
 
-	[BoxGroup("StateSprites")] [SerializeField] private SpriteRenderer m_spriteRenderer;
-	[BoxGroup("StateSprites")] [SerializeField] private Sprite m_idleSprite;
-	[BoxGroup("StateSprites")] [SerializeField] private Sprite m_stunnedSprite;
-	[BoxGroup("StateSprites")] [SerializeField] private Sprite m_patrolingSprite;
-	[BoxGroup("StateSprites")] [SerializeField] private Sprite m_listeningSprite;
-	[BoxGroup("StateSprites")] [SerializeField] private Sprite m_foundKrampus;
-	[BoxGroup("StateSprites")] [SerializeField] private Sprite m_chasingKrampus;
+	[BoxGroup("StateSprites")][SerializeField] private StatusSprite m_spriteRenderer;
+	[BoxGroup("StateSprites")][SerializeField] private Sprite m_lookingForKrampusSprite;
+	[BoxGroup("StateSprites")][SerializeField] private Sprite m_listeningSprite;
+	[BoxGroup("StateSprites")][SerializeField] private Sprite m_stunnedSprite;
+	[BoxGroup("StateSprites")][SerializeField] private Sprite m_chasingKrampusSprite;
 
 	private void Start() {
 		m_nun.onStateChanged += MovementStateChanged;
@@ -35,21 +33,24 @@ public class NunAnimator : MonoBehaviour {
 
 	private void MovementStateChanged(Nun.State previous, Nun.State current) {
 		switch (previous, current) {
-			case (Nun.State.Idle, Nun.State.ChasingKrampus):
+			case (_, Nun.State.ChasingKrampus):
 				m_minimalVelocity = 1f;
-				m_spriteRenderer.sprite = m_chasingKrampus;
+				m_spriteRenderer.SetSprite(m_chasingKrampusSprite, 2);
+				break;
+			case (_, Nun.State.Patrolling):
+				m_spriteRenderer.ClearSprite();
 				break;
 			case (_, Nun.State.Idle):
-				m_spriteRenderer.sprite = m_idleSprite;
+				m_spriteRenderer.ClearSprite();
 				break;
 			case (_, Nun.State.Listening):
-				m_spriteRenderer.sprite = m_listeningSprite;
+				m_spriteRenderer.SetSprite(m_listeningSprite);
 				break;
 			case (_, Nun.State.Stunned):
-				m_spriteRenderer.sprite = m_stunnedSprite;
+				m_spriteRenderer.SetSprite(m_stunnedSprite, 2);
 				break;
-			case(_,Nun.State.Patrolling):
-						m_spriteRenderer.sprite = m_patrolingSprite;
+			case (_, Nun.State.LookingForKrampus):
+				m_spriteRenderer.SetSprite(m_lookingForKrampusSprite);
 				break;
 
 		}

@@ -8,14 +8,9 @@ public class ChildAnimator : MonoBehaviour {
     [SerializeField] private Transform m_model;
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stunProperty, m_panicProperty, m_reportingProperty, m_deathTriggr;
 
-	[BoxGroup("StateSprites")] [SerializeField] private SpriteRenderer m_spriteRenderer;
-    [BoxGroup("StateSprites")] [SerializeField] private Sprite m_idleSprite;
-    [BoxGroup("StateSprites")] [SerializeField] private Sprite m_stunnedSprite;
-    [BoxGroup("StateSprites")] [SerializeField] private Sprite m_initalPanicSprite;
-    [BoxGroup("StateSprites")] [SerializeField] private Sprite m_panicSprite;
-    [BoxGroup("StateSprites")] [SerializeField] private Sprite m_reportingSprite;
-    [BoxGroup("StateSprites")] [SerializeField] private Sprite m_alertedSprite;
-    [BoxGroup("StateSprites")] [SerializeField] private Sprite m_deadSprite;
+    [BoxGroup("State Sprites")][SerializeField] private StatusSprite m_spriteRenderer;
+    [BoxGroup("State Sprites")][SerializeField] private Sprite m_panicSprite;
+    [BoxGroup("State Sprites")][SerializeField] private Sprite m_alertedSprite;
 
     private Quaternion m_rotationTarget;
 
@@ -30,28 +25,24 @@ public class ChildAnimator : MonoBehaviour {
             case (_, Child.State.Stunned):
                 m_rotationTarget = Quaternion.LookRotation(Game.MainGameInfo.Krampus.transform.position - m_child.transform.position, Vector3.up);
                 m_animator.SetTrigger(m_stunProperty);
-                m_spriteRenderer.sprite = m_stunnedSprite;
-
+                m_spriteRenderer.SetSprite(m_panicSprite, 2);
                 break;
             case (_, Child.State.Dead):
                 m_animator.SetTrigger(m_deathTriggr);
-                m_spriteRenderer.sprite = m_deadSprite;
                 break;
             case (_, Child.State.Idle):
-	            m_spriteRenderer.sprite = m_idleSprite;
-	            break;
+                m_spriteRenderer.ClearSprite();
+                break;
             case (_, Child.State.InitialPanic):
-	            m_spriteRenderer.sprite = m_initalPanicSprite;
-	            break;
+                break;
             case (_, Child.State.Panic):
-	            m_spriteRenderer.sprite = m_panicSprite;
-	            break;
+                m_spriteRenderer.SetSprite(m_panicSprite);
+                break;
             case (_, Child.State.Reporting):
-	            m_spriteRenderer.sprite = m_reportingSprite;
-	            break;
-            case(_, Child.State.Alerted):
-	            m_spriteRenderer.sprite = m_alertedSprite;
-	            break;
+                break;
+            case (_, Child.State.Alerted):
+                m_spriteRenderer.SetSprite(m_alertedSprite);
+                break;
 
         }
     }
