@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Child Type", menuName = "Game/Child Type")]
-public class ChildType : ScriptableObject
-{
+public class ChildType : ScriptableObject {
 	public Color color;
-	public Texture2D shape;
+	public Sprite shape;
 	public Sprite uiIcon;
 }
