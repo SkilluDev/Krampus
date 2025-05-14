@@ -71,17 +71,21 @@ public class KrampusTongue : KrampusBehaviour {
     #region Input handling
 
     private Vector3 GetDirectionToMouse() {
-        if (!MoreMath.LinePlaneIntersection(out var point, Kramp.Kamera.Rendering.ScreenPointToRay(InputSubscribe.Aim), Vector3.up, Vector3.up * m_inputMousePlaneY)) {
-            Debug.LogError("Something went horrendously wrong with aiming!");
+        Vector3 point;
+        if (!Physics.Raycast(Game.MainGameInfo.Krampus.Kamera.Rendering.ScreenPointToRay(InputSubscribe.Aim), out var info)) {
+            if (!MoreMath.LinePlaneIntersection(out point, Kramp.Kamera.Rendering.ScreenPointToRay(InputSubscribe.Aim), Vector3.up, Vector3.up * m_inputMousePlaneY)) {
+                Debug.LogError("Something went horrendously wrong with aiming!");
+                return Vector3.zero;
+            }
+        } else {
+            point = info.point;
         }
-        var ret = point - m_tongueOrigin.position;
-        ret.y = 0;
-        return ret;
+        return point.NoY() + (Vector3.up * m_tongueOrigin.position.y) - m_tongueOrigin.position;
     }
 
     private Vector3 InputTongueDirection() {
         return InputSubscribe.InputMethod switch {
-            InputSubscribe.Method.PC => GetDirectionToMouse(),
+            InputSubscribe.Method.PC => Vector3.Lerp(m_tongueDirection, GetDirectionToMouse(), Time.deltaTime * m_inputDragSmoothing),
             _ => Vector3.Lerp(m_tongueDirection, (Game.SetMan.GetValue<bool>("Controller Aim Flip") ? -1 : 1) * Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * m_inputDragSmoothing),
         };
     }
