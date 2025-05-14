@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class NewUIManager : MonoBehaviour {
 
     [SerializeField] private TextMeshProUGUI m_remainingChildCount;
@@ -46,6 +47,8 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("Score Board")][SerializeField] private TextMeshProUGUI m_childPerMinuteText;
     [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
+    [BoxGroup("End Screen")][SerializeField] private EndScreenHandler m_endScreenHandler;
+
 
     private void OnChildEaten(ChildType childType) {
         Color destinationColor;
@@ -67,9 +70,17 @@ public class NewUIManager : MonoBehaviour {
         m_currentSeed.text = $"Map seed: {seed:0000000}<br>";
     }
 
-    public void ShowGameOverScreen() {
-        m_gameOverScreen.SetActive(true);
+    public void ProcessEndGame(Ending ending) {
+        switch (ending){
+            case Ending.Win:
+                Game.MainGameInfo.SetState(MainGameInfo.State.Won);
+                break;
+            case Ending.Lose:
+                Game.MainGameInfo.SetState(MainGameInfo.State.Over);
+                break;
+        }
         m_timerText.gameObject.SetActive(false);
+        m_endScreenHandler.Activate(ending);
         DisplayScoreBoard();
     }
 
@@ -113,12 +124,7 @@ public class NewUIManager : MonoBehaviour {
         if (InputSubscribe.Raw.UI.Pause.triggered) SwitchPauseMenu();
 
         if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
-            Debug.Log("won");
-            m_gameWinScreen.SetActive(true);
-            Game.MainGameInfo.SetState(MainGameInfo.State.Won);
-            Time.timeScale = 0;
-            DisplayScoreBoard();
-
+            ProcessEndGame(Ending.Win);
         }
         if (m_currentGameState == MainGameInfo.State.Over || m_currentGameState == MainGameInfo.State.Paused || m_currentGameState == MainGameInfo.State.Won) {//if the game is over, won, or paused, you can
             if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M

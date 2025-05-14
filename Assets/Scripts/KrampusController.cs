@@ -183,7 +183,7 @@ public class KrampusController : KrampusBehaviour {
 
 	private IEnumerator DeathTimer() {
 		yield return new WaitForSeconds(2);
-		Game.MainGameInfo.UI.ShowGameOverScreen();
+		Game.MainGameInfo.UI.ProcessEndGame(Ending.Lose);
 	}
 
 	public void MoveTo(Vector3 position) {
