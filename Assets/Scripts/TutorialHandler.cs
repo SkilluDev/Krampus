@@ -21,14 +21,14 @@ public class TutorialHandler : MonoBehaviour
 
 
 
-	void Awake() {
+	private void Awake() {
         m_tutorials = new Transform[gameObject.transform.childCount];
         for (int i = 0;i<m_tutorials.Length;i++){
             m_tutorials[m_tutorials.Length-1-i] = gameObject.transform.GetChild(i);
             m_tutorials[m_tutorials.Length-1-i].transform.position += new Vector3(0,0,m_distanceBetween*i);
         }
 	}
-	void Update()
+	private void Update()
     {
         if (InputSubscribe.Raw.Player.Move.WasPerformedThisFrame() && !m_isMoving) {
             MoveBack(m_tutorialCounter++%m_tutorials.Length);
@@ -36,7 +36,7 @@ public class TutorialHandler : MonoBehaviour
         
     }
 
-    void MoveBack(int id){
+    private void MoveBack(int id){
 
         m_isMoving = true;
         
