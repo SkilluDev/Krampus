@@ -208,8 +208,8 @@ public class NewUIManager : MonoBehaviour {
     public void UIElementsEntryAnimation()
     {
 	    m_uiBlockLeft.gameObject.SetActive(true);
-	    LMotion.Create(-200, 50, 0.75f).Bind(x => m_uiBlockLeft.anchoredPosition =new Vector2( x,m_uiBlockLeft.anchoredPosition.y));
+	    LMotion.Create(-200, 50, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition =new Vector2( x,m_uiBlockLeft.anchoredPosition.y));
 	    m_uiBlockRight.gameObject.SetActive(true);
-	    LMotion.Create(300, -50, 0.75f).Bind(x => m_uiBlockRight.anchoredPosition =new Vector2( x,m_uiBlockRight.anchoredPosition.y));
+	    LMotion.Create(300, -50, 0.375f).Bind(x => m_uiBlockRight.anchoredPosition =new Vector2( x,m_uiBlockRight.anchoredPosition.y));
     }
 }
