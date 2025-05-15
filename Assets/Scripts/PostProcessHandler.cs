@@ -57,12 +57,10 @@ public class PostProcessDistance : MonoBehaviour {
         OnChildEaten(Game.MainGameInfo.GoodChildType);
     }
 	private void OnChildEaten(ChildType childType) {
-        if (childType == Game.MainGameInfo.GoodChildType)
+        if (childType != Game.MainGameInfo.GoodChildType) return;
         LMotion.Create(m_originalVignetteColor, m_flashVignetteColor, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
             ()=>LMotion.Create(m_flashVignetteColor, m_originalVignetteColor, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).Bind(c=>m_vignette.color.Override(c))
         ).Bind(c=>m_vignette.color.Override(c));
-
-        
 
         LMotion.Create(m_originalMinVignetteIntensity, m_originalMinVignetteIntensity+m_vignetteFlashIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
             ()=>LMotion.Create(m_originalMinVignetteIntensity+m_vignetteFlashIntensity, m_originalMinVignetteIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).Bind(i=>m_minVignetteIntensity=i)
