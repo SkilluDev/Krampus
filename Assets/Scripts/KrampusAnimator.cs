@@ -26,18 +26,20 @@ public class KrampusAnimator : KrampusBehaviour {
         Kramp.Tongue.onStateChanged += TongueStateChanged;
         Kramp.Kontroller.onStateChanged += MovementStateChanged;
         m_runningEffect.Stop();
-        m_modelTransform.gameObject.SetActive(false);
+        SetEnableModel(false);
     }
 
     private void Update() {
-        if (Kramp.Kontroller.CurrentState != KrampusController.State.Idle && Kramp.Tongue.CurrentState == KrampusTongue.State.Idle) {
-            SetTargetView(Kramp.Kontroller.VelocityVector);
-        } else if (Kramp.Tongue.CurrentState == KrampusTongue.State.Windup) {
-            SetTargetView(Kramp.Tongue.TongueDirection);
+        if (Kramp.Kontroller.CurrentState is not (KrampusController.State.Intro or KrampusController.State.GetUp)) {
+            if (Kramp.Kontroller.CurrentState != KrampusController.State.Idle && Kramp.Tongue.CurrentState == KrampusTongue.State.Idle) {
+                SetTargetView(Kramp.Kontroller.VelocityVector);
+            } else if (Kramp.Tongue.CurrentState == KrampusTongue.State.Windup) {
+                SetTargetView(Kramp.Tongue.TongueDirection);
+            }
         }
+        m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, m_rotationTarget, Time.deltaTime * m_rotationSmoothing);
         m_runningEffect.SetFloat("Rotation", m_modelTransform.rotation.eulerAngles.y);
 
-        m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, m_rotationTarget, Time.deltaTime * m_rotationSmoothing);
         m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, Kramp.Kontroller.Velocity / Kramp.Kontroller.RunSpeed), 0.2f, Time.deltaTime);
     }
 
@@ -83,7 +85,7 @@ public class KrampusAnimator : KrampusBehaviour {
                 break;
 
             case (KrampusController.State.Intro, _):
-                m_modelTransform.gameObject.SetActive(true);
+                SetEnableModel(true);
                 m_animator.SetTrigger(m_wakeupProperty);
                 break;
             case (_, KrampusController.State.Run):
@@ -106,7 +108,11 @@ public class KrampusAnimator : KrampusBehaviour {
         }
     }
 
-    private void SetTargetView(Vector3 direction) {
+    public void SetTargetView(Vector3 direction) {
         m_rotationTarget = Quaternion.LookRotation(direction, Vector3.up);
+    }
+
+    public void SetEnableModel(bool b) {
+        m_modelTransform.gameObject.SetActive(b);
     }
 }

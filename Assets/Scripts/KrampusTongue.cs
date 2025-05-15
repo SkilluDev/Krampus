@@ -126,8 +126,6 @@ public class KrampusTongue : KrampusBehaviour {
             return;
         }
 
-        Debug.Log("KRAMPUS IS BALLIN");
-
         switch (CurrentState) {
             case State.Idle:
                 m_tongueTime = 0;

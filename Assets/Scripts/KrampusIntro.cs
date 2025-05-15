@@ -12,13 +12,16 @@ public class KrampusIntro : MonoBehaviour {
     private void Ready() {
         Game.MainGameInfo.Krampus.Kamera.Rendering.GetComponent<CinemachineBrain>().ActiveBlend = null;
         Game.MainGameInfo.Krampus.Kontroller.MoveTo(m_spawnPoint.position);
+        Game.MainGameInfo.Krampus.Animator.SetTargetView(m_spawnPoint.forward);
+
         m_director.Play();
     }
 
     private void Update() {
-        if (Game.Balling || Game.MainGameInfo.CurrentState==MainGameInfo.State.Over) return;
+        if (Game.Balling || Game.MainGameInfo.CurrentState == MainGameInfo.State.Over) return;
         if (InputSubscribe.Raw.Player.Move.WasPressedThisFrame()) {
             m_director.Stop();
+            Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
             m_spawnPoint.gameObject.SetActive(false);
             m_vcam.enabled = false;
             Game.MainGameInfo.SetState(MainGameInfo.State.Game);

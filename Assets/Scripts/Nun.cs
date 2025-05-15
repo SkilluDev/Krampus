@@ -106,7 +106,6 @@ public class Nun : NPC {
                     Debug.Log("[Nun] Reached patrol point");
                 }
 
-                Debug.Log("[Nun] Patrolling");
                 m_viewCone.SetActive(true);
                 if (m_viewCone.Detect()) {
                     Debug.Log("[Nun] viewcone detected krampy");

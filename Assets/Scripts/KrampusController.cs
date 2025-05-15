@@ -58,7 +58,6 @@ public class KrampusController : KrampusBehaviour {
 	// Based on @SkilluDev's inputs
 	private void Update() {
 		if (!Game.Balling) {
-			Debug.Log("Not balling");
 			return;
 		}
 		if (CurrentState == State.Intro) {

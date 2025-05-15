@@ -73,6 +73,9 @@ public class Door : Passage, IInteractable {
             foreach (var w in m_charactersInDoor) {
                 if (w is Nun n) n.Stun(m_stunDuration);
             }
+
+            Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
+            Game.MainGameInfo.GetRoomData(B).MakeNoise(transform.position, m_noiseDistance, actor);
         }
 
         m_doorClose.Play(transform.position, 1f);
