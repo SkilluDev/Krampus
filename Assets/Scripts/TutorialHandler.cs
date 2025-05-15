@@ -11,6 +11,7 @@ public class TutorialHandler : MonoBehaviour
     private Transform[] m_tutorials;
     private int m_tutorialCounter = 0;
 
+
     [SerializeField] private float m_transitionLength;
     [SerializeField] private float m_rotateAngle;
     [SerializeField] private float m_slideLength;
@@ -42,13 +43,13 @@ public class TutorialHandler : MonoBehaviour
         if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
             MoveBack(m_tutorialCounter++%m_tutorials.Length);
         }
-        
+
     }
 
     private void MoveBack(int id){
 
         m_isMoving = true;
-        
+
         var page = m_tutorials[id].transform;
         var oldLocalPosition = page.localPosition;
         var oldLocalMainPosition = transform.localPosition;
@@ -57,9 +58,9 @@ public class TutorialHandler : MonoBehaviour
         var oldRotation = page.rotation;
         var lSequence = LSequence.Create();
 
-        
 
-        
+
+
         lSequence.Append(LMotion.Create(page.localRotation, page.localRotation*Quaternion.Euler(new Vector3(0,0,m_rotateAngle)), m_transitionLength).WithEase(Ease.InOutCubic)
         .BindToLocalRotation(page));
 

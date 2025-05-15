@@ -51,6 +51,9 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("End Screen")][SerializeField] private Image m_bottomBarImage;
 
 
+    [BoxGroup("UI Blocks")] [SerializeField] private RectTransform m_uiBlockLeft;
+    [BoxGroup("UI Blocks")] [SerializeField] private RectTransform m_uiBlockRight;
+
     private void OnChildEaten(ChildType childType) {
         Color destinationColor;
         if (childType != Game.MainGameInfo.GoodChildType) {
@@ -156,6 +159,9 @@ public class NewUIManager : MonoBehaviour {
     private void Ready() {
         Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
         m_originalTimerColor = m_timerDisplay.Color;
+        m_tutorial.gameObject.transform.parent.gameObject.SetActive(false);
+        m_uiBlockLeft.gameObject.SetActive(false);
+        m_uiBlockRight.gameObject.SetActive(false);
 
     }
 
@@ -197,5 +203,13 @@ public class NewUIManager : MonoBehaviour {
 	    LMotion.Create(basedYSize,0,0.75f).Bind(x=>m_bottomBarImage.rectTransform.sizeDelta=new Vector2(m_bottomBarImage.rectTransform.sizeDelta.x,x));
 	    LMotion.Create(basedYSize,0,0.75f).Bind(x=>m_topBarImage.rectTransform.sizeDelta=new Vector2(m_topBarImage.rectTransform.sizeDelta.x,x));
 	    if(Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.transform.parent.gameObject.SetActive(true);
+    }
+
+    public void UIElementsEntryAnimation()
+    {
+	    m_uiBlockLeft.gameObject.SetActive(true);
+	    LMotion.Create(-200, 50, 0.75f).Bind(x => m_uiBlockLeft.anchoredPosition =new Vector2( x,m_uiBlockLeft.anchoredPosition.y));
+	    m_uiBlockRight.gameObject.SetActive(true);
+	    LMotion.Create(300, -50, 0.75f).Bind(x => m_uiBlockRight.anchoredPosition =new Vector2( x,m_uiBlockRight.anchoredPosition.y));
     }
 }
