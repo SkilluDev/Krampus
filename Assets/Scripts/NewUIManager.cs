@@ -52,12 +52,14 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
     [BoxGroup("End Screen")][SerializeField] private EndScreenHandler m_endScreenHandler;
+    [BoxGroup("End Screen")] [SerializeField] private Image m_restartEndScreenButton;
+    [BoxGroup("End Screen")] [SerializeField] private Image m_rerollEndScreenButton;
+    [BoxGroup("End Screen")] [SerializeField] private Image m_menuEndScreenButton;
 
 
-    [BoxGroup("End Screen")][SerializeField] private Image m_topBarImage;
-    [BoxGroup("End Screen")][SerializeField] private Image m_bottomBarImage;
-
-    [BoxGroup("End Screen")] [SerializeField] private Image m_quitButtonImage;
+    [BoxGroup("Intro")][SerializeField] private Image m_topBarImage;
+    [BoxGroup("Intro")][SerializeField] private Image m_bottomBarImage;
+    [BoxGroup("Intro")] [SerializeField] private Image m_quitButtonImage;
 
 
     [BoxGroup("UI Blocks")] [SerializeField] private RectTransform m_uiBlockLeft;
@@ -196,13 +198,18 @@ public class NewUIManager : MonoBehaviour {
         m_sneakImage.sprite = bs.sneak_Button;
         m_attackImage.sprite = bs.attack_Button;
         m_quitButtonImage.sprite = bs.quit_Button;
+		//==
 
+		m_restartEndScreenButton.sprite = bs.restart_Button;
+		m_rerollEndScreenButton.sprite = bs.reload_Button;
+		m_menuEndScreenButton.sprite = bs.backToMenu_Button;
 
         //==
         m_rerollPauseButton.sprite = bs.reload_Button;
        m_restartPauseButton.sprite = bs.restart_Button;
        m_menuPauseButton.sprite = bs.backToMenu_Button;
        m_resumePauseButton.sprite = bs.pause_Button;
+       //==
     }
 
     public void DisplayScoreBoard() {
