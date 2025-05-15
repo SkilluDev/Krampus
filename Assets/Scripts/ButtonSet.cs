@@ -15,5 +15,6 @@ public class ButtonSet : ScriptableObject {
 	public Sprite sneak_Button;
 	public Sprite attack_Button;
 	public Sprite quit_Button;
+	public Sprite reload_Button;
 
 }

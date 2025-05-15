@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.Mime;
 using LitMotion;
 using LitMotion.Extensions;
 using NaughtyAttributes;
@@ -28,6 +29,14 @@ public class NewUIManager : MonoBehaviour {
 
 
 
+
+    [BoxGroup("Pause Screen")] [SerializeField] private Image m_resumePauseButton;
+    [BoxGroup("Pause Screen")] [SerializeField] private Image m_restartPauseButton;
+    [BoxGroup("Pause Screen")] [SerializeField] private Image m_rerollPauseButton;
+    [BoxGroup("Pause Screen")] [SerializeField] private Image m_menuPauseButton;
+
+
+
     [BoxGroup("ButtonSets")]
     [SerializeField] private ButtonSet[] m_buttonSets;
     [BoxGroup("In Game Layout")][SerializeField] private Image m_pauseImage;
@@ -35,8 +44,6 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("In Game Layout")][SerializeField] private Image m_sneakImage;
 
 
-    [BoxGroup("GameOver Screen")][SerializeField] private Image m_menuImage;
-    [BoxGroup("GameOver Screen")][SerializeField] private Image m_resetImage;
 
     [BoxGroup("Score Board")][SerializeField] private GameObject m_scoreboard;
 
@@ -185,11 +192,17 @@ public class NewUIManager : MonoBehaviour {
         if (bs == null) return;
 
         m_pauseImage.sprite = bs.pause_Button;
-        m_resetImage.sprite = bs.restart_Button;
-        m_menuImage.sprite = bs.backToMenu_Button;
+
         m_sneakImage.sprite = bs.sneak_Button;
         m_attackImage.sprite = bs.attack_Button;
         m_quitButtonImage.sprite = bs.quit_Button;
+
+
+        //==
+        m_rerollPauseButton.sprite = bs.reload_Button;
+       m_restartPauseButton.sprite = bs.restart_Button;
+       m_menuPauseButton.sprite = bs.backToMenu_Button;
+       m_resumePauseButton.sprite = bs.pause_Button;
     }
 
     public void DisplayScoreBoard() {

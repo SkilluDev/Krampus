@@ -697,7 +697,7 @@ namespace KrampInput
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";PC"",
+                    ""groups"": """",
                     ""action"": ""Restart And Regen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
