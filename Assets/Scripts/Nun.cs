@@ -219,13 +219,12 @@ public class Nun : NPC {
 
     private void OnCollisionEnter(Collision collision) {
         if (CurrentState != State.ChasingKrampus) return;
-
         if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
             return;
         }
         onAttack?.Invoke(CurrentState);
         SwitchState(State.Listening);
-        Game.MainGameInfo.Krampus.Kontroller.KrampTermination();
+        Game.MainGameInfo.Krampus.Kontroller.KrampTermination(Ending.LoseNun);
 
     }
 

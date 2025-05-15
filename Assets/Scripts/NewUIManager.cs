@@ -13,10 +13,7 @@ using UnityEngine.UI;
 public class NewUIManager : MonoBehaviour {
 
     [SerializeField] private TextMeshProUGUI m_remainingChildCount;
-    [SerializeField] private TextMeshProUGUI m_goodChild;
     [SerializeField] private TextMeshProUGUI m_currentSeed;
-    [SerializeField] private GameObject m_gameOverScreen;
-    [SerializeField] private GameObject m_gameWinScreen;
     [SerializeField] private GameObject m_pauseScreen;
     [SerializeField] private TextMeshProUGUI m_timerText;
     [SerializeField] private NumericDisplay m_timerDisplay;
@@ -79,7 +76,10 @@ public class NewUIManager : MonoBehaviour {
             case Ending.Win:
                 Game.MainGameInfo.SetState(MainGameInfo.State.Won);
                 break;
-            case Ending.Lose:
+            case Ending.LoseNun:
+                Game.MainGameInfo.SetState(MainGameInfo.State.Over);
+                break;
+            case Ending.LoseTime:
                 Game.MainGameInfo.SetState(MainGameInfo.State.Over);
                 break;
         }
