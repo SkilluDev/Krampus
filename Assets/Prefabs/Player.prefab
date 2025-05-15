@@ -128,7 +128,6 @@ GameObject:
   - component: {fileID: 3145118901642720459}
   - component: {fileID: 1698299321934093973}
   - component: {fileID: 6024168017209539665}
-  - component: {fileID: 3925534722009601554}
   - component: {fileID: 8536449979785750747}
   - component: {fileID: 3684771875840887165}
   m_Layer: 10
@@ -301,20 +300,6 @@ MonoBehaviour:
   m_tongueShouldEatProperty: 1032857757
   m_deathProperty: 646380074
   m_wakeupProperty: 1049384824
---- !u!114 &3925534722009601554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3083306166600181781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70d07a3ee2dedc2ad9b835bf2a128df9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_room: {fileID: 0}
-  m_log: 0
 --- !u!114 &8536449979785750747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,7 +381,7 @@ MonoBehaviour:
     m_Bits: 64
   m_tongueOrigin: {fileID: 8320024670651621678}
   m_tongueLength: 10
-  m_tongueHitRadius: 0.3
+  m_tongueHitRadius: 0.6
   m_inputMinimumDrag: 0.5
   m_inputMinimumMouseDistance: 2
   m_inputMaximumMouseDistance: 8
