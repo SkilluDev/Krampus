@@ -43,7 +43,7 @@ public class EndScreenHandler : MonoBehaviour {
     }
 
     private void OnDisable() {
-        m_handle.Cancel();
+        if (m_handle.IsActive()) m_handle.Cancel();
     }
 
     private void PlaySequence(CanvasGroup[] groups) {
