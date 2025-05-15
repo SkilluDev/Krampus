@@ -7,13 +7,12 @@ using LitMotion.Extensions;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
-public enum Ending{
+public enum Ending {
     Win,
     LoseNun,
     LoseTime
 }
-public class EndScreenHandler : MonoBehaviour
-{
+public class EndScreenHandler : MonoBehaviour {
 
     [SerializeField] private float m_fadeDuration = 0.5f;
     [SerializeField] private float m_beginSpeed = 1f;
@@ -31,38 +30,39 @@ public class EndScreenHandler : MonoBehaviour
     private void Awake() {
         m_groupsWon = m_wonTextures.GetComponentsInChildren<CanvasGroup>().OrderBy(w => w.transform.GetSiblingIndex()).ToArray();
         m_groupsLost = m_lostTextures.GetComponentsInChildren<CanvasGroup>().OrderBy(w => w.transform.GetSiblingIndex()).ToArray();
-        Debug.Log("GL"+m_groupsLost.Length);
-        Debug.Log("GW"+m_groupsWon.Length);
+        Debug.Log("GL" + m_groupsLost.Length);
+        Debug.Log("GW" + m_groupsWon.Length);
     }
 
     private void Stop(CanvasGroup[] groups) {
         if (m_handle.IsActive()) m_handle.Cancel();
-        foreach (var group in groups.Skip(1)) {
+        foreach (var group in groups.Skip(2)) {
             group.gameObject.SetActive(true);
             group.alpha = 0;
         }
         groups[0].alpha = 1;
+        groups[1].alpha = 1;
     }
 
-	private void OnDisable() {
+    private void OnDisable() {
         m_handle.Cancel();
-	}
+    }
 
-	private void PlaySequence(CanvasGroup[] groups) {
+    private void PlaySequence(CanvasGroup[] groups) {
         Stop(groups);
         var lSequence = LSequence.Create();
         lSequence.AppendInterval(m_beginSpeed);
 
-        foreach (var w in groups.Skip(1)) {
+        foreach (var w in groups.Skip(2)) {
             lSequence.Append(LMotion.Create(0f, 1f, m_fadeDuration).BindToAlpha(w));
         }
         Stop(groups);
         m_handle = lSequence.Run();
     }
 
-	public void Activate(Ending ending) {
+    public void Activate(Ending ending) {
         gameObject.SetActive(true);
-        switch (ending){
+        switch (ending) {
             case Ending.Win:
                 PlaySequence(m_groupsWon);
                 m_endingText.SetText(m_winText);
