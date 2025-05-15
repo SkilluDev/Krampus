@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using Sound;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
@@ -12,8 +13,9 @@ public class KrampusAnimator : KrampusBehaviour {
 
     [SerializeField] private VisualEffect m_runningEffect;
 
-    [BoxGroup("Sounds")][SerializeField][FormerlySerializedAs("m_CatchSoundBite")] private SoundBite m_catchSoundBite;
-    [BoxGroup("Sounds")][SerializeField][FormerlySerializedAs("m_TongueSoundBite")] private SoundBite m_tongueSoundBite;
+    [BoxGroup("Sounds")][SerializeField] private Sex m_catchSoundBite;
+    [BoxGroup("Sounds")][SerializeField] private Sex m_tongueSoundBite;
+    [BoxGroup("Sounds")][SerializeField] private Sex m_windupSoundBite;
 
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathProperty, m_wakeupProperty;
 
@@ -47,13 +49,14 @@ public class KrampusAnimator : KrampusBehaviour {
         switch ((previous, current)) {
             case (KrampusTongue.State.Idle, KrampusTongue.State.Windup):
                 m_animator.SetBool(m_tongueReadyProperty, true);
+                m_windupSoundBite.Play(transform.position, 1);
                 break;
             case (KrampusTongue.State.Windup, KrampusTongue.State.Idle):
                 m_animator.SetBool(m_tongueReadyProperty, false);
                 break;
             case (KrampusTongue.State.Windup, KrampusTongue.State.TargetFetch):
                 m_animator.SetBool(m_tongueOutProperty, true);
-                m_tongueSoundBite.Play(transform.position, 1, true);
+                m_tongueSoundBite.Play(transform.position, 1);
                 break;
             case (_, KrampusTongue.State.PreRetreat):
                 m_animator.SetBool(m_tongueOutProperty, false);
@@ -65,7 +68,7 @@ public class KrampusAnimator : KrampusBehaviour {
                 break;
             case (KrampusTongue.State.PreRetreat, KrampusTongue.State.Retreating):
                 if (Kramp.Tongue.HitInteractable != null) {
-                    m_catchSoundBite.Play(transform.position, 1, true);
+                    m_catchSoundBite.Play(transform.position, 1);
                     m_animator.SetBool(m_tongueShouldEatProperty, Kramp.Tongue.HitInteractable is IEdible);
                 }
                 break;

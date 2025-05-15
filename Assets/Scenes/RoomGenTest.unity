@@ -1242,6 +1242,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2589798314053807759, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_filterOutState
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3083306166600181781, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_Name
@@ -1252,21 +1257,18 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 1991711019}
-    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_tongueHitRadius
-      value: 0.6
-      objectReference: {fileID: 0}
     - target: {fileID: 6024168017209539665, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
-      propertyPath: m_deathTrigger
-      value: 646380074
-      objectReference: {fileID: 0}
-    - target: {fileID: 7069810453768087152, guid: 1370af54edd30564086e0f4717044a13,
+      propertyPath: m_catchSoundBite
+      value: 
+      objectReference: {fileID: 11400000, guid: d33aee137aed9c9da9880825e3070835,
+        type: 2}
+    - target: {fileID: 6024168017209539665, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
-      propertyPath: m_Mass
-      value: 50
-      objectReference: {fileID: 0}
+      propertyPath: m_tongueSoundBite
+      value: 
+      objectReference: {fileID: 11400000, guid: 197b438a669f8e2039870f9677798d3d,
+        type: 2}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_LocalPosition.x

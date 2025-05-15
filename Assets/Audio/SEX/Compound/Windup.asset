@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f26e8a2932d244e4394018ce4a201835, type: 3}
-  m_Name: Door Close
+  m_Script: {fileID: 11500000, guid: 9f3a8027b25b5c171b4ab9e4c056aafa, type: 3}
+  m_Name: Windup
   m_EditorClassIdentifier: 
-  clips:
-  - {fileID: 8300000, guid: d66143fd193c955498aab9f47f0d388c, type: 3}
   group: {fileID: -5974276736950158806, guid: ebed9cc6463044422a611f4748adc568, type: 2}
-  m_pitch: 0.91
-  m_volume: 1
+  soundPriority: 0
+  clips:
+  - {fileID: 11400000, guid: a6bcf6850a5449fb6bdda87195609790, type: 2}
+  - {fileID: 11400000, guid: 8e73a97a920d82a1583376b4bbda41d8, type: 2}
+  preventDoubleRandom: 0

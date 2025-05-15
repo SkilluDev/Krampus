@@ -1,10 +1,22 @@
-using NaughtyAttributes;
+using System.Reflection;
+using Sound;
 using UnityEngine;
 
-public class AnimationEventHandler : MonoBehaviour {
-	[BoxGroup("Sounds")][SerializeField] private SoundBite m_stepSoundBite;
+public class FeetSounds : MonoBehaviour {
+	[SerializeField] private Sex m_stepSoundBite;
 
-	public void Step() {
-		m_stepSoundBite.Play(transform.position, 1, true);
+	[SerializeField] private MonoBehaviour m_toInspect;
+	[SerializeField] private bool m_filterOutState;
+	private PropertyInfo m_stateField;
+
+	private void Awake() {
+		m_stateField = m_toInspect.GetType().GetProperty("CurrentState");
+	}
+
+	private void Step(string state) {
+		string val = m_stateField.GetValue(m_toInspect).ToString();
+		Debug.Log($"Play step {state} == {val}");
+		if (val.Equals(state, System.StringComparison.InvariantCultureIgnoreCase) || !m_filterOutState)
+			m_stepSoundBite.Play(transform.position);
 	}
 }
