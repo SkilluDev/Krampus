@@ -21,6 +21,11 @@ public class MainMenuInfo : LevelInfo {
 
     private MotionHandle[] m_motions;
 
+    void Update() {
+        if (InputSubscribe.Raw.UI.Back.triggered) {
+            SetState(0);
+        }
+    }
 
     private void Ready() {
         m_motions = new MotionHandle[m_canvases.Length];

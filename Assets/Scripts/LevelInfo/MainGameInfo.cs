@@ -86,6 +86,11 @@ public class MainGameInfo : LevelInfo {
     public void SetState(State state) {
         CurrentState = state;
     }
+    [NaughtyAttributes.Button("Press To Win")]
+    public void DebugWinButton() {
+        SetState(State.Won);
+        Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
+    }
 
     private void Awake() {
         CurrentState = State.Intro;

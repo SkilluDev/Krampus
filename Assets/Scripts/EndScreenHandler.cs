@@ -63,6 +63,7 @@ public class EndScreenHandler : MonoBehaviour {
         switch (ending) {
             case Ending.Win:
                 PlaySequence(m_groupsWon);
+                m_lostTextures.SetActive(false);
                 m_endingText.SetText(m_winText);
                 break;
             case Ending.LoseNun:
