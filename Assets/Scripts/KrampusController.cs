@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using KrampUtils;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
@@ -186,6 +187,6 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void MoveTo(Vector3 position) {
-		m_rigidbody.position = position;
+		m_rigidbody.position = position.NoY() + Vector3.up * m_rigidbody.position.y;
 	}
 }
