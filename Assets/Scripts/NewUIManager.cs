@@ -137,7 +137,7 @@ public class NewUIManager : MonoBehaviour {
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
 
 
-        if (InputSubscribe.Raw.UI.Pause.triggered) SwitchPauseMenu();
+        if (InputSubscribe.Raw.UI.Pause.triggered) {if(Game.MainGameInfo.CurrentState != MainGameInfo.State.Intro) SwitchPauseMenu();}
 
         if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
             ProcessEndGame(Ending.Win);
