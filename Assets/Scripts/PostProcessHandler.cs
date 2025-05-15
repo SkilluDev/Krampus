@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using LitMotion;
+using LitMotion.Extensions;
+using NaughtyAttributes;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -21,9 +24,15 @@ public class PostProcessDistance : MonoBehaviour {
     [SerializeField] private float m_maxVignetteIntensity = 0.4f;
     [SerializeField] private float m_maxAbberIntensity = 1f;
 
-    [SerializeField] private float m_resetSpeed = 1f;
+    [SerializeField] private Color m_flashVignetteColor;
 
-    [SerializeField] private Color m_flashColor;
+    [SerializeField] private Color m_originalVignetteColor;
+
+    [SerializeField] private float m_vignetteFlashDuration;
+    [SerializeField] private float m_vignetteFlashIntensity;
+
+    private float m_originalMinVignetteIntensity;
+    private float m_originalMaxVignetteIntensity;
 
     private float m_distanceToClosest;
 
@@ -35,10 +44,34 @@ public class PostProcessDistance : MonoBehaviour {
         bool b  = Game.SetMan.GetValue<bool>("Motion Blur");
         m_blur.active = b;
 
+        m_vignette.color.Override(m_originalVignetteColor);
+
+        m_originalMaxVignetteIntensity = m_maxVignetteIntensity;
+        m_originalMinVignetteIntensity = m_minVignetteIntensity;
+
         Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
     }
 
-	private void OnChildEaten(ChildType arg0) => throw new NotImplementedException();
+    [Button]
+    private void EatGoodChild(){
+        OnChildEaten(Game.MainGameInfo.GoodChildType);
+    }
+	private void OnChildEaten(ChildType childType) {
+        if (childType == Game.MainGameInfo.GoodChildType)
+        LMotion.Create(m_originalVignetteColor, m_flashVignetteColor, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
+            ()=>LMotion.Create(m_flashVignetteColor, m_originalVignetteColor, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).Bind(c=>m_vignette.color.Override(c))
+        ).Bind(c=>m_vignette.color.Override(c));
+
+        
+
+        LMotion.Create(m_originalMinVignetteIntensity, m_originalMinVignetteIntensity+m_vignetteFlashIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
+            ()=>LMotion.Create(m_originalMinVignetteIntensity+m_vignetteFlashIntensity, m_originalMinVignetteIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).Bind(i=>m_minVignetteIntensity=i)
+        ).Bind(i=>m_minVignetteIntensity=i);
+
+        LMotion.Create(m_originalMaxVignetteIntensity, m_originalMaxVignetteIntensity+m_vignetteFlashIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
+            ()=>LMotion.Create(m_originalMaxVignetteIntensity+m_vignetteFlashIntensity, m_originalMaxVignetteIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).Bind(i=>m_maxVignetteIntensity=i)
+        ).Bind(i=>m_maxVignetteIntensity=i);
+    }
 
 	private void Update() {
         if(Game.IsLoading) return;
