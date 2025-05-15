@@ -28,12 +28,8 @@ public class Nun : NPC {
     [SerializeField] private float m_detectionRange = 4;
     public State CurrentState { get; private set; }
 
-
     [SerializeField] private float m_runSpeed = 8;
 
-
-
-    [SerializeField] private float m_shortDetectionRange = 4, m_longDetectionRange = 10;
     [SerializeField] private float m_shockTimeout = 0.2f;
 
     [SerializeField] private ViewCone m_viewCone;
@@ -54,7 +50,6 @@ public class Nun : NPC {
         Game.MainGameInfo.RegisterNun(this);
 
         CreatePatrolPath();
-        m_viewCone.range = m_longDetectionRange;
         m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.Kramp.transform;
         m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
     }
@@ -191,7 +186,7 @@ public class Nun : NPC {
         }
 
         // m_viewCone.SetFacing(Quaternion.Euler(0, FacingAngle, 0) * Vector3.forward);
-        m_viewCone.SetFacing(m_modelTransform.forward);
+        m_viewCone.SetFacing(m_modelTransform.forward); // TODO: SMART ROTATION
     }
 
 

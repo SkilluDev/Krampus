@@ -170,7 +170,7 @@ public class KrampusController : KrampusBehaviour {
 		computedVelocity = computedVelocity.normalized * Mathf.Max(Mathf.Abs(computedVelocity.x), Mathf.Abs(computedVelocity.z));
 		var skewedInput = Kramp.Kamera.Matrix.MultiplyPoint3x4(computedVelocity);
 		m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed : m_runSpeed);
-		if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength)) {
+		if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength, m_avoidableObjects, QueryTriggerInteraction.Ignore)) {
 			if (m_avoidableObjects == (m_avoidableObjects | 1 << hit.transform.gameObject.layer)) {
 				if (!Physics.Raycast(transform.position, Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
 					m_rigidbody.velocity = Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector);
