@@ -72,7 +72,7 @@ public class KrampusTongue : KrampusBehaviour {
 
     private Vector3 GetDirectionToMouse() {
         Vector3 point;
-        if (!Physics.Raycast(Game.MainGameInfo.Krampus.Kamera.Rendering.ScreenPointToRay(InputSubscribe.Aim), out var info)) {
+        if (!Physics.Raycast(Game.MainGameInfo.Krampus.Kamera.Rendering.ScreenPointToRay(InputSubscribe.Aim), out var info, 999, m_interactionSearchMask, QueryTriggerInteraction.Ignore)) {
             if (!MoreMath.LinePlaneIntersection(out point, Kramp.Kamera.Rendering.ScreenPointToRay(InputSubscribe.Aim), Vector3.up, Vector3.up * m_inputMousePlaneY)) {
                 Debug.LogError("Something went horrendously wrong with aiming!");
                 return Vector3.zero;

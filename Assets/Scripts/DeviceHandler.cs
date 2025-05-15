@@ -5,44 +5,34 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public class DeviceHandler : MonoBehaviour
-{
-	private IDisposable m_EventListener;
+public class DeviceHandler : MonoBehaviour {
+    private IDisposable m_listener;
     private void OnEnable() {
-	    m_EventListener =
-		    InputSystem.onAnyButtonPress
-			    .Call(OnButtonPressed);
+        m_listener = InputSystem.onAnyButtonPress.Call(OnButtonPressed);
     }
 
-    private void OnDisable()
-    {
-	    m_EventListener.Dispose();
+    private void OnDisable() {
+        m_listener.Dispose();
     }
 
     private void OnControlsChanged(PlayerInput playerInput) {
-	    string deviceClass = playerInput.currentControlScheme;
+        string deviceClass = playerInput.currentControlScheme;
 
-	    if (deviceClass.Equals("PC"))
-	    {
-		    InputSubscribe.ChangeInputMethod(InputSubscribe.Method.PC);
-	    }
-	    else
-	    {
-		    InputSubscribe.ChangeInputMethod(InputSubscribe.Method.Console);
-	    }
+        if (deviceClass.Equals("PC")) {
+            InputSubscribe.ChangeInputMethod(InputSubscribe.Method.PC);
+        } else {
+            InputSubscribe.ChangeInputMethod(InputSubscribe.Method.Console);
+        }
+
+        Debug.Log("ON CONTROLS CHANGED");
     }
 
-    private void OnButtonPressed(InputControl button)
-    {
+    private void OnButtonPressed(InputControl button) {
         string deviceClass = button.device.description.deviceClass;
 
-        if (deviceClass.Equals("Keyboard") || deviceClass.Equals("Mouse"))
-        {
-
+        if (deviceClass.Equals("Keyboard") || deviceClass.Equals("Mouse")) {
             InputSubscribe.ChangeInputMethod(InputSubscribe.Method.PC);
-        }
-        else
-        {
+        } else {
             InputSubscribe.ChangeInputMethod(InputSubscribe.Method.Console);
         }
 
