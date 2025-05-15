@@ -26,7 +26,7 @@ public class NunAnimator : MonoBehaviour {
 		m_animator.SetBool(m_propertyListening, m_nun.CurrentState == Nun.State.Listening);
 		m_animator.SetBool(m_propertyStunned, m_nun.CurrentState == Nun.State.Stunned);
 
-		if (Random.Range(0, 10000) == 0) m_soundPatrol.Play(transform.position);
+		if (Random.Range(0, 10000 / 2) == 0) m_soundPatrol.Play(transform.position);
 	}
 
 	private void MovementStateChanged(Nun.State previous, Nun.State current) {
