@@ -16,6 +16,7 @@ public class KrampusAnimator : KrampusBehaviour {
     [BoxGroup("Sounds")][SerializeField] private Sex m_catchSoundBite;
     [BoxGroup("Sounds")][SerializeField] private Sex m_tongueSoundBite;
     [BoxGroup("Sounds")][SerializeField] private Sex m_windupSoundBite;
+    [BoxGroup("Sounds")][SerializeField] private Sex m_crackSoundBite;
 
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathProperty, m_wakeupProperty;
 
@@ -65,6 +66,9 @@ public class KrampusAnimator : KrampusBehaviour {
                 break;
             case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
                 SetTargetView(Kramp.Tongue.TongueDirection);
+                break;
+            case (KrampusTongue.State.Extending, KrampusTongue.State.Full):
+                if(Kramp.Tongue.HitInteractable is Child) m_crackSoundBite.Play(transform.position, 1);
                 break;
             case (KrampusTongue.State.PreRetreat, KrampusTongue.State.Retreating):
                 if (Kramp.Tongue.HitInteractable != null) {
