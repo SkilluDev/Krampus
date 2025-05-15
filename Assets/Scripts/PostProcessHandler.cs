@@ -8,7 +8,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-public class PostProcessDistance : MonoBehaviour {
+public class PostProcessHandler : MonoBehaviour {
     
     private Vignette m_vignette;
     private ChromaticAberration m_aberration;
@@ -18,11 +18,11 @@ public class PostProcessDistance : MonoBehaviour {
 
     [SerializeField] private float m_minDistance;
 
-    [SerializeField] private float m_minAbberIntensity = 0.2f;
+    [SerializeField] private float m_minAberrationIntensity = 0.2f;
     [SerializeField] private float m_minVignetteIntensity = 0.2f;
 
     [SerializeField] private float m_maxVignetteIntensity = 0.4f;
-    [SerializeField] private float m_maxAbberIntensity = 1f;
+    [SerializeField] private float m_maxAberrationIntensity = 1f;
 
     [SerializeField] private Color m_flashVignetteColor;
 
@@ -30,9 +30,14 @@ public class PostProcessDistance : MonoBehaviour {
 
     [SerializeField] private float m_vignetteFlashDuration;
     [SerializeField] private float m_vignetteFlashIntensity;
+    //[SerializeField] private float m_aberrationFlashDuration;
+    //[SerializeField] private float m_aberrationFlashIntensity;
 
     private float m_originalMinVignetteIntensity;
     private float m_originalMaxVignetteIntensity;
+
+    //private float m_originalMinAberrationIntensity;
+    //private float m_originalMaxAberrationIntensity;
 
     private float m_distanceToClosest;
 
@@ -49,6 +54,9 @@ public class PostProcessDistance : MonoBehaviour {
         m_originalMaxVignetteIntensity = m_maxVignetteIntensity;
         m_originalMinVignetteIntensity = m_minVignetteIntensity;
 
+        //m_originalMaxAberrationIntensity = m_maxAberrationIntensity;
+        //m_originalMinAberrationIntensity = m_minAberrationIntensity;
+
         Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
     }
 
@@ -58,6 +66,18 @@ public class PostProcessDistance : MonoBehaviour {
     }
 	private void OnChildEaten(ChildType childType) {
         if (childType != Game.MainGameInfo.GoodChildType) return;
+        
+        /* //Aberr
+        LMotion.Create(m_originalMinAberrationIntensity, m_originalMinAberrationIntensity+m_aberrationFlashIntensity, m_aberrationFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
+            ()=>LMotion.Create(m_originalMinAberrationIntensity+m_aberrationFlashIntensity, m_originalMinAberrationIntensity, m_aberrationFlashDuration/2).WithEase(Ease.OutCubic).Bind(i=>m_minAberrationIntensity=i)
+        ).Bind(i=>m_minAberrationIntensity=i);
+
+        LMotion.Create(m_originalMaxAberrationIntensity, m_originalMaxAberrationIntensity+m_aberrationFlashIntensity, m_aberrationFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
+            ()=>LMotion.Create(m_originalMaxAberrationIntensity+m_aberrationFlashIntensity, m_originalMaxAberrationIntensity, m_aberrationFlashDuration/2).WithEase(Ease.OutCubic).Bind(i=>m_maxAberrationIntensity=i)
+        ).Bind(i=>m_maxAberrationIntensity=i);
+        //EndAberr */
+
+        //Vignette
         LMotion.Create(m_originalVignetteColor, m_flashVignetteColor, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
             ()=>LMotion.Create(m_flashVignetteColor, m_originalVignetteColor, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).Bind(c=>m_vignette.color.Override(c))
         ).Bind(c=>m_vignette.color.Override(c));
@@ -69,6 +89,7 @@ public class PostProcessDistance : MonoBehaviour {
         LMotion.Create(m_originalMaxVignetteIntensity, m_originalMaxVignetteIntensity+m_vignetteFlashIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
             ()=>LMotion.Create(m_originalMaxVignetteIntensity+m_vignetteFlashIntensity, m_originalMaxVignetteIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).Bind(i=>m_maxVignetteIntensity=i)
         ).Bind(i=>m_maxVignetteIntensity=i);
+        //EndVignette
     }
 
 	private void Update() {
@@ -77,7 +98,7 @@ public class PostProcessDistance : MonoBehaviour {
         float deltaDistance = Mathf.Clamp01((m_minDistance - m_distanceToClosest) / m_minDistance);
 
         m_vignette.intensity.value = math.remap(0,1, m_minVignetteIntensity, m_maxVignetteIntensity, deltaDistance);
-        m_aberration.intensity.value = math.remap(0,1, m_minAbberIntensity, m_maxAbberIntensity, deltaDistance);
+        m_aberration.intensity.value = math.remap(0,1, m_minAberrationIntensity, m_maxAberrationIntensity, deltaDistance);
         
     }
 }

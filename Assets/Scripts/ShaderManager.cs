@@ -58,7 +58,7 @@ public class ShaderManager : MonoBehaviour {
 		m_splitToning.balance.value = Mathf.Lerp(m_minSplitToning, m_maxSplitToning, ratio);
 	}
 
-	//[Button("Hit")]
+	[Button("Hit")]
 	private void ProcessKillTest() {
 		float ratio = 0.6f;
 		SetIntensity(m_maxIntensity);
