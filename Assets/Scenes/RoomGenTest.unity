@@ -318,58 +318,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_material: {fileID: 2100000, guid: 846071a68e80a9d4ead286cf7a29bf2b, type: 2}
   m_maxIntensity: 0.99
-  shaderCurveIn:
+  m_shaderCurveIn:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.0015810867
-      outSlope: 0.0015810867
-      tangentMode: 0
+      inSlope: -0.0036755698
+      outSlope: 511
+      tangentMode: 1
       weightedMode: 2
       inWeight: 0
-      outWeight: 0.99444455
+      outWeight: 0.0019569471
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.077186964
-      outSlope: 0.077186964
+      inSlope: -0
+      outSlope: -0
       tangentMode: 0
       weightedMode: 1
-      inWeight: 0.30555552
+      inWeight: 1
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shaderCurveOut:
+  m_shaderCurveOut:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: -0.0127199385
-      outSlope: -0.0127199385
-      tangentMode: 0
+      value: 0
+      inSlope: -0.0036755698
+      outSlope: 511
+      tangentMode: 1
       weightedMode: 2
       inWeight: 0
-      outWeight: 0.49444446
+      outWeight: 0.0019569471
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: 0.0022917208
-      outSlope: 0.0022917208
+      value: 1
+      inSlope: -0
+      outSlope: -0
       tangentMode: 0
       weightedMode: 1
-      inWeight: 0.6861111
+      inWeight: 1
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  shaderDurationIn: 0.02
-  shaderDurationOut: 1.2
-  testValue: 0.99
-  UIPPVolume: {fileID: 624625530}
+  m_shaderDurationIn: 0.1
+  m_shaderDurationOut: 5
+  m_testValue: 1
+  m_uIPPVolume: {fileID: 624625530}
   m_universalRendererData: {fileID: 11400000, guid: 9d8c6a20683a7204a9746847c67e3991,
     type: 2}
 --- !u!114 &358014040
