@@ -50,6 +50,8 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("End Screen")][SerializeField] private Image m_topBarImage;
     [BoxGroup("End Screen")][SerializeField] private Image m_bottomBarImage;
 
+    [BoxGroup("End Screen")] [SerializeField] private Image m_quitButtonImage;
+
 
     [BoxGroup("UI Blocks")] [SerializeField] private RectTransform m_uiBlockLeft;
     [BoxGroup("UI Blocks")] [SerializeField] private RectTransform m_uiBlockRight;
@@ -187,6 +189,7 @@ public class NewUIManager : MonoBehaviour {
         m_menuImage.sprite = bs.backToMenu_Button;
         m_sneakImage.sprite = bs.sneak_Button;
         m_attackImage.sprite = bs.attack_Button;
+        m_quitButtonImage.sprite = bs.quit_Button;
     }
 
     public void DisplayScoreBoard() {
@@ -198,10 +201,11 @@ public class NewUIManager : MonoBehaviour {
         .Bind(x => m_childPerMinuteText.SetText(x.ToString("#.00")));
     }
 
-    public void HideBlackBars() {
+    public void HideBlackBars(bool showTutorial) {
 	    float basedYSize = m_bottomBarImage.rectTransform.sizeDelta.y;
 	    LMotion.Create(basedYSize,0,0.75f).Bind(x=>m_bottomBarImage.rectTransform.sizeDelta=new Vector2(m_bottomBarImage.rectTransform.sizeDelta.x,x));
 	    LMotion.Create(basedYSize,0,0.75f).Bind(x=>m_topBarImage.rectTransform.sizeDelta=new Vector2(m_topBarImage.rectTransform.sizeDelta.x,x));
+	    if(!showTutorial) return;
 	    if(Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.transform.parent.gameObject.SetActive(true);
     }
 

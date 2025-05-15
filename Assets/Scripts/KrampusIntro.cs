@@ -24,9 +24,15 @@ public class KrampusIntro : MonoBehaviour {
             return;
         }
 
-        if (InputSubscribe.Raw.Player.Move.WasPressedThisFrame()) {
+        if (InputSubscribe.Raw.UI.Quit.WasPerformedThisFrame()) {
 
-	        if(Game.MainGameInfo.CurrentState == MainGameInfo.State.Intro) return;
+
+	        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Intro) {
+		        Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
+		        Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
+		        Game.MainGameInfo.UI.HideBlackBars(false);
+	        }
+
 	        m_director.Stop();
 
             m_spawnPoint.gameObject.SetActive(false);
@@ -39,8 +45,8 @@ public class KrampusIntro : MonoBehaviour {
     public void SetSecondPartOfIntro() {
 	    Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
 	    Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
-	    Game.MainGameInfo.UI.HideBlackBars();
-	    Debug.Log( "Siema zacznij grac"+MainGameInfo.State.WaitingToStart);
+	    Game.MainGameInfo.UI.HideBlackBars(true);
+
 
 
 
