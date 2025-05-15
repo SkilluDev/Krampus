@@ -50,6 +50,10 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("End Screen")][SerializeField] private EndScreenHandler m_endScreenHandler;
 
 
+    [BoxGroup("End Screen")][SerializeField] private Image m_topBarImage;
+    [BoxGroup("End Screen")][SerializeField] private Image m_bottomBarImage;
+
+
     private void OnChildEaten(ChildType childType) {
         Color destinationColor;
         if (childType != Game.MainGameInfo.GoodChildType) {
@@ -152,7 +156,7 @@ public class NewUIManager : MonoBehaviour {
     private void Ready() {
         Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
         m_originalTimerColor = m_timerDisplay.Color;
-        if(Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.transform.parent.gameObject.SetActive(true);
+
     }
 
     public void ChangeChildCounter() {
@@ -186,5 +190,12 @@ public class NewUIManager : MonoBehaviour {
 	    Debug.Log(val);
 	    LMotion.Create(0, val , 2).WithEase(Ease.OutExpo)
         .Bind(x => m_childPerMinuteText.SetText(x.ToString("#.00")));
+    }
+
+    public void HideBlackBars() {
+	    float basedYSize = m_bottomBarImage.rectTransform.sizeDelta.y;
+	    LMotion.Create(basedYSize,0,0.75f).Bind(x=>m_bottomBarImage.rectTransform.sizeDelta=new Vector2(m_bottomBarImage.rectTransform.sizeDelta.x,x));
+	    LMotion.Create(basedYSize,0,0.75f).Bind(x=>m_topBarImage.rectTransform.sizeDelta=new Vector2(m_topBarImage.rectTransform.sizeDelta.x,x));
+	    if(Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.transform.parent.gameObject.SetActive(true);
     }
 }
