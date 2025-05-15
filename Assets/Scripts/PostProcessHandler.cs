@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -33,10 +34,14 @@ public class PostProcessDistance : MonoBehaviour {
 
         bool b  = Game.SetMan.GetValue<bool>("Motion Blur");
         m_blur.active = b;
+
+        Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
     }
 
-    private void Update() {
-        if(!Game.Balling) return;
+	private void OnChildEaten(ChildType arg0) => throw new NotImplementedException();
+
+	private void Update() {
+        if(Game.IsLoading) return;
         m_distanceToClosest = Game.MainGameInfo.Krampus.ChildSensor.Dist;
         float deltaDistance = Mathf.Clamp01((m_minDistance - m_distanceToClosest) / m_minDistance);
 
