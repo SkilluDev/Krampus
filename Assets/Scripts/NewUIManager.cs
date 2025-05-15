@@ -72,9 +72,8 @@ public class NewUIManager : MonoBehaviour {
             ChangeChildCounter();
         } else {
             destinationColor = m_badTimerColor;
-
         }
-
+        
         LMotion.Create(m_timerDisplay.Color, destinationColor, 0.1f).WithEase(Ease.InOutCubic).WithOnComplete(
             () => LMotion.Create(destinationColor, m_originalTimerColor, 1.2f).WithEase(Ease.InOutCubic).Bind(m_timerDisplay.SetColor)
                 ).Bind(m_timerDisplay.SetColor);
