@@ -42,7 +42,7 @@ public class Nun : NPC {
     [SerializeField] private float m_krampusDetectTime = 1f;
     [SerializeField] private float m_patrolIdleDuration = 2f;
 
-    [SerializeField] private CinemachineImpulseSource m_shake;
+    [SerializeField] private Tag m_dontPatrolTag;
 
 
 
@@ -79,6 +79,11 @@ public class Nun : NPC {
         for (int i = 0; i < 3; i++) {
             var room = Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement();
             if (!NavMesh.SamplePosition(room.GetMidPoint(), out var navmeshPoint, 3f, NavMesh.AllAreas)) {
+                i--;
+                Debug.LogWarning($"Problem adding Nun patrol point in {room.name}. Retrying...");
+                continue;
+            }
+            if (room.HasTag(m_dontPatrolTag)) {
                 i--;
                 Debug.LogWarning($"Problem adding Nun patrol point in {room.name}. Retrying...");
                 continue;
@@ -199,7 +204,6 @@ public class Nun : NPC {
             Game.MainGameInfo.GetRoomData(w).MarkKramped(false);
         }
         Game.MainGameInfo.GetRoomData(room).MarkKramped(true);
-        Game.MainGameInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
 
         m_reportedKrampusRoom = room;
 

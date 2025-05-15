@@ -23,7 +23,12 @@ public class RoomData : MonoBehaviour {
 	}
 
 	public void MarkKramped(bool t) {
-		m_navMeshModifier.area = NavMesh.GetAreaFromName(t ? "Kramped" : "Walkable");
+		int area = NavMesh.GetAreaFromName(t ? "Kramped" : "Walkable");
+
+		if (m_navMeshModifier.area != area) {
+			m_navMeshModifier.area = area;
+			Game.MainGameInfo.RequestNavMeshRebake();
+		}
 	}
 
 	public void AddCharacter(ICharacter character) {
