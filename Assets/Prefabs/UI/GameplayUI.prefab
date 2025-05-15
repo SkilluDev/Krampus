@@ -331,7 +331,7 @@ GameObject:
   - component: {fileID: 6854561989096268895}
   - component: {fileID: 3766795645136702700}
   m_Layer: 5
-  m_Name: GOText
+  m_Name: EndingText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1747,7 +1747,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7593335818535901330
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2317,10 +2317,10 @@ MonoBehaviour:
   m_beginSpeed: 0.25
   m_wonTextures: {fileID: 4176309733959268076}
   m_lostTextures: {fileID: 2440044820309743822}
-  m_endingText: {fileID: 0}
-  m_winText: 
-  m_loseNunText: 
-  m_loseTimeText: 
+  m_endingText: {fileID: 3766795645136702700}
+  m_winText: You kramped out!
+  m_loseNunText: You've been kramped!
+  m_loseTimeText: You kramped out of time!
 --- !u!1 &5080149070085031123
 GameObject:
   m_ObjectHideFlags: 0
@@ -3717,7 +3717,7 @@ MonoBehaviour:
   m_scoreboard: {fileID: 1967520264344546960}
   m_childPerMinuteText: {fileID: 3751176815264223431}
   m_tutorial: {fileID: 8244151070965387798}
-  m_endScreenHandler: {fileID: 0}
+  m_endScreenHandler: {fileID: 8443022075738394590}
   m_topBarImage: {fileID: 2316791246263396419}
   m_bottomBarImage: {fileID: 7783728161819083361}
   m_uiBlockLeft: {fileID: 3784101493357200345}
