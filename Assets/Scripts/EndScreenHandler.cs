@@ -30,8 +30,6 @@ public class EndScreenHandler : MonoBehaviour {
     private void Awake() {
         m_groupsWon = m_wonTextures.GetComponentsInChildren<CanvasGroup>().OrderBy(w => w.transform.GetSiblingIndex()).ToArray();
         m_groupsLost = m_lostTextures.GetComponentsInChildren<CanvasGroup>().OrderBy(w => w.transform.GetSiblingIndex()).ToArray();
-        Debug.Log("GL" + m_groupsLost.Length);
-        Debug.Log("GW" + m_groupsWon.Length);
     }
 
     private void Stop(CanvasGroup[] groups) {
