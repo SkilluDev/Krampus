@@ -292,6 +292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fov: 70
   range: 10
+  unangledRange: 3
   trackedObject: {fileID: 0}
   visionMask:
     serializedVersion: 2
@@ -435,10 +436,8 @@ MonoBehaviour:
   m_baseMovementSpeed: 4
   m_rigidbody: {fileID: 5685685448767307217}
   m_interactionDistance: 2
-  m_longDetectionRange: 10
   m_stunDuration: 0.4
   m_reportingDuration: 1
-  m_detectionRange: 5
   m_shapeSprite: {fileID: 2343456070721923192}
   m_killSoundBite: {fileID: 11400000, guid: 740d509bbec9ba98383d9719fc0e50ee, type: 2}
   m_goreParticle: {fileID: 3095960489853837275, guid: 93e42f4d40d1546458a6b9daf6b81122,
@@ -675,12 +674,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  _SortingLayer: 0
-  _SortingLayerID: 0
-  _SortingOrder: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 6525325704702165634}
   m_maskType: 0
+  _SortingLayer: 0
+  _SortingLayerID: 0
+  _SortingOrder: 0
 --- !u!114 &9165429964022334219
 MonoBehaviour:
   m_ObjectHideFlags: 0

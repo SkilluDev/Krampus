@@ -7,6 +7,7 @@ using UnityEngine;
 public class ViewCone : MonoBehaviour {
     [BoxGroup("Cone")] public float fov = 60;
     [BoxGroup("Cone")] public float range = 15;
+    [BoxGroup("Cone")] public float unangledRange = 2;
     [BoxGroup("Cone")] public Transform trackedObject;
     [BoxGroup("Cone")] public LayerMask visionMask;
 
@@ -25,11 +26,12 @@ public class ViewCone : MonoBehaviour {
     public bool Detect() {
         if (!m_enabled) return false;
         if (Vector3.SqrMagnitude(trackedObject.position - transform.position) > range * range) return false;
-        if (Vector3.Angle(transform.forward, (trackedObject.transform.position - transform.position).NoY()) > fov / 2) return false;
 
         if (Physics.Raycast(transform.position, trackedObject.transform.position - transform.position, out var hit, range, visionMask, QueryTriggerInteraction.Ignore)) {
-            Debug.Log("RAYCAST " + hit.collider);
-            if (hit.collider.transform == trackedObject) return true;
+            if (hit.collider.transform != trackedObject) return false;
+            if (hit.distance <= unangledRange) return true;
+            if (Vector3.Angle(transform.forward, (trackedObject.transform.position - transform.position).NoY()) > fov / 2) return false;
+            return true;
         }
         return false;
     }
@@ -63,8 +65,6 @@ public class ViewCone : MonoBehaviour {
         }
 
         m_meshFilter.mesh.SetVertices(m_conePositions);
-        //m_renderer.positionCount = m_conePositions.Length;
-        //m_renderer.SetPositions(m_conePositions);
     }
 
     private void FixedUpdate() {
