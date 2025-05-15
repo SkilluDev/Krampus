@@ -16,6 +16,7 @@ public class ChildAnimator : MonoBehaviour {
     [BoxGroup("Sounds")][SerializeField] private float m_screamVolume = 0.6f;
     [BoxGroup("Sounds")][SerializeField] private AudioSource m_screamSource;
 
+
     private Quaternion m_rotationTarget;
 
     private void Start() {

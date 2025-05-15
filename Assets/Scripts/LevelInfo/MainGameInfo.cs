@@ -4,6 +4,7 @@ using System.Linq;
 using KrampUtils;
 using NaughtyAttributes;
 using Roomgen;
+using Sound;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -69,7 +70,7 @@ public class MainGameInfo : LevelInfo {
     private int m_navmeshRebakeRequests;
 
     public float Score => m_score;
-
+    [BoxGroup("Sounds")][SerializeField] private Sex m_badSound;
 
 
     public new enum State {
@@ -136,7 +137,10 @@ public class MainGameInfo : LevelInfo {
             r.RemoveCharacter(child);
         m_childRegistry.Remove(child);
         if (child.Type == GoodChildType) {
+	        m_badSound.Play(child.transform.position);
             m_goodChildRegistry.Remove(child);
+
+
         } else {
             m_badChildRegistry.Remove(child);
             m_score++;
