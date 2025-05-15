@@ -18,7 +18,12 @@ public class KrampusIntro : MonoBehaviour {
     }
 
     private void Update() {
-        if (Game.Balling || Game.MainGameInfo.CurrentState == MainGameInfo.State.Over) return;
+        if (Game.Balling || Game.MainGameInfo.CurrentState == MainGameInfo.State.Over) {
+            Game.MainGameInfo.Krampus.Kamera.Rendering.GetComponent<CinemachineBrain>().ActiveBlend = null;
+            Destroy(this);
+            return;
+        }
+
         if (InputSubscribe.Raw.Player.Move.WasPressedThisFrame()) {
             m_director.Stop();
             Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
