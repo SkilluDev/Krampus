@@ -76,7 +76,7 @@ public class KrampusController : KrampusBehaviour {
 		//		Debug.LogWarning(Game.MainGameInfo.Timer);
 		if (Game.MainGameInfo.Timer.GameTime < 0) {
 			Debug.Log("dead as hell");
-			KrampTermination();
+			KrampTermination(Ending.LoseTime);
 		}
 		float acceleration = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;
 
@@ -137,7 +137,7 @@ public class KrampusController : KrampusBehaviour {
 		CurrentState = to;
 	}
 
-	public void KrampTermination() {
+	public void KrampTermination(Ending ending) {
 		if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Over) {
 			Debug.Log("already dead");
 			return;
@@ -150,7 +150,7 @@ public class KrampusController : KrampusBehaviour {
 		m_rigidbody.velocity = Vector3.zero;
 		m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		Game.MusicMan.StopMusic();
-		StartCoroutine(DeathTimer());
+		StartCoroutine(DeathTimer(ending));
 	}
 
 	private Vector3 ComputeVelocity() {
@@ -180,9 +180,9 @@ public class KrampusController : KrampusBehaviour {
 		}
 	}
 
-	private IEnumerator DeathTimer() {
+	private IEnumerator DeathTimer(Ending ending) {
 		yield return new WaitForSeconds(2);
-		Game.MainGameInfo.UI.ProcessEndGame(Ending.Lose);
+		Game.MainGameInfo.UI.ProcessEndGame(ending);
 	}
 
 	public void MoveTo(Vector3 position) {

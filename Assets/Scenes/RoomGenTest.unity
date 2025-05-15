@@ -723,6 +723,11 @@ PrefabInstance:
       propertyPath: m_defaultInterval
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1003218928794266535, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_Name
+      value: EndingText
+      objectReference: {fileID: 0}
     - target: {fileID: 1033026507204514635, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -922,8 +927,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8443022075738394590, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
+      propertyPath: m_winText
+      value: You kramped out!
+      objectReference: {fileID: 0}
+    - target: {fileID: 8443022075738394590, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_endingText
+      value: 
+      objectReference: {fileID: 2011590135}
+    - target: {fileID: 8443022075738394590, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_loseNunText
+      value: You've been kramped
+      objectReference: {fileID: 0}
+    - target: {fileID: 8443022075738394590, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
       propertyPath: m_fadeDuration
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8443022075738394590, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_loseTimeText
+      value: You kramped out of time
       objectReference: {fileID: 0}
     - target: {fileID: 8837217190664837196, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
@@ -1591,6 +1616,18 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &2011590135 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3766795645136702700, guid: f0b7c5050b2137f448c51fc46427748b,
+    type: 3}
+  m_PrefabInstance: {fileID: 528492264}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011590129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2139035819 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2592905858289355190, guid: f0b7c5050b2137f448c51fc46427748b,
