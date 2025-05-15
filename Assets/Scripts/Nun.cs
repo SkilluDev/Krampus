@@ -107,15 +107,6 @@ public class Nun : NPC {
                     Debug.Log("[Nun] Reached patrol point");
                 }
 
-                float targetAngle = Quaternion.LookRotation(GetPathDirection(), Vector3.up).eulerAngles.y;
-
-                if (Mathf.Abs(FacingAngle - targetAngle) > m_patrolIdleDuration * 2) {
-                    // TODO: figure this out
-                    SetFacingAngle(FacingAngle + (m_patrolIdleDuration * Time.deltaTime * (FacingAngle < targetAngle ? 1 : -1)));
-                    SetVelocity(Vector3.zero);
-                    break;
-                }
-
                 m_viewCone.SetActive(true);
                 if (m_viewCone.Detect()) {
                     Debug.Log("[Nun] viewcone detected krampy");
@@ -191,7 +182,8 @@ public class Nun : NPC {
                 break;
         }
 
-        m_viewCone.SetFacing(Quaternion.Euler(0, FacingAngle, 0) * Vector3.forward);
+        // m_viewCone.SetFacing(Quaternion.Euler(0, FacingAngle, 0) * Vector3.forward);
+        m_viewCone.SetFacing(transform.GetComponentInChildren<Animator>().transform.forward);
     }
 
 
