@@ -45,6 +45,8 @@ public class MainGameInfo : LevelInfo {
 
     public ChildType GoodChildType { get; set; }
 
+    public ChildType RandomBadChildType => Types.First(x=>x!=GoodChildType);
+
     public IReadOnlyCollection<Child> Children => m_childRegistry;
     public IEnumerable<Child> BadChildren => m_badChildRegistry;
     public IEnumerable<Child> GoodChildren => m_goodChildRegistry;

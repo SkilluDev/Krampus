@@ -1,3 +1,4 @@
+using LitMotion;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +8,8 @@ public class Timer : MonoBehaviour {
 	[BoxGroup("Timer")][SerializeField] private int m_timePenalty;
 
 	[ShowNativeProperty] public float GameTime { get; private set; } = 10f;
+
+	[SerializeField] private float m_changeDuration;
 
 	private void OnChildEaten(ChildType childType) {
 		if (childType == Game.MainGameInfo.GoodChildType) {
@@ -19,8 +22,6 @@ public class Timer : MonoBehaviour {
 	public void Ready() {
 		GameTime = (int)Game.SetMan.GetValue<long>("Timer");
 		Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
-		//hey
-		// hey!
 	}
 
 	private void Update() {
@@ -30,7 +31,8 @@ public class Timer : MonoBehaviour {
 	}
 
 	public void Bonus() {
-		GameTime += m_timeBonus;
+		//GameTime += m_timeBonus;
+		LMotion.Create(GameTime, GameTime+m_timeBonus, m_changeDuration).WithEase(Ease.OutCirc).Bind(f=>GameTime=f);
 	}
 
 	public void Penalty() {

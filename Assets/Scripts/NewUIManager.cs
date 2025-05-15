@@ -7,6 +7,7 @@ using NaughtyAttributes;
 using Roomgen;
 using TMPro;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,8 +17,15 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI m_remainingChildCount;
     [SerializeField] private TextMeshProUGUI m_currentSeed;
     [SerializeField] private GameObject m_pauseScreen;
-    [SerializeField] private TextMeshProUGUI m_timerText;
+    [SerializeField] private Transform m_timer;
     [SerializeField] private NumericDisplay m_timerDisplay;
+
+    [SerializeField] private float m_timerShakeDuration;
+
+    [SerializeField] private float m_timerShakeIntensity;
+    [SerializeField] private float m_timerBounceDuration;
+
+    [SerializeField] private float m_timerBounceIntensity;
 
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
@@ -65,15 +73,37 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("UI Blocks")] [SerializeField] private RectTransform m_uiBlockLeft;
     [BoxGroup("UI Blocks")] [SerializeField] private RectTransform m_uiBlockRight;
 
+    [Button]
+    private void EatGoodChild(){
+        OnChildEaten(Game.MainGameInfo.GoodChildType);
+    }
+
+    [Button]
+    private void EatBadChild(){
+        OnChildEaten(Game.MainGameInfo.RandomBadChildType);
+    }
     private void OnChildEaten(ChildType childType) {
         Color destinationColor;
+        //Positive feedback
         if (childType != Game.MainGameInfo.GoodChildType) {
             destinationColor = m_goodTimerColor;
             ChangeChildCounter();
+            Vector3 oldScale = m_timer.localScale;
+            Vector3 newScale = oldScale*m_timerBounceIntensity;
+            //Scrapped, Krampus always walking
+            //(Game.MainGameInfo.Krampus.Kontroller.CurrentState is not KrampusController.State.Walk?1f:0.9f);
+            LMotion.Create(oldScale, newScale, m_timerShakeDuration/2).WithEase(Ease.OutElastic).WithOnComplete(
+                ()=>LMotion.Create(newScale, oldScale, m_timerShakeDuration/2).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
+            ).BindToLocalScale(m_timer);
+
+            LMotion.Shake.Create(m_timer.localPosition, Vector3.one*m_timerShakeIntensity/5, m_timerShakeDuration).WithEase(Ease.InOutQuad).BindToLocalPosition(m_timer);
+
+        //Negative feedback
         } else {
             destinationColor = m_badTimerColor;
+            LMotion.Shake.Create(m_timer.localPosition, Vector3.one*m_timerShakeIntensity, m_timerShakeDuration).WithEase(Ease.InOutQuad).BindToLocalPosition(m_timer);
         }
-        
+
         LMotion.Create(m_timerDisplay.Color, destinationColor, 0.1f).WithEase(Ease.InOutCubic).WithOnComplete(
             () => LMotion.Create(destinationColor, m_originalTimerColor, 1.2f).WithEase(Ease.InOutCubic).Bind(m_timerDisplay.SetColor)
                 ).Bind(m_timerDisplay.SetColor);
@@ -96,7 +126,6 @@ public class NewUIManager : MonoBehaviour {
                 Game.MainGameInfo.SetState(MainGameInfo.State.Over);
                 break;
         }
-        m_timerText.gameObject.SetActive(false);
         m_endScreenHandler.Activate(ending);
         DisplayScoreBoard();
     }
@@ -134,7 +163,6 @@ public class NewUIManager : MonoBehaviour {
             m_timerDisplay.gameObject.SetActive(true);
         }
 
-        m_timerText.text = Game.MainGameInfo.Timer.GameTime.ToString("00");
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
 
 
