@@ -50,7 +50,7 @@ public class Door : Passage, IInteractable {
     }
 
     private void Open(bool swiftly, bool flip, ICharacter actor = null) {
-        if (IsOpen) return;
+        if (IsOpen || !Game.Balling) return;
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_invertProperty, flip);
         m_animator.SetBool(m_openProperty, true);
@@ -68,7 +68,7 @@ public class Door : Passage, IInteractable {
     }
 
     private void Close(bool swiftly, ICharacter actor = null) {
-        if (!IsOpen) return;
+        if (!IsOpen || !Game.Balling) return;
 
         if (swiftly) {
             m_stunTime = m_stunLinger;

@@ -15,7 +15,6 @@ public class FeetSounds : MonoBehaviour {
 
 	private void Step(string state) {
 		string val = m_stateField.GetValue(m_toInspect).ToString();
-		Debug.Log($"Play step {state} == {val}");
 		if (val.Equals(state, System.StringComparison.InvariantCultureIgnoreCase) || !m_filterOutState)
 			m_stepSoundBite.Play(transform.position);
 	}

@@ -576,8 +576,8 @@ MonoBehaviour:
   m_longDetectionRange: 10
   m_shockTimeout: 1
   m_viewCone: {fileID: 3797404609321764997}
-  m_patrolDetectTimeout: 0.6
-  m_patrolIgnoreTimeout: 2
+  m_krampusDetectTime: 0.5
+  m_patrolIdleDuration: 3
   m_shake: {fileID: 2615528581191814408}
 --- !u!114 &1750555886771424974
 MonoBehaviour:
@@ -606,17 +606,26 @@ MonoBehaviour:
   m_nun: {fileID: 8045976204250328226}
   m_animator: {fileID: 8505646638566380038}
   m_modelTransform: {fileID: 8260687538006973059}
-  m_speedProperty: 254213878
-  m_listeningProperty: -2075632497
-  m_attackProperty: -2075632497
-  m_stunnedProperty: 1280260825
+  m_turningSpeed: 5
+  m_minimalVelocity: 0.5
+  m_propertySpeed: -823668238
+  m_propertyListening: -1178738628
+  m_propertyAttack: 1080829965
+  m_propertyStunned: -449490811
+  m_propertyShocked: 1339033456
   m_spriteRenderer: {fileID: 3640781385404578458}
-  m_lookingForKrampusSprite: {fileID: 21300000, guid: aa451dd9181b37e4cbfada8d487cb0c1,
+  m_spriteLookingForKrampus: {fileID: 21300000, guid: bd6bb280b8d185b508cc8a6799dbce7e,
     type: 3}
-  m_listeningSprite: {fileID: 21300000, guid: 2b277881247586241803407a4affc3cc, type: 3}
-  m_stunnedSprite: {fileID: 21300000, guid: 2e45ad3a134d7c94585b329ea47c8569, type: 3}
-  m_chasingKrampusSprite: {fileID: 21300000, guid: 2d6d33e99702f134898b0959582ec6de,
+  m_spriteListening: {fileID: 21300000, guid: 55024bc3fd276b0e7af302c26aa90059, type: 3}
+  m_spriteStunned: {fileID: 21300000, guid: 1d25422bb55bb0926b6b1f91420c37b9, type: 3}
+  m_spriteChasingKrampus: {fileID: 21300000, guid: 2d6d33e99702f134898b0959582ec6de,
     type: 3}
+  m_soundListen: {fileID: 11400000, guid: e8404b0d0eef6295c9592f3a017e2e1c, type: 2}
+  m_soundFoundKrampus: {fileID: 11400000, guid: 80cf9e65604647ec08b64d45841b64bc,
+    type: 2}
+  m_soundPatrol: {fileID: 11400000, guid: ed5c08513075cca00b2022b1f3a50947, type: 2}
+  m_soundNotFoundKrampus: {fileID: 11400000, guid: 365b1dbeddcab2d988b67397bac8a5e8,
+    type: 2}
 --- !u!114 &5091860593188860153
 MonoBehaviour:
   m_ObjectHideFlags: 0
