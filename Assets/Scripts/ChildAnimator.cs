@@ -1,5 +1,6 @@
 using System;
 using NaughtyAttributes;
+using Sound;
 using UnityEngine;
 
 public class ChildAnimator : MonoBehaviour {
@@ -13,6 +14,7 @@ public class ChildAnimator : MonoBehaviour {
     [BoxGroup("State Sprites")][SerializeField] private StatusSprite m_spriteRenderer;
     [BoxGroup("State Sprites")][SerializeField] private Sprite m_panicSprite;
     [BoxGroup("State Sprites")][SerializeField] private Sprite m_alertedSprite;
+    [BoxGroup("Sounds")][SerializeField] private Sex m_soundShock;
 
     private Quaternion m_rotationTarget;
 
@@ -28,6 +30,7 @@ public class ChildAnimator : MonoBehaviour {
                 m_rotationTarget = Quaternion.LookRotation(Game.MainGameInfo.Krampus.transform.position - m_child.transform.position, Vector3.up);
                 m_animator.SetTrigger(m_stunProperty);
                 m_spriteRenderer.SetSprite(m_panicSprite, 2);
+                m_soundShock.Play(transform.position);
                 break;
             case (_, Child.State.Dead):
                 m_animator.SetTrigger(m_deathTriggr);
