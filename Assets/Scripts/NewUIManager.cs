@@ -148,7 +148,7 @@ public class NewUIManager : MonoBehaviour {
     private void Update() {
 
 
-        SetButtonSet();
+        //SetButtonSet();
 
         m_currentGameState = Game.MainGameInfo.CurrentState;
         var col = Game.MainGameInfo.GoodChildType;
@@ -167,7 +167,7 @@ public class NewUIManager : MonoBehaviour {
 
 
         if (InputSubscribe.Raw.UI.Pause.triggered) {if(Game.MainGameInfo.CurrentState != MainGameInfo.State.Intro) SwitchPauseMenu();}
-
+        
         if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
             ProcessEndGame(Ending.Win);
         }
