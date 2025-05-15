@@ -71,6 +71,7 @@ public class MainGameInfo : LevelInfo {
 
     public new enum State {
         Intro,
+        WaitingToStart,
         Game,
         Paused,
         Over,

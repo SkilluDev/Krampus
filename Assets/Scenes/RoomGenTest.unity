@@ -1267,6 +1267,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1698299321934093973, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2589798314053807759, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_filterOutState
@@ -1300,6 +1305,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 8e73a97a920d82a1583376b4bbda41d8,
         type: 2}
+    - target: {fileID: 7069810453768087152, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069810453768087152, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 116
+      objectReference: {fileID: 0}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1308,7 +1323,7 @@ PrefabInstance:
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}

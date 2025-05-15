@@ -32,4 +32,14 @@ public class KrampusIntro : MonoBehaviour {
             Game.MainGameInfo.SetState(MainGameInfo.State.Game);
         }
     }
+
+    public void SetSecondPartOfIntro() {
+	    Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
+
+	    Game.MainGameInfo.UI.HideBlackBars();
+	    Debug.Log( "Siema zacznij grac"+MainGameInfo.State.WaitingToStart);
+
+
+
+    }
 }
