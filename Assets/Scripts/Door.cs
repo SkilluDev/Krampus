@@ -51,7 +51,6 @@ public class Door : Passage, IInteractable {
 
     private void Open(bool swiftly, bool flip, ICharacter actor = null) {
         if (IsOpen) return;
-        m_doorOpen.Play(transform.position, 1f);
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_invertProperty, flip);
         m_animator.SetBool(m_openProperty, true);
@@ -60,6 +59,9 @@ public class Door : Passage, IInteractable {
         if (swiftly) {
             Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
             Game.MainGameInfo.GetRoomData(B).MakeNoise(transform.position, m_noiseDistance, actor);
+            m_doorOpen.Play(transform.position, 1f);
+        } else {
+            m_doorOpen.Play(transform.position, 0.4f);
         }
 
         IsOpen = true;
@@ -76,9 +78,11 @@ public class Door : Passage, IInteractable {
 
             Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
             Game.MainGameInfo.GetRoomData(B).MakeNoise(transform.position, m_noiseDistance, actor);
+            m_doorClose.Play(transform.position, 1f);
+        } else {
+            m_doorClose.Play(transform.position, 0.4f);
         }
 
-        m_doorClose.Play(transform.position, 1f);
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_openProperty, false);
         m_blocking.enabled = true;

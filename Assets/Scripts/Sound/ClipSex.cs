@@ -10,6 +10,7 @@ namespace Sound {
         [MinMaxSlider(0.0f, 2f)] public Vector2 volumeRange = new Vector2(1f, 1f);
         public float spatialBlend = 1f;
         public float maxDistance = 20f;
+        public AudioRolloffMode rolloff;
 
         internal override void PlayInternal(Vector3 location, AudioMixerGroup group, float volume = 1) {
             var source = MakeSource(location, group, clip.length);
@@ -19,6 +20,7 @@ namespace Sound {
             source.spatialBlend = spatialBlend;
             source.rolloffMode = AudioRolloffMode.Linear;
             source.maxDistance = maxDistance;
+            source.rolloffMode = rolloff;
             source.Play();
         }
     }
