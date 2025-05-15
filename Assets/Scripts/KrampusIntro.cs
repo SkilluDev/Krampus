@@ -24,7 +24,7 @@ public class KrampusIntro : MonoBehaviour {
             return;
         }
 
-        if (InputSubscribe.Raw.UI.Quit.WasPerformedThisFrame()) {
+        if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame()) {
 
 
 	        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Intro) {

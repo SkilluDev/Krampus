@@ -352,7 +352,7 @@ namespace KrampInput
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Quit"",
+                    ""name"": ""QuitTutorial"",
                     ""type"": ""Button"",
                     ""id"": ""22bfcd56-6bd0-4d00-b11b-60464a19541e"",
                     ""expectedControlType"": """",
@@ -413,7 +413,7 @@ namespace KrampInput
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Advance"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -421,10 +421,10 @@ namespace KrampInput
                 {
                     ""name"": """",
                     ""id"": ""e4a4ee4f-011f-4bd0-b184-8919651c8ba9"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Console"",
                     ""action"": ""Advance"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -435,19 +435,19 @@ namespace KrampInput
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Quit"",
+                    ""groups"": "";PC"",
+                    ""action"": ""QuitTutorial"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""d7800985-15d5-4ed7-aab5-c5e602f95f6f"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Quit"",
+                    ""groups"": "";Console"",
+                    ""action"": ""QuitTutorial"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -457,7 +457,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Restart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -465,10 +465,10 @@ namespace KrampInput
                 {
                     ""name"": """",
                     ""id"": ""d6783ec2-6829-4700-9d26-7a7a42e8ce97"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Console"",
                     ""action"": ""Restart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -479,7 +479,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -490,7 +490,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/p"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -501,7 +501,7 @@ namespace KrampInput
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Console"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -512,7 +512,7 @@ namespace KrampInput
                     ""path"": ""<Gamepad>/dpad"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Console"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -534,7 +534,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -545,7 +545,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -556,7 +556,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -567,7 +567,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -578,7 +578,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -589,7 +589,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -600,7 +600,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -611,7 +611,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -622,7 +622,7 @@ namespace KrampInput
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Console"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -645,6 +645,17 @@ namespace KrampInput
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Mobile"",
+                    ""action"": ""Tilt"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dcaf37a9-b452-4951-9ec8-f386e66f9c68"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Console"",
                     ""action"": ""Tilt"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -677,7 +688,7 @@ namespace KrampInput
                     ""path"": ""<Keyboard>/g"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";PC"",
                     ""action"": ""Restart And Regen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -685,10 +696,10 @@ namespace KrampInput
                 {
                     ""name"": """",
                     ""id"": ""7d1ef2f6-3ab6-4e20-91b0-0f4885a1e338"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Console"",
                     ""action"": ""Restart And Regen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -749,7 +760,7 @@ namespace KrampInput
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
             m_UI_Advance = m_UI.FindAction("Advance", throwIfNotFound: true);
-            m_UI_Quit = m_UI.FindAction("Quit", throwIfNotFound: true);
+            m_UI_QuitTutorial = m_UI.FindAction("QuitTutorial", throwIfNotFound: true);
             m_UI_Restart = m_UI.FindAction("Restart", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
             m_UI_Tilt = m_UI.FindAction("Tilt", throwIfNotFound: true);
@@ -910,7 +921,7 @@ namespace KrampInput
         private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
         private readonly InputAction m_UI_Pause;
         private readonly InputAction m_UI_Advance;
-        private readonly InputAction m_UI_Quit;
+        private readonly InputAction m_UI_QuitTutorial;
         private readonly InputAction m_UI_Restart;
         private readonly InputAction m_UI_Navigate;
         private readonly InputAction m_UI_Tilt;
@@ -922,7 +933,7 @@ namespace KrampInput
             public UIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Pause => m_Wrapper.m_UI_Pause;
             public InputAction @Advance => m_Wrapper.m_UI_Advance;
-            public InputAction @Quit => m_Wrapper.m_UI_Quit;
+            public InputAction @QuitTutorial => m_Wrapper.m_UI_QuitTutorial;
             public InputAction @Restart => m_Wrapper.m_UI_Restart;
             public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
             public InputAction @Tilt => m_Wrapper.m_UI_Tilt;
@@ -943,9 +954,9 @@ namespace KrampInput
                 @Advance.started += instance.OnAdvance;
                 @Advance.performed += instance.OnAdvance;
                 @Advance.canceled += instance.OnAdvance;
-                @Quit.started += instance.OnQuit;
-                @Quit.performed += instance.OnQuit;
-                @Quit.canceled += instance.OnQuit;
+                @QuitTutorial.started += instance.OnQuitTutorial;
+                @QuitTutorial.performed += instance.OnQuitTutorial;
+                @QuitTutorial.canceled += instance.OnQuitTutorial;
                 @Restart.started += instance.OnRestart;
                 @Restart.performed += instance.OnRestart;
                 @Restart.canceled += instance.OnRestart;
@@ -971,9 +982,9 @@ namespace KrampInput
                 @Advance.started -= instance.OnAdvance;
                 @Advance.performed -= instance.OnAdvance;
                 @Advance.canceled -= instance.OnAdvance;
-                @Quit.started -= instance.OnQuit;
-                @Quit.performed -= instance.OnQuit;
-                @Quit.canceled -= instance.OnQuit;
+                @QuitTutorial.started -= instance.OnQuitTutorial;
+                @QuitTutorial.performed -= instance.OnQuitTutorial;
+                @QuitTutorial.canceled -= instance.OnQuitTutorial;
                 @Restart.started -= instance.OnRestart;
                 @Restart.performed -= instance.OnRestart;
                 @Restart.canceled -= instance.OnRestart;
@@ -1046,7 +1057,7 @@ namespace KrampInput
         {
             void OnPause(InputAction.CallbackContext context);
             void OnAdvance(InputAction.CallbackContext context);
-            void OnQuit(InputAction.CallbackContext context);
+            void OnQuitTutorial(InputAction.CallbackContext context);
             void OnRestart(InputAction.CallbackContext context);
             void OnNavigate(InputAction.CallbackContext context);
             void OnTilt(InputAction.CallbackContext context);
