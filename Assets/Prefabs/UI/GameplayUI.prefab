@@ -331,7 +331,7 @@ GameObject:
   - component: {fileID: 6854561989096268895}
   - component: {fileID: 3766795645136702700}
   m_Layer: 5
-  m_Name: GOText
+  m_Name: EndingText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1747,7 +1747,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7593335818535901330
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2317,10 +2317,10 @@ MonoBehaviour:
   m_beginSpeed: 0.25
   m_wonTextures: {fileID: 4176309733959268076}
   m_lostTextures: {fileID: 2440044820309743822}
-  m_endingText: {fileID: 0}
-  m_winText: 
-  m_loseNunText: 
-  m_loseTimeText: 
+  m_endingText: {fileID: 3766795645136702700}
+  m_winText: You kramped out!
+  m_loseNunText: You've been kramped!
+  m_loseTimeText: You kramped out of time!
 --- !u!1 &5080149070085031123
 GameObject:
   m_ObjectHideFlags: 0
@@ -3708,16 +3708,18 @@ MonoBehaviour:
   m_fillBar: {fileID: 5801898832723597714}
   m_goodTimerColor: {r: 0.3790493, g: 1, b: 0, a: 0}
   m_badTimerColor: {r: 0.254717, g: 0, b: 0, a: 1}
-  m_buttonSets: []
+  m_buttonSets:
+  - {fileID: 11400000, guid: bbb7ec287cc057940b9c18a966afa03c, type: 2}
+  - {fileID: 11400000, guid: ab491e8fc4a84ba4a9a0c0cf8d6d1dc6, type: 2}
   m_pauseImage: {fileID: 7589839384849520320}
   m_attackImage: {fileID: 7036663872275075992}
-  m_sneakImage: {fileID: 0}
+  m_sneakImage: {fileID: 2197346666268537748}
   m_menuImage: {fileID: 7820911818217859540}
   m_resetImage: {fileID: 3189426830583655897}
   m_scoreboard: {fileID: 1967520264344546960}
   m_childPerMinuteText: {fileID: 3751176815264223431}
   m_tutorial: {fileID: 8244151070965387798}
-  m_endScreenHandler: {fileID: 0}
+  m_endScreenHandler: {fileID: 8443022075738394590}
   m_topBarImage: {fileID: 2316791246263396419}
   m_bottomBarImage: {fileID: 7783728161819083361}
   m_uiBlockLeft: {fileID: 3784101493357200345}
