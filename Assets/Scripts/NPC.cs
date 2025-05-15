@@ -45,6 +45,14 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
         }
     }
 
+    public Vector3 GetFacingDirection() {
+        return Quaternion.Euler(0, FacingAngle, 0) * Vector3.forward;
+    }
+
+    public void SetFacingAngle(float direction) {
+        FacingAngle = direction;
+    }
+
 
     public virtual bool SetDestination(Vector3 destination) {
         if (m_currentPath == null) m_currentPath = new NavMeshPath();

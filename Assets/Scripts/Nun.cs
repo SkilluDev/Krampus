@@ -39,10 +39,11 @@ public class Nun : NPC {
     [SerializeField] private ViewCone m_viewCone;
     private List<Vector3> m_patrolPath;
     private int m_currentControlPoint = 0;
-    [SerializeField] private float m_patrolDetectTimeout = 1f;
-    [SerializeField] private float m_patrolIgnoreTimeout = 2f;
+    [SerializeField] private float m_krampusDetectTime = 1f;
+    [SerializeField] private float m_patrolIdleDuration = 2f;
 
     [SerializeField] private CinemachineImpulseSource m_shake;
+
 
 
     private Room m_reportedKrampusRoom;
@@ -106,6 +107,15 @@ public class Nun : NPC {
                     Debug.Log("[Nun] Reached patrol point");
                 }
 
+                float targetAngle = Quaternion.LookRotation(GetPathDirection(), Vector3.up).eulerAngles.y;
+
+                if (Mathf.Abs(FacingAngle - targetAngle) > m_patrolIdleDuration * 2) {
+                    // TODO: figure this out
+                    SetFacingAngle(FacingAngle + (m_patrolIdleDuration * Time.deltaTime * (FacingAngle < targetAngle ? 1 : -1)));
+                    SetVelocity(Vector3.zero);
+                    break;
+                }
+
                 m_viewCone.SetActive(true);
                 if (m_viewCone.Detect()) {
                     Debug.Log("[Nun] viewcone detected krampy");
@@ -120,7 +130,7 @@ public class Nun : NPC {
             case State.LookingForKrampus:
                 m_viewCone.SetActive(false);
                 if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
-                    if (m_timeout > m_patrolDetectTimeout) {
+                    if (m_timeout > m_krampusDetectTime) {
                         Debug.Log("[Nun] Alerted & detected krampy");
                         m_timeout = m_shockTimeout;
                         SwitchState(State.FoundKrampus);
@@ -130,7 +140,7 @@ public class Nun : NPC {
 
                 } else if (NearDestination(m_interactionDistance)) {
                     m_timeout += Time.deltaTime;
-                    if (m_timeout > m_patrolIgnoreTimeout) {
+                    if (m_timeout > m_patrolIdleDuration) {
                         SwitchState(State.Idle);
                     }
                     SetVelocity(Vector3.zero);
