@@ -21,8 +21,8 @@ public class MainMenuInfo : LevelInfo {
 
     private MotionHandle[] m_motions;
 
-    void Update() {
-        if (InputSubscribe.Raw.UI.Back.triggered) {
+    private void Update() {
+        if (InputSubscribe.Raw.UI.MenuReturn.triggered || InputSubscribe.Raw.UI.Pause.triggered) {
             SetState(0);
         }
     }
