@@ -22,7 +22,7 @@ public class NunAnimator : MonoBehaviour {
 		if (!Game.Balling) return;
 		m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, Quaternion.AngleAxis(m_nun.FacingAngle, Vector3.up), Time.deltaTime * 5f);
 
-		m_animator.SetFloat(m_propertySpeed, Mathf.Max(m_minimalVelocity, m_nun.Velocity / m_nun.RunSpeed), 0.2f, Time.deltaTime);
+		m_animator.SetFloat(m_propertySpeed, m_nun.Velocity / m_nun.RunSpeed);
 		m_animator.SetBool(m_propertyListening, m_nun.CurrentState == Nun.State.Listening);
 		m_animator.SetBool(m_propertyStunned, m_nun.CurrentState == Nun.State.Stunned);
 
