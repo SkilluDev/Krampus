@@ -1,5 +1,6 @@
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Sound {
     [CreateAssetMenu(menuName = "Game/Sex/Sequential", fileName = "Sound")]
@@ -8,14 +9,14 @@ namespace Sound {
         [MinMaxSlider(1, 3)] public Vector2Int sequenceJump = new Vector2Int(1, 1);
         private int m_sequenceIndex;
 
-        internal override void PlayInternal(Vector3 location, float volume = 1) {
+        internal override void PlayInternal(Vector3 location, AudioMixerGroup group, float volume = 1) {
             if (clips.Length == 0) {
                 Debug.LogError("Effect {name} contains no clips!");
                 return;
             }
             m_sequenceIndex += Random.Range(sequenceJump.x, sequenceJump.y + 1);
             m_sequenceIndex %= clips.Length;
-            clips[m_sequenceIndex].PlayInternal(location, volume);
+            clips[m_sequenceIndex].PlayInternal(location, group, volume);
         }
     }
 }

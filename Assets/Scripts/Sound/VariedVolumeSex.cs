@@ -1,6 +1,7 @@
 using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Sound {
     [CreateAssetMenu(menuName = "Game/Sex/Varied Volume", fileName = "Sound")]
@@ -14,14 +15,14 @@ namespace Sound {
         public Clip[] clips;
         public bool remapVolume = false;
 
-        internal override void PlayInternal(Vector3 location, float volume = 1) {
+        internal override void PlayInternal(Vector3 location, AudioMixerGroup group, float volume = 1) {
             if (clips.Length == 0) {
                 Debug.LogError("Effect {name} contains no clips!");
                 return;
             }
 
             var selected = clips.FirstOrDefault(clip => clip.volume.x <= volume && clip.volume.y >= volume);
-            selected.clip.Play(location, remapVolume ? Mathf.InverseLerp(selected.volume.x, selected.volume.y, volume) : volume);
+            selected.clip.PlayInternal(location, group, remapVolume ? Mathf.InverseLerp(selected.volume.x, selected.volume.y, volume) : volume);
         }
     }
 }

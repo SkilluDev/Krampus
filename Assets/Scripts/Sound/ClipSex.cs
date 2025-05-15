@@ -1,5 +1,6 @@
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Sound {
     [CreateAssetMenu(menuName = "Game/Sex/Clip", fileName = "Sound")]
@@ -10,8 +11,8 @@ namespace Sound {
         public float spatialBlend = 1f;
         public float maxDistance = 20f;
 
-        internal override void PlayInternal(Vector3 location, float volume = 1) {
-            var source = MakeSource(location, clip.length);
+        internal override void PlayInternal(Vector3 location, AudioMixerGroup group, float volume = 1) {
+            var source = MakeSource(location, group, clip.length);
             source.clip = clip;
             source.volume = Random.Range(volumeRange.x, volumeRange.y) * volume;
             source.pitch = Random.Range(pitchRange.x, pitchRange.y);
