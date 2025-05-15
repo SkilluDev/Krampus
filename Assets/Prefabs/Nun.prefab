@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fov: 60
   range: 15
+  unangledRange: 2
   trackedObject: {fileID: 0}
   visionMask:
     serializedVersion: 2
@@ -293,7 +294,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1323273293921302414
 RectTransform:
   m_ObjectHideFlags: 0
@@ -441,12 +442,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 6033487969071628685}
-  m_maskType: 0
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+  m_hasFontAssetChanged: 0
+  m_renderer: {fileID: 6033487969071628685}
+  m_maskType: 0
 --- !u!114 &6113600918585466145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,8 +573,6 @@ MonoBehaviour:
   m_interactionDistance: 8
   m_detectionRange: 8
   m_runSpeed: 10
-  m_shortDetectionRange: 6
-  m_longDetectionRange: 14
   m_shockTimeout: 1
   m_viewCone: {fileID: 3797404609321764997}
   m_krampusDetectTime: 0.5
@@ -614,7 +613,7 @@ MonoBehaviour:
   m_propertyStunned: -449490811
   m_propertyShocked: 1339033456
   m_spriteRenderer: {fileID: 3640781385404578458}
-  m_spriteLookingForKrampus: {fileID: 21300000, guid: bd6bb280b8d185b508cc8a6799dbce7e,
+  m_spriteLookingForKrampus: {fileID: 21300000, guid: 6dd04d1ef982604438b6467b3097d808,
     type: 3}
   m_spriteListening: {fileID: 21300000, guid: 55024bc3fd276b0e7af302c26aa90059, type: 3}
   m_spriteStunned: {fileID: 21300000, guid: 1d25422bb55bb0926b6b1f91420c37b9, type: 3}

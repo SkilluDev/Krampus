@@ -16,6 +16,7 @@ public class GameMusicController : MonoBehaviour
     }
 
     private void Update() {
+		if(!Game.Balling) return;
 	    m_distanceToClosest = Mathf.Sqrt(Game.MainGameInfo.Krampus.ChildSensor.Dist);
 	    if (m_distanceToClosest < m_minDistance) {
 		    m_musicMan.GameMusicLayer2Volume = Mathf.Lerp(0,1,Mathf.Clamp((m_minDistance-m_distanceToClosest)/m_minDistance,0,1));
