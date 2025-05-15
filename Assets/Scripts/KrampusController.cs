@@ -182,7 +182,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	private IEnumerator DeathTimer(Ending ending) {
-		yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds(1);
 		Game.MainGameInfo.UI.ProcessEndGame(ending);
 	}
 

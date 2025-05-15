@@ -123,7 +123,6 @@ public class Child : NPC, IEdible, INoiseReactor {
                 if (m_timeout <= 0) {
                     m_lastKrampusSpotted = CurrentRoom;
                     Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
-                    Game.MainGameInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
                     SelectRoomAwayFromKrampy();
                     SwitchState(State.InitialPanic);
                 }

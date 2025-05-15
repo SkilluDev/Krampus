@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 122724267943223538}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.14, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.13999999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -441,12 +441,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 6033487969071628685}
-  m_maskType: 0
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+  m_hasFontAssetChanged: 0
+  m_renderer: {fileID: 6033487969071628685}
+  m_maskType: 0
 --- !u!114 &6113600918585466145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,9 +499,9 @@ Transform:
   - {fileID: 8260687538006973059}
   - {fileID: 385047105581884659}
   - {fileID: 8015466012962612331}
-  - {fileID: 437494209358114539}
   - {fileID: 8489335564190843965}
   - {fileID: 1323273293921302414}
+  - {fileID: 437494209358114539}
   - {fileID: 2894671113504911845}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -567,18 +567,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d57258f4cd213da4a943fa0f0f85e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_baseMovementSpeed: 4
+  m_baseMovementSpeed: 5
   m_rigidbody: {fileID: 5641941523303477178}
   m_interactionDistance: 8
-  m_detectionRange: 4
-  m_runSpeed: 8
-  m_shortDetectionRange: 4
-  m_longDetectionRange: 10
+  m_detectionRange: 8
+  m_runSpeed: 10
+  m_shortDetectionRange: 6
+  m_longDetectionRange: 14
   m_shockTimeout: 1
   m_viewCone: {fileID: 3797404609321764997}
   m_krampusDetectTime: 0.5
   m_patrolIdleDuration: 90
-  m_shake: {fileID: 2615528581191814408}
+  m_dontPatrolTag: {fileID: 11400000, guid: 060614bbc887e0c428d08703f37bbcd5, type: 2}
 --- !u!114 &1750555886771424974
 MonoBehaviour:
   m_ObjectHideFlags: 0

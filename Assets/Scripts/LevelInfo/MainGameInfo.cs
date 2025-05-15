@@ -5,6 +5,7 @@ using KrampUtils;
 using NaughtyAttributes;
 using Roomgen;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -65,6 +66,8 @@ public class MainGameInfo : LevelInfo {
 
 
     private float m_score;
+    private int m_navmeshRebakeRequests;
+
     public float Score => m_score;
 
 
@@ -143,5 +146,18 @@ public class MainGameInfo : LevelInfo {
         foreach (var r in m_roomdata.Values.Where(w => w.Contains(nun)))
             r.RemoveCharacter(nun);
         m_nunRegistry.Remove(nun);
+    }
+
+    public void RequestNavMeshRebake() {
+        m_navmeshRebakeRequests += 1;
+    }
+
+    private void Update() {
+        if ((m_navmeshRebakeRequests <= 0 || Mathf.FloorToInt(Time.time) % 10 == 0) && m_navmeshRebakeRequests <= 3) {
+            return;
+        }
+
+        RoomGenerator.NavMeshSurface.BuildNavMesh();
+        m_navmeshRebakeRequests = 0;
     }
 }
