@@ -17,6 +17,7 @@ public class KrampusAnimator : KrampusBehaviour {
     [BoxGroup("Sounds")][SerializeField] private Sex m_tongueSoundBite;
     [BoxGroup("Sounds")][SerializeField] private Sex m_windupSoundBite;
     [BoxGroup("Sounds")][SerializeField] private Sex m_crackSoundBite;
+    [BoxGroup("Sounds")][SerializeField] private Sex m_deathSoundBite;
 
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathProperty, m_wakeupProperty;
 
@@ -111,6 +112,7 @@ public class KrampusAnimator : KrampusBehaviour {
             case (_, KrampusController.State.Dead):
                 m_runningEffect.Stop();
                 m_animator.SetTrigger(m_deathProperty);
+                m_deathSoundBite.Play(transform.position,1f);
                 break;
         }
     }
