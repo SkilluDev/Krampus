@@ -78,6 +78,7 @@ public class KrampusController : KrampusBehaviour {
 		if (Game.MainGameInfo.Timer.GameTime < 0) {
 			Debug.Log("dead as hell");
 			KrampTermination(Ending.LoseTime);
+			return;
 		}
 		float acceleration = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;
 
