@@ -84,6 +84,8 @@ public class MainGameInfo : LevelInfo {
         Won
     }
 
+public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
+
     public bool Ballin => CurrentState == State.Game;
 
     public void SetState(State state) {
@@ -175,7 +177,7 @@ public class MainGameInfo : LevelInfo {
     public void ProcessEndGame(Ending ending) {
         switch (ending){
             case Ending.Win:
-                Game.MainGameInfo.SetState(MainGameInfo.State.Over);
+                Game.MainGameInfo.SetState(MainGameInfo.State.Won);
                 break;
             case Ending.LoseNun:
                 Game.MainGameInfo.SetState(MainGameInfo.State.Over);

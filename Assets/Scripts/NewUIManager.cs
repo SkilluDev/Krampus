@@ -119,7 +119,7 @@ public class NewUIManager : MonoBehaviour {
     }
 
     public void SwitchPauseMenu() {
-        if (m_currentGameState != MainGameInfo.State.Over) {
+        if (m_currentGameState != MainGameInfo.Ended) {
             if (m_currentGameState == MainGameInfo.State.Paused) {
                 Game.MainGameInfo.SetState(MainGameInfo.State.Game);
                 m_pauseScreen.SetActive(false);
@@ -159,7 +159,7 @@ public class NewUIManager : MonoBehaviour {
         if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
             Game.MainGameInfo.ProcessEndGame(Ending.Win);
         }
-        if (m_currentGameState == MainGameInfo.State.Over || m_currentGameState == MainGameInfo.State.Paused || m_currentGameState == MainGameInfo.State.Won) {//if the game is over, won, or paused, you can
+        if (m_currentGameState == MainGameInfo.Ended || m_currentGameState == MainGameInfo.State.Paused || m_currentGameState == MainGameInfo.State.Won) {//if the game is over, won, or paused, you can
             if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
                 Game.MainGameInfo.SetState(MainGameInfo.State.Game);
                 Game.LoadState(Game.State.MainMenu);
