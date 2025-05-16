@@ -242,7 +242,6 @@ public class NewUIManager : MonoBehaviour {
 
     public void UIElementsEntryAnimation()
     {
-        Debug.Log("Entry");
 	    m_uiBlockLeft.gameObject.SetActive(true);
 	    LMotion.Create(-200, 50, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition =new Vector2( x,m_uiBlockLeft.anchoredPosition.y));
 	    m_uiBlockRight.gameObject.SetActive(true);

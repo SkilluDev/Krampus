@@ -36,7 +36,6 @@ public class TutorialHandler : MonoBehaviour
     {
         //LMB to go forward RMB to skip
         if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame() && gameObject.activeSelf){
-            Debug.Log("Should quit tutorial now");
             if (m_handle.IsActive()) m_handle.Cancel();
             gameObject.SetActive(false);
             Game.MainGameInfo.UI.UIElementsEntryAnimation();
