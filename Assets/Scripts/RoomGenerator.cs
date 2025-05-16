@@ -36,24 +36,10 @@ public class RoomGenerator : RoomGeneratorBase {
 	public override IReadOnlyCollection<Room> Rooms => m_placedRooms;
 
 	public override void Prepare() {
-		switch (Game.RoomGenInfo.Regenerate) {
-			case RoomGenerationType.First:
-				Game.RoomGenInfo.SetInitialSeed();
-				break;
-			case RoomGenerationType.New:
-				Game.RoomGenInfo.SetNewSeed();
-				break;
-			case RoomGenerationType.Old:
-				break;
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
 	}
 
 	public override IEnumerator Generate() {
-		Random.InitState(Game.RoomGenInfo.Seed);
 		Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
-
 		yield return null;
 		void Init() {
 

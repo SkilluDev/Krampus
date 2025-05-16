@@ -98,6 +98,22 @@ public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
     }
 
     private void Awake() {
+	    switch (Game.RoomGenInfo.Regenerate) {
+		    case RoomGenerationType.First:
+			    Game.RoomGenInfo.SetInitialSeed();
+			    break;
+		    case RoomGenerationType.New:
+			    Game.RoomGenInfo.SetNewSeed();
+			    break;
+		    case RoomGenerationType.Old:
+			    break;
+		    default:
+			    throw new ArgumentOutOfRangeException();
+	    }
+
+	    Random.InitState(Game.RoomGenInfo.Seed);
+
+
         CurrentState = State.Intro;
         GoodChildType = Types.NullIfEmpty()?.UnityRandomElement();
         UI.SetChildrenIcon(GoodChildType.uiIcon);
