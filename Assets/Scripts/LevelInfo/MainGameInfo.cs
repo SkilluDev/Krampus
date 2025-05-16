@@ -91,8 +91,8 @@ public class MainGameInfo : LevelInfo {
     }
     [NaughtyAttributes.Button("Press To Win")]
     public void DebugWinButton() {
-        SetState(State.Won);
-        Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
+		ProcessEndGame(Ending.Win);
+        //Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
     }
 
     private void Awake() {
@@ -175,7 +175,7 @@ public class MainGameInfo : LevelInfo {
     public void ProcessEndGame(Ending ending) {
         switch (ending){
             case Ending.Win:
-                Game.MainGameInfo.SetState(MainGameInfo.State.Won);
+                Game.MainGameInfo.SetState(MainGameInfo.State.Over);
                 break;
             case Ending.LoseNun:
                 Game.MainGameInfo.SetState(MainGameInfo.State.Over);
