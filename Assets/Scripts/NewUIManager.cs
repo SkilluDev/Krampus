@@ -36,6 +36,10 @@ public class NewUIManager : MonoBehaviour {
 
 
 
+
+
+
+
     [BoxGroup("Pause Screen")] [SerializeField] private Image m_resumePauseButton;
     [BoxGroup("Pause Screen")] [SerializeField] private Image m_restartPauseButton;
     [BoxGroup("Pause Screen")] [SerializeField] private Image m_rerollPauseButton;
@@ -52,9 +56,11 @@ public class NewUIManager : MonoBehaviour {
 
 
     [BoxGroup("Score Board")][SerializeField] private GameObject m_scoreboard;
-
-
     [BoxGroup("Score Board")][SerializeField] private TextMeshProUGUI m_childPerMinuteText;
+
+
+
+
     [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
     [BoxGroup("End Screen")][SerializeField] private EndScreenHandler m_endScreenHandler;
@@ -149,7 +155,7 @@ public class NewUIManager : MonoBehaviour {
 
 
         if (InputSubscribe.Raw.UI.Pause.triggered) {if(Game.MainGameInfo.CurrentState != MainGameInfo.State.Intro) SwitchPauseMenu();}
-        
+
         if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
             Game.MainGameInfo.ProcessEndGame(Ending.Win);
         }
