@@ -140,17 +140,14 @@ public class KrampusController : KrampusBehaviour {
 
 	public void KrampTermination(Ending ending) {
 		if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Over) {
-			Debug.Log("already dead");
 			return;
 		}
 
-		Debug.Log("termination");
 		Game.MainGameInfo.SetState(MainGameInfo.State.Over);
 		ChangeState(State.Dead, StateChangeReason.Rapid);
 		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
 		m_rigidbody.velocity = Vector3.zero;
 		m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-		Game.MusicMan.StopMusic();
 		StartCoroutine(DeathTimer(ending));
 	}
 
@@ -183,7 +180,7 @@ public class KrampusController : KrampusBehaviour {
 
 	private IEnumerator DeathTimer(Ending ending) {
 		yield return new WaitForSeconds(1);
-		Game.MainGameInfo.UI.ProcessEndGame(ending);
+		Game.MainGameInfo.ProcessEndGame(ending);
 	}
 
 	public void MoveTo(Vector3 position) {

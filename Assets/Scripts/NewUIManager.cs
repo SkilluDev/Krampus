@@ -114,22 +114,6 @@ public class NewUIManager : MonoBehaviour {
         m_currentSeed.text = $"Map seed: {seed:0000000}<br>";
     }
 
-    public void ProcessEndGame(Ending ending) {
-        switch (ending){
-            case Ending.Win:
-                Game.MainGameInfo.SetState(MainGameInfo.State.Won);
-                break;
-            case Ending.LoseNun:
-                Game.MainGameInfo.SetState(MainGameInfo.State.Over);
-                break;
-            case Ending.LoseTime:
-                Game.MainGameInfo.SetState(MainGameInfo.State.Over);
-                break;
-        }
-        m_endScreenHandler.Activate(ending);
-        DisplayScoreBoard();
-    }
-
     public void SwitchPauseMenu() {
         if (m_currentGameState != MainGameInfo.State.Over) {
             if (m_currentGameState == MainGameInfo.State.Paused) {
@@ -169,7 +153,7 @@ public class NewUIManager : MonoBehaviour {
         if (InputSubscribe.Raw.UI.Pause.triggered) {if(Game.MainGameInfo.CurrentState != MainGameInfo.State.Intro) SwitchPauseMenu();}
         
         if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
-            ProcessEndGame(Ending.Win);
+            Game.MainGameInfo.ProcessEndGame(Ending.Win);
         }
         if (m_currentGameState == MainGameInfo.State.Over || m_currentGameState == MainGameInfo.State.Paused || m_currentGameState == MainGameInfo.State.Won) {//if the game is over, won, or paused, you can
             if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
@@ -262,5 +246,10 @@ public class NewUIManager : MonoBehaviour {
 	    LMotion.Create(-200, 50, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition =new Vector2( x,m_uiBlockLeft.anchoredPosition.y));
 	    m_uiBlockRight.gameObject.SetActive(true);
 	    LMotion.Create(300, -50, 0.375f).Bind(x => m_uiBlockRight.anchoredPosition =new Vector2( x,m_uiBlockRight.anchoredPosition.y));
+    }
+
+	public void ProcessEnding(Ending ending) {
+        m_endScreenHandler.Activate(ending);
+        DisplayScoreBoard();
     }
 }

@@ -171,4 +171,20 @@ public class MainGameInfo : LevelInfo {
         RoomGenerator.NavMeshSurface.BuildNavMesh();
         m_navmeshRebakeRequests = 0;
     }
+
+    public void ProcessEndGame(Ending ending) {
+        switch (ending){
+            case Ending.Win:
+                Game.MainGameInfo.SetState(MainGameInfo.State.Won);
+                break;
+            case Ending.LoseNun:
+                Game.MainGameInfo.SetState(MainGameInfo.State.Over);
+                break;
+            case Ending.LoseTime:
+                Game.MainGameInfo.SetState(MainGameInfo.State.Over);
+                break;
+        }
+        UI.ProcessEnding(ending);
+		Game.MusicMan.StopMusic();
+    }
 }
