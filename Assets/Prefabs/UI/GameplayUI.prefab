@@ -3997,7 +3997,7 @@ MonoBehaviour:
   m_sneakImage: {fileID: 0}
   m_scoreboard: {fileID: 1967520264344546960}
   m_childPerMinuteText: {fileID: 3751176815264223431}
-  m_tutorial: {fileID: 8244151070965387798}
+  m_tutorial: {fileID: 0}
   m_endScreenHandler: {fileID: 8443022075738394590}
   m_restartEndScreenButton: {fileID: 3189426830583655897}
   m_rerollEndScreenButton: {fileID: 7050032078638813713}
@@ -4941,10 +4941,20 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 858076277525086317, guid: 01fc9c0b49256e64388c831467cc2ba4,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2516560218190323909, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7447112398751125353, guid: 01fc9c0b49256e64388c831467cc2ba4,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7812290334681721095, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
@@ -4977,15 +4987,3 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1096488404154288221}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8244151070965387798 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9033827076456569419, guid: 01fc9c0b49256e64388c831467cc2ba4,
-    type: 3}
-  m_PrefabInstance: {fileID: 1096488404154288221}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ab465685bdd08440b762ccbbf321a7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
