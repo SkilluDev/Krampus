@@ -84,6 +84,8 @@ public class MainGameInfo : LevelInfo {
         Won
     }
 
+public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
+
     public bool Ballin => CurrentState == State.Game;
 
     public void SetState(State state) {
@@ -91,8 +93,8 @@ public class MainGameInfo : LevelInfo {
     }
     [NaughtyAttributes.Button("Press To Win")]
     public void DebugWinButton() {
-        SetState(State.Won);
-        Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
+		ProcessEndGame(Ending.Win);
+        //Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
     }
 
     private void Awake() {
