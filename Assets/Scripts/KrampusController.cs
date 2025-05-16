@@ -139,7 +139,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void KrampTermination(Ending ending) {
-		if (Game.MainGameInfo.CurrentState == MainGameInfo.Ended) {
+		if (Game.MainGameInfo.Ended) {
 			return;
 		}
 		ChangeState(State.Dead, StateChangeReason.Rapid);
