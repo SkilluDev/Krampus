@@ -16,8 +16,6 @@ public class TutorialHandler : MonoBehaviour
     [SerializeField] private float m_rotateAngle;
     [SerializeField] private float m_slideLength;
 
-    [SerializeField] private GameObject m_tutorialText;
-
     [SerializeField] private GameObject m_tutorialHolder;
 
     private float m_distanceBetween = 1f;
@@ -37,10 +35,11 @@ public class TutorialHandler : MonoBehaviour
 	private void Update()
     {
         //LMB to go forward RMB to skip
-        if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame()){
+        if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame() && gameObject.activeSelf){
             Debug.Log("Should quit tutorial now");
             if (m_handle.IsActive()) m_handle.Cancel();
-            gameObject.transform.parent.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+            Game.MainGameInfo.UI.UIElementsEntryAnimation();
         }
         if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
             MoveBack(m_tutorialCounter++%m_tutorials.Length);
@@ -54,7 +53,7 @@ public class TutorialHandler : MonoBehaviour
 
         var page = m_tutorials[id].transform;
         var oldLocalPosition = page.localPosition;
-        var oldLocalMainPosition = transform.localPosition;
+        var oldLocalMainPosition = m_tutorialHolder.transform.localPosition;
 
         var oldPosition = page.position;
         var oldRotation = page.rotation;
@@ -77,7 +76,7 @@ public class TutorialHandler : MonoBehaviour
         var nextLocalMainPosition = currentLocalMainPosition-Vector3.right*m_slideLength;
 
         lSequence.Join(LMotion.Create(currentLocalMainPosition, nextLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToLocalPosition(transform));
+        .BindToLocalPosition(m_tutorialHolder.transform));
 
         currentLocalPagePosition = nextLocalPagePosition;
         nextLocalPagePosition = currentLocalPagePosition-Vector3.forward*(m_tutorials.Length+1)*m_distanceBetween;
@@ -98,19 +97,19 @@ public class TutorialHandler : MonoBehaviour
         nextLocalMainPosition = currentLocalMainPosition+Vector3.right*m_slideLength;
 
         lSequence.Join(LMotion.Create(currentLocalMainPosition, nextLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToLocalPosition(transform));
+        .BindToLocalPosition(m_tutorialHolder.transform));
 
         currentLocalMainPosition = nextLocalMainPosition;
         nextLocalMainPosition = currentLocalMainPosition+Vector3.forward*m_distanceBetween;
 
         lSequence.Append(LMotion.Create(currentLocalMainPosition, nextLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
-        .WithOnComplete(()=>m_isMoving=false).BindToLocalPosition(transform));
+        .WithOnComplete(()=>m_isMoving=false).BindToLocalPosition(m_tutorialHolder.transform));
 
         m_tutorials[id].transform.position = oldPosition;
         m_tutorials[id].transform.localPosition = oldLocalPosition;
 
         m_tutorials[id].transform.rotation = oldRotation;
-        transform.localPosition = oldLocalMainPosition;
+        m_tutorialHolder.transform.localPosition = oldLocalMainPosition;
 
         m_handle = lSequence.Run();
     }
