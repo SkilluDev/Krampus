@@ -112,7 +112,7 @@ public class KrampusAnimator : KrampusBehaviour {
                 break;
             case (_, KrampusController.State.Dead):
                 m_runningEffect.Stop();
-                m_animator.SetTrigger(m_deathProperty);
+                m_animator.SetBool(m_deathProperty,true);
 
                 m_deathSoundBite.Play(transform.position,1f);
 				m_animator.SetLayerWeight(1,0);
