@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using KrampUtils;
@@ -97,22 +98,24 @@ public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
         //Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
     }
 
-    private void Awake() {
-	    switch (Game.RoomGenInfo.Regenerate) {
-		    case RoomGenerationType.First:
-			    Game.RoomGenInfo.SetInitialSeed();
-			    break;
-		    case RoomGenerationType.New:
-			    Game.RoomGenInfo.SetNewSeed();
-			    break;
-		    case RoomGenerationType.Old:
-			    break;
-		    default:
-			    throw new ArgumentOutOfRangeException();
-	    }
+	private IEnumerator Start() {
+        yield return new WaitUntil(() => Game.RoomGenInfo != null);
+
+        switch (Game.RoomGenInfo.Regenerate) {
+            case RoomGenerationType.First:
+                Game.RoomGenInfo.SetInitialSeed();
+                break;
+            case RoomGenerationType.New:
+                Game.RoomGenInfo.SetNewSeed();
+                break;
+            case RoomGenerationType.Old:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
 
 	    Random.InitState(Game.RoomGenInfo.Seed);
-
+		Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
 
         CurrentState = State.Intro;
         GoodChildType = Types.NullIfEmpty()?.UnityRandomElement();
