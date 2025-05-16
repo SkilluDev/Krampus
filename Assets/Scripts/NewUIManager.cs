@@ -12,7 +12,6 @@ using UnityEngine.UI;
 
 public class NewUIManager : MonoBehaviour {
 
-    [SerializeField] private TextMeshProUGUI m_remainingChildCount;
     [SerializeField] private TextMeshProUGUI m_currentSeed;
     [SerializeField] private GameObject m_pauseScreen;
     [SerializeField] private Transform m_timer;
@@ -40,10 +39,10 @@ public class NewUIManager : MonoBehaviour {
 
 
 
-    [BoxGroup("Pause Screen")] [SerializeField] private Image m_resumePauseButton;
-    [BoxGroup("Pause Screen")] [SerializeField] private Image m_restartPauseButton;
-    [BoxGroup("Pause Screen")] [SerializeField] private Image m_rerollPauseButton;
-    [BoxGroup("Pause Screen")] [SerializeField] private Image m_menuPauseButton;
+    [BoxGroup("Pause Screen")][SerializeField] private Image m_resumePauseButton;
+    [BoxGroup("Pause Screen")][SerializeField] private Image m_restartPauseButton;
+    [BoxGroup("Pause Screen")][SerializeField] private Image m_rerollPauseButton;
+    [BoxGroup("Pause Screen")][SerializeField] private Image m_menuPauseButton;
 
 
 
@@ -64,26 +63,26 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
     [BoxGroup("End Screen")][SerializeField] private EndScreenHandler m_endScreenHandler;
-    [BoxGroup("End Screen")] [SerializeField] private Image m_restartEndScreenButton;
-    [BoxGroup("End Screen")] [SerializeField] private Image m_rerollEndScreenButton;
-    [BoxGroup("End Screen")] [SerializeField] private Image m_menuEndScreenButton;
+    [BoxGroup("End Screen")][SerializeField] private Image m_restartEndScreenButton;
+    [BoxGroup("End Screen")][SerializeField] private Image m_rerollEndScreenButton;
+    [BoxGroup("End Screen")][SerializeField] private Image m_menuEndScreenButton;
 
 
     [BoxGroup("Intro")][SerializeField] private Image m_topBarImage;
     [BoxGroup("Intro")][SerializeField] private Image m_bottomBarImage;
-    [BoxGroup("Intro")] [SerializeField] private Image m_quitButtonImage;
+    [BoxGroup("Intro")][SerializeField] private Image m_quitButtonImage;
 
 
-    [BoxGroup("UI Blocks")] [SerializeField] private RectTransform m_uiBlockLeft;
-    [BoxGroup("UI Blocks")] [SerializeField] private RectTransform m_uiBlockRight;
+    [BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockLeft;
+    [BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockRight;
 
     [Button]
-    private void EatGoodChild(){
+    private void EatGoodChild() {
         OnChildEaten(Game.MainGameInfo.GoodChildType);
     }
 
     [Button]
-    private void EatBadChild(){
+    private void EatBadChild() {
         OnChildEaten(Game.MainGameInfo.RandomBadChildType);
     }
     private void OnChildEaten(ChildType childType) {
@@ -93,19 +92,19 @@ public class NewUIManager : MonoBehaviour {
             destinationColor = m_goodTimerColor;
             ChangeChildCounter();
             Vector3 oldScale = m_timer.localScale;
-            Vector3 newScale = oldScale*m_timerBounceIntensity;
+            Vector3 newScale = oldScale * m_timerBounceIntensity;
             //Scrapped, Krampus always walking
             //(Game.MainGameInfo.Krampus.Kontroller.CurrentState is not KrampusController.State.Walk?1f:0.9f);
-            LMotion.Create(oldScale, newScale, m_timerShakeDuration/2).WithEase(Ease.OutElastic).WithOnComplete(
-                ()=>LMotion.Create(newScale, oldScale, m_timerShakeDuration/2).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
+            LMotion.Create(oldScale, newScale, m_timerShakeDuration / 2).WithEase(Ease.OutElastic).WithOnComplete(
+                () => LMotion.Create(newScale, oldScale, m_timerShakeDuration / 2).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
             ).BindToLocalScale(m_timer);
 
-            LMotion.Shake.Create(m_timer.localPosition, Vector3.one*m_timerShakeIntensity/5, m_timerShakeDuration).WithEase(Ease.InOutQuad).BindToLocalPosition(m_timer);
+            LMotion.Shake.Create(m_timer.localPosition, Vector3.one * m_timerShakeIntensity / 5, m_timerShakeDuration).WithEase(Ease.InOutQuad).BindToLocalPosition(m_timer);
 
-        //Negative feedback
+            //Negative feedback
         } else {
             destinationColor = m_badTimerColor;
-            LMotion.Shake.Create(m_timer.localPosition, Vector3.one*m_timerShakeIntensity, m_timerShakeDuration).WithEase(Ease.InOutQuad).BindToLocalPosition(m_timer);
+            LMotion.Shake.Create(m_timer.localPosition, Vector3.one * m_timerShakeIntensity, m_timerShakeDuration).WithEase(Ease.InOutQuad).BindToLocalPosition(m_timer);
         }
 
         LMotion.Create(m_timerDisplay.Color, destinationColor, 0.1f).WithEase(Ease.InOutCubic).WithOnComplete(
@@ -140,7 +139,6 @@ public class NewUIManager : MonoBehaviour {
 
         m_currentGameState = Game.MainGameInfo.CurrentState;
         var col = Game.MainGameInfo.GoodChildType;
-        m_remainingChildCount.text = $"<color=#{ColorUtility.ToHtmlStringRGB(col.color)}>Do not eat: {col.shape.name}</color><br>Remaining children: {Game.MainGameInfo.Children.Count}";
         if (Game.MainGameInfo.BadChildrenCountOnStart > 0) {
 
         }
@@ -154,7 +152,7 @@ public class NewUIManager : MonoBehaviour {
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
 
 
-        if (InputSubscribe.Raw.UI.Pause.triggered) {if(Game.MainGameInfo.CurrentState != MainGameInfo.State.Intro) SwitchPauseMenu();}
+        if (InputSubscribe.Raw.UI.Pause.triggered) { if (Game.MainGameInfo.CurrentState != MainGameInfo.State.Intro) SwitchPauseMenu(); }
 
         if (!Game.MainGameInfo.BadChildren.Any() && Game.Balling) {
             Game.MainGameInfo.ProcessEndGame(Ending.Win);
@@ -213,48 +211,54 @@ public class NewUIManager : MonoBehaviour {
         m_sneakImage.sprite = bs.sneak_Button;
         m_attackImage.sprite = bs.attack_Button;
         m_quitButtonImage.sprite = bs.quit_Button;
-		//==
+        //==
 
-		m_restartEndScreenButton.sprite = bs.restart_Button;
-		m_rerollEndScreenButton.sprite = bs.reload_Button;
-		m_menuEndScreenButton.sprite = bs.backToMenu_Button;
+        m_restartEndScreenButton.sprite = bs.restart_Button;
+        m_rerollEndScreenButton.sprite = bs.reload_Button;
+        m_menuEndScreenButton.sprite = bs.backToMenu_Button;
 
         //==
         m_rerollPauseButton.sprite = bs.reload_Button;
-       m_restartPauseButton.sprite = bs.restart_Button;
-       m_menuPauseButton.sprite = bs.backToMenu_Button;
-       m_resumePauseButton.sprite = bs.pause_Button;
-       //==
+        m_restartPauseButton.sprite = bs.restart_Button;
+        m_menuPauseButton.sprite = bs.backToMenu_Button;
+        m_resumePauseButton.sprite = bs.pause_Button;
+        //==
     }
 
     public void DisplayScoreBoard() {
-	    m_scoreboard.SetActive(true);
-	    float time = (Game.MainGameInfo.timeFromStart / 60);
-	    float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
-	    Debug.Log(val);
-	    LMotion.Create(0, val , 2).WithEase(Ease.OutExpo)
+        m_scoreboard.SetActive(true);
+        float time = (Game.MainGameInfo.timeFromStart / 60);
+        float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
+        Debug.Log(val);
+        LMotion.Create(0, val, 2).WithEase(Ease.OutExpo)
         .Bind(x => m_childPerMinuteText.SetText(x.ToString("#.00")));
     }
 
     public void HideBlackBars(bool showTutorial) {
-	    float basedYSize = m_bottomBarImage.rectTransform.sizeDelta.y;
-	    LMotion.Create(basedYSize,0,0.75f).Bind(x=>m_bottomBarImage.rectTransform.sizeDelta=new Vector2(m_bottomBarImage.rectTransform.sizeDelta.x,x));
-	    LMotion.Create(basedYSize,0,0.75f).Bind(x=>m_topBarImage.rectTransform.sizeDelta=new Vector2(m_topBarImage.rectTransform.sizeDelta.x,x));
-	    if(!showTutorial) return;
-	    if(Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.SetActive(true);
+        float basedYSize = m_bottomBarImage.rectTransform.sizeDelta.y;
+        LMotion.Create(basedYSize, 0, 0.75f).Bind(x => m_bottomBarImage.rectTransform.sizeDelta = new Vector2(m_bottomBarImage.rectTransform.sizeDelta.x, x));
+        LMotion.Create(basedYSize, 0, 0.75f).Bind(x => m_topBarImage.rectTransform.sizeDelta = new Vector2(m_topBarImage.rectTransform.sizeDelta.x, x));
+        if (!showTutorial) return;
+        if (Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.SetActive(true);
     }
 
-    public void UIElementsEntryAnimation()
-    {
+    public void UIElementsEntryAnimation() {
         Debug.Log("Entry");
-	    m_uiBlockLeft.gameObject.SetActive(true);
-	    LMotion.Create(-200, 50, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition =new Vector2( x,m_uiBlockLeft.anchoredPosition.y));
-	    m_uiBlockRight.gameObject.SetActive(true);
-	    LMotion.Create(300, -50, 0.375f).Bind(x => m_uiBlockRight.anchoredPosition =new Vector2( x,m_uiBlockRight.anchoredPosition.y));
+        m_uiBlockLeft.gameObject.SetActive(true);
+        LMotion.Create(-200, 50, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition = new Vector2(x, m_uiBlockLeft.anchoredPosition.y));
+        m_uiBlockRight.gameObject.SetActive(true);
+        LMotion.Create(300, -50, 0.375f).Bind(x => m_uiBlockRight.anchoredPosition = new Vector2(x, m_uiBlockRight.anchoredPosition.y));
     }
 
-	public void ProcessEnding(Ending ending) {
+    public void ProcessEnding(Ending ending) {
         m_endScreenHandler.Activate(ending);
         DisplayScoreBoard();
+    }
+
+    public void PopupTimer() {
+        var oldScale = m_timer.localScale;
+        LMotion.Create(oldScale, oldScale*1.3f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+			    ()=>LMotion.Create( oldScale*1.3f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
+		    ).BindToLocalScale(m_timer);   
     }
 }

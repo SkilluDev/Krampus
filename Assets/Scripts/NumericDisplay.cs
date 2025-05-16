@@ -59,6 +59,7 @@ public class NumericDisplay : MonoBehaviour {
             int lsd = integral % 10;
             if (i == 0 && lsd != oldInt && value < popUpTime) {
 	            Popup();
+                Game.MainGameInfo.UI.PopupTimer();
 	            oldInt = lsd;
             }
 

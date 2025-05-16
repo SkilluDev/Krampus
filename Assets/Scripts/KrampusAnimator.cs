@@ -83,6 +83,7 @@ public class KrampusAnimator : KrampusBehaviour {
     }
 
     public void MovementStateChanged(KrampusController.State previous, KrampusController.State current, KrampusController.StateChangeReason reason) {
+        if (previous == current) return;
         switch ((previous, current)) {
             case (KrampusController.State.Run, KrampusController.State.Idle):
                 if (reason == KrampusController.StateChangeReason.Rapid) {
@@ -112,7 +113,7 @@ public class KrampusAnimator : KrampusBehaviour {
             case (_, KrampusController.State.Dead):
                 m_runningEffect.Stop();
                 m_animator.SetTrigger(m_deathProperty);
-                m_deathSoundBite.Play(transform.position,1f);
+                m_deathSoundBite.Play(transform.position, 1f);
                 break;
         }
     }
