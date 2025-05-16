@@ -181,7 +181,7 @@ public class NewUIManager : MonoBehaviour {
     private void Ready() {
         Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
         m_originalTimerColor = m_timerDisplay.Color;
-        m_tutorial.gameObject.transform.parent.gameObject.SetActive(false);
+        m_tutorial.gameObject.SetActive(false);
         m_uiBlockLeft.gameObject.SetActive(false);
         m_uiBlockRight.gameObject.SetActive(false);
 
@@ -237,7 +237,7 @@ public class NewUIManager : MonoBehaviour {
 	    LMotion.Create(basedYSize,0,0.75f).Bind(x=>m_bottomBarImage.rectTransform.sizeDelta=new Vector2(m_bottomBarImage.rectTransform.sizeDelta.x,x));
 	    LMotion.Create(basedYSize,0,0.75f).Bind(x=>m_topBarImage.rectTransform.sizeDelta=new Vector2(m_topBarImage.rectTransform.sizeDelta.x,x));
 	    if(!showTutorial) return;
-	    if(Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.transform.parent.gameObject.SetActive(true);
+	    if(Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.SetActive(true);
     }
 
     public void UIElementsEntryAnimation()

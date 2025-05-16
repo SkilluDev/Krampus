@@ -18,6 +18,8 @@ public class TutorialHandler : MonoBehaviour
 
     [SerializeField] private GameObject m_tutorialText;
 
+    [SerializeField] private GameObject m_tutorialHolder;
+
     private float m_distanceBetween = 1f;
 
     private bool m_isMoving = false;
@@ -26,9 +28,9 @@ public class TutorialHandler : MonoBehaviour
 
 
 	private void Awake() {
-        m_tutorials = new Transform[gameObject.transform.childCount];
+        m_tutorials = new Transform[m_tutorialHolder.transform.childCount];
         for (int i = 0;i<m_tutorials.Length;i++){
-            m_tutorials[m_tutorials.Length-1-i] = gameObject.transform.GetChild(i);
+            m_tutorials[m_tutorials.Length-1-i] = m_tutorialHolder.transform.GetChild(i);
             m_tutorials[m_tutorials.Length-1-i].transform.localPosition += new Vector3(0,0,m_distanceBetween*i);
         }
 	}
