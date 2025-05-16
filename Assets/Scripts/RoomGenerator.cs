@@ -36,10 +36,10 @@ public class RoomGenerator : RoomGeneratorBase {
 	public override IReadOnlyCollection<Room> Rooms => m_placedRooms;
 
 	public override void Prepare() {
+		
 	}
 
 	public override IEnumerator Generate() {
-		Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
 		yield return null;
 		void Init() {
 

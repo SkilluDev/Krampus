@@ -152,7 +152,7 @@ public class NewUIManager : MonoBehaviour {
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
 
 
-        if (InputSubscribe.Raw.UI.Pause.triggered) { if (Game.MainGameInfo.CurrentState != MainGameInfo.State.Intro) SwitchPauseMenu(); }
+        if (InputSubscribe.Raw.UI.Pause.triggered) { if (Game.Balling || Game.MainGameInfo.CurrentState == MainGameInfo.State.Paused) SwitchPauseMenu(); }
 
         if (!Game.MainGameInfo.BadChildren.Any() && Game.Balling) {
             Game.MainGameInfo.ProcessEndGame(Ending.Win);

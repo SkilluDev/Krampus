@@ -76,7 +76,6 @@ public class KrampusController : KrampusBehaviour {
 
 		//		Debug.LogWarning(Game.MainGameInfo.Timer);
 		if (Game.MainGameInfo.Timer.GameTime < 0) {
-			Debug.Log("dead as hell");
 			KrampTermination(Ending.LoseTime);
 			return;
 		}
