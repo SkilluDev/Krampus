@@ -3,6 +3,7 @@ using KrampInput;
 using UnityEngine.InputSystem;
 using System;
 using System.Linq;
+using UnityEngine.Events;
 
 public class InputSubscribe : MonoBehaviour {
 	[Serializable]
@@ -20,7 +21,7 @@ public class InputSubscribe : MonoBehaviour {
 		}
 	}
 
-
+	public static UnityEvent onChanged = new UnityEvent();
 
 	public static Vector2 Movement => Raw.Player.Move.ReadValue<Vector2>();
 
@@ -44,6 +45,7 @@ public class InputSubscribe : MonoBehaviour {
 		if (InputMethod == method) return;
 		Shutdown();
 		InputMethod = method;
+		onChanged.Invoke();
 		Init(method.ToString());
 	}
 
