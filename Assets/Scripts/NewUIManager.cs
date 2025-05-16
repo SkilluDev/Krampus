@@ -156,10 +156,10 @@ public class NewUIManager : MonoBehaviour {
 
         if (InputSubscribe.Raw.UI.Pause.triggered) {if(Game.MainGameInfo.CurrentState != MainGameInfo.State.Intro) SwitchPauseMenu();}
 
-        if (!Game.MainGameInfo.BadChildren.Any() && !Game.IsLoading) {
+        if (!Game.MainGameInfo.BadChildren.Any() && Game.Balling) {
             Game.MainGameInfo.ProcessEndGame(Ending.Win);
         }
-        if (m_currentGameState == MainGameInfo.State.Over || m_currentGameState == MainGameInfo.State.Paused || m_currentGameState == MainGameInfo.State.Won) {//if the game is over, won, or paused, you can
+        if (Game.MainGameInfo.Ended || m_currentGameState == MainGameInfo.State.Paused) {//if the game is over, won, or paused, you can
             if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
                 Game.MainGameInfo.SetState(MainGameInfo.State.Game);
                 Game.LoadState(Game.State.MainMenu);
