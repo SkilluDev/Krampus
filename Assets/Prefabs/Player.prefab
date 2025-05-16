@@ -293,6 +293,9 @@ MonoBehaviour:
   m_runningEffect: {fileID: 6316473740624689383}
   m_catchSoundBite: {fileID: 0}
   m_tongueSoundBite: {fileID: 0}
+  m_windupSoundBite: {fileID: 0}
+  m_crackSoundBite: {fileID: 0}
+  m_deathSoundBite: {fileID: 0}
   m_speedProperty: -823668238
   m_stopProperty: 426031496
   m_tongueOutProperty: 1294476412
@@ -388,8 +391,8 @@ MonoBehaviour:
   m_inputDragSmoothing: 10
   m_inputMousePlaneY: 0
   m_sequence:
-    windup: 0.4
-    extend: 0.2
+    windup: 0.3
+    extend: 0.15
     extendCurve:
       serializedVersion: 2
       m_Curve:
@@ -415,7 +418,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     preRetreat: 0.2
-    retreat: 0.7
+    retreat: 0.5
     retreatCurve:
       serializedVersion: 2
       m_Curve:

@@ -710,12 +710,27 @@ PrefabInstance:
     - target: {fileID: 3944140474802890157, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5060564542426846866, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5340612051506087238, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: popUpTime
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5340612051506087238, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: popUpSize.x
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 5340612051506087238, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: popUpSize.y
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 6385976074492002763, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
@@ -1000,6 +1015,21 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 1991711019}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_sequence.extend
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_sequence.windup
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_sequence.retreat
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_interactionSearchMask.m_Bits
