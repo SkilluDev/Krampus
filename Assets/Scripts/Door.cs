@@ -3,6 +3,7 @@ using System.Linq;
 using NaughtyAttributes;
 using Sound;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Door : Passage, IInteractable {
     public bool IsOpen { get; private set; }
@@ -17,6 +18,9 @@ public class Door : Passage, IInteractable {
     [SerializeField] private Transform m_flap1, m_flap2;
     [SerializeField] private float m_stunDuration;
     [SerializeField] private float m_stunLinger = 0.3f;
+
+
+    [SerializeField] private VisualEffect doorBurst;
 
     private float m_stunTime;
 
@@ -60,6 +64,7 @@ public class Door : Passage, IInteractable {
             Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
             Game.MainGameInfo.GetRoomData(B).MakeNoise(transform.position, m_noiseDistance, actor);
             m_doorOpen.Play(transform.position, 1f);
+
         } else {
             m_doorOpen.Play(transform.position, 0.4f);
         }
@@ -72,6 +77,8 @@ public class Door : Passage, IInteractable {
 
         if (swiftly) {
             m_stunTime = m_stunLinger;
+            doorBurst.transform.localRotation = Quaternion.Euler(0, 90*(m_animator.GetBool(m_invertProperty)?1:-1), 0);
+            doorBurst.Play();
             foreach (var w in m_charactersInDoor) {
                 if (w is Nun n) n.Stun(m_stunDuration);
             }
