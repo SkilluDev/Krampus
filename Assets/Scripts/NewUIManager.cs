@@ -6,8 +6,6 @@ using LitMotion.Extensions;
 using NaughtyAttributes;
 using Roomgen;
 using TMPro;
-using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
