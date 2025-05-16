@@ -193,7 +193,7 @@ MonoBehaviour:
       type: 3}
     m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
       mscorlib],[System.Object, mscorlib]], mscorlib","name":"Quality","options":{"$type":"System.String[],
-      mscorlib","$values":["High","Low"]},"defaultValue":1}'
+      mscorlib","$values":["High","Low"]},"defaultValue":0}'
   - setting: {fileID: 5415522017811518503, guid: f887e235ff0f18992b46cdb3b4a5617d,
       type: 3}
     m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
@@ -788,6 +788,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_gameMusicLayer1: {fileID: 331384709}
   m_gameMusicLayer2: {fileID: 1468845024}
+  m_fadeOutTime: 5
 --- !u!1 &951086460
 GameObject:
   m_ObjectHideFlags: 0
