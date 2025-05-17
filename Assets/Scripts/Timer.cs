@@ -11,6 +11,8 @@ public class Timer : MonoBehaviour {
 
 	[SerializeField] private float m_changeDuration;
 
+	private int m_lastDigit;
+
 	private void OnChildEaten(ChildType childType) {
 		if (childType == Game.MainGameInfo.GoodChildType) {
 			Penalty();
@@ -28,11 +30,18 @@ public class Timer : MonoBehaviour {
 		if (!Game.Balling) return;
 		GameTime -= Time.deltaTime;
 		Game.MainGameInfo.timeFromStart += Time.deltaTime;
+
+		int lastDigit = Mathf.FloorToInt(GameTime) % 10;
+		if (lastDigit != m_lastDigit) {
+			Game.MainGameInfo.UI.TimerDisplay.Popup();
+			Game.MainGameInfo.UI.PopupTimer();
+			m_lastDigit = lastDigit;
+		}
 	}
 
 	public void Bonus() {
 		//GameTime += m_timeBonus;
-		LMotion.Create(GameTime, GameTime+m_timeBonus, m_changeDuration).WithEase(Ease.OutCirc).Bind(f=>GameTime=f);
+		LMotion.Create(GameTime, GameTime + m_timeBonus, m_changeDuration).WithEase(Ease.OutCirc).Bind(f => GameTime = f);
 	}
 
 	public void Penalty() {

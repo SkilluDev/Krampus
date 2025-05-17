@@ -13,10 +13,11 @@ public class ChildMeter : MonoBehaviour {
 
 
 	private void Update() {
+		arrow.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(maxMinZRotation.x, maxMinZRotation.y, score / maxChildrenPerMinute));
+		numericDisplay.Value = score;
+	}
 
-
-	arrow.localRotation = Quaternion.Euler(0,0,Mathf.Lerp(maxMinZRotation.x, maxMinZRotation.y, score/maxChildrenPerMinute));
-	numericDisplay.Value = score;
-
+	public void SetScore(float obj) {
+		score = obj;
 	}
 }

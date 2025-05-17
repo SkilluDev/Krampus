@@ -14,11 +14,9 @@ public class NumericDisplay : MonoBehaviour {
     [SerializeField] private float m_value;
     [SerializeField] private Color m_color;
 
-    [SerializeField] private float popUpTime = 15;
-    [SerializeField] private Vector3 popUpSize  = new Vector3(0.02f, 0.02f);
+    [SerializeField] private Vector3 m_popUpSize = new Vector3(0.02f, 0.02f);
 
 
-    private int oldInt = 0;
     public float Value {
         get => m_value;
         set => SetValue(value);
@@ -57,18 +55,8 @@ public class NumericDisplay : MonoBehaviour {
 
         for (int i = 0; i < m_integralPlaces.Length; i++) {
             int lsd = integral % 10;
-            if (i == 0 && lsd != oldInt && value < popUpTime) {
-	            Popup();
-                Game.MainGameInfo.UI.PopupTimer();
-	            oldInt = lsd;
-            }
-
             m_integralPlaces[i].sprite = m_spritesheet[lsd];
             integral = ((integral - lsd) / 10);
-        }
-
-        if (value < popUpTime) {
-
         }
 
         for (int i = 0; i < m_fractionalPlaces.Length; i++) {
@@ -78,20 +66,17 @@ public class NumericDisplay : MonoBehaviour {
         }
     }
 
-    void Popup() {
-	    for (int i = 0; i < m_integralPlaces.Length; i++) {
-
-		    var img = m_integralPlaces[i];
-		    var  digit = img.rectTransform;
-		    var oldScale = digit.localScale;
-
-
-		    LMotion.Create(oldScale, popUpSize, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
-			    ()=>LMotion.Create( popUpSize, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(digit)
-		    ).BindToLocalScale(digit);
-		    LMotion.Create(m_color, Color.red, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
-			    ()=>LMotion.Create( Color.red, m_color, 0.2f).WithEase(Ease.OutBounce).BindToColor(img)
-		    ).BindToColor(img);
-	    }
+    public void Popup() {
+        var places = m_integralPlaces.Concat(m_fractionalPlaces);
+        foreach (var img in places) {
+            var digit = img.rectTransform;
+            var oldScale = digit.localScale;
+            LMotion.Create(oldScale, m_popUpSize, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+                () => LMotion.Create(m_popUpSize, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(digit)
+            ).BindToLocalScale(digit);
+            LMotion.Create(m_color, Color.red, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+                () => LMotion.Create(Color.red, m_color, 0.2f).WithEase(Ease.OutBounce).BindToColor(img)
+            ).BindToColor(img);
+        }
     }
 }

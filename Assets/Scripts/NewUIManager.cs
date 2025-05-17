@@ -14,6 +14,8 @@ using UnityEngine.UI;
 
 public class NewUIManager : MonoBehaviour {
 
+    public NumericDisplay TimerDisplay => m_timerDisplay;
+
     [SerializeField] private TextMeshProUGUI m_currentSeed;
     [SerializeField] private GameObject m_pauseScreen;
     [SerializeField] private Transform m_timer;
@@ -150,11 +152,7 @@ public class NewUIManager : MonoBehaviour {
 
     public void DisplayScoreBoard() {
         m_scoreboard.SetActive(true);
-        float time = Game.MainGameInfo.timeFromStart / 60;
-        float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
-        Debug.Log(val);
-        LMotion.Create(0, val, 2).WithEase(Ease.OutExpo)
-            .Bind(x => m_childPerMinuteText.SetText(x.ToString("#.00")));
+
     }
 
     public void HideBlackBars(bool showTutorial) {
