@@ -205,6 +205,8 @@ public class Child : NPC, IEdible, INoiseReactor {
         var particle = Instantiate(m_goreParticle);
         //        particle.SetVector4("Particle Color", m_type == Game.MainGameInfo.GoodChildType ? Game.MainGameInfo.GoodChildrenColor : Game.MainGameInfo.BadChildrenColor);
         particle.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
+        particle.transform.SetParent(Game.MainGameInfo.Krampus.Kamera.Rendering.transform);
+
         Game.MainGameInfo.UnregisterChild(this);
         Game.MainGameInfo.GlobalEvents.onChildEaten?.Invoke(Type);
         Destroy(gameObject);
