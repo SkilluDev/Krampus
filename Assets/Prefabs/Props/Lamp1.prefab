@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 3945779676758459922}
   - component: {fileID: 171337580332069745}
   - component: {fileID: 133196749090545755}
-  m_Layer: 0
+  - component: {fileID: 4353626958872637467}
+  m_Layer: 3
   m_Name: Lamp1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,6 +65,28 @@ MonoBehaviour:
   m_switch: {fileID: 1632285665850494830}
   m_light: {fileID: 7615078203078206739}
   m_renderer: {fileID: 3605718608021952010}
+  m_enabledByDefault: 1
+--- !u!65 &4353626958872637467
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614549379211827650}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2.4142387, z: 1}
+  m_Center: {x: 0, y: 1.1701974, z: 0}
 --- !u!1 &4398891512052675147
 GameObject:
   m_ObjectHideFlags: 0
