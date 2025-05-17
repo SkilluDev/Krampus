@@ -70,7 +70,6 @@ public class MainGameInfo : LevelInfo {
 
 
     private float m_score;
-    private int m_navmeshRebakeRequests;
 
     public float Score => m_score;
     [BoxGroup("Sounds")][SerializeField] private Sex m_badSound;
@@ -179,17 +178,10 @@ public class MainGameInfo : LevelInfo {
         m_nunRegistry.Remove(nun);
     }
 
-    public void RequestNavMeshRebake() {
-        m_navmeshRebakeRequests += 1;
-    }
+    
 
     private void Update() {
-        if ((m_navmeshRebakeRequests <= 0 || Mathf.FloorToInt(Time.time) % 10 == 0) && m_navmeshRebakeRequests <= 3) {
-            return;
-        }
-
-        RoomGenerator.NavMeshSurface.BuildNavMesh();
-        m_navmeshRebakeRequests = 0;
+        
     }
 
     public void ProcessEndGame(Ending ending) {

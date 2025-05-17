@@ -27,7 +27,7 @@ public class RoomData : MonoBehaviour {
 
 		if (m_navMeshModifier.area != area) {
 			m_navMeshModifier.area = area;
-			Game.MainGameInfo.RequestNavMeshRebake();
+			Game.MainGameInfo.RoomGenerator.RequestNavMeshRebake();
 		}
 	}
 

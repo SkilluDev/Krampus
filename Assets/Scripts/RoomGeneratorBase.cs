@@ -15,6 +15,13 @@ public abstract class RoomGeneratorBase : MonoBehaviour, IGameLoadable {
 
     public float Progress { get; protected set; }
 
+    private int m_navmeshRebakeRequests;
+    public int NavmeshRebakeRequests { get => m_navmeshRebakeRequests; protected set => m_navmeshRebakeRequests = value; }
+
+    public void RequestNavMeshRebake() {
+        m_navmeshRebakeRequests += 1;
+    }
+    
     public abstract void Prepare();
     public abstract IEnumerator Generate();
     public abstract Room GetRoomAt(Vector3 position);

@@ -30,6 +30,8 @@ public class RoomGenerator : RoomGeneratorBase {
 	[BoxGroup("Tags")][SerializeField] private Tag m_nunProof;
 
 
+
+
 	// TEMPORARY
 	[SerializeField] private GameObject m_nunPrefab, m_childPrefab;
 
@@ -393,6 +395,15 @@ public class RoomGenerator : RoomGeneratorBase {
 		}
 		m_placedRooms.Clear();
 		RoomVariantManager.ReleaseAll();
+	}
+
+	private void Update() {
+		if ((NavmeshRebakeRequests <= 0 || Mathf.FloorToInt(Time.time) % 10 == 0) && NavmeshRebakeRequests <= 3) {
+			return;
+		}
+
+		NavMeshSurface.BuildNavMesh();
+		NavmeshRebakeRequests = 0;
 	}
 
 
