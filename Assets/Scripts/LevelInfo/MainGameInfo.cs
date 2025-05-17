@@ -73,7 +73,7 @@ public class MainGameInfo : LevelInfo {
 
     public float Score => m_score;
 
-    [SerializeField] OutroScript m_outro;
+    [SerializeField] private OutroScript m_outro;
 
     public new enum State {
         Intro,
