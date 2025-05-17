@@ -46,7 +46,7 @@ public class MainGameInfo : LevelInfo {
 
     public ChildType GoodChildType { get; set; }
 
-    public ChildType RandomBadChildType => Types.First(x=>x!=GoodChildType);
+    public ChildType RandomBadChildType => Types.First(x => x != GoodChildType);
 
     public IReadOnlyCollection<Child> Children => m_childRegistry;
     public IEnumerable<Child> BadChildren => m_badChildRegistry;
@@ -85,7 +85,7 @@ public class MainGameInfo : LevelInfo {
         Won
     }
 
-public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
+    public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
 
     public bool Ballin => CurrentState == State.Game;
 
@@ -94,11 +94,11 @@ public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
     }
     [NaughtyAttributes.Button("Press To Win")]
     public void DebugWinButton() {
-		ProcessEndGame(Ending.Win);
+        ProcessEndGame(Ending.Win);
         //Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
     }
 
-	private IEnumerator Start() {
+    private IEnumerator Start() {
         yield return new WaitUntil(() => Game.RoomGenInfo != null);
 
         switch (Game.RoomGenInfo.Regenerate) {
@@ -114,8 +114,8 @@ public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
                 throw new ArgumentOutOfRangeException();
         }
 
-	    Random.InitState(Game.RoomGenInfo.Seed);
-		Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
+        Random.InitState(Game.RoomGenInfo.Seed);
+        Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
 
         CurrentState = State.Intro;
         GoodChildType = Types.NullIfEmpty()?.UnityRandomElement();
@@ -158,12 +158,11 @@ public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
     public void UnregisterChild(Child child) {
         foreach (var r in m_roomdata.Values.Where(w => w.Contains(child)))
             r.RemoveCharacter(child);
+
         m_childRegistry.Remove(child);
         if (child.Type == GoodChildType) {
-	        m_badSound.Play(child.transform.position);
+            m_badSound.Play(child.transform.position);
             m_goodChildRegistry.Remove(child);
-
-
         } else {
             m_badChildRegistry.Remove(child);
             m_score++;
@@ -194,7 +193,7 @@ public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
     }
 
     public void ProcessEndGame(Ending ending) {
-        switch (ending){
+        switch (ending) {
             case Ending.Win:
                 Game.MainGameInfo.SetState(MainGameInfo.State.Won);
                 break;
@@ -206,6 +205,6 @@ public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
                 break;
         }
         UI.ProcessEnding(ending);
-		Game.MusicMan.StopMusic();
+        Game.MusicMan.StopMusic();
     }
 }

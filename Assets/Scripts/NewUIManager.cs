@@ -49,13 +49,6 @@ public class NewUIManager : MonoBehaviour {
 
 
 
-    [BoxGroup("ButtonSets")]
-    [SerializeField] private ButtonSet[] m_buttonSets;
-    [BoxGroup("In Game Layout")][SerializeField] private Image m_pauseImage;
-    [BoxGroup("In Game Layout")][SerializeField] private Image m_attackImage;
-    [BoxGroup("In Game Layout")][SerializeField] private Image m_sneakImage;
-
-
 
     [BoxGroup("Score Board")][SerializeField] private GameObject m_scoreboard;
     [BoxGroup("Score Board")][SerializeField] private TextMeshProUGUI m_childPerMinuteText;
@@ -91,9 +84,9 @@ public class NewUIManager : MonoBehaviour {
 
     private void Awake() {
         m_originalTimerLocalScale = m_timer.localScale;
-		
-	}
-	private void OnChildEaten(ChildType childType) {
+
+    }
+    private void OnChildEaten(ChildType childType) {
         Color destinationColor;
         //Positive feedback
         if (childType != Game.MainGameInfo.GoodChildType) {
@@ -102,8 +95,8 @@ public class NewUIManager : MonoBehaviour {
 
             if (m_currentBounce.IsActive()) m_currentBounce.Cancel();
 
-            Vector3 oldScale = m_originalTimerLocalScale;
-            Vector3 newScale = oldScale * m_timerBounceIntensity;
+            var oldScale = m_originalTimerLocalScale;
+            var newScale = oldScale * m_timerBounceIntensity;
             //Scrapped, Krampus always walking
             //(Game.MainGameInfo.Krampus.Kontroller.CurrentState is not KrampusController.State.Walk?1f:0.9f);
             m_currentBounce = LMotion.Create(oldScale, newScale, m_timerShakeDuration / 2).WithEase(Ease.OutElastic).WithOnComplete(
@@ -144,10 +137,6 @@ public class NewUIManager : MonoBehaviour {
 
 
     private void Update() {
-
-
-        //SetButtonSet();
-
         m_currentGameState = Game.MainGameInfo.CurrentState;
         var col = Game.MainGameInfo.GoodChildType;
         if (Game.MainGameInfo.BadChildrenCountOnStart > 0) {
@@ -197,48 +186,18 @@ public class NewUIManager : MonoBehaviour {
         m_tutorial.gameObject.SetActive(false);
         m_uiBlockLeft.gameObject.SetActive(false);
         m_uiBlockRight.gameObject.SetActive(false);
-
     }
 
     public void ChangeChildCounter() {
         float oldValue = m_fillBar.fillAmount;
-        LMotion.Create(oldValue, 0.1f + (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
-                                 Game.MainGameInfo.BadChildrenCountOnStart * 0.9f, 0.1f).BindToFillAmount(m_fillBar);
+        LMotion.Create(oldValue, (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
+                                 Game.MainGameInfo.BadChildrenCountOnStart, 0.3f).WithDelay(0.5f).BindToFillAmount(m_fillBar);
     }
 
-    public void SetButtonSet() {
-
-        ButtonSet bs = null;
-        foreach (var b in m_buttonSets) {
-            if (b.method == InputSubscribe.InputMethod) {
-                bs = b;
-                break;
-            }
-        }
-        if (bs == null) return;
-
-        m_pauseImage.sprite = bs.pause_Button;
-
-        m_sneakImage.sprite = bs.sneak_Button;
-        m_attackImage.sprite = bs.attack_Button;
-        m_quitButtonImage.sprite = bs.quit_Button;
-        //==
-
-        m_restartEndScreenButton.sprite = bs.restart_Button;
-        m_rerollEndScreenButton.sprite = bs.reload_Button;
-        m_menuEndScreenButton.sprite = bs.backToMenu_Button;
-
-        //==
-        m_rerollPauseButton.sprite = bs.reload_Button;
-        m_restartPauseButton.sprite = bs.restart_Button;
-        m_menuPauseButton.sprite = bs.backToMenu_Button;
-        m_resumePauseButton.sprite = bs.pause_Button;
-        //==
-    }
 
     public void DisplayScoreBoard() {
         m_scoreboard.SetActive(true);
-        float time = (Game.MainGameInfo.timeFromStart / 60);
+        float time = Game.MainGameInfo.timeFromStart / 60;
         float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
         Debug.Log(val);
         LMotion.Create(0, val, 2).WithEase(Ease.OutExpo)
@@ -269,8 +228,8 @@ public class NewUIManager : MonoBehaviour {
     public void PopupTimer() {
         if (m_currentBounce.IsActive()) m_currentBounce.Cancel();
         var oldScale = m_originalTimerLocalScale;
-        m_currentBounce = LMotion.Create(oldScale, oldScale*1.3f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
-			    ()=>LMotion.Create( oldScale*1.3f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
-		    ).BindToLocalScale(m_timer);   
+        m_currentBounce = LMotion.Create(oldScale, oldScale * 1.3f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+                () => LMotion.Create(oldScale * 1.3f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
+            ).BindToLocalScale(m_timer);
     }
 }
