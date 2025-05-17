@@ -18,15 +18,13 @@ public class Intro : MonoBehaviour {
     }
 
     private void Update() {
-        if (Game.Balling || Game.MainGameInfo.CurrentState == MainGameInfo.State.Over) {
+        if (Game.Balling || Game.MainGameInfo.Ended) {
             Game.MainGameInfo.Krampus.Kamera.Rendering.GetComponent<CinemachineBrain>().ActiveBlend = null;
             Destroy(this);
             return;
         }
 
-        if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame()) {
-
-
+        if (!Game.IsLoading && InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame()) {
 	        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Intro) {
 		        Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
 		        Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
