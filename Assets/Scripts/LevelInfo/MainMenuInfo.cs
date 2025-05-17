@@ -23,6 +23,7 @@ public class MainMenuInfo : LevelInfo {
 
     private void Update() {
         if (InputSubscribe.Raw.UI.MenuReturn.triggered || InputSubscribe.Raw.UI.Pause.triggered) {
+            Debug.Log("backbackback");
             SetState(0);
         }
     }
