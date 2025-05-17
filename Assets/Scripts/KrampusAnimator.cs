@@ -51,6 +51,7 @@ public class KrampusAnimator : KrampusBehaviour {
         switch ((previous, current)) {
             case (KrampusTongue.State.Idle, KrampusTongue.State.Windup):
                 m_animator.SetBool(m_tongueReadyProperty, true);
+                m_animator.SetBool(m_tongueShouldEatProperty, false);
                 m_windupSoundBite.Play(transform.position, 1);
                 break;
             case (KrampusTongue.State.Windup, KrampusTongue.State.Idle):
