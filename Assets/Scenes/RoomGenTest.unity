@@ -247,8 +247,6 @@ MonoBehaviour:
   m_roomGenerator: {fileID: 423022857}
   m_ui: {fileID: 648446536}
   m_shaderManager: {fileID: 358014039}
-  m_goodChildrenColor: {r: 0.6981132, g: 0, b: 0.60503155, a: 1}
-  m_badChildrenColor: {r: 0.9680062, g: 0.990566, b: 0, a: 1}
   m_types:
   - {fileID: 11400000, guid: 63ab45d866ec5be42bcf362fbffafbec, type: 2}
   - {fileID: 11400000, guid: aa74c9f2fd15da540ad9a9824cd7de3e, type: 2}
@@ -683,6 +681,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 330035618908323867, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_colorChange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2255278506351184038, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_colorChange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4138211961434118579, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_colors.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6200808677634991739, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6886838474813091001, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_colorChange
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7172931892233990810, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_Name
@@ -787,6 +810,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8364725046934362474, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9148994571804714196, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

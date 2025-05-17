@@ -27,14 +27,6 @@ public class MainGameInfo : LevelInfo {
     [SerializeField] private ShaderManager m_shaderManager;
 
 
-    //====== CHILDREN COLOR
-
-    public Color GoodChildrenColor => m_goodChildrenColor;
-    [SerializeField] private Color m_goodChildrenColor;
-
-    public Color BadChildrenColor => m_badChildrenColor;
-    [SerializeField] private Color m_badChildrenColor;
-
     public IReadOnlyList<ChildType> Types => m_types;
     [SerializeField] private ChildType[] m_types;
 
@@ -47,6 +39,7 @@ public class MainGameInfo : LevelInfo {
     public ChildType GoodChildType { get; set; }
 
     public ChildType RandomBadChildType => Types.First(x => x != GoodChildType);
+    public IEnumerable<ChildType> BadChildTypes => Types.Where(x => x != GoodChildType);
 
     public IReadOnlyCollection<Child> Children => m_childRegistry;
     public IEnumerable<Child> BadChildren => m_badChildRegistry;
