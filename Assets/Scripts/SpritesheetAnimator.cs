@@ -32,7 +32,6 @@ public class SpriteSheetAnimator : MonoBehaviour {
                 m_colors = new Color[] { Game.MainGameInfo.GoodChildType.color };
                 break;
             case ColorChange.BadChild:
-                Debug.Log("COLORBAD");
                 m_colors = Game.MainGameInfo.BadChildTypes.Select((c) => c.color).ToArray();
                 break;
             case ColorChange.None:

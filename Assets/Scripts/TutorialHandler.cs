@@ -5,6 +5,7 @@ using LitMotion;
 using LitMotion.Extensions;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TutorialHandler : MonoBehaviour {
     private Transform[] m_tutorials;
@@ -16,6 +17,8 @@ public class TutorialHandler : MonoBehaviour {
     [SerializeField] private float m_slideLength;
     [SerializeField] private RectTransform m_keybindPrompt;
     [SerializeField] private GameObject m_tutorialHolder;
+
+    [SerializeField] private Image m_goodChildIcon;
 
     private float m_distanceBetween = 1f;
 
@@ -30,6 +33,10 @@ public class TutorialHandler : MonoBehaviour {
             m_tutorials[m_tutorials.Length - 1 - i] = m_tutorialHolder.transform.GetChild(i);
             m_tutorials[m_tutorials.Length - 1 - i].transform.localPosition += new Vector3(0, 0, m_distanceBetween * i);
         }
+    }
+
+    private void OnEnable() {
+        m_goodChildIcon.sprite = Game.MainGameInfo.GoodChildType.uiIcon;
     }
     private void Update() {
         //LMB to go forward RMB to skip
