@@ -84,8 +84,7 @@ public class NewUIManager : MonoBehaviour {
 
             var oldScale = m_originalTimerLocalScale;
             var newScale = oldScale * m_timerBounceIntensity;
-            //Scrapped, Krampus always walking
-            //(Game.MainGameInfo.Krampus.Kontroller.CurrentState is not KrampusController.State.Walk?1f:0.9f);
+
             m_currentBounce = LMotion.Create(oldScale, newScale, m_timerShakeDuration / 2).WithEase(Ease.OutElastic).WithOnComplete(
                 () => LMotion.Create(newScale, oldScale, m_timerShakeDuration / 2).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
             ).BindToLocalScale(m_timer);
@@ -114,6 +113,7 @@ public class NewUIManager : MonoBehaviour {
     }
 
     private void Start() {
+        m_blackBars.SetVariant(0);
         m_blackBars.ShowInstant();
     }
 
