@@ -62,9 +62,35 @@ public class ProcessInputs : MonoBehaviour, ITextPreprocessor {
                 string actionName = match.Groups[1].Value;
                 var action = InputSubscribe.Raw.asset.FindAction(actionName);
                 if (action != null) {
-                    string bindingPath = action.bindings.First(w => w.groups.Contains(InputSubscribe.InputMethod.ToString())).path;
-                    bindingPath = bindingPath.Replace("<", "").Replace(">", "");
-                    text = text.Replace(match.Value, $"<sprite name=\"{bindingPath}\">");
+                    var binding = action.bindings.FirstOrDefault(w => w.groups != null && w.groups.Contains(InputSubscribe.InputMethod.ToString()));
+                    string replacement = "[Invalid]";
+                    if (binding != null) {
+                        replacement = $"<sprite name=\"{binding.path.Replace("<", "").Replace(">", "")}\">";
+                    }
+                    text = text.Replace(match.Value, replacement);
+                } else {
+                    text = text.Replace(match.Value, $"[{actionName}]");
+                }
+            }
+        }
+
+        var bindingsRegex = new Regex(@"<bindings=""(.*?)"">");
+        var bindingsMatches = bindingsRegex.Matches(text);
+
+        foreach (Match match in bindingsMatches) {
+            if (match.Groups.Count > 1) {
+                string actionName = match.Groups[1].Value;
+                var action = InputSubscribe.Raw.asset.FindAction(actionName);
+                if (action != null) {
+                    var bindings = action.bindings.Where(w => w.groups != null && w.groups.Contains(InputSubscribe.InputMethod.ToString()));
+                    string sprites = "";
+                    foreach (var binding in bindings) {
+                        string name = binding.path.Replace("<", "").Replace(">", "");
+                        if (TMP_Settings.defaultSpriteAsset.GetSpriteIndexFromName(name) >= 0) {
+                            sprites += $"<sprite name=\"{name}\">";
+                        }
+                    }
+                    text = text.Replace(match.Value, sprites);
                 } else {
                     text = text.Replace(match.Value, $"[{actionName}]");
                 }

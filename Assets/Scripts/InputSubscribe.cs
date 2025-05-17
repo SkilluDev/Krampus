@@ -49,6 +49,11 @@ public class InputSubscribe : MonoBehaviour {
 		Init(method.ToString());
 	}
 
+	[RuntimeInitializeOnLoadMethod]
+	private static void GameInit() {
+		if (m_playerControls != null) m_playerControls = null;
+	}
+
 	private static void Init(string method = null) {
 		if (m_playerControls != null) return;
 		m_playerControls = new PlayerControls();
