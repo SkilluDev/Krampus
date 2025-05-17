@@ -3,7 +3,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class KrampusIntro : MonoBehaviour {
+public class Intro : MonoBehaviour {
 
     [SerializeField] private PlayableDirector m_director;
     [SerializeField] private CinemachineVirtualCamera m_vcam;
