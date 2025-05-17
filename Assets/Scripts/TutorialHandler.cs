@@ -26,6 +26,8 @@ public class TutorialHandler : MonoBehaviour {
 
     private MotionHandle m_handle;
 
+    [SerializeField] private int m_uiMoveInCounter = 3;
+
 
     private void Awake() {
         m_tutorials = new Transform[m_tutorialHolder.transform.childCount];
@@ -48,6 +50,7 @@ public class TutorialHandler : MonoBehaviour {
         }
         if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
             MoveBack(m_tutorialCounter++ % m_tutorials.Length);
+            if(--m_uiMoveInCounter==0) Game.MainGameInfo.UI.UIElementsEntryAnimation();
         }
 
     }

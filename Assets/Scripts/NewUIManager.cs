@@ -40,6 +40,8 @@ public class NewUIManager : MonoBehaviour {
 
     private MotionHandle m_currentBounce;
 
+    private bool m_uiOn = false;
+
     [BoxGroup("Pause Screen")][SerializeField] private Image m_resumePauseButton;
     [BoxGroup("Pause Screen")][SerializeField] private Image m_restartPauseButton;
     [BoxGroup("Pause Screen")][SerializeField] private Image m_rerollPauseButton;
@@ -162,11 +164,13 @@ public class NewUIManager : MonoBehaviour {
     }
 
     public void UIElementsEntryAnimation() {
+        if (m_uiOn) return;
         Debug.Log("Entry");
         m_uiBlockLeft.gameObject.SetActive(true);
         LMotion.Create(-200, 50, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition = new Vector2(x, m_uiBlockLeft.anchoredPosition.y));
         m_uiBlockRight.gameObject.SetActive(true);
         LMotion.Create(300, -50, 0.375f).Bind(x => m_uiBlockRight.anchoredPosition = new Vector2(x, m_uiBlockRight.anchoredPosition.y));
+        m_uiOn = true;
     }
 
     public IEnumerator ProcessEnding(Ending ending) {
