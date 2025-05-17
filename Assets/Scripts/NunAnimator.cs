@@ -30,6 +30,7 @@ public class NunAnimator : MonoBehaviour {
 	}
 
 	private void MovementStateChanged(Nun.State previous, Nun.State current) {
+		if(!Game.Balling) return;
 		switch (previous, current) {
 			case (_, Nun.State.ChasingKrampus):
 				m_animator.SetBool(m_propertyShocked, false);
