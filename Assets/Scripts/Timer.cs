@@ -1,7 +1,6 @@
 using LitMotion;
 using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Timer : MonoBehaviour {
 	[BoxGroup("Timer")][SerializeField] private int m_timeBonus;
@@ -10,6 +9,9 @@ public class Timer : MonoBehaviour {
 	[ShowNativeProperty] public float GameTime { get; private set; } = 10f;
 
 	[SerializeField] private float m_changeDuration;
+	[SerializeField] private float m_lowTime = 10;
+
+	public bool IsLowTime => GameTime < m_lowTime;
 
 	private int m_lastDigit;
 
@@ -31,6 +33,7 @@ public class Timer : MonoBehaviour {
 		GameTime -= Time.deltaTime;
 		Game.MainGameInfo.timeFromStart += Time.deltaTime;
 
+		if (!IsLowTime) return;
 		int lastDigit = Mathf.FloorToInt(GameTime) % 10;
 		if (lastDigit != m_lastDigit) {
 			Game.MainGameInfo.UI.TimerDisplay.Popup();
