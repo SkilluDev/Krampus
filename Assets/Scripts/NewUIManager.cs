@@ -26,7 +26,6 @@ public class NewUIManager : MonoBehaviour {
 
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
-    private MainGameInfo.State m_currentGameState;
 
     private Color m_originalTimerColor;
     private Vector3 m_originalTimerLocalScale;
@@ -121,28 +120,13 @@ public class NewUIManager : MonoBehaviour {
         m_currentSeed.text = $"Map seed: {seed:0000000}<br>";
     }
 
-    public void SwitchPauseMenu() {
-        if (!Game.MainGameInfo.Ended) {
-            if (m_currentGameState == MainGameInfo.State.Paused) {
-                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-                m_pauseScreen.SetActive(false);
-            } else {
-                Game.MainGameInfo.SetState(MainGameInfo.State.Paused);
-                m_pauseScreen.SetActive(true);
-                Debug.Log("relrrellrelrlelrel");
-            }
-            Time.timeScale = m_currentGameState == MainGameInfo.State.Paused ? 1 : 0;
-        }
+    public void SwitchPauseMenu(bool activate) {
+        if (activate) m_pauseScreen.SetActive(true);
+        else m_pauseScreen.SetActive(false);
     }
 
 
     private void Update() {
-        m_currentGameState = Game.MainGameInfo.CurrentState;
-        var col = Game.MainGameInfo.GoodChildType;
-        if (Game.MainGameInfo.BadChildrenCountOnStart > 0) {
-
-        }
-
         if (!Game.Balling) {
             m_timerDisplay.gameObject.SetActive(Mathf.RoundToInt(Time.unscaledTime * 2) % 2 == 0);
         } else {
@@ -150,30 +134,6 @@ public class NewUIManager : MonoBehaviour {
         }
 
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
-
-
-        if (InputSubscribe.Raw.UI.Pause.triggered) { if (Game.Balling || Game.MainGameInfo.CurrentState == MainGameInfo.State.Paused) SwitchPauseMenu(); }
-
-        if (!Game.MainGameInfo.BadChildren.Any() && Game.Balling) {
-            Game.MainGameInfo.ProcessEndGame(Ending.Win);
-        }
-        if (Game.MainGameInfo.Ended || m_currentGameState == MainGameInfo.State.Paused) {//if the game is over, won, or paused, you can
-            if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
-                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-                Game.LoadState(Game.State.MainMenu);
-            }
-            if (InputSubscribe.Raw.UI.Restart.triggered) { //restart with R
-                Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
-                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-                Game.LoadState(Game.State.MainGame);
-            }
-
-            if (InputSubscribe.Raw.UI.RestartAndRegen.triggered) { //generate and restart with G
-                Game.RoomGenInfo.Regenerate = RoomGenerationType.New;
-                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-                Game.LoadState(Game.State.MainGame);
-            }
-        }
     }
 
     public void SetChildrenIcon(Sprite icon) {

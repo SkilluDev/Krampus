@@ -181,7 +181,9 @@ public class MainGameInfo : LevelInfo {
     
 
     private void Update() {
-        
+        if (!Game.MainGameInfo.BadChildren.Any() && Game.Balling) {
+            Game.MainGameInfo.ProcessEndGame(Ending.Win);
+        }
     }
 
     public void ProcessEndGame(Ending ending) {
