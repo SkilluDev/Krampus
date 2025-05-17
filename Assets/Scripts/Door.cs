@@ -66,7 +66,6 @@ public class Door : Passage, IInteractable {
             m_doorOpen.Play(transform.position, 1f);
             Debug.Log("Open1.0");
 
-
         } else {
             Debug.Log("Open0.4");
             m_doorOpen.Play(transform.position, 0.4f);
