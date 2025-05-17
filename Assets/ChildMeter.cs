@@ -5,19 +5,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ChildMeter : MonoBehaviour {
-	[SerializeField] private Vector2 maxMinZRotation;
-	[SerializeField] private RectTransform arrow;
-	[SerializeField] private int maxChildrenPerMinute = 12;
-	[SerializeField] private NumericDisplay numericDisplay;
-	public float score;
+	[SerializeField] private Vector2 m_maxMinZRotation;
+	[SerializeField] private RectTransform m_arrow;
+	[SerializeField] private int m_maxChildrenPerMinute = 12;
+	[SerializeField] private NumericDisplay m_numericDisplay;
+	public float Score {
+		get => m_score; private set =>
+			SetScore(value);
+	}
+	[SerializeField] private float m_score;
 
 
 	private void Update() {
-		arrow.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(maxMinZRotation.x, maxMinZRotation.y, score / maxChildrenPerMinute));
-		numericDisplay.Value = score;
+		m_arrow.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(m_maxMinZRotation.x, m_maxMinZRotation.y, m_score / m_maxChildrenPerMinute));
+		m_numericDisplay.Value = m_score;
 	}
 
 	public void SetScore(float obj) {
-		score = obj;
+		m_score = obj;
 	}
 }
