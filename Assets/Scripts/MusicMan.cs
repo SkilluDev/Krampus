@@ -15,11 +15,12 @@ public class MusicMan : MonoBehaviour {
 	private MotionHandle m_motionHandle1;
 	private MotionHandle m_motionHandle2;
 	public void Ready() {
-		if(m_motionHandle1.IsActive()) m_motionHandle1.Cancel();
-		if(m_motionHandle2.IsActive()) m_motionHandle2.Cancel();
+		
 		switch (Game.CurrentState) {
 			case Game.State.MainGame:
-				m_gameMusicLayer2.volume = 1;
+				if(m_motionHandle1.IsActive()) m_motionHandle1.Cancel();
+				if(m_motionHandle2.IsActive()) m_motionHandle2.Cancel();
+				m_gameMusicLayer1.volume = 1;
 				m_gameMusicLayer1.Play();
 				m_gameMusicLayer2.volume = 0;
 				m_gameMusicLayer2.Play();
