@@ -29,8 +29,11 @@ public class NewUIManager : MonoBehaviour {
     private MainGameInfo.State m_currentGameState;
 
     private Color m_originalTimerColor;
+    private Vector3 m_originalTimerLocalScale;
     [SerializeField] private Color m_goodTimerColor;
     [SerializeField] private Color m_badTimerColor;
+
+    private MotionHandle m_currentBounce;
 
 
 
@@ -85,17 +88,25 @@ public class NewUIManager : MonoBehaviour {
     private void EatBadChild() {
         OnChildEaten(Game.MainGameInfo.RandomBadChildType);
     }
-    private void OnChildEaten(ChildType childType) {
+
+    private void Awake() {
+        m_originalTimerLocalScale = m_timer.localScale;
+		
+	}
+	private void OnChildEaten(ChildType childType) {
         Color destinationColor;
         //Positive feedback
         if (childType != Game.MainGameInfo.GoodChildType) {
             destinationColor = m_goodTimerColor;
             ChangeChildCounter();
-            Vector3 oldScale = m_timer.localScale;
+
+            if (m_currentBounce.IsActive()) m_currentBounce.Cancel();
+
+            Vector3 oldScale = m_originalTimerLocalScale;
             Vector3 newScale = oldScale * m_timerBounceIntensity;
             //Scrapped, Krampus always walking
             //(Game.MainGameInfo.Krampus.Kontroller.CurrentState is not KrampusController.State.Walk?1f:0.9f);
-            LMotion.Create(oldScale, newScale, m_timerShakeDuration / 2).WithEase(Ease.OutElastic).WithOnComplete(
+            m_currentBounce = LMotion.Create(oldScale, newScale, m_timerShakeDuration / 2).WithEase(Ease.OutElastic).WithOnComplete(
                 () => LMotion.Create(newScale, oldScale, m_timerShakeDuration / 2).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
             ).BindToLocalScale(m_timer);
 
@@ -256,8 +267,9 @@ public class NewUIManager : MonoBehaviour {
     }
 
     public void PopupTimer() {
-        var oldScale = m_timer.localScale;
-        LMotion.Create(oldScale, oldScale*1.3f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+        if (m_currentBounce.IsActive()) m_currentBounce.Cancel();
+        var oldScale = m_originalTimerLocalScale;
+        m_currentBounce = LMotion.Create(oldScale, oldScale*1.3f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
 			    ()=>LMotion.Create( oldScale*1.3f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
 		    ).BindToLocalScale(m_timer);   
     }
