@@ -27,7 +27,12 @@ public class IdleDisplay : MonoBehaviour {
         m_videoPlayer.gameObject.SetActive(false);
     }
 
-    private void OnButtonPressed(InputControl control) {
+    private void OnDisable() {
+        m_listener.Dispose();
+		
+	}
+
+	private void OnButtonPressed(InputControl control) {
         m_timer = 0;
         m_playing = false;
         m_videoPlayer.Stop();
