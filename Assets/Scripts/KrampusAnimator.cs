@@ -57,11 +57,11 @@ public class KrampusAnimator : KrampusBehaviour {
                 m_animator.SetBool(m_tongueReadyProperty, false);
                 break;
             case (KrampusTongue.State.Windup, KrampusTongue.State.TargetFetch):
-                m_animator.SetBool(m_tongueOutProperty, true);
+                m_animator.SetTrigger(m_tongueOutProperty);
+                m_animator.SetBool(m_tongueReadyProperty, false);
                 m_tongueSoundBite.Play(transform.position, 1);
                 break;
             case (_, KrampusTongue.State.PreRetreat):
-                m_animator.SetBool(m_tongueOutProperty, false);
                 m_animator.SetBool(m_tongueReadyProperty, false);
                 m_animator.SetBool(m_tongueShouldEatProperty, false);
                 break;
