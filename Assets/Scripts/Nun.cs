@@ -213,6 +213,7 @@ public class Nun : NPC {
     }
 
     private void OnCollisionEnter(Collision collision) {
+        if (!Game.Balling) return;
         if (CurrentState != State.ChasingKrampus) return;
         if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
             return;
