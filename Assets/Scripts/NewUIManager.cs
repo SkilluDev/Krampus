@@ -18,14 +18,10 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private GameObject m_pauseScreen;
     [SerializeField] private Transform m_timer;
     [SerializeField] private NumericDisplay m_timerDisplay;
-
     [SerializeField] private float m_timerShakeDuration;
-
     [SerializeField] private float m_timerShakeIntensity;
     [SerializeField] private float m_timerBounceDuration;
-
     [SerializeField] private float m_timerBounceIntensity;
-
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
 
@@ -38,14 +34,9 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private Color m_goodTimerColor;
     [SerializeField] private Color m_badTimerColor;
 
+    [SerializeField] private BlackBars m_blackBars;
+
     private MotionHandle m_currentBounce;
-
-
-
-
-
-
-
 
     [BoxGroup("Pause Screen")][SerializeField] private Image m_resumePauseButton;
     [BoxGroup("Pause Screen")][SerializeField] private Image m_restartPauseButton;
@@ -53,13 +44,8 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("Pause Screen")][SerializeField] private Image m_menuPauseButton;
 
 
-
-
     [BoxGroup("Score Board")][SerializeField] private GameObject m_scoreboard;
     [BoxGroup("Score Board")][SerializeField] private TextMeshProUGUI m_childPerMinuteText;
-
-
-
 
     [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
@@ -67,11 +53,6 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("End Screen")][SerializeField] private Image m_restartEndScreenButton;
     [BoxGroup("End Screen")][SerializeField] private Image m_rerollEndScreenButton;
     [BoxGroup("End Screen")][SerializeField] private Image m_menuEndScreenButton;
-
-
-    [BoxGroup("Intro")][SerializeField] private Image m_topBarImage;
-    [BoxGroup("Intro")][SerializeField] private Image m_bottomBarImage;
-    [BoxGroup("Intro")][SerializeField] private Image m_quitButtonImage;
 
 
     [BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockLeft;
@@ -90,8 +71,8 @@ public class NewUIManager : MonoBehaviour {
     private void Awake() {
         m_originalTimerLocalScale = m_timer.localScale;
         m_startFill = m_fillBar.fillAmount;
-
     }
+
     private void OnChildEaten(ChildType childType) {
         Color destinationColor;
         //Positive feedback
@@ -132,6 +113,10 @@ public class NewUIManager : MonoBehaviour {
         else m_pauseScreen.SetActive(false);
     }
 
+    private void Start() {
+        m_blackBars.ShowInstant();
+    }
+
 
     private void Update() {
         if (!Game.Balling) {
@@ -158,7 +143,7 @@ public class NewUIManager : MonoBehaviour {
     public void ChangeChildCounter() {
         m_currentFillHandle.TryCancel();
         float oldValue = m_fillBar.fillAmount;
-        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0,1,m_startFill,1,(float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
+        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 1, (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
                                  Game.MainGameInfo.BadChildrenCountOnStart), 2f).WithDelay(0.7f).BindToFillAmount(m_fillBar);
     }
 
@@ -169,13 +154,11 @@ public class NewUIManager : MonoBehaviour {
         float val = Mathf.Round(Game.MainGameInfo.Score / time * 100) / 100;
         Debug.Log(val);
         LMotion.Create(0, val, 2).WithEase(Ease.OutExpo)
-        .Bind(x => m_childPerMinuteText.SetText(x.ToString("#.00")));
+            .Bind(x => m_childPerMinuteText.SetText(x.ToString("#.00")));
     }
 
     public void HideBlackBars(bool showTutorial) {
-        float basedYSize = m_bottomBarImage.rectTransform.sizeDelta.y;
-        LMotion.Create(basedYSize, 0, 0.75f).Bind(x => m_bottomBarImage.rectTransform.sizeDelta = new Vector2(m_bottomBarImage.rectTransform.sizeDelta.x, x));
-        LMotion.Create(basedYSize, 0, 0.75f).Bind(x => m_topBarImage.rectTransform.sizeDelta = new Vector2(m_topBarImage.rectTransform.sizeDelta.x, x));
+        m_blackBars.Hide();
         if (!showTutorial) return;
         if (Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.SetActive(true);
     }
