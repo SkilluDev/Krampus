@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using System.Net.Mime;
 using LitMotion;
@@ -180,7 +181,8 @@ public class NewUIManager : MonoBehaviour {
         LMotion.Create(300, -50, 0.375f).Bind(x => m_uiBlockRight.anchoredPosition = new Vector2(x, m_uiBlockRight.anchoredPosition.y));
     }
 
-    public void ProcessEnding(Ending ending) {
+    public IEnumerator ProcessEnding(Ending ending) {
+        yield return new WaitForSeconds(3);
         m_endScreenHandler.Activate(ending);
         DisplayScoreBoard();
     }

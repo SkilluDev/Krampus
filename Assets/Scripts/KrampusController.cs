@@ -146,7 +146,7 @@ public class KrampusController : KrampusBehaviour {
 		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
 		m_rigidbody.velocity = Vector3.zero;
 		m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-		StartCoroutine(DeathTimer(ending));
+		Game.MainGameInfo.ProcessEndGame(ending);
 	}
 
 	private Vector3 ComputeVelocity() {
@@ -174,11 +174,6 @@ public class KrampusController : KrampusBehaviour {
 				}
 			}
 		}
-	}
-
-	private IEnumerator DeathTimer(Ending ending) {
-		yield return new WaitForSeconds(1);
-		Game.MainGameInfo.ProcessEndGame(ending);
 	}
 
 	public void MoveTo(Vector3 position) {

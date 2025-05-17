@@ -200,7 +200,7 @@ public class MainGameInfo : LevelInfo {
                 Game.MainGameInfo.SetState(MainGameInfo.State.Over);
                 break;
         }
-        UI.ProcessEnding(ending);
         Game.MusicMan.StopMusic();
+        StartCoroutine(UI.ProcessEnding(ending));
     }
 }
