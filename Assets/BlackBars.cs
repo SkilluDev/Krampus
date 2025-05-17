@@ -31,7 +31,6 @@ public class BlackBars : MonoBehaviour {
 
     }
 
-
     public void HideInstant() {
         m_top.sizeDelta = m_top.sizeDelta.WithY(0);
         m_bottom.sizeDelta = m_bottom.sizeDelta.WithY(0);
@@ -40,5 +39,15 @@ public class BlackBars : MonoBehaviour {
     public void ShowInstant() {
         m_top.sizeDelta = m_top.sizeDelta.WithY(m_yDistanceTop);
         m_bottom.sizeDelta = m_bottom.sizeDelta.WithY(m_yDistanceBottom);
+    }
+
+    public void SetVariant(int variant) {
+        for (int i = 0; i < m_top.childCount; i++) {
+            m_top.GetChild(i).gameObject.SetActive(i == variant);
+        }
+
+        for (int i = 0; i < m_bottom.childCount; i++) {
+            m_bottom.GetChild(i).gameObject.SetActive(i == variant);
+        }
     }
 }
