@@ -19,6 +19,7 @@ public class ChildAnimator : MonoBehaviour {
     [BoxGroup("Sounds")][SerializeField] private AudioSource m_screamSource;
     [BoxGroup("Sounds")][SerializeField] private Sex m_soundShock;
     [BoxGroup("Sounds")][SerializeField] private Sex m_soundKill;
+    [BoxGroup("Sounds")][SerializeField] private Sex m_soundWrongKill;
 
     private void Start() {
         m_child.onStateChanged += ChildStateChanged;
@@ -45,6 +46,7 @@ public class ChildAnimator : MonoBehaviour {
                 } else {
                     var particle = Instantiate(m_vanishParticle);
                     particle.transform.SetPositionAndRotation(Game.MainGameInfo.Krampus.Tongue.transform.position, Quaternion.identity);
+                    m_soundWrongKill.Play(transform.position);
                 }
                 break;
             case (_, Child.State.Idle):
