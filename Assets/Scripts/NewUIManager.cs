@@ -7,6 +7,7 @@ using LitMotion.Extensions;
 using NaughtyAttributes;
 using Roomgen;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,6 +28,10 @@ public class NewUIManager : MonoBehaviour {
 
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
+
+    private float m_startFill;
+
+    private MotionHandle m_currentFillHandle;
 
     private Color m_originalTimerColor;
     private Vector3 m_originalTimerLocalScale;
@@ -84,6 +89,7 @@ public class NewUIManager : MonoBehaviour {
 
     private void Awake() {
         m_originalTimerLocalScale = m_timer.localScale;
+        m_startFill = m_fillBar.fillAmount;
 
     }
     private void OnChildEaten(ChildType childType) {
@@ -150,9 +156,10 @@ public class NewUIManager : MonoBehaviour {
     }
 
     public void ChangeChildCounter() {
+        m_currentFillHandle.TryCancel();
         float oldValue = m_fillBar.fillAmount;
-        LMotion.Create(oldValue, (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
-                                 Game.MainGameInfo.BadChildrenCountOnStart, 0.3f).WithDelay(0.5f).BindToFillAmount(m_fillBar);
+        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0,1,m_startFill,1,(float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
+                                 Game.MainGameInfo.BadChildrenCountOnStart), 2f).WithDelay(0.7f).BindToFillAmount(m_fillBar);
     }
 
 
