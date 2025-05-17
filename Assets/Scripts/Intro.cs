@@ -13,7 +13,7 @@ public class Intro : MonoBehaviour {
         Game.MainGameInfo.Krampus.Kamera.Rendering.GetComponent<CinemachineBrain>().ActiveBlend = null;
         Game.MainGameInfo.Krampus.Kontroller.MoveTo(m_spawnPoint.position);
         Game.MainGameInfo.Krampus.Animator.SetTargetView(m_spawnPoint.forward);
-
+//
         m_director.Play();
     }
 
