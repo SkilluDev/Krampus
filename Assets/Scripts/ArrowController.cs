@@ -19,6 +19,7 @@ public class ArrowController : MonoBehaviour {
 	}
 
 	private void Update() {
+		if (!Game.Balling) return;
 		if (Game.MainGameInfo.Timer.GameTime <= m_minimalGameTime) {
 			m_target = Game.MainGameInfo.Krampus.ChildSensor.ClosestChild.transform;
 
