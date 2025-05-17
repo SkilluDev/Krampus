@@ -11,21 +11,15 @@ using UnityEngine.VFX;
 public class Child : NPC, IEdible, INoiseReactor {
     public float RunSpeed => m_runSpeed;
     [ShowNativeProperty] public State CurrentState { get; private set; }
-
     public Vector3 InteractionPoint => m_pinTarget.transform.position;
-
     public UnityAction<Child.State, Child.State> onStateChanged;
-    [SerializeField] private float m_interactionDistance = 8;
-    [SerializeField] private float m_stunDuration = 0.4f;
-    [SerializeField] private float m_reportingDuration = 0.4f;
-    [SerializeField] private SpriteRenderer m_shapeSprite;
-    [SerializeField] private Sex m_killSoundBite;
-    [SerializeField] private VisualEffect m_goreParticle;
-    [SerializeField] private TrailRenderer m_trailRenderer;
-    [SerializeField] private ViewCone m_viewCone;
-    [SerializeField] private Transform m_pinTarget;
 
-
+    [SerializeField] private ChildAnimator m_animator;
+    [BoxGroup("Behaviour")][SerializeField] private ViewCone m_viewCone;
+    [BoxGroup("Behaviour")][SerializeField] private float m_stoppingDistance = 2;
+    [BoxGroup("Behaviour")][SerializeField] private float m_stunDuration = 0.4f;
+    [BoxGroup("Behaviour")][SerializeField] private float m_reportingDuration = 0.4f;
+    [BoxGroup("Behaviour")][SerializeField] private Transform m_pinTarget;
     [SerializeField] private float m_runSpeed = 8;
 
     private Nun m_selectedNun;
@@ -46,7 +40,8 @@ public class Child : NPC, IEdible, INoiseReactor {
         Panic, // go to the nearest nun
         Reporting, // talking to another
         Alerted, // go interact with stuff
-        Dead
+        Dead,
+        Consumed
     }
 
 
@@ -98,7 +93,7 @@ public class Child : NPC, IEdible, INoiseReactor {
                 if (m_currentPath?.status == NavMeshPathStatus.PathInvalid)
                     SelectNewWanderLocation();
 
-                if (NearDestination(m_interactionDistance) && m_timeout <= 0) {
+                if (NearDestination(m_stoppingDistance) && m_timeout <= 0) {
                     // TODO: Magic
                     m_timeout = Random.Range(0.1f, 2f);
                     SelectNewWanderLocation();
@@ -135,7 +130,7 @@ public class Child : NPC, IEdible, INoiseReactor {
                     SelectRandomNun();
                     SetDestination(m_selectedNun.transform.position);
                     SwitchState(State.Panic);
-                } else if (NearDestination(m_interactionDistance)) {
+                } else if (NearDestination(m_stoppingDistance)) {
                     SelectRandomNun();
                     SetDestination(m_selectedNun.transform.position);
                     if (Vector3.Dot(GetPathDirection(), Game.MainGameInfo.Krampus.transform.position - transform.position) > 0f) {
@@ -171,7 +166,7 @@ public class Child : NPC, IEdible, INoiseReactor {
                     SwitchState(State.Idle);
                 }
 
-                if (NearDestination(m_interactionDistance)) {
+                if (NearDestination(m_stoppingDistance)) {
                     if (m_selectedNun.CurrentState is Nun.State.Idle or Nun.State.Patrolling or Nun.State.LookingForKrampus) {
                         m_selectedNun.ActivateTheBitch(this, m_reportingDuration, m_lastKrampusSpotted);
                         m_timeout = m_reportingDuration;
@@ -195,20 +190,10 @@ public class Child : NPC, IEdible, INoiseReactor {
 
 
     public void Consume(Krampus krampus) {
-        m_killSoundBite.Play(transform.position, 1);
-
-        //m_trailRenderer.transform.parent = null;
-        //m_trailRenderer.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
-        //m_trailRenderer.autodestruct = true;
-        //m_trailRenderer = null;
-
-        var particle = Instantiate(m_goreParticle);
-        //        particle.SetVector4("Particle Color", m_type == Game.MainGameInfo.GoodChildType ? Game.MainGameInfo.GoodChildrenColor : Game.MainGameInfo.BadChildrenColor);
-        particle.transform.position = Game.MainGameInfo.Krampus.Tongue.transform.position;
-        particle.transform.SetParent(Game.MainGameInfo.Krampus.Kamera.Rendering.transform);
-
         Game.MainGameInfo.UnregisterChild(this);
         Game.MainGameInfo.GlobalEvents.onChildEaten?.Invoke(Type);
+        SwitchState(State.Consumed);
+
         Destroy(gameObject);
     }
     public void Hit(Krampus krampus) {
@@ -232,14 +217,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 
     public void SetChildType(ChildType type) {
         m_type = type;
-        var skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
-        foreach (var s in skinnedMeshRenderers) {
-            s.material.SetColor("_Color", type.color);
-        }
-
-        m_shapeSprite.sprite = type.shape;
-        var c = new Color(type.color.r, type.color.g, type.color.b, 0.25f);
-        m_shapeSprite.color = c;
+        m_animator.SetChildType(type);
     }
 
     public void Alert(RoomData roomData, Vector3 place, ICharacter actor) {
