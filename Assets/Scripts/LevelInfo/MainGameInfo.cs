@@ -74,6 +74,7 @@ public class MainGameInfo : LevelInfo {
     public float Score => m_score;
     [BoxGroup("Sounds")][SerializeField] private Sex m_badSound;
 
+    [SerializeField] OutroScript m_outro;
 
     public new enum State {
         Intro,
@@ -178,7 +179,7 @@ public class MainGameInfo : LevelInfo {
         m_nunRegistry.Remove(nun);
     }
 
-    
+
 
     private void Update() {
         if (!Game.MainGameInfo.BadChildren.Any() && Game.Balling) {
@@ -190,6 +191,7 @@ public class MainGameInfo : LevelInfo {
         switch (ending) {
             case Ending.Win:
                 Game.MainGameInfo.SetState(MainGameInfo.State.Won);
+                m_outro.PlayOutro();
                 break;
             case Ending.LoseNun:
                 Game.MainGameInfo.SetState(MainGameInfo.State.Over);
