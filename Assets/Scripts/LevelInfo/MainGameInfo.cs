@@ -65,9 +65,8 @@ public class MainGameInfo : LevelInfo {
     private float m_score;
 
     public float Score => m_score;
-    [BoxGroup("Sounds")][SerializeField] private Sex m_badSound;
 
-    [SerializeField] OutroScript m_outro;
+    [SerializeField] private OutroScript m_outro;
 
     public new enum State {
         Intro,
@@ -154,7 +153,6 @@ public class MainGameInfo : LevelInfo {
 
         m_childRegistry.Remove(child);
         if (child.Type == GoodChildType) {
-            m_badSound.Play(child.transform.position);
             m_goodChildRegistry.Remove(child);
         } else {
             m_badChildRegistry.Remove(child);
@@ -180,9 +178,9 @@ public class MainGameInfo : LevelInfo {
         }
 
         if (Game.MainGameInfo.Timer.GameTime < 0 && Game.Balling && Krampus.Tongue.CurrentState == KrampusTongue.State.Idle) {
-			Krampus.Kontroller.KrampTermination(Ending.LoseTime);
-			return;
-		}
+            Krampus.Kontroller.KrampTermination(Ending.LoseTime);
+            return;
+        }
     }
 
     public void ProcessEndGame(Ending ending) {

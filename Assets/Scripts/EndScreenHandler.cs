@@ -16,6 +16,7 @@ public class EndScreenHandler : MonoBehaviour {
 
     [SerializeField] private float m_fadeDuration = 0.5f;
     [SerializeField] private float m_beginSpeed = 1f;
+    [SerializeField] private ChildMeter m_childMeter;
     [BoxGroup("Ending textures")][SerializeField] private GameObject m_wonTextures;
     [BoxGroup("Ending textures")][SerializeField] private GameObject m_lostTextures;
 
@@ -63,6 +64,12 @@ public class EndScreenHandler : MonoBehaviour {
         switch (ending) {
             case Ending.Win:
                 PlaySequence(m_groupsWon);
+
+                float time = Game.MainGameInfo.timeFromStart / 60;
+                float val = Game.MainGameInfo.Score / time;
+                LMotion.Create(0, val, 2).WithEase(Ease.OutElastic).WithDelay(4).Bind(m_childMeter.SetScore);
+
+
                 m_lostTextures.SetActive(false);
                 m_endingText.SetText(m_winText);
                 break;
