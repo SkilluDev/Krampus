@@ -185,6 +185,11 @@ public class MainGameInfo : LevelInfo {
         if (!Game.MainGameInfo.BadChildren.Any() && Game.Balling) {
             Game.MainGameInfo.ProcessEndGame(Ending.Win);
         }
+
+        if (Game.MainGameInfo.Timer.GameTime < 0 && Game.Balling && Krampus.Tongue.CurrentState == KrampusTongue.State.Idle) {
+			Krampus.Kontroller.KrampTermination(Ending.LoseTime);
+			return;
+		}
     }
 
     public void ProcessEndGame(Ending ending) {

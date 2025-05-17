@@ -74,11 +74,6 @@ public class KrampusController : KrampusBehaviour {
 
 		if (CurrentState == State.Dead) return;
 
-		//		Debug.LogWarning(Game.MainGameInfo.Timer);
-		if (Game.MainGameInfo.Timer.GameTime < 0) {
-			KrampTermination(Ending.LoseTime);
-			return;
-		}
 		float acceleration = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;
 
 		var inputs = InputSubscribe.Movement;
