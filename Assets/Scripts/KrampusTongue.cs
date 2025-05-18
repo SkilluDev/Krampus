@@ -86,7 +86,7 @@ public class KrampusTongue : KrampusBehaviour {
     private Vector3 InputTongueDirection() {
         return InputSubscribe.InputMethod switch {
             InputSubscribe.Method.PC => Vector3.Lerp(m_tongueDirection, GetDirectionToMouse(), Time.deltaTime * m_inputDragSmoothing),
-            _ => Vector3.Lerp(m_tongueDirection, (Game.SetMan.GetValue<bool>("Controller Aim Flip") ? -1 : 1) * Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * m_inputDragSmoothing),
+            _ => Vector3.Lerp(m_tongueDirection, (Game.SetMan.GetValue<bool>("Controller Aim Flip") ? 1 : -1) * Kramp.Kamera.Matrix.MultiplyVector(new Vector3(InputSubscribe.Aim.x, 0, InputSubscribe.Aim.y)), Time.deltaTime * m_inputDragSmoothing),
         };
     }
 
