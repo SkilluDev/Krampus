@@ -38,7 +38,7 @@ public class InputSubscribe : MonoBehaviour {
 	}
 
 	private void Awake() {
-		ChangeInputMethod(m_method);
+		//ChangeInputMethod(m_method);
 	}
 
 	public static void ChangeInputMethod(Method method) {
