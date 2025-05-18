@@ -186,14 +186,14 @@ public class MainGameInfo : LevelInfo {
     public void ProcessEndGame(Ending ending) {
         switch (ending) {
             case Ending.Win:
-                Game.MainGameInfo.SetState(MainGameInfo.State.Won);
+                Game.MainGameInfo.SetState(State.Won);
                 m_outro.PlayOutro();
                 break;
             case Ending.LoseNun:
-                Game.MainGameInfo.SetState(MainGameInfo.State.Over);
+                Game.MainGameInfo.SetState(State.Over);
                 break;
             case Ending.LoseTime:
-                Game.MainGameInfo.SetState(MainGameInfo.State.Over);
+                Game.MainGameInfo.SetState(State.Over);
                 break;
         }
         Game.MusicMan.StopMusic();

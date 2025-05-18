@@ -67,7 +67,7 @@ public class ChildAnimator : MonoBehaviour {
     }
 
     private void Update() {
-        m_screamSource.volume = Mathf.Lerp(m_screamSource.volume, (m_child.CurrentState is Child.State.Panic or Child.State.InitialPanic) ? m_screamVolume : 0f, Time.deltaTime);
+        m_screamSource.volume = Mathf.Lerp(m_screamSource.volume, (m_child.CurrentState is Child.State.Panic or Child.State.InitialPanic && Game.Balling) ? m_screamVolume : 0f, Time.deltaTime);
         m_model.rotation = Quaternion.Slerp(m_model.rotation, Quaternion.Euler(0, m_child.FacingAngle, 0), Time.deltaTime * m_turningSpeed);
 
         m_animator.SetBool(m_propertyPanic, m_child.CurrentState is Child.State.Panic or Child.State.InitialPanic);

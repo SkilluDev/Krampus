@@ -681,7 +681,19 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 189951819983728542, guid: f0b7c5050b2137f448c51fc46427748b,
+    - target: {fileID: 1659900571874270767, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5974276736950158806, guid: ebed9cc6463044422a611f4748adc568,
+        type: 2}
+    - target: {fileID: 2360485997988857813, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5974276736950158806, guid: ebed9cc6463044422a611f4748adc568,
+        type: 2}
+    - target: {fileID: 2440044820309743822, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_text
       value: 'Eat all <b>naughty</b> children before the timer runs out
@@ -697,7 +709,7 @@ PrefabInstance:
       propertyPath: m_fontStyle
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4262503464282658909, guid: f0b7c5050b2137f448c51fc46427748b,
+    - target: {fileID: 4176309733959268076, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -707,6 +719,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameplayUI
       objectReference: {fileID: 0}
+    - target: {fileID: 7306990492431766720, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5974276736950158806, guid: ebed9cc6463044422a611f4748adc568,
+        type: 2}
     - target: {fileID: 7882250972698376286, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_Pivot.x
@@ -807,6 +825,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8272026241812017380, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -5974276736950158806, guid: ebed9cc6463044422a611f4748adc568,
+        type: 2}
+    - target: {fileID: 8711646261793445614, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_SceneBindings.Array.data[9].value
+      value: 
+      objectReference: {fileID: 1131501686}
+    - target: {fileID: 8711646261793445614, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_SceneBindings.Array.data[10].value
+      value: 
+      objectReference: {fileID: 1210218570}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -824,6 +858,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e8bdfd94412dd4d8a8de6e2238a59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &1131501686 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8272026241812017380, guid: f0b7c5050b2137f448c51fc46427748b,
+    type: 3}
+  m_PrefabInstance: {fileID: 648446535}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1189057197
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -892,6 +932,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68c7178303dad644cb81c2066025ebd8, type: 3}
+--- !u!82 &1210218570 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 7306990492431766720, guid: f0b7c5050b2137f448c51fc46427748b,
+    type: 3}
+  m_PrefabInstance: {fileID: 648446535}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1436439538 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3650756095129614072, guid: 1370af54edd30564086e0f4717044a13,

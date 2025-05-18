@@ -4,12 +4,14 @@ using KrampUtils;
 using LitMotion;
 using LitMotion.Extensions;
 using NaughtyAttributes;
+using TMPro;
 using UnityEngine;
 
 public class BlackBars : MonoBehaviour {
     [SerializeField] private float m_duration;
 
     [SerializeField] private RectTransform m_top, m_bottom;
+    [SerializeField] private TMP_Text m_textTop, m_textBottom;
     private float m_yDistanceTop, m_yDistanceBottom;
 
     private void Awake() {
@@ -41,13 +43,11 @@ public class BlackBars : MonoBehaviour {
         m_bottom.sizeDelta = m_bottom.sizeDelta.WithY(m_yDistanceBottom);
     }
 
-    public void SetVariant(int variant) {
-        for (int i = 0; i < m_top.childCount; i++) {
-            m_top.GetChild(i).gameObject.SetActive(i == variant);
-        }
+    public void SetBottomBarText(string text) {
+        m_textBottom.SetText(text);
+    }
 
-        for (int i = 0; i < m_bottom.childCount; i++) {
-            m_bottom.GetChild(i).gameObject.SetActive(i == variant);
-        }
+    public void SetTopBarText(string text) {
+        m_textTop.SetText(text);
     }
 }

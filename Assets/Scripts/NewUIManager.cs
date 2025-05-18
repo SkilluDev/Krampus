@@ -36,6 +36,7 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private Color m_goodTimerColor;
     [SerializeField] private Color m_badTimerColor;
 
+    public BlackBars BlackBars => m_blackBars;
     [SerializeField] private BlackBars m_blackBars;
 
     private MotionHandle m_currentBounce;
@@ -61,6 +62,8 @@ public class NewUIManager : MonoBehaviour {
 
     [BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockLeft;
     [BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockRight;
+    [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarTutorialKeys;
+    [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarMenuKeys;
 
     [Button]
     private void EatGoodChild() {
@@ -117,8 +120,9 @@ public class NewUIManager : MonoBehaviour {
     }
 
     private void Start() {
-        m_blackBars.SetVariant(0);
         m_blackBars.ShowInstant();
+        m_blackBars.SetTopBarText("");
+        m_blackBars.SetBottomBarText(m_bottomBarTutorialKeys);
     }
 
 
@@ -154,7 +158,6 @@ public class NewUIManager : MonoBehaviour {
 
     public void DisplayScoreBoard() {
         m_scoreboard.SetActive(true);
-
     }
 
     public void HideBlackBars(bool showTutorial) {
@@ -174,6 +177,10 @@ public class NewUIManager : MonoBehaviour {
     }
 
     public IEnumerator ProcessEnding(Ending ending) {
+        m_blackBars.Show();
+        m_blackBars.SetTopBarText("");
+        m_blackBars.SetBottomBarText(m_bottomBarMenuKeys);
+        m_endScreenHandler.PreActivate(ending);
         yield return new WaitForSeconds(3);
         m_endScreenHandler.Activate(ending);
         DisplayScoreBoard();
