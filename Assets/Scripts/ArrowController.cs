@@ -1,3 +1,4 @@
+using System.Linq;
 using KrampUtils;
 using LitMotion;
 using LitMotion.Extensions;
@@ -20,12 +21,9 @@ public class ArrowController : MonoBehaviour {
 
 	private void Update() {
 		if (!Game.Balling) return;
-		if (Game.MainGameInfo.Timer.GameTime <= m_minimalGameTime) {
-			m_target = Game.MainGameInfo.Krampus.ChildSensor.ClosestChild.transform;
-
-			if (m_previousTarget != m_target) {
-
-			}
+		if (Game.MainGameInfo.Timer.GameTime <= m_minimalGameTime || Game.MainGameInfo.BadChildren.Count() <= 1) {
+			if (Game.MainGameInfo.Krampus.ChildSensor.ClosestChild != null) m_target = Game.MainGameInfo.Krampus.ChildSensor.ClosestChild.transform;
+			else m_target = null;
 		} else {
 			m_target = null;
 			m_arrowModel.SetActive(false);
@@ -42,6 +40,6 @@ public class ArrowController : MonoBehaviour {
 		} else {
 			if (!m_rotationHandle.IsPlaying()) transform.rotation = Quaternion.LookRotation(direction);
 		}
-		m_previousTarget = m_target;		
+		m_previousTarget = m_target;
 	}
 }
