@@ -157,7 +157,7 @@ public class NewUIManager : MonoBehaviour {
 
 
     public void DisplayScoreBoard() {
-        m_scoreboard.SetActive(true);
+        // m_scoreboard.SetActive(true);
     }
 
     public void HideBlackBars(bool showTutorial) {
