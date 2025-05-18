@@ -1111,9 +1111,9 @@ PlayableDirector:
   - key: {fileID: 1722569249428597296, guid: e4248c09005040339b0ef20c25407b90, type: 2}
     value: {fileID: 2981338331473555036}
   - key: {fileID: -412646550742285986, guid: e4248c09005040339b0ef20c25407b90, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 8272026241812017380}
   - key: {fileID: 3289050466944307671, guid: e4248c09005040339b0ef20c25407b90, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 7306990492431766720}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &2698675993094695149
@@ -2648,7 +2648,8 @@ AudioSource:
   m_GameObject: {fileID: 5077973548078546266}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5974276736950158806, guid: ebed9cc6463044422a611f4748adc568,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -3223,7 +3224,8 @@ AudioSource:
   m_GameObject: {fileID: 5547458389410158360}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5974276736950158806, guid: ebed9cc6463044422a611f4748adc568,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -3310,6 +3312,81 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &5568434086674260345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 750321546776365538}
+  - component: {fileID: 6572190150619287720}
+  - component: {fileID: 4377112644962241774}
+  m_Layer: 0
+  m_Name: Cross (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &750321546776365538
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5568434086674260345}
+  m_LocalRotation: {x: -0, y: -0, z: 0.07367334, w: 0.9972825}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 913249102422387382}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 580, y: 300}
+  m_SizeDelta: {x: 625, y: 566}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6572190150619287720
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5568434086674260345}
+  m_CullTransparentMesh: 1
+--- !u!114 &4377112644962241774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5568434086674260345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: e01795d4611232d4fac9a3bb29c45491, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5663865092668360803
 GameObject:
   m_ObjectHideFlags: 0
@@ -3635,7 +3712,8 @@ AudioSource:
   m_GameObject: {fileID: 5946104420720454843}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5974276736950158806, guid: ebed9cc6463044422a611f4748adc568,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -3877,7 +3955,8 @@ AudioSource:
   m_GameObject: {fileID: 6026048876750207417}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5974276736950158806, guid: ebed9cc6463044422a611f4748adc568,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -6473,7 +6552,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_goodChildIcon
       value: 
-      objectReference: {fileID: 6601373037544954807}
+      objectReference: {fileID: 4377112644962241774}
     - target: {fileID: 4292346346145630575, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
       propertyPath: m_IsActive
@@ -6507,6 +6586,17 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5559372075496423323, guid: 01fc9c0b49256e64388c831467cc2ba4,
+        type: 3}
+      propertyPath: m_text
+      value: 'Eat all <b>naughty</b> children before the timer runs out
+
+        Eating
+        naughty children <b>extends</b> the timer
+
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 7155022735336016693, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
       propertyPath: m_Sprite
@@ -6521,7 +6611,7 @@ PrefabInstance:
     - target: {fileID: 8404692236160305240, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8568628825467685302, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
@@ -6597,10 +6687,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4839258977096546995, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
       insertIndex: 3
-      addedObject: {fileID: 2744881951262318374}
+      addedObject: {fileID: 750321546776365538}
     - targetCorrespondingSourceObject: {fileID: 4839258977096546995, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
-      insertIndex: 4
+      insertIndex: 5
       addedObject: {fileID: 2844929017745614949}
     - targetCorrespondingSourceObject: {fileID: 8935074521706719862, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
