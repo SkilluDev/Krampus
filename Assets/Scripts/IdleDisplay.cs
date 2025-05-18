@@ -24,6 +24,7 @@ public class IdleDisplay : MonoBehaviour {
     private MotionHandle m_motionHandle;
     [SerializeField] private float m_fadeInTime = 20f;
     private void Awake() {
+        m_videoPlayer.url = Application.dataPath+"\\idle.mp4";
         m_listener = InputSystem.onAnyButtonPress.Call(OnButtonPressed);
         m_videoPlayer.gameObject.SetActive(false);
     }
