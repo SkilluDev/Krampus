@@ -43,9 +43,7 @@ public class IdleDisplay : MonoBehaviour {
 
     private void Update() {
         m_timer += Time.deltaTime;
-        Debug.Log(m_timer);
         if (m_timer > m_idleTime && !m_playing && Game.MainMenuInfo.CurrentState == MainMenuInfo.State.Default) {
-            Debug.Log("IDLE");
             m_timer = 0;
             m_playing = true;
             m_videoPlayer.gameObject.SetActive(true);

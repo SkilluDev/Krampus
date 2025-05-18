@@ -210,6 +210,14 @@ MonoBehaviour:
       type: 3}
     m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
       mscorlib],[System.Object, mscorlib]], mscorlib","name":"Nun run speed","defaultValue":10}'
+  - setting: {fileID: 7421526671820469417, guid: 09e74dcb4ef09575aaa9479350c2d29e,
+      type: 3}
+    m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
+      mscorlib],[System.Object, mscorlib]], mscorlib","name":"Music volume","defaultValue":100}'
+  - setting: {fileID: 7421526671820469417, guid: 09e74dcb4ef09575aaa9479350c2d29e,
+      type: 3}
+    m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
+      mscorlib],[System.Object, mscorlib]], mscorlib","name":"SFX volume","defaultValue":100}'
   m_json: 
 --- !u!1 &201788022
 GameObject:
@@ -790,6 +798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778d143636cb3b936821bce078311ae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_mixer: {fileID: 24100000, guid: ebed9cc6463044422a611f4748adc568, type: 2}
   m_gameMusicLayer1: {fileID: 331384709}
   m_gameMusicLayer2: {fileID: 1468845024}
   m_fadeOutTime: 5
