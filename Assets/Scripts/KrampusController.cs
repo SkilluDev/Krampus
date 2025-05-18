@@ -59,6 +59,7 @@ public class KrampusController : KrampusBehaviour {
 	// Based on @SkilluDev's inputs
 	private void Update() {
 		if (!Game.Balling) {
+			m_rigidbody.velocity = Vector3.zero;
 			return;
 		}
 		if (CurrentState == State.Intro) {
@@ -134,7 +135,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void KrampTermination(Ending ending) {
-		if (!Game.Balling)	return;
+		if (!Game.Balling) return;
 		ChangeState(State.Dead, StateChangeReason.Rapid);
 		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
 		m_rigidbody.velocity = Vector3.zero;
