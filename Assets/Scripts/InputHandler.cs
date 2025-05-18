@@ -16,6 +16,7 @@ public class InputHandler : MonoBehaviour
         }
         if (Game.MainGameInfo.Ended || Game.MainGameInfo.CurrentState == MainGameInfo.State.Paused) {//if the game is over, won, or paused, you can
             if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
+                Game.RoomGenInfo.Regenerate = RoomGenerationType.First;
                 Game.MainGameInfo.SetState(MainGameInfo.State.Game);
                 Game.LoadState(Game.State.MainMenu);
             }
