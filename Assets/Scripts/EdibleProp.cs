@@ -10,12 +10,15 @@ public class EdibleProp : MonoBehaviour, IEdible {
 
 
     private bool ModelSet => m_model != null;
+
+    public int Priority => -1;
+
     private Vector3 m_initialScale;
 
     [SerializeField]
     [ShowIf("ModelSet")]
     private AnimationCurve m_modelScale = new AnimationCurve(
-        new Keyframe(0f, 1f, 0f, 0f,0f, 1f),
+        new Keyframe(0f, 1f, 0f, 0f, 0f, 1f),
         new Keyframe(1f, 0f, -90f, 0f, 0.011f, 0f)
     );
 

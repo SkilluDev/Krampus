@@ -44,6 +44,8 @@ public class Child : NPC, IEdible, INoiseReactor {
         Consumed
     }
 
+    public int Priority => Game.MainGameInfo.GoodChildType == Type ? -10 : 0;
+
 
     public void Start() {
         SetChildType(Game.MainGameInfo.Types.UnityRandomElement());

@@ -179,11 +179,9 @@ public class KrampusTongue : KrampusBehaviour {
                 var interactables = hitObjects.Select(w => (hit: w, interactable: w.collider.GetComponentInParent<IInteractable>()))
                                     .Where(w => w.interactable != null && w.interactable.CanInteract(Kramp))
                                     .NullIfEmpty()?
-                                    .OrderBy((a, b) =>
-                                        (a.interactable is IEdible && b.interactable is IEdible) || (a.interactable is not IEdible && b.interactable is not IEdible)
-                                            ? Vector3.SqrMagnitude(m_tongueOrigin.position - a.hit.point) < Vector3.SqrMagnitude(m_tongueOrigin.position - b.hit.point) ? -1 : 1
-                                            : a.interactable is IEdible ? -1 : 1
-                                    )
+                                    .OrderBy(w => !(w.interactable is IEdible)) // IEdibles first
+                                    .ThenByDescending(w => w.interactable.Priority) // Priority (highest first)
+                                    .ThenBy(w => Vector3.SqrMagnitude(m_tongueOrigin.position - w.hit.point)) // Distance (closest first)
                                     .Where(w => !Physics.Linecast(m_tongueOrigin.position, w.hit.point, m_interactionBlockerMask))
                                     .NullIfEmpty()?
                                     .Select(w => w.interactable);
