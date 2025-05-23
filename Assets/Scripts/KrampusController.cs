@@ -20,7 +20,8 @@ public class KrampusController : KrampusBehaviour {
 	[SerializeField] private Rigidbody m_rigidbody;
 
 	[BoxGroup("Speed Control")][SerializeField] private float m_sneakSpeed = 5f;
-	[BoxGroup("Speed Control")][SerializeField] private float m_runSpeed = 10f;
+	[BoxGroup("Speed Control")][SerializeField] private float m_runSpeed = 12f;
+	[BoxGroup("Speed Control")][SerializeField] private float m_dashSpeed = 12f;
 	[BoxGroup("Movement Assist")][SerializeField] private int m_assistValue = 45;
 	[BoxGroup("Movement Assist")][SerializeField] private int m_assistCheckLength = 1;
 	[BoxGroup("Movement Assist")][SerializeField] private LayerMask m_avoidableObjects;
@@ -36,6 +37,8 @@ public class KrampusController : KrampusBehaviour {
 
 
 	private Vector4 m_inputWeights;
+	private Vector3 m_dashDirection;
+	private float m_dashTime;
 	private float m_timeout;
 	private float m_timeHoldingInput = 0f;
 	private float m_previousFrameVelocity = 0f;
@@ -47,6 +50,7 @@ public class KrampusController : KrampusBehaviour {
 		Idle,
 		Run,
 		Walk,
+		Dash,
 		Dead
 	}
 
@@ -73,7 +77,7 @@ public class KrampusController : KrampusBehaviour {
 			return;
 		}
 
-		if (CurrentState == State.Dead) return;
+		if (CurrentState is State.Dead or State.Dash) return;
 
 		float acceleration = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;
 
@@ -128,6 +132,13 @@ public class KrampusController : KrampusBehaviour {
 		m_previousFrameVelocity = m_rigidbody.velocity.sqrMagnitude;
 	}
 
+	public void Dash(Vector3 direction) {
+		m_dashTime = 0.4f;
+		m_dashDirection = direction;
+		ChangeState(State.Dash, StateChangeReason.Rapid);
+		Debug.Log("Do dashing");
+	}
+
 	private void ChangeState(State to, StateChangeReason reason) {
 		if (to == CurrentState) return;
 		onStateChanged?.Invoke(CurrentState, to, reason);
@@ -154,6 +165,14 @@ public class KrampusController : KrampusBehaviour {
 	private void FixedUpdate() {
 		if (!Game.Balling) return;
 		if (CurrentState == State.Dead) return;
+
+		if (CurrentState == State.Dash) {
+			m_dashTime -= Time.fixedDeltaTime;
+			m_rigidbody.velocity = m_dashDirection.normalized * m_dashSpeed;
+
+			if (m_dashTime < 0) ChangeState(State.Run, StateChangeReason.Rapid);
+			return;
+		}
 
 		var computedVelocity = ComputeVelocity();
 		computedVelocity = computedVelocity.normalized * Mathf.Max(Mathf.Abs(computedVelocity.x), Mathf.Abs(computedVelocity.z));

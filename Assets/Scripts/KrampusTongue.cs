@@ -263,6 +263,9 @@ public class KrampusTongue : KrampusBehaviour {
                 if (m_hitInteractable != null) {
                     try {
                         m_hitInteractable.Interact(Kramp);
+                        if (m_hitInteractable is Child c && Game.MainGameInfo.BadChildTypes.Contains(c.Type)) {
+                            Kramp.Kontroller.Dash((m_hitInteractable.InteractionPoint - transform.position).normalized.NoY());
+                        }
                     } catch (Exception e) {
                         LogException(e, m_hitInteractable);
                         m_hitInteractable = null;
