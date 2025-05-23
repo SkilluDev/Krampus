@@ -42,7 +42,7 @@ public class KrampusController : KrampusBehaviour {
 	private float m_timeout;
 	private float m_timeHoldingInput = 0f;
 	private float m_previousFrameVelocity = 0f;
-
+	[SerializeField] private float m_dashDuration = 0.4f;
 
 	public enum State {
 		Intro,
@@ -133,7 +133,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void Dash(Vector3 direction) {
-		m_dashTime = 0.4f;
+		m_dashTime = m_dashDuration;
 		m_dashDirection = direction;
 		ChangeState(State.Dash, StateChangeReason.Rapid);
 		Debug.Log("Do dashing");
