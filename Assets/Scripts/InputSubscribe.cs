@@ -28,6 +28,8 @@ public class InputSubscribe : MonoBehaviour {
 	public static Vector2 Aim => Raw.Player.Aim.ReadValue<Vector2>();
 	public static Vector2 UITilt => Raw.UI.Tilt.ReadValue<Vector2>();
 	public static bool Sneaking => Raw.Player.Crouch.IsPressed();
+
+	public static bool Special=>Raw.Player.Special.IsPressed();
 	public static Method InputMethod { get; private set; }
 
 	[SerializeField] private Method m_method;

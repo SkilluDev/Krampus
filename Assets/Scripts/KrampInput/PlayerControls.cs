@@ -82,6 +82,15 @@ namespace KrampInput
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Special"",
+                    ""type"": ""Button"",
+                    ""id"": ""c2e4ce99-ee3a-4ac0-9ca6-6b6500c1acbd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -326,6 +335,17 @@ namespace KrampInput
                     ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b3ae21cd-0ee0-40f9-8d58-397735c7b7ee"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";PC"",
+                    ""action"": ""Special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -397,7 +417,7 @@ namespace KrampInput
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Restart And Regen"",
+                    ""name"": ""RestartAndRegen"",
                     ""type"": ""Button"",
                     ""id"": ""e50998c0-f311-4809-b567-2707abd5587a"",
                     ""expectedControlType"": """",
@@ -689,7 +709,7 @@ namespace KrampInput
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";PC"",
-                    ""action"": ""Restart And Regen"",
+                    ""action"": ""RestartAndRegen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -700,7 +720,7 @@ namespace KrampInput
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Console"",
-                    ""action"": ""Restart And Regen"",
+                    ""action"": ""RestartAndRegen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -756,6 +776,7 @@ namespace KrampInput
             m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
             m_Player_BeginAiming = m_Player.FindAction("Begin Aiming", throwIfNotFound: true);
             m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+            m_Player_Special = m_Player.FindAction("Special", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -765,7 +786,7 @@ namespace KrampInput
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
             m_UI_Tilt = m_UI.FindAction("Tilt", throwIfNotFound: true);
             m_UI_MenuReturn = m_UI.FindAction("MenuReturn", throwIfNotFound: true);
-            m_UI_RestartAndRegen = m_UI.FindAction("Restart And Regen", throwIfNotFound: true);
+            m_UI_RestartAndRegen = m_UI.FindAction("RestartAndRegen", throwIfNotFound: true);
         }
 
         ~@PlayerControls()
@@ -839,6 +860,7 @@ namespace KrampInput
         private readonly InputAction m_Player_Aim;
         private readonly InputAction m_Player_BeginAiming;
         private readonly InputAction m_Player_Shoot;
+        private readonly InputAction m_Player_Special;
         public struct PlayerActions
         {
             private @PlayerControls m_Wrapper;
@@ -849,6 +871,7 @@ namespace KrampInput
             public InputAction @Aim => m_Wrapper.m_Player_Aim;
             public InputAction @BeginAiming => m_Wrapper.m_Player_BeginAiming;
             public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+            public InputAction @Special => m_Wrapper.m_Player_Special;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -876,6 +899,9 @@ namespace KrampInput
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @Special.started += instance.OnSpecial;
+                @Special.performed += instance.OnSpecial;
+                @Special.canceled += instance.OnSpecial;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -898,6 +924,9 @@ namespace KrampInput
                 @Shoot.started -= instance.OnShoot;
                 @Shoot.performed -= instance.OnShoot;
                 @Shoot.canceled -= instance.OnShoot;
+                @Special.started -= instance.OnSpecial;
+                @Special.performed -= instance.OnSpecial;
+                @Special.canceled -= instance.OnSpecial;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1052,6 +1081,7 @@ namespace KrampInput
             void OnAim(InputAction.CallbackContext context);
             void OnBeginAiming(InputAction.CallbackContext context);
             void OnShoot(InputAction.CallbackContext context);
+            void OnSpecial(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

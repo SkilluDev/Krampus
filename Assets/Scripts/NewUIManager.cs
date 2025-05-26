@@ -27,6 +27,10 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
 
+
+    [SerializeField] private GameObject m_quickActionIcon;
+    public GameObject quickActionIcon => m_quickActionIcon;
+
     private float m_startFill;
 
     private MotionHandle m_currentFillHandle;
@@ -78,6 +82,7 @@ public class NewUIManager : MonoBehaviour {
     private void Awake() {
         m_originalTimerLocalScale = m_timer.localScale;
         m_startFill = m_fillBar.fillAmount;
+
     }
 
     private void OnChildEaten(ChildType childType) {
@@ -123,6 +128,7 @@ public class NewUIManager : MonoBehaviour {
         m_blackBars.ShowInstant();
         m_blackBars.SetTopBarText("");
         m_blackBars.SetBottomBarText(m_bottomBarTutorialKeys);
+        quickActionIcon.SetActive(false);
     }
 
 
@@ -132,6 +138,8 @@ public class NewUIManager : MonoBehaviour {
         } else {
             m_timerDisplay.gameObject.SetActive(true);
         }
+
+
 
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
     }
@@ -192,5 +200,10 @@ public class NewUIManager : MonoBehaviour {
         m_currentBounce = LMotion.Create(oldScale, oldScale * 1.3f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
                 () => LMotion.Create(oldScale * 1.3f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
             ).BindToLocalScale(m_timer);
+    }
+
+    public void StartQuickTimeTimer(float seconds) {
+
+
     }
 }

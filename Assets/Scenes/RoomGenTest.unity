@@ -208,6 +208,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a6136c6e03d0aa40b7d77752acf62e2, type: 3}
+--- !u!1 &228730011 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5401012481720460271, guid: f0b7c5050b2137f448c51fc46427748b,
+    type: 3}
+  m_PrefabInstance: {fileID: 648446535}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &358014034
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,6 +692,18 @@ PrefabInstance:
       propertyPath: m_text
       value: <binding="UI/Advance"> Next <binding="UI/QuitTutorial"> Quit tutorial
       objectReference: {fileID: 0}
+    - target: {fileID: 452406026344760287, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_text
+      value: '<binding="UI/QuitTutorial">
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6803140620708373658, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_quickActionIcon
+      value: 
+      objectReference: {fileID: 228730011}
     - target: {fileID: 7172931892233990810, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_Name

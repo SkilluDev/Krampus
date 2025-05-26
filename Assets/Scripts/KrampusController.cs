@@ -35,14 +35,26 @@ public class KrampusController : KrampusBehaviour {
 	[BoxGroup("Intro")][SerializeField] private float m_getUpDuration = 1f;
 
 
-
+	//Dashing
 	private Vector4 m_inputWeights;
-	private Vector3 m_dashDirection;
 	private float m_dashTime;
 	private float m_timeout;
 	private float m_timeHoldingInput = 0f;
 	private float m_previousFrameVelocity = 0f;
 	[SerializeField] private float m_dashDuration = 0.4f;
+
+
+	private bool m_canSting = false;
+	public bool CanSting {
+		get => m_canSting;
+		set => m_canSting = value;
+	}
+	private Vector3 m_dashDirection;
+	public Vector3 NextStingDirection {
+		get => m_dashDirection;
+		set => m_dashDirection = value;
+	}
+
 
 	public enum State {
 		Intro,
@@ -62,6 +74,8 @@ public class KrampusController : KrampusBehaviour {
 
 	// Based on @SkilluDev's inputs
 	private void Update() {
+
+
 		if (!Game.Balling) {
 			m_rigidbody.velocity = Vector3.zero;
 			return;
@@ -98,6 +112,8 @@ public class KrampusController : KrampusBehaviour {
 
 
 
+
+
 		var state = CurrentState;
 		var reason = StateChangeReason.Normal;
 
@@ -130,13 +146,19 @@ public class KrampusController : KrampusBehaviour {
 		}
 		if (CurrentState == State.Idle) m_timeHoldingInput = 0f;
 		m_previousFrameVelocity = m_rigidbody.velocity.sqrMagnitude;
+
+		if (CanSting & InputSubscribe.Special) {
+			Dash();
+		}
 	}
 
-	public void Dash(Vector3 direction) {
+	public void Dash() {
 		m_dashTime = m_dashDuration;
-		m_dashDirection = direction;
+
+
+		Kramp.Tongue.SetCanSting(false);
 		ChangeState(State.Dash, StateChangeReason.Rapid);
-		Debug.Log("Do dashing");
+		Debug.Log("Do dashing " + m_dashDirection);
 	}
 
 	private void ChangeState(State to, StateChangeReason reason) {
@@ -168,6 +190,7 @@ public class KrampusController : KrampusBehaviour {
 
 		if (CurrentState == State.Dash) {
 			m_dashTime -= Time.fixedDeltaTime;
+			Debug.Log("Dash TIme: "+m_dashTime);
 			m_rigidbody.velocity = m_dashDirection.normalized * m_dashSpeed;
 
 			if (m_dashTime < 0) ChangeState(State.Run, StateChangeReason.Rapid);

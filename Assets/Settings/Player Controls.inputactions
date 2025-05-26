@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Special",
+                    "type": "Button",
+                    "id": "c2e4ce99-ee3a-4ac0-9ca6-6b6500c1acbd",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -300,6 +309,17 @@
                     "processors": "InvertVector2,StickDeadzone",
                     "groups": "Console;Mobile",
                     "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b3ae21cd-0ee0-40f9-8d58-397735c7b7ee",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC",
+                    "action": "Special",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
