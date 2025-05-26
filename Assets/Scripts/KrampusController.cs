@@ -42,18 +42,16 @@ public class KrampusController : KrampusBehaviour {
 	private float m_timeHoldingInput = 0f;
 	private float m_previousFrameVelocity = 0f;
 	[SerializeField] private float m_dashDuration = 0.4f;
-
-
-	private bool m_canSting = false;
-	public bool CanSting {
-		get => m_canSting;
-		set => m_canSting = value;
-	}
+	public bool CanSting { get; set; } = false;
 	private Vector3 m_dashDirection;
-	public Vector3 NextStingDirection {
-		get => m_dashDirection;
-		set => m_dashDirection = value;
-	}
+	public Vector3 NextStingDirection { get => m_dashDirection; set => m_dashDirection = value;}
+
+
+
+	//Combo
+	private float m_comboPoints;
+	public float ComboPoints { get => m_comboPoints; set => m_comboPoints = value; }
+
 
 
 	public enum State {
@@ -155,8 +153,8 @@ public class KrampusController : KrampusBehaviour {
 	public void Dash() {
 		m_dashTime = m_dashDuration;
 
-
-		Kramp.Tongue.SetCanSting(false);
+		m_dashDirection = (Kramp.Tongue.HitInteractable.InteractionPoint -
+		                                                         transform.position).normalized.NoY();
 		ChangeState(State.Dash, StateChangeReason.Rapid);
 		Debug.Log("Do dashing " + m_dashDirection);
 	}
@@ -214,5 +212,10 @@ public class KrampusController : KrampusBehaviour {
 
 	public void MoveTo(Vector3 position) {
 		m_rigidbody.position = position.NoY() + Vector3.up * m_rigidbody.position.y;
+	}
+
+
+	public void AddComboPoints(float value){
+		m_comboPoints += value;
 	}
 }

@@ -392,8 +392,7 @@ public class KrampusTongue : KrampusBehaviour {
    public void SetCanSting(bool canSting) {
 	    Kramp.Kontroller.CanSting = canSting;
 	    if (canSting == true) {
-		    Kramp.Kontroller.NextStingDirection = (m_hitInteractable.InteractionPoint -
-		                                           transform.position).normalized.NoY();
+
 	    }
 	    Game.MainGameInfo.UI.quickActionIcon.gameObject.SetActive(canSting);
 

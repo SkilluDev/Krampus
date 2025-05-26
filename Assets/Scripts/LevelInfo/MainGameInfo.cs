@@ -36,6 +36,15 @@ public class MainGameInfo : LevelInfo {
     public GlobalEvents GlobalEvents => m_globalEvents;
     [SerializeField] private GlobalEvents m_globalEvents;
 
+    public float ComboGainFromChildren => m_ComboGainFromChildren;
+    [BoxGroup("Combo")] [SerializeField] private float m_ComboGainFromChildren;
+    public float MaxComboPoints => m_maxComboPoints;
+    [BoxGroup("Combo")][SerializeField] private float m_maxComboPoints =100.0f;
+
+
+
+
+
     public ChildType GoodChildType { get; set; }
 
     public ChildType RandomBadChildType => Types.First(x => x != GoodChildType);
@@ -65,6 +74,8 @@ public class MainGameInfo : LevelInfo {
     private float m_score;
 
     public float Score => m_score;
+
+
 
     [SerializeField] private OutroScript m_outro;
 
