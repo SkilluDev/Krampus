@@ -162,6 +162,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void Dash() {
+		if(!CanSting) return;
 		m_dashTime = m_dashDuration;
 
 		m_dashDirection = (Kramp.Tongue.HitInteractable.InteractionPoint -
@@ -171,6 +172,7 @@ public class KrampusController : KrampusBehaviour {
 
 		m_comboGainLock = 2;
 		SpendComboPoints(ComboStingCost);
+		Kramp.Tongue.SetCanSting(false);
 	}
 
 	private void ChangeState(State to, StateChangeReason reason) {
