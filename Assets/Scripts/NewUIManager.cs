@@ -29,7 +29,7 @@ public class NewUIManager : MonoBehaviour {
 
 
     [SerializeField] private GameObject m_quickActionIcon;
-    public GameObject quickActionIcon => m_quickActionIcon;
+    public GameObject QuickActionIcon => m_quickActionIcon;
 
     private float m_startFill;
 
@@ -138,7 +138,7 @@ public class NewUIManager : MonoBehaviour {
         m_blackBars.ShowInstant();
         m_blackBars.SetTopBarText("");
         m_blackBars.SetBottomBarText(m_bottomBarTutorialKeys);
-        quickActionIcon.SetActive(false);
+        ShowQuickActionIcon(false);
     }
 
 
@@ -226,5 +226,9 @@ public class NewUIManager : MonoBehaviour {
     public void StartQuickTimeTimer(float seconds) {
 
 
+    }
+
+    public void ShowQuickActionIcon(bool canSting) {
+        Game.MainGameInfo.UI.QuickActionIcon.gameObject.SetActive(canSting);
     }
 }

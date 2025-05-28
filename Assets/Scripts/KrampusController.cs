@@ -44,9 +44,9 @@ public class KrampusController : KrampusBehaviour {
 	[SerializeField] private float m_dashDuration = 0.4f;
 	public bool CanSting { get; set; } = false;
 	private Vector3 m_dashDirection;
-	public Vector3 NextStingDirection { get => m_dashDirection; set => m_dashDirection = value;}
+	public Vector3 NextStingDirection { get => m_dashDirection; set => m_dashDirection = value; }
 	[SerializeField] private float m_comboStingCost = 30;
-	public  float ComboStingCost => m_comboStingCost;
+	public float ComboStingCost => m_comboStingCost;
 
 
 
@@ -162,17 +162,17 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void Dash() {
-		if(!CanSting) return;
+		if (!CanSting) return;
 		m_dashTime = m_dashDuration;
 
 		m_dashDirection = (Kramp.Tongue.HitInteractable.InteractionPoint -
-		                                                         transform.position).normalized.NoY();
+																 transform.position).normalized.NoY();
 		ChangeState(State.Dash, StateChangeReason.Rapid);
 		Debug.Log("Do dashing " + m_dashDirection);
 
 		m_comboGainLock = 2;
 		SpendComboPoints(ComboStingCost);
-		Kramp.Tongue.SetCanSting(false);
+		SetCanSting(false);
 	}
 
 	private void ChangeState(State to, StateChangeReason reason) {
@@ -204,7 +204,7 @@ public class KrampusController : KrampusBehaviour {
 
 		if (CurrentState == State.Dash) {
 			m_dashTime -= Time.fixedDeltaTime;
-			Debug.Log("Dash TIme: "+m_dashTime);
+			Debug.Log("Dash TIme: " + m_dashTime);
 			m_rigidbody.velocity = m_dashDirection.normalized * m_dashSpeed;
 
 			if (m_dashTime < 0) ChangeState(State.Run, StateChangeReason.Rapid);
@@ -231,9 +231,9 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 
-	public void AddComboPoints(float value){
+	public void AddComboPoints(float value) {
 
-		if(m_comboGainLock > 0){ Debug.Log("Block"); return;}
+		if (m_comboGainLock > 0) { Debug.Log("Block"); return; }
 
 		m_comboPoints += value;
 		if (m_comboPoints > Game.MainGameInfo.MaxComboPoints) {
@@ -244,6 +244,11 @@ public class KrampusController : KrampusBehaviour {
 
 	public void SpendComboPoints(float value) {
 		m_comboPoints -= value;
-		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints,0.1f);
+		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints, 0.1f);
 	}
+	
+	public void SetCanSting(bool canSting) {
+	    CanSting = canSting & (ComboPoints >= ComboStingCost);
+		Game.MainGameInfo.UI.ShowQuickActionIcon(CanSting);
+    }
 }

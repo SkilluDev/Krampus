@@ -262,7 +262,7 @@ public class KrampusTongue : KrampusBehaviour {
                     try {
                         m_hitInteractable.Interact(Kramp);
                         if (m_hitInteractable is Child ) {
-                           SetCanSting(true);
+                           Kramp.Kontroller.SetCanSting(true);
                         }
                     } catch (Exception e) {
                         LogException(e, m_hitInteractable);
@@ -320,7 +320,7 @@ public class KrampusTongue : KrampusBehaviour {
                     }
                 }
 
-                SetCanSting(false);
+                Kramp.Kontroller.SetCanSting(false);
                 m_hitEdible = null;
                 m_hitInteractable = null;
                 m_hitTonguable = null;
@@ -386,13 +386,6 @@ public class KrampusTongue : KrampusBehaviour {
     private (Vector3 begin, Vector3 end) GetTonguePositions() {
         if (CurrentState == State.Idle) return (Vector3.one * -10_000_000, Vector3.one * -10_000_000);
         return (m_tongueVisualOrigin.position, Vector3.Lerp(m_tongueVisualOrigin.position, m_tongueDestination, m_tongueExtensionFactor));
-    }
-
-
-   public void SetCanSting(bool canSting) {
-	   Kramp.Kontroller.CanSting = canSting & (Kramp.Kontroller.ComboPoints >= Kramp.Kontroller.ComboStingCost);
-	    Game.MainGameInfo.UI.quickActionIcon.gameObject.SetActive(Kramp.Kontroller.CanSting);
-
     }
 
 }
