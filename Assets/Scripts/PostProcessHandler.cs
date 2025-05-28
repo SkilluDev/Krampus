@@ -61,9 +61,9 @@ public class PostProcessHandler : MonoBehaviour {
     }
 
     [Button]
-    private void EatGoodChild(){
+    private void EatNiceChild(){
         var child = new Child();
-        child.SetChildType(Game.MainGameInfo.GoodChildType);
+        child.SetChildType(Game.MainGameInfo.NiceChildType);
         OnChildEaten(child);
     }
 	private void OnChildEaten(Child child) {

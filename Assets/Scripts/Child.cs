@@ -30,7 +30,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 
     private ChildType m_type;
     private Transform m_modelTransform;
-    public bool IsNaughty => Type != Game.MainGameInfo.GoodChildType;
+    public bool IsNaughty => Type != Game.MainGameInfo.NiceChildType;
 
 
 

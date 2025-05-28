@@ -37,8 +37,8 @@ public class NewUIManager : MonoBehaviour {
     private MotionHandle m_currentComboFillHandle;
     private Color m_originalTimerColor;
     private Vector3 m_originalTimerLocalScale;
-    [SerializeField] private Color m_goodTimerColor;
-    [SerializeField] private Color m_badTimerColor;
+    [SerializeField] private Color m_niceTimerColor;
+    [SerializeField] private Color m_naughtyTimerColor;
 
     public BlackBars BlackBars => m_blackBars;
     [SerializeField] private BlackBars m_blackBars;
@@ -76,16 +76,16 @@ public class NewUIManager : MonoBehaviour {
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarMenuKeys;
 
     [Button]
-    private void EatGoodChild() {
+    private void EatNiceChild() {
         var child = new Child();
-        child.SetChildType(Game.MainGameInfo.GoodChildType);
+        child.SetChildType(Game.MainGameInfo.NiceChildType);
         OnChildEaten(child);
     }
 
     [Button]
-    private void EatBadChild() {
+    private void EatNaughtyChild() {
         var child = new Child();
-        child.SetChildType(Game.MainGameInfo.RandomBadChildType);
+        child.SetChildType(Game.MainGameInfo.RandomNaughtyChildType);
         OnChildEaten(child);
     }
 
@@ -99,7 +99,7 @@ public class NewUIManager : MonoBehaviour {
         Color destinationColor;
         //Positive feedback
         if (child.IsNaughty) {
-            destinationColor = m_goodTimerColor;
+            destinationColor = m_niceTimerColor;
             ChangeChildCounter();
 
             if (m_currentBounce.IsActive()) m_currentBounce.Cancel();
@@ -115,7 +115,7 @@ public class NewUIManager : MonoBehaviour {
 
             //Negative feedback
         } else {
-            destinationColor = m_badTimerColor;
+            destinationColor = m_naughtyTimerColor;
             LMotion.Shake.Create(m_timer.localPosition, Vector3.one * m_timerShakeIntensity, m_timerShakeDuration).WithEase(Ease.InOutQuad).BindToLocalPosition(m_timer);
         }
 
@@ -169,8 +169,8 @@ public class NewUIManager : MonoBehaviour {
     public void ChangeChildCounter() {
         m_currentFillHandle.TryCancel();
         float oldValue = m_fillBar.fillAmount;
-        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 1, (float)(Game.MainGameInfo.BadChildrenCountOnStart - Game.MainGameInfo.BadChildren.Count()) /
-                                 Game.MainGameInfo.BadChildrenCountOnStart), 2f).WithDelay(0.7f).BindToFillAmount(m_fillBar);
+        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 1, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
+                                 Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.7f).BindToFillAmount(m_fillBar);
     }
 
     public void ChangeComboValue(float value, float time = 1f) {

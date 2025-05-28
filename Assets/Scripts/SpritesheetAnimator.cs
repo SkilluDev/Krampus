@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public enum ColorChange {
     None,
-    GoodChild,
-    BadChild
+    NiceChild,
+    NaughtyChild
 }
 public class SpriteSheetAnimator : MonoBehaviour {
     [SerializeField] private Sprite[] m_spriteSheet;
@@ -28,11 +28,11 @@ public class SpriteSheetAnimator : MonoBehaviour {
 
     private void OnEnable() {
         switch (m_colorChange) {
-            case ColorChange.GoodChild:
-                m_colors = new Color[] { Game.MainGameInfo.GoodChildType.color };
+            case ColorChange.NiceChild:
+                m_colors = new Color[] { Game.MainGameInfo.NiceChildType.color };
                 break;
-            case ColorChange.BadChild:
-                m_colors = Game.MainGameInfo.BadChildTypes.Select((c) => c.color).ToArray();
+            case ColorChange.NaughtyChild:
+                m_colors = Game.MainGameInfo.NaughtyChildTypes.Select((c) => c.color).ToArray();
                 break;
             case ColorChange.None:
                 return;
@@ -48,7 +48,7 @@ public class SpriteSheetAnimator : MonoBehaviour {
             m_frameTimer = 0;
         }
 
-        if (m_colorChange!=ColorChange.BadChild) return;
+        if (m_colorChange!=ColorChange.NaughtyChild) return;
 
         m_colorTimer += Time.deltaTime/2;
         if (m_colorTimer > 1 / m_fps) {

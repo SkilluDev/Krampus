@@ -45,20 +45,20 @@ public class MainGameInfo : LevelInfo {
 
 
 
-    public ChildType GoodChildType { get; set; }
+    public ChildType NiceChildType { get; set; }
 
-    public ChildType RandomBadChildType => Types.First(x => x != GoodChildType);
-    public IEnumerable<ChildType> BadChildTypes => Types.Where(x => x != GoodChildType);
+    public ChildType RandomNaughtyChildType => Types.First(x => x != NiceChildType);
+    public IEnumerable<ChildType> NaughtyChildTypes => Types.Where(x => x != NiceChildType);
 
     public IReadOnlyCollection<Child> Children => m_childRegistry;
-    public IEnumerable<Child> BadChildren => m_badChildRegistry;
-    public IEnumerable<Child> GoodChildren => m_goodChildRegistry;
+    public IEnumerable<Child> NaughtyChildren => m_naughtyChildRegistry;
+    public IEnumerable<Child> NiceChildren => m_niceChildRegistry;
     private List<Child> m_childRegistry = new List<Child>();
-    private List<Child> m_badChildRegistry = new List<Child>();
-    private List<Child> m_goodChildRegistry = new List<Child>();
+    private List<Child> m_naughtyChildRegistry = new List<Child>();
+    private List<Child> m_niceChildRegistry = new List<Child>();
 
-    public int BadChildrenCountOnStart { get; private set; }
-    public int GoodChildrenCountOnStart { get; private set; }
+    public int NaughtyChildrenCountOnStart { get; private set; }
+    public int NiceChildrenCountOnStart { get; private set; }
 
     public IReadOnlyCollection<Nun> Nuns => m_nunRegistry;
     private List<Nun> m_nunRegistry = new List<Nun>();
@@ -121,8 +121,8 @@ public class MainGameInfo : LevelInfo {
         Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
 
         CurrentState = State.Intro;
-        GoodChildType = Types.NullIfEmpty()?.UnityRandomElement();
-        UI.SetChildrenIcon(GoodChildType.uiIcon);
+        NiceChildType = Types.NullIfEmpty()?.UnityRandomElement();
+        UI.SetChildrenIcon(NiceChildType.uiIcon);
     }
 
     private void Ready() {
@@ -150,12 +150,12 @@ public class MainGameInfo : LevelInfo {
     public void RegisterChild(Child child) {
         m_childRegistry.Add(child);
         if (!child.IsNaughty) {
-            m_goodChildRegistry.Add(child);
-            GoodChildrenCountOnStart += 1;
+            m_niceChildRegistry.Add(child);
+            NiceChildrenCountOnStart += 1;
 
         } else {
-            m_badChildRegistry.Add(child);
-            BadChildrenCountOnStart += 1;
+            m_naughtyChildRegistry.Add(child);
+            NaughtyChildrenCountOnStart += 1;
         }
     }
 
@@ -165,9 +165,9 @@ public class MainGameInfo : LevelInfo {
 
         m_childRegistry.Remove(child);
         if (!child.IsNaughty) {
-            m_goodChildRegistry.Remove(child);
+            m_niceChildRegistry.Remove(child);
         } else {
-            m_badChildRegistry.Remove(child);
+            m_naughtyChildRegistry.Remove(child);
             m_score++;
         }
     }
@@ -185,7 +185,7 @@ public class MainGameInfo : LevelInfo {
 
 
     private void Update() {
-        if (!Game.MainGameInfo.BadChildren.Any() && Game.Balling) {
+        if (!Game.MainGameInfo.NaughtyChildren.Any() && Game.Balling) {
             Game.MainGameInfo.ProcessEndGame(Ending.Win);
         }
 

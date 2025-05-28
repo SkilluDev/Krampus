@@ -9,21 +9,21 @@ public class ChildSensor : KrampusBehaviour {
 	public Child ClosestChild => m_closestChild;
 
 	private void Ready() {
-		if (Game.MainGameInfo.BadChildren.Any()) m_closestChild = Game.MainGameInfo.BadChildren.First();
+		if (Game.MainGameInfo.NaughtyChildren.Any()) m_closestChild = Game.MainGameInfo.NaughtyChildren.First();
 	}
 
 	private void Update() {
 		if (Game.IsLoading) return;
-		//Debug.Log($"BadChildren");
-		//foreach (Child c in Game.MainGameInfo.GoodChildren) {
+		//Debug.Log($"NaughtyChildren");
+		//foreach (Child c in Game.MainGameInfo.NiceChildren) {
 		//	Debug.Log(c);
 		//}
-		if (!Game.MainGameInfo.BadChildren.Any()) return;
-		if (!Game.MainGameInfo.BadChildren.Contains(m_closestChild)) m_closestChild = Game.MainGameInfo.BadChildren.First();
+		if (!Game.MainGameInfo.NaughtyChildren.Any()) return;
+		if (!Game.MainGameInfo.NaughtyChildren.Contains(m_closestChild)) m_closestChild = Game.MainGameInfo.NaughtyChildren.First();
 		var closestOffset = m_closestChild.transform.position - transform.position;
 		Dist = closestOffset.sqrMagnitude;
 
-		foreach (var child in Game.MainGameInfo.BadChildren) {
+		foreach (var child in Game.MainGameInfo.NaughtyChildren) {
 			if (!child) continue;
 			var offset = child.transform.position - transform.position;
 			float sqrLen = offset.sqrMagnitude;
