@@ -175,9 +175,9 @@ public class NewUIManager : MonoBehaviour {
 
     public void ChangeComboValue(float value, float time = 1f) {
 	    m_currentComboFillHandle.TryCancel();
-			 float oldValue = m_comboFiller.fillAmount;
-			 m_currentComboFillHandle = LMotion.Create(oldValue,  value/Game.MainGameInfo.MaxComboPoints
-		   , time).WithDelay(0.4f).BindToFillAmount(m_comboFiller);
+		float oldValue = m_comboFiller.fillAmount;
+		m_currentComboFillHandle = LMotion.Create(oldValue, value / Game.MainGameInfo.MaxComboPoints, time)
+        .WithDelay(0.4f).BindToFillAmount(m_comboFiller);
     }
 
 
