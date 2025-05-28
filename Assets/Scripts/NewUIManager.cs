@@ -34,7 +34,7 @@ public class NewUIManager : MonoBehaviour {
     private float m_startFill;
 
     private MotionHandle m_currentFillHandle;
-
+    private MotionHandle m_currentComboFillHandle;
     private Color m_originalTimerColor;
     private Vector3 m_originalTimerLocalScale;
     [SerializeField] private Color m_goodTimerColor;
@@ -46,6 +46,12 @@ public class NewUIManager : MonoBehaviour {
     private MotionHandle m_currentBounce;
 
     private bool m_uiOn = false;
+
+
+    [BoxGroup("Combo")] [SerializeField] private Image m_comboFiller;
+    [BoxGroup("Combo")] [SerializeField] private RectTransform m_comboCostBar;
+
+
 
     [BoxGroup("Pause Screen")][SerializeField] private Image m_resumePauseButton;
     [BoxGroup("Pause Screen")][SerializeField] private Image m_restartPauseButton;
@@ -163,6 +169,13 @@ public class NewUIManager : MonoBehaviour {
                                  Game.MainGameInfo.BadChildrenCountOnStart), 2f).WithDelay(0.7f).BindToFillAmount(m_fillBar);
     }
 
+    public void ChangeComboValue(float value, float time = 1f) {
+	    m_currentComboFillHandle.TryCancel();
+			 float oldValue = m_comboFiller.fillAmount;
+			 m_currentComboFillHandle = LMotion.Create(oldValue,  value/Game.MainGameInfo.MaxComboPoints
+		   , time).WithDelay(0.4f).BindToFillAmount(m_comboFiller);
+    }
+
 
     public void DisplayScoreBoard() {
         // m_scoreboard.SetActive(true);
@@ -200,6 +213,10 @@ public class NewUIManager : MonoBehaviour {
         m_currentBounce = LMotion.Create(oldScale, oldScale * 1.3f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
                 () => LMotion.Create(oldScale * 1.3f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_timer)
             ).BindToLocalScale(m_timer);
+    }
+
+   public  void SetComboCostBar(float cost) {
+	    m_comboCostBar.anchoredPosition = new Vector2(0, Mathf.Lerp(0,m_comboFiller.rectTransform.sizeDelta.y, cost/Game.MainGameInfo.MaxComboPoints) );
     }
 
     public void StartQuickTimeTimer(float seconds) {

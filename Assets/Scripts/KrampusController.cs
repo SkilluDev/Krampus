@@ -45,14 +45,21 @@ public class KrampusController : KrampusBehaviour {
 	public bool CanSting { get; set; } = false;
 	private Vector3 m_dashDirection;
 	public Vector3 NextStingDirection { get => m_dashDirection; set => m_dashDirection = value;}
+	[SerializeField] private float m_comboStingCost = 30;
+	public  float ComboStingCost => m_comboStingCost;
 
 
 
 	//Combo
 	private float m_comboPoints;
 	public float ComboPoints { get => m_comboPoints; set => m_comboPoints = value; }
+	private float m_comboGainLock = 0;
 
 
+
+	private void Start() {
+		Game.MainGameInfo.UI.SetComboCostBar(m_comboStingCost);
+	}
 
 	public enum State {
 		Intro,
@@ -87,6 +94,10 @@ public class KrampusController : KrampusBehaviour {
 			m_timeout -= Time.deltaTime;
 			if (m_timeout <= 0) ChangeState(State.Idle, StateChangeReason.Normal);
 			return;
+		}
+
+		if (m_comboGainLock > 0) {
+			m_comboGainLock -= Time.deltaTime;
 		}
 
 		if (CurrentState is State.Dead or State.Dash) return;
@@ -157,6 +168,9 @@ public class KrampusController : KrampusBehaviour {
 		                                                         transform.position).normalized.NoY();
 		ChangeState(State.Dash, StateChangeReason.Rapid);
 		Debug.Log("Do dashing " + m_dashDirection);
+
+		m_comboGainLock = 2;
+		SpendComboPoints(ComboStingCost);
 	}
 
 	private void ChangeState(State to, StateChangeReason reason) {
@@ -216,6 +230,18 @@ public class KrampusController : KrampusBehaviour {
 
 
 	public void AddComboPoints(float value){
+
+		if(m_comboGainLock > 0){ Debug.Log("Block"); return;}
+
 		m_comboPoints += value;
+		if (m_comboPoints > Game.MainGameInfo.MaxComboPoints) {
+			m_comboPoints = Game.MainGameInfo.MaxComboPoints;
+		}
+		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints);
+	}
+
+	public void SpendComboPoints(float value) {
+		m_comboPoints -= value;
+		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints,0.1f);
 	}
 }

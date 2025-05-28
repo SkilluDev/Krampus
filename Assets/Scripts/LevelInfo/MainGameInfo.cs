@@ -152,6 +152,7 @@ public class MainGameInfo : LevelInfo {
         if (child.Type == GoodChildType) {
             m_goodChildRegistry.Add(child);
             GoodChildrenCountOnStart += 1;
+
         } else {
             m_badChildRegistry.Add(child);
             BadChildrenCountOnStart += 1;

@@ -390,11 +390,8 @@ public class KrampusTongue : KrampusBehaviour {
 
 
    public void SetCanSting(bool canSting) {
-	    Kramp.Kontroller.CanSting = canSting;
-	    if (canSting == true) {
-
-	    }
-	    Game.MainGameInfo.UI.quickActionIcon.gameObject.SetActive(canSting);
+	   Kramp.Kontroller.CanSting = canSting & (Kramp.Kontroller.ComboPoints >= Kramp.Kontroller.ComboStingCost);
+	    Game.MainGameInfo.UI.quickActionIcon.gameObject.SetActive(Kramp.Kontroller.CanSting);
 
     }
 
