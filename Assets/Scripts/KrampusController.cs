@@ -164,9 +164,7 @@ public class KrampusController : KrampusBehaviour {
 	public void Dash() {
 		if (!CanSting) return;
 		m_dashTime = m_dashDuration;
-
-		m_dashDirection = (Kramp.Tongue.HitInteractable.InteractionPoint -
-																 transform.position).normalized.NoY();
+		m_dashDirection = Kramp.Tongue.TongueDirection;
 		ChangeState(State.Dash, StateChangeReason.Rapid);
 		Debug.Log("Do dashing " + m_dashDirection);
 
