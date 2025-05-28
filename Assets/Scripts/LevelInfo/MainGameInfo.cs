@@ -149,7 +149,7 @@ public class MainGameInfo : LevelInfo {
 
     public void RegisterChild(Child child) {
         m_childRegistry.Add(child);
-        if (child.Type == GoodChildType) {
+        if (!child.IsNaughty) {
             m_goodChildRegistry.Add(child);
             GoodChildrenCountOnStart += 1;
 
@@ -164,7 +164,7 @@ public class MainGameInfo : LevelInfo {
             r.RemoveCharacter(child);
 
         m_childRegistry.Remove(child);
-        if (child.Type == GoodChildType) {
+        if (!child.IsNaughty) {
             m_goodChildRegistry.Remove(child);
         } else {
             m_badChildRegistry.Remove(child);

@@ -4,5 +4,5 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class GlobalEvents : MonoBehaviour {
-	public UnityAction<ChildType> onChildEaten;
+	public UnityAction<Child> onChildEaten;
 }

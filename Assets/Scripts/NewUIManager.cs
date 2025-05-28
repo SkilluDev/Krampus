@@ -77,12 +77,16 @@ public class NewUIManager : MonoBehaviour {
 
     [Button]
     private void EatGoodChild() {
-        OnChildEaten(Game.MainGameInfo.GoodChildType);
+        var child = new Child();
+        child.SetChildType(Game.MainGameInfo.GoodChildType);
+        OnChildEaten(child);
     }
 
     [Button]
     private void EatBadChild() {
-        OnChildEaten(Game.MainGameInfo.RandomBadChildType);
+        var child = new Child();
+        child.SetChildType(Game.MainGameInfo.RandomBadChildType);
+        OnChildEaten(child);
     }
 
     private void Awake() {
@@ -91,10 +95,10 @@ public class NewUIManager : MonoBehaviour {
 
     }
 
-    private void OnChildEaten(ChildType childType) {
+    private void OnChildEaten(Child child) {
         Color destinationColor;
         //Positive feedback
-        if (childType != Game.MainGameInfo.GoodChildType) {
+        if (child.IsNaughty) {
             destinationColor = m_goodTimerColor;
             ChangeChildCounter();
 

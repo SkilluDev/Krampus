@@ -15,11 +15,11 @@ public class Timer : MonoBehaviour {
 
 	private int m_lastDigit;
 
-	private void OnChildEaten(ChildType childType) {
-		if (childType == Game.MainGameInfo.GoodChildType) {
-			Penalty();
-		} else {
+	private void OnChildEaten(Child child) {
+		if (child.IsNaughty) {
 			Bonus();
+		} else {
+			Penalty();
 		}
 	}
 

@@ -62,10 +62,12 @@ public class PostProcessHandler : MonoBehaviour {
 
     [Button]
     private void EatGoodChild(){
-        OnChildEaten(Game.MainGameInfo.GoodChildType);
+        var child = new Child();
+        child.SetChildType(Game.MainGameInfo.GoodChildType);
+        OnChildEaten(child);
     }
-	private void OnChildEaten(ChildType childType) {
-        if (childType != Game.MainGameInfo.GoodChildType) return;
+	private void OnChildEaten(Child child) {
+        if (child.IsNaughty) return;
         
         /* //Aberr
         LMotion.Create(m_originalMinAberrationIntensity, m_originalMinAberrationIntensity+m_aberrationFlashIntensity, m_aberrationFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(

@@ -40,7 +40,7 @@ public class ChildAnimator : MonoBehaviour {
             case (_, Child.State.Consumed):
                 m_soundKill.Play(transform.position, 1);
 
-                if (m_child.Type != Game.MainGameInfo.GoodChildType) {
+                if (m_child.IsNaughty) {
                     var particle = Instantiate(m_goreParticle, Game.MainGameInfo.Krampus.Kamera.Rendering.transform); //particle is screenspace.
                     particle.transform.SetPositionAndRotation(Game.MainGameInfo.Krampus.Tongue.transform.position, Quaternion.identity);
                 } else {
