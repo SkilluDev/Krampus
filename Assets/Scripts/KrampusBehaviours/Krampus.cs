@@ -20,14 +20,22 @@ public class Krampus : KrampusBehaviour, IInteractor, ICharacter {
 
     [SerializeField] private KrampusTongue m_tongue;
 
-    public ChildSensor ChildSensor => m_childSensor;
+    public KrampusChildSensor ChildSensor => m_childSensor;
+
+    [SerializeField] private KrampusAbilities m_abilities;
+
+    public KrampusAbilities Abilities => m_abilities;
+
+    [SerializeField] private KrampusStats m_stats;
+
+    public KrampusStats Stats => m_stats;
 
 
     public Vector3 VelocityVector => Kontroller.VelocityVector;
     public float Velocity => Kontroller.Velocity;
     public float VelocitySqr => Kontroller.VelocitySqr;
 
-    [SerializeField] private ChildSensor m_childSensor;
+    [SerializeField] private KrampusChildSensor m_childSensor;
 
 
     private void Awake() {

@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using NaughtyAttributes;
 
-public class ChildSensor : KrampusBehaviour {
+public class KrampusChildSensor : KrampusBehaviour {
 	[ShowNativeProperty] public float Dist { get; set; } = float.MaxValue;
 	private Child m_closestChild;
 

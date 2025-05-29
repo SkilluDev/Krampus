@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
-public class UpdateWallShader : KrampusBehaviour {
+public class KrampusUpdateWallShader : KrampusBehaviour {
 	[SerializeField] private Vector2 m_wallFade = new Vector2(-5, 5);
 	[SerializeField] private float m_smoothTime = 5f;
 	[SerializeField] private float m_offsetDistance = 5f;

@@ -873,12 +873,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68c7178303dad644cb81c2066025ebd8, type: 3}
---- !u!4 &1436439538 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3650756095129614072, guid: 1370af54edd30564086e0f4717044a13,
-    type: 3}
-  m_PrefabInstance: {fileID: 1891054759}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1665495149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1073,61 +1067,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1698299321934093973, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1698299321934093973, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_runSpeed
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1698299321934093973, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_dashSpeed
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 1698299321934093973, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_comboStingCost
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 1895515856344024892, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1895515856344024892, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1895515856344024892, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1895515856344024892, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1895515856344024892, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1895515856344024892, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2589798314053807759, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_filterOutState
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3083306166600181781, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_Name
@@ -1138,61 +1077,6 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 1991711019}
-    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_sequence.extend
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_sequence.windup
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_sequence.retreat
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_tongueVisualOrigin
-      value: 
-      objectReference: {fileID: 1436439538}
-    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_interactionSearchMask.m_Bits
-      value: 11912
-      objectReference: {fileID: 0}
-    - target: {fileID: 6024168017209539665, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_catchSoundBite
-      value: 
-      objectReference: {fileID: 11400000, guid: d33aee137aed9c9da9880825e3070835,
-        type: 2}
-    - target: {fileID: 6024168017209539665, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_crackSoundBite
-      value: 
-      objectReference: {fileID: 11400000, guid: b6ddd1ea26026824f8a64cc51678f928,
-        type: 2}
-    - target: {fileID: 6024168017209539665, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_deathSoundBite
-      value: 
-      objectReference: {fileID: 11400000, guid: baf2beff259953c4fb16beb6a13a89e9,
-        type: 2}
-    - target: {fileID: 6024168017209539665, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_tongueSoundBite
-      value: 
-      objectReference: {fileID: 11400000, guid: 197b438a669f8e2039870f9677798d3d,
-        type: 2}
-    - target: {fileID: 6024168017209539665, guid: 1370af54edd30564086e0f4717044a13,
-        type: 3}
-      propertyPath: m_windupSoundBite
-      value: 
-      objectReference: {fileID: 11400000, guid: 8e73a97a920d82a1583376b4bbda41d8,
-        type: 2}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_LocalPosition.x
