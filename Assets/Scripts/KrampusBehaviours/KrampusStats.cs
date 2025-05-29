@@ -11,7 +11,7 @@ public class KrampusStats : KrampusBehaviour {
 
     public enum Stat {
         Speed,
-        Tongue_Range,
+        TongueRange,
         ComboGain
     }
 
@@ -45,7 +45,7 @@ public class KrampusStats : KrampusBehaviour {
 
     public void Update() {
         Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
-        Debug.Log($"[NewExample] StatsTest: {GetFinalStat(Stat.Tongue_Range)}");
+        Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
 	}
 	private void OnEnable() {
         PopulateDictionary();
