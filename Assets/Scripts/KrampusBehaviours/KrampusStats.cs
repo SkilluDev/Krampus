@@ -13,12 +13,20 @@ public class KrampusStats : KrampusBehaviour {
         Example,
         NewExample
     }
+
+    public enum StatMode {
+        Multiply,
+        Add
+    }
     [Serializable]
     public class RawStat {
         [SerializeField] private Stat m_stat;
         public Stat Stat => m_stat;
         [SerializeField] private float m_value;
         public float Value => m_value;
+
+        [SerializeField] private StatMode m_statMode;
+        public StatMode StatMode => m_statMode;
 
     }
 
@@ -62,9 +70,9 @@ public class KrampusStats : KrampusBehaviour {
     }
 
 	private void Start() {
-        foreach (Stat stat in Enum.GetValues(typeof(Stat))) {
-            m_statsModifiers.Add(stat, new List<StatModifier>());
-            m_calculatedStatModifiers.Add(stat, 1f);
+        foreach (RawStat rs in m_rawStatList) {
+            m_statsModifiers.Add(rs.Stat, new List<StatModifier>());
+            m_calculatedStatModifiers.Add(rs.Stat, 1f);
         }
     }
     public void RegisterStatModifier(StatModifier statModifier) {
@@ -78,9 +86,17 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     private void RecalculateStats() {
-        foreach (Stat stat in Enum.GetValues(typeof(Stat))) {
-            float totalModifier = m_statsModifiers[stat].Aggregate(1.0f, (accumulator, sm) => accumulator * sm.Modifier);
-            m_calculatedStatModifiers[stat] = totalModifier;
+        foreach (RawStat rs in m_rawStatList) {
+            float totalModifier = 1f;
+            switch (rs.StatMode) {
+                case StatMode.Multiply:
+                    totalModifier = m_statsModifiers[rs.Stat].Aggregate(1.0f, (accumulator, sm) => accumulator * sm.Modifier);
+                    break;
+                case StatMode.Add:
+                    totalModifier = 1.0f+m_statsModifiers[rs.Stat].Sum(sm=>sm.Modifier);
+                    break;
+            }
+            m_calculatedStatModifiers[rs.Stat] = totalModifier;
         }
     }
 
