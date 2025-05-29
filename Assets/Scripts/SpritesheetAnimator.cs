@@ -5,12 +5,13 @@ using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum ColorChange {
-    None,
-    NiceChild,
-    NaughtyChild
-}
+
 public class SpriteSheetAnimator : MonoBehaviour {
+    public enum ColorChange {
+        None,
+        NiceChild,
+        NaughtyChild
+    }
     [SerializeField] private Sprite[] m_spriteSheet;
     [SerializeField] private Image m_image;
 
