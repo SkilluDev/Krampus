@@ -36,8 +36,8 @@ public class MainGameInfo : LevelInfo {
     public GlobalEvents GlobalEvents => m_globalEvents;
     [SerializeField] private GlobalEvents m_globalEvents;
 
-    public float ComboGainFromChildren => m_ComboGainFromChildren;
-    [BoxGroup("Combo")] [SerializeField] private float m_ComboGainFromChildren;
+    public float ComboGainFromChildren => m_comboGainFromChildren;
+    [BoxGroup("Combo")] [SerializeField] private float m_comboGainFromChildren;
     public float MaxComboPoints => m_maxComboPoints;
     [BoxGroup("Combo")][SerializeField] private float m_maxComboPoints =100.0f;
 

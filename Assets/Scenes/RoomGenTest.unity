@@ -255,7 +255,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 14df7b7041904fa44b4c88b4d0089b9a, type: 2}
   m_krampus: {fileID: 1936252573}
   m_globalEvents: {fileID: 358014043}
-  m_ComboGainFromChildren: 20
+  m_comboGainFromChildren: 0
   m_maxComboPoints: 100
   m_skipIntro: 0
   m_timer: {fileID: 358014040}
@@ -1067,6 +1067,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_rawStatList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_rawStatList.Array.data[1].m_stat
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_rawStatList.Array.data[0].m_value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_rawStatList.Array.data[1].m_value
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 3083306166600181781, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_Name

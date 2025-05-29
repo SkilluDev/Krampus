@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.VFX;
+using static KrampusStats;
 
 public class KrampusController : KrampusBehaviour {
 	[ShowNativeProperty] public State CurrentState { get; private set; }
@@ -76,7 +77,17 @@ public class KrampusController : KrampusBehaviour {
 		Rapid
 	}
 
+	[NaughtyAttributes.Button("Add New Example Stat")]
+    private void AddNewExamples() {
+        new StatModifier(Stat.NewExample, 1.5f).OnPickup();
+        new StatModifier(Stat.NewExample, 1.5f,2f).OnPickup();
+    }
 
+    [NaughtyAttributes.Button("Add Example Stat")]
+    private void AddExamples() {
+        new StatModifier(Stat.Example, 1.2f).OnPickup();
+        new StatModifier(Stat.Example, 1.2f,2f).OnPickup();
+    }
 	// Based on @SkilluDev's inputs
 	private void Update() {
 
