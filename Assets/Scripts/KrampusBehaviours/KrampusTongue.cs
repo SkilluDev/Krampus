@@ -18,7 +18,7 @@ public class KrampusTongue : KrampusBehaviour {
     [BoxGroup("Physics")][SerializeField] private LayerMask m_interactionSearchMask = int.MaxValue;
     [BoxGroup("Physics")][SerializeField] private LayerMask m_interactionBlockerMask = int.MaxValue;
     [BoxGroup("Physics")][SerializeField] private Transform m_tongueOrigin;
-    [BoxGroup("Physics")][SerializeField] private float m_tongueLength = 8;
+    private float TongueLength => Kramp.Stats.GetFinalStat(KrampusStats.Stat.Tongue_Range);
     [BoxGroup("Physics")][SerializeField] private float m_tongueHitRadius = 0.5f;
     [BoxGroup("Controls")][SerializeField] private float m_inputMinimumDrag = 0.4f;
     [BoxGroup("Controls")][SerializeField] private float m_inputMinimumMouseDistance = 1f;
@@ -173,7 +173,7 @@ public class KrampusTongue : KrampusBehaviour {
                 var hitObjects = Physics.CapsuleCastAll(
                     new Vector3(m_tongueOrigin.position.x, Room.STANDARD_FLOOR_Y, m_tongueOrigin.position.z),
                     new Vector3(m_tongueOrigin.position.x, Room.STANDARD_CEILING_Y, m_tongueOrigin.position.z), m_tongueHitRadius,
-                    m_tongueDirection, m_tongueLength, m_interactionSearchMask
+                    m_tongueDirection, TongueLength, m_interactionSearchMask
                 );
 
                 var interactables = hitObjects.Select(w => (hit: w, interactable: w.collider.GetComponentInParent<IInteractable>()))
@@ -202,10 +202,10 @@ public class KrampusTongue : KrampusBehaviour {
 
 
                 if (m_hitInteractable == null) {
-                    if (Physics.Raycast(m_tongueOrigin.position, m_tongueDirection, out var hit, m_tongueLength, m_interactionBlockerMask)) {
+                    if (Physics.Raycast(m_tongueOrigin.position, m_tongueDirection, out var hit, TongueLength, m_interactionBlockerMask)) {
                         m_tongueDestination = hit.point;
                     } else {
-                        m_tongueDestination = m_tongueVisualOrigin.position + (m_tongueDirection * m_tongueLength);
+                        m_tongueDestination = m_tongueVisualOrigin.position + (m_tongueDirection * TongueLength);
                     }
                 } else {
                     m_tongueDestination = m_hitInteractable.InteractionPoint;

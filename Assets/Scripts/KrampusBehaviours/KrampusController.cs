@@ -11,7 +11,7 @@ using static KrampusStats;
 public class KrampusController : KrampusBehaviour {
 	[ShowNativeProperty] public State CurrentState { get; private set; }
 	public Vector3 VelocityVector => m_rigidbody.velocity;
-	public float RunSpeed => m_runSpeed;
+	public float RunSpeed => Kramp.Stats.GetFinalStat(Stat.Speed);
 	public float Velocity => VelocityVector.magnitude;
 	public float VelocitySqr => VelocityVector.sqrMagnitude;
 	public float SneakSpeed => m_sneakSpeed;
@@ -21,7 +21,6 @@ public class KrampusController : KrampusBehaviour {
 	[SerializeField] private Rigidbody m_rigidbody;
 
 	[BoxGroup("Speed Control")][SerializeField] private float m_sneakSpeed = 5f;
-	[BoxGroup("Speed Control")][SerializeField] private float m_runSpeed = 12f;
 	[BoxGroup("Speed Control")][SerializeField] private float m_dashSpeed = 12f;
 	[BoxGroup("Movement Assist")][SerializeField] private int m_assistValue = 45;
 	[BoxGroup("Movement Assist")][SerializeField] private int m_assistCheckLength = 1;
@@ -35,7 +34,7 @@ public class KrampusController : KrampusBehaviour {
 	[BoxGroup("Acceleration")][SerializeField] private float m_startRunSpeed = 2f;
 	[BoxGroup("Intro")][SerializeField] private float m_getUpDuration = 1f;
 
-
+	
 	//Dashing
 	private Vector4 m_inputWeights;
 	private float m_dashTime;
@@ -53,6 +52,7 @@ public class KrampusController : KrampusBehaviour {
 
 	//Combo
 	private float m_comboPoints;
+	private float ComboBonus => Kramp.Stats.GetFinalStat(Stat.ComboGain);
 	public float ComboPoints { get => m_comboPoints; set => m_comboPoints = value; }
 	private float m_comboGainLock = 0;
 
@@ -79,14 +79,14 @@ public class KrampusController : KrampusBehaviour {
 
 	[NaughtyAttributes.Button("Add New Example Stat")]
     private void AddNewExamples() {
-        new StatModifier(Stat.NewExample, 1.5f).OnPickup();
-        new StatModifier(Stat.NewExample, 1.5f,2f).OnPickup();
+        new StatModifier(Stat.Speed, 1.5f).OnPickup();
+        new StatModifier(Stat.Speed, 1.5f,2f).OnPickup();
     }
 
     [NaughtyAttributes.Button("Add Example Stat")]
     private void AddExamples() {
-        new StatModifier(Stat.Example, 1.2f).OnPickup();
-        new StatModifier(Stat.Example, 1.2f,2f).OnPickup();
+        new StatModifier(Stat.Speed, 1.2f).OnPickup();
+        new StatModifier(Stat.Speed, 1.2f,2f).OnPickup();
     }
 	// Based on @SkilluDev's inputs
 	private void Update() {
@@ -223,7 +223,7 @@ public class KrampusController : KrampusBehaviour {
 		var computedVelocity = ComputeVelocity();
 		computedVelocity = computedVelocity.normalized * Mathf.Max(Mathf.Abs(computedVelocity.x), Mathf.Abs(computedVelocity.z));
 		var skewedInput = Kramp.Kamera.Matrix.MultiplyPoint3x4(computedVelocity);
-		m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed : m_runSpeed);
+		m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed :  RunSpeed);
 		if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength, m_avoidableObjects, QueryTriggerInteraction.Ignore)) {
 			if (m_avoidableObjects == (m_avoidableObjects | 1 << hit.transform.gameObject.layer)) {
 				if (!Physics.Raycast(transform.position, Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
@@ -233,6 +233,7 @@ public class KrampusController : KrampusBehaviour {
 				}
 			}
 		}
+		
 	}
 
 	public void MoveTo(Vector3 position) {
@@ -244,7 +245,7 @@ public class KrampusController : KrampusBehaviour {
 
 		if (m_comboGainLock > 0) { Debug.Log("Block"); return; }
 
-		m_comboPoints += value;
+		m_comboPoints += value*ComboBonus;
 		if (m_comboPoints > Game.MainGameInfo.MaxComboPoints) {
 			m_comboPoints = Game.MainGameInfo.MaxComboPoints;
 		}
@@ -255,7 +256,7 @@ public class KrampusController : KrampusBehaviour {
 		m_comboPoints -= value;
 		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints, 0.1f);
 	}
-	
+
 	public void SetCanSting(bool canSting) {
 	    CanSting = canSting & (ComboPoints >= ComboStingCost);
 		Game.MainGameInfo.UI.ShowQuickActionIcon(CanSting);

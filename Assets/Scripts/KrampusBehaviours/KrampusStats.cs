@@ -8,10 +8,11 @@ using UnityEngine.Rendering;
 using static KrampusStats;
 
 public class KrampusStats : KrampusBehaviour {
-    
+
     public enum Stat {
-        Example,
-        NewExample
+        Speed,
+        Tongue_Range,
+        ComboGain
     }
 
     public enum StatMode {
@@ -43,8 +44,8 @@ public class KrampusStats : KrampusBehaviour {
     private Dictionary<Stat, float> m_calculatedStatModifiers = new Dictionary<Stat, float>();
 
     public void Update() {
-        Debug.Log($"[Example] StatsTest: {GetFinalStat(Stat.Example)}");
-        Debug.Log($"[NewExample] StatsTest: {GetFinalStat(Stat.NewExample)}");
+        Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
+        Debug.Log($"[NewExample] StatsTest: {GetFinalStat(Stat.Tongue_Range)}");
 	}
 	private void OnEnable() {
         PopulateDictionary();
