@@ -18,7 +18,7 @@ public class KrampusTongue : KrampusBehaviour {
     [BoxGroup("Physics")][SerializeField] private LayerMask m_interactionSearchMask = int.MaxValue;
     [BoxGroup("Physics")][SerializeField] private LayerMask m_interactionBlockerMask = int.MaxValue;
     [BoxGroup("Physics")][SerializeField] private Transform m_tongueOrigin;
-    private float TongueLength => Kramp.Stats.GetFinalStat(KrampusStats.Stat.Tongue_Range);
+    private float TongueLength => Kramp.Stats.GetFinalStat(KrampusStats.Stat.TongueRange);
     [BoxGroup("Physics")][SerializeField] private float m_tongueHitRadius = 0.5f;
     [BoxGroup("Controls")][SerializeField] private float m_inputMinimumDrag = 0.4f;
     [BoxGroup("Controls")][SerializeField] private float m_inputMinimumMouseDistance = 1f;
