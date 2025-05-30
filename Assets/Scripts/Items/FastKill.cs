@@ -6,17 +6,19 @@ using UnityEngine;
 public class FastKill : Item {
 
 
+    [SerializeField] private float m_speedValue;
+    [SerializeField] private float m_duretion;
 
 
     public override void RegisterItem(KrampEvents events) {
 
-        events.onChildEaten.AddListener(movementBuff);
+        events.onChildEaten.AddListener(MovementBuff);
     }
 
 
-    void movementBuff(Krampus krampus) {
+    void MovementBuff(Krampus krampus) {
 
 
-        krampus.Stats.RegisterStatModifier(new StatModifier(KrampusStats.Stat.Speed, 0.5f, 3));
+        krampus.Stats.RegisterStatModifier(new StatModifier(KrampusStats.Stat.Speed, m_speedValue, m_duretion));
      }
 }
