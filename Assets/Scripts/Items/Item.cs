@@ -13,10 +13,13 @@ public class Item : ScriptableObject {
     [TextArea(4,25)]
     [SerializeField] private string m_Description;
 
+    protected Krampus m_krampus;
 
-   
 
-    virtual public void RegisterItem(KrampEvents events) { }
+    virtual public void RegisterItem(Krampus krampus) {
+
+        m_krampus = krampus;
+     }
 
     
 

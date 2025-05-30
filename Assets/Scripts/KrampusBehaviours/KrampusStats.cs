@@ -76,7 +76,7 @@ public class KrampusStats : KrampusBehaviour {
         }
 
         foreach (Item item in items) {
-            item.RegisterItem(Kramp.KrampEvents);
+            item.RegisterItem(Kramp);
 
          }
 

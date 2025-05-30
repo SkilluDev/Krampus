@@ -15,7 +15,7 @@ public enum KrampEvent {
 
 public class KrampEvents : MonoBehaviour {
 
-    public UnityEvent<Krampus> onChildEaten;
+    public UnityEvent<Child> onChildEaten;
     public UnityEvent<Krampus, Nun> onNunStunned;
 
 
