@@ -38,44 +38,48 @@ public class KrampusStats : KrampusBehaviour {
 
     private Dictionary<Stat, RawStat> m_rawStatDict;
 
-    public IReadOnlyDictionary<Stat,RawStat> RawStats => m_rawStatDict;
+    public IReadOnlyDictionary<Stat, RawStat> RawStats => m_rawStatDict;
     private Dictionary<Stat, List<StatModifier>> m_statsModifiers = new Dictionary<Stat, List<StatModifier>>();
 
     private Dictionary<Stat, float> m_calculatedStatModifiers = new Dictionary<Stat, float>();
 
+
+    [SerializeField] public List<Item> items = new List<Item>();
+
     public void Update() {
         Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
         Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
-	}
-	private void OnEnable() {
+    }
+    private void OnEnable() {
         PopulateDictionary();
     }
 
-    private void PopulateDictionary()
-    {
+    private void PopulateDictionary() {
         m_rawStatDict = new Dictionary<Stat, RawStat>();
         if (m_rawStatList == null) return;
         if (m_rawStatList.Count < Enum.GetValues(typeof(Stat)).Length) {
             Debug.LogError($"Not enough stats. Some are missing!", this);
         }
-        foreach (var rawStat in m_rawStatList)
-        {
-            if (!m_rawStatDict.ContainsKey(rawStat.Stat))
-            {
+        foreach (var rawStat in m_rawStatList) {
+            if (!m_rawStatDict.ContainsKey(rawStat.Stat)) {
                 m_rawStatDict.Add(rawStat.Stat, rawStat);
-            }
-            else
-            {
+            } else {
                 Debug.LogError($"Duplicate Stat '{rawStat.Stat}' found in list. Using the first entry.", this);
             }
         }
     }
 
-	private void Start() {
+    private void Start() {
         foreach (RawStat rs in m_rawStatList) {
             m_statsModifiers.Add(rs.Stat, new List<StatModifier>());
             m_calculatedStatModifiers.Add(rs.Stat, 1f);
         }
+
+        foreach (Item item in items) {
+            item.RegisterItem(Kramp.KrampEvents);
+
+         }
+
     }
     public void RegisterStatModifier(StatModifier statModifier) {
         m_statsModifiers[statModifier.Stat].Add(statModifier);
@@ -89,9 +93,9 @@ public class KrampusStats : KrampusBehaviour {
 
     private void OnValidate() {
         RecalculateStats();
-	}
+    }
 
-	private void RecalculateStats() {
+    private void RecalculateStats() {
         foreach (RawStat rs in m_rawStatList) {
             float totalModifier = 0f;
             switch (rs.StatMode) {
@@ -125,7 +129,12 @@ public class KrampusStats : KrampusBehaviour {
         }
         return finalStat;
     }
+
+    
 }
+
+
+
 
 
 [CustomEditor(typeof(KrampusStats))]

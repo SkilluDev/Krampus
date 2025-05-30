@@ -315,6 +315,8 @@ public class KrampusTongue : KrampusBehaviour {
                     try {
                         Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
                         m_hitEdible.Consume(Kramp);
+                        Kramp.KrampEvents.onChildEaten.Invoke(Kramp);
+                        
                     } catch (Exception e) {
                         LogException(e, m_hitEdible);
                     }
