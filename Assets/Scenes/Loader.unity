@@ -1519,6 +1519,7 @@ GameObject:
   - component: {fileID: 1553979835}
   - component: {fileID: 1553979836}
   - component: {fileID: 1553979837}
+  - component: {fileID: 1553979838}
   m_Layer: 0
   m_Name: '#GAME'
   m_TagString: Untagged
@@ -1558,6 +1559,7 @@ MonoBehaviour:
   m_roomGenInfo: {fileID: 1553979836}
   m_info: {fileID: 0}
   m_musicMan: {fileID: 828710175}
+  m_pogMan: {fileID: 1553979838}
   m_setMan: {fileID: 117939619}
 --- !u!114 &1553979835
 MonoBehaviour:
@@ -1595,6 +1597,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1bf7ee5d18d9b141b0d437b036c3202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1553979838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553979832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883bcb91c28d02942b4c1bfec3401248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CurrentLevel: 0
+  m_KrampusItems:
+  - {fileID: 11400000, guid: e30ffbbf50b04ee4b9a7a6f606eafe43, type: 2}
 --- !u!1 &1571651735
 GameObject:
   m_ObjectHideFlags: 0

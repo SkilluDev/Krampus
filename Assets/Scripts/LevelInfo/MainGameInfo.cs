@@ -126,6 +126,11 @@ public class MainGameInfo : LevelInfo {
     }
 
     private void Ready() {
+
+        Krampus.Stats.items = Game.PogMan.m_KrampusItems;
+
+        
+
         if (m_skipIntro) {
             SetState(State.Game);
         }

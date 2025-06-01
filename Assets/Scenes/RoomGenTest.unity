@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 358014040}
   - component: {fileID: 358014043}
   - component: {fileID: 358014044}
+  - component: {fileID: 358014045}
   m_Layer: 0
   m_Name: '#INFO'
   m_TagString: Untagged
@@ -408,6 +409,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e02c036e5e3c17b4e9764b4cdbb2c426, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &358014045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358014034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883bcb91c28d02942b4c1bfec3401248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CurrentLevel: 0
+  m_KrampusItems: []
 --- !u!1 &423022856
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,7 +1322,7 @@ PrefabInstance:
     - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: items.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}

@@ -50,6 +50,9 @@ public class KrampusStats : KrampusBehaviour {
         Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
         Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
     }
+
+    
+
     private void OnEnable() {
         PopulateDictionary();
     }
