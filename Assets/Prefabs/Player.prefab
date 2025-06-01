@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 8536449979785750747}
   - component: {fileID: 3684771875840887165}
   - component: {fileID: 5147430426476772345}
+  - component: {fileID: 1316778976212434275}
   - component: {fileID: 1376265350818594481}
   m_Layer: 10
   m_Name: Player
@@ -225,6 +226,7 @@ MonoBehaviour:
   m_tongue: {fileID: 5616205412533675726}
   m_abilities: {fileID: 5147430426476772345}
   m_stats: {fileID: 1376265350818594481}
+  m_krampusEvents: {fileID: 1316778976212434275}
   m_childSensor: {fileID: 3684771875840887165}
 --- !u!114 &1698299321934093973
 MonoBehaviour:
@@ -240,7 +242,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rigidbody: {fileID: 7069810453768087152}
   m_sneakSpeed: 5
-  m_runSpeed: 12
   m_dashSpeed: 30
   m_assistValue: 45
   m_assistCheckLength: 1
@@ -345,6 +346,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e527608ab464bc54c96e19c16c4b9d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_exampleAbility: 0
+--- !u!114 &1316778976212434275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3083306166600181781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8411bc9fcac4bc43b65e7114ec13586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onAnyChildEaten:
+    m_PersistentCalls:
+      m_Calls: []
+  onNaughtyChildEaten:
+    m_PersistentCalls:
+      m_Calls: []
+  onNiceChildEaten:
+    m_PersistentCalls:
+      m_Calls: []
+  onNunStunned:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1376265350818594481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,6 +383,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70cf4a5143a591246b9a66bebe01474c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_rawStatList:
+  - m_stat: 0
+    m_value: 10
+    m_statMode: 1
+  - m_stat: 1
+    m_value: 16
+    m_statMode: 0
+  - m_stat: 2
+    m_value: 1
+    m_statMode: 0
+  items: []
 --- !u!1 &4670869950198197567
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,7 +450,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   m_tongueOrigin: {fileID: 8320024670651621678}
-  m_tongueLength: 10
   m_tongueHitRadius: 0.6
   m_inputMinimumDrag: 0.5
   m_inputMinimumMouseDistance: 2
