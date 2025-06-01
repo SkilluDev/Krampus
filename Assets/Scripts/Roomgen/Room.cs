@@ -17,6 +17,10 @@ namespace Roomgen {
         public const float DOOR_SIZE = 1f;
         public static readonly Vector3 DOOR_NS_SIZE = new Vector3(DOOR_SIZE, DOOR_SIZE / 2, DOOR_SIZE * 2);
         public static readonly Vector3 DOOR_EW_SIZE = new Vector3(DOOR_SIZE * 2, DOOR_SIZE / 2, DOOR_SIZE);
+
+
+       
+
         //
         public int Width => m_doorGrid.Width;
         public int Height => m_doorGrid.Height;

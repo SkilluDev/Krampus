@@ -121,8 +121,8 @@ public class MainGameInfo : LevelInfo {
         Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
 
         CurrentState = State.Intro;
-        NiceChildType = Types.NullIfEmpty()?.UnityRandomElement();
-        UI.SetChildrenIcon(NiceChildType.uiIcon);
+        NiceChildType = Types[0];
+        UI.SetChildrenIcon(Types[1]);
     }
 
     private void Ready() {
