@@ -64,9 +64,9 @@ public class PostProcessHandler : MonoBehaviour {
     private void EatNiceChild(){
         var child = new Child();
         child.SetChildType(Game.MainGameInfo.NiceChildType);
-        OnChildEaten(child);
+        OnChildEaten(Game.MainGameInfo.Krampus, child);
     }
-	private void OnChildEaten(Child child) {
+	private void OnChildEaten(Krampus krampus, Child child) {
         if (child.IsNaughty) return;
         
         /* //Aberr

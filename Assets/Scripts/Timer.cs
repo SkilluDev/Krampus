@@ -15,7 +15,7 @@ public class Timer : MonoBehaviour {
 
 	private int m_lastDigit;
 
-	private void OnChildEaten(Child child) {
+	private void OnChildEaten(Krampus krampus, Child child) {
 		if (child.IsNaughty) {
 			Bonus();
 		} else {

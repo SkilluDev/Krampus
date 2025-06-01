@@ -57,7 +57,7 @@ public class Game : MonoBehaviour {
     [SerializeField] private MusicMan m_musicMan;
 
 
-    [SerializeField] PogMan m_pogMan;
+    [SerializeField] private PogMan m_pogMan;
 public static PogMan PogMan {
         get {
             if (m_instance.m_pogMan == null) Debug.LogError("MusicMan was not assigned in " + m_instance.gameObject.name);

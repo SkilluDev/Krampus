@@ -1,5 +1,6 @@
 using System.Linq;
 using KrampUtils;
+
 using NaughtyAttributes;
 using Roomgen;
 using Sound;
@@ -197,7 +198,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 
     public void Consume(Krampus krampus) {
         Game.MainGameInfo.UnregisterChild(this);
-        Game.MainGameInfo.GlobalEvents.onChildEaten?.Invoke(this);
+        Game.MainGameInfo.GlobalEvents.onChildEaten?.Invoke(krampus, this);
 
         if (IsNaughty) {
             krampus.KrampusEvents.onNaughtyChildEaten.Invoke(this);
@@ -208,6 +209,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 
 
         Destroy(gameObject);
+
     }
     public void Hit(Krampus krampus) {
         SwitchState(State.Dead);

@@ -5,10 +5,6 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class GlobalEvents : MonoBehaviour {
-	public UnityAction<Child> onChildEaten;
-	public event Action<float> onNextUpdate;
+	public UnityAction<Krampus, Child> onChildEaten;
 
-	private void Update() {
-		onNextUpdate?.Invoke(Time.deltaTime);	
-	}
 }

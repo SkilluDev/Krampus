@@ -7,7 +7,6 @@ using UnityEngine.Events;
 
 public class KrampusEvents : KrampusBehaviour
 {
-
     public UnityEvent<Child> onNaughtyChildEaten;
     public UnityEvent<Child> onNiceChildEaten;
     public UnityEvent<Nun> onNunStunned;

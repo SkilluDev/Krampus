@@ -79,14 +79,14 @@ public class NewUIManager : MonoBehaviour {
     private void EatNiceChild() {
         var child = new Child();
         child.SetChildType(Game.MainGameInfo.NiceChildType);
-        OnChildEaten(child);
+        OnChildEaten(Game.MainGameInfo.Krampus, child);
     }
 
     [Button]
     private void EatNaughtyChild() {
         var child = new Child();
         child.SetChildType(Game.MainGameInfo.RandomNaughtyChildType);
-        OnChildEaten(child);
+        OnChildEaten(Game.MainGameInfo.Krampus, child);
     }
 
     private void Awake() {
@@ -95,7 +95,7 @@ public class NewUIManager : MonoBehaviour {
 
     }
 
-    private void OnChildEaten(Child child) {
+    private void OnChildEaten(Krampus krampus, Child child) {
         Color destinationColor;
         //Positive feedback
         if (child.IsNaughty) {
