@@ -154,9 +154,8 @@ public class NewUIManager : MonoBehaviour {
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
     }
 
-    public void SetChildrenIcon(ChildType type) {
-        m_childIconImage.sprite = type.shape;
-        m_childIconImage.color = type.color;
+    public void SetChildrenIcon(Sprite icon) {
+        m_childIconImage.sprite = icon;
     }
 
     private void Ready() {

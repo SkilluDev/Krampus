@@ -122,7 +122,7 @@ public class MainGameInfo : LevelInfo {
 
         CurrentState = State.Intro;
         NiceChildType = Types[0];
-        UI.SetChildrenIcon(Types[1]);
+        UI.SetChildrenIcon(Types[1].uiIcon);
     }
 
     private void Ready() {
