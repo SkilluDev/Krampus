@@ -31,8 +31,8 @@ public class Krampus : KrampusBehaviour, IInteractor, ICharacter {
     public KrampusStats Stats => m_stats;
 
 
-    [SerializeField] private KrampEvents m_krampEvents;
-    public KrampEvents KrampEvents => m_krampEvents;
+    [SerializeField] private KrampusEvents m_krampusEvents;
+    public KrampusEvents KrampusEvents => m_krampusEvents;
 
 
 

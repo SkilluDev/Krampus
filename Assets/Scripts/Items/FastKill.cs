@@ -12,7 +12,7 @@ public class FastKill : Item {
 
     public override void RegisterItem(Krampus krampus) {
         base.RegisterItem(krampus);
-        krampus.KrampEvents.onChildEaten.AddListener(MovementBuff);
+        krampus.KrampusEvents.onChildEaten.AddListener(MovementBuff);
     }
 
 

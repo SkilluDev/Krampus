@@ -201,7 +201,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 
         if (IsNaughty) {
             krampus.Kontroller.AddComboPoints(Game.MainGameInfo.ComboGainFromChildren);
-            krampus.KrampEvents.onChildEaten.Invoke(this);
+            krampus.KrampusEvents.onChildEaten.Invoke(this);
         }
 
         SwitchState(State.Consumed);
