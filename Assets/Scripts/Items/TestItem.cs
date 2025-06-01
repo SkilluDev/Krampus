@@ -8,12 +8,12 @@ public class TestItem : Item {
     public override void RegisterItem(Krampus krampus) {
 
         base.RegisterItem(krampus);
-        krampus.KrampusEvents.onChildEaten.AddListener(OnChildEaten);
+        krampus.KrampusEvents.onNaughtyChildEaten.AddListener(OnNaughtyChildEaten);
         Debug.Log("Event Registered");
 
     }
 
-    private void OnChildEaten(Child child) {
+    private void OnNaughtyChildEaten(Child child) {
         Debug.Log("Siema");
     }
 }

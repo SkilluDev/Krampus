@@ -34,7 +34,7 @@ public class KrampusController : KrampusBehaviour {
 	[BoxGroup("Acceleration")][SerializeField] private float m_startRunSpeed = 2f;
 	[BoxGroup("Intro")][SerializeField] private float m_getUpDuration = 1f;
 
-	
+
 	//Dashing
 	private Vector4 m_inputWeights;
 	private float m_dashTime;
@@ -60,6 +60,7 @@ public class KrampusController : KrampusBehaviour {
 
 	private void Start() {
 		Game.MainGameInfo.UI.SetComboCostBar(m_comboStingCost);
+		Kramp.KrampusEvents.onNaughtyChildEaten.AddListener(OnNaughtyChildEaten);
 	}
 
 	public enum State {
@@ -78,16 +79,16 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	[NaughtyAttributes.Button("Add New Example Stat")]
-    private void AddNewExamples() {
-        new StatModifier(Stat.Speed, 1.5f).OnPickup();
-        new StatModifier(Stat.Speed, 1.5f,2f).OnPickup();
-    }
+	private void AddNewExamples() {
+		new StatModifier(Stat.Speed, 1.5f).OnPickup();
+		new StatModifier(Stat.Speed, 1.5f, 2f).OnPickup();
+	}
 
-    [NaughtyAttributes.Button("Add Example Stat")]
-    private void AddExamples() {
-        new StatModifier(Stat.Speed, 1.2f).OnPickup();
-        new StatModifier(Stat.Speed, 1.2f,2f).OnPickup();
-    }
+	[NaughtyAttributes.Button("Add Example Stat")]
+	private void AddExamples() {
+		new StatModifier(Stat.Speed, 1.2f).OnPickup();
+		new StatModifier(Stat.Speed, 1.2f, 2f).OnPickup();
+	}
 	// Based on @SkilluDev's inputs
 	private void Update() {
 
@@ -223,7 +224,7 @@ public class KrampusController : KrampusBehaviour {
 		var computedVelocity = ComputeVelocity();
 		computedVelocity = computedVelocity.normalized * Mathf.Max(Mathf.Abs(computedVelocity.x), Mathf.Abs(computedVelocity.z));
 		var skewedInput = Kramp.Kamera.Matrix.MultiplyPoint3x4(computedVelocity);
-		m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed :  RunSpeed);
+		m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed : RunSpeed);
 		if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength, m_avoidableObjects, QueryTriggerInteraction.Ignore)) {
 			if (m_avoidableObjects == (m_avoidableObjects | 1 << hit.transform.gameObject.layer)) {
 				if (!Physics.Raycast(transform.position, Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
@@ -233,7 +234,7 @@ public class KrampusController : KrampusBehaviour {
 				}
 			}
 		}
-		
+
 	}
 
 	public void MoveTo(Vector3 position) {
@@ -245,7 +246,7 @@ public class KrampusController : KrampusBehaviour {
 
 		if (m_comboGainLock > 0) { Debug.Log("Block"); return; }
 
-		m_comboPoints += value*ComboBonus;
+		m_comboPoints += value * ComboBonus;
 		if (m_comboPoints > Game.MainGameInfo.MaxComboPoints) {
 			m_comboPoints = Game.MainGameInfo.MaxComboPoints;
 		}
@@ -258,7 +259,11 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void SetCanSting(bool canSting) {
-	    CanSting = canSting & (ComboPoints >= ComboStingCost);
+		CanSting = canSting & (ComboPoints >= ComboStingCost);
 		Game.MainGameInfo.UI.ShowQuickActionIcon(CanSting);
-    }
+	}
+
+	public void OnNaughtyChildEaten(Child child) { 
+		AddComboPoints(Game.MainGameInfo.ComboGainFromChildren);
+	}
 }
