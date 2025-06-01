@@ -47,6 +47,8 @@ public class MainGameInfo : LevelInfo {
 
     public ChildType NiceChildType { get; set; }
 
+    public ChildType NaughtyChildType { get; set; }
+
     public ChildType RandomNaughtyChildType => Types.First(x => x != NiceChildType);
     public IEnumerable<ChildType> NaughtyChildTypes => Types.Where(x => x != NiceChildType);
 
@@ -125,7 +127,8 @@ public class MainGameInfo : LevelInfo {
 
         CurrentState = State.Intro;
         NiceChildType = Types[0];
-        UI.SetChildrenIcon(Types[1].uiIcon);
+        NaughtyChildType = Types[1];
+        UI.SetChildrenIcon(NaughtyChildType.uiIcon);
     }
 
     private void Ready() {

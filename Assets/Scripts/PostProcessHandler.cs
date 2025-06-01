@@ -57,7 +57,7 @@ public class PostProcessHandler : MonoBehaviour {
         //m_originalMaxAberrationIntensity = m_maxAberrationIntensity;
         //m_originalMinAberrationIntensity = m_minAberrationIntensity;
 
-        Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
+        Game.MainGameInfo.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
     }
 
     [Button]

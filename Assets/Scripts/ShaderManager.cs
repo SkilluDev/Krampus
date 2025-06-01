@@ -85,7 +85,7 @@ public class ShaderManager : MonoBehaviour {
 		m_maxSplitToning = 100f;
 		m_shaderOn = true;
 		m_material.SetFloat("_Intensity", 0);
-		Game.MainGameInfo.GlobalEvents.onChildEaten += ProcessKill;
+		Game.MainGameInfo.GlobalEvents.onChildEaten.AddListener(ProcessKill);
 	}
 
 	private void OnApplicationQuit() {

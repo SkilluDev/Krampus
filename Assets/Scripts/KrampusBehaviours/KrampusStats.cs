@@ -97,6 +97,7 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     private void RecalculateStats() {
+        if (!Game.Balling) return;
         foreach (RawStat rs in m_rawStatList) {
             float totalMultiplier = 0f;
             switch (rs.StatMode) {

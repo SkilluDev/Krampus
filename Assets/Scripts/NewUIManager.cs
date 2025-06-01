@@ -162,7 +162,7 @@ public class NewUIManager : MonoBehaviour {
     }
 
     private void Ready() {
-        Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
+        Game.MainGameInfo.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
         m_originalTimerColor = m_timerDisplay.Color;
         m_tutorial.gameObject.SetActive(false);
         m_uiBlockLeft.gameObject.SetActive(false);

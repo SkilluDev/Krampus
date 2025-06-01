@@ -5,6 +5,6 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class GlobalEvents : MonoBehaviour {
-	public UnityAction<Krampus, Child> onChildEaten;
+	public UnityEvent<Krampus, Child> onChildEaten;
 
 }

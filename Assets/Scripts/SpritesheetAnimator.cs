@@ -28,6 +28,7 @@ public class SpriteSheetAnimator : MonoBehaviour {
     private int m_colorCounter;
 
     private void OnEnable() {
+        
         switch (m_colorChange) {
             case ColorChange.NiceChild:
                 m_colors = new Color[] { Game.MainGameInfo.NiceChildType.color };

@@ -18,7 +18,7 @@ public class TutorialHandler : MonoBehaviour {
     [SerializeField] private RectTransform m_keybindPrompt;
     [SerializeField] private GameObject m_tutorialHolder;
 
-    private Image m_niceChildIcon;
+    [SerializeField] private Image m_naughtyChildIcon;
 
     private float m_distanceBetween = 1f;
 
@@ -38,7 +38,8 @@ public class TutorialHandler : MonoBehaviour {
     }
 
     private void OnEnable() {
-        m_niceChildIcon.sprite = Game.MainGameInfo.NiceChildType.uiIcon;
+        Debug.Log(Game.MainGameInfo.NiceChildType.uiIcon);
+        m_naughtyChildIcon.sprite = Game.MainGameInfo.NaughtyChildType.uiIcon;
     }
     private void Update() {
         //LMB to go forward RMB to skip

@@ -25,7 +25,7 @@ public class Timer : MonoBehaviour {
 
 	public void Ready() {
 		GameTime = (int)Game.SetMan.GetValue<long>("Timer");
-		Game.MainGameInfo.GlobalEvents.onChildEaten += OnChildEaten;
+		Game.MainGameInfo.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
 	}
 
 	private void Update() {

@@ -198,7 +198,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 
     public void Consume(Krampus krampus) {
         Game.MainGameInfo.UnregisterChild(this);
-        Game.MainGameInfo.GlobalEvents.onChildEaten?.Invoke(krampus, this);
+        Game.MainGameInfo.GlobalEvents.onChildEaten.Invoke(krampus, this);
 
         if (IsNaughty) {
             krampus.KrampusEvents.onNaughtyChildEaten.Invoke(this);
