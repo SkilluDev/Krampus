@@ -6,7 +6,7 @@ public class Effect
         Expirable
     }
     private Type m_type;
-    public Type ModifierDuration => m_type;
+    public Type EffectType => m_type;
 
     private bool m_isExpired = false;
     public bool IsExpired => m_isExpired;
@@ -31,7 +31,7 @@ public class Effect
 
     }
 
-    private void UpdateTimer(float deltaTime)
+    public void UpdateTimer(float deltaTime)
     {
         if (m_timer > 0)
         {
@@ -41,24 +41,5 @@ public class Effect
         {
             m_isExpired = true;
         }
-    }
-
-    public virtual void UpdateStat(float deltaTime)
-    {
-        if (m_type == Type.Expirable && !IsExpired) UpdateTimer(deltaTime);
-        if (m_isExpired)
-        {
-            OnDrop();
-        }
-
-    }
-    
-    public virtual void OnPickup() {
-        Game.MainGameInfo.Krampus.Stats.RegisterEffect(this);
-    }
-
-
-	public virtual void OnDrop() {
-        Game.MainGameInfo.Krampus.Stats.UnregisterEffect(this);
     }
 }

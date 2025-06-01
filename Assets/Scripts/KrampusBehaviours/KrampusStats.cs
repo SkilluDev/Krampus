@@ -46,9 +46,28 @@ public class KrampusStats : KrampusBehaviour {
 
     [SerializeField] public List<Item> items = new List<Item>();
 
+    private List<Effect> m_effectsToClear = new List<Effect>();
+
     public void Update() {
         Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
         Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
+
+        foreach (var stat in m_effects) {
+            foreach (var effect in stat.Value) {
+                if (effect.IsExpired) {
+                    m_effectsToClear.Add(effect);
+                    continue;
+                }
+                if (effect.EffectType == Effect.Type.Expirable) {
+                    effect.UpdateTimer(Time.deltaTime);
+                }
+            }
+        }
+
+        foreach (var effect in m_effectsToClear) {
+            UnregisterEffect(effect);
+        }
+        m_effectsToClear.Clear();
     }
 
     
