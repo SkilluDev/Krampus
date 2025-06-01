@@ -80,14 +80,14 @@ public class KrampusController : KrampusBehaviour {
 
 	[NaughtyAttributes.Button("Add New Example Stat")]
 	private void AddNewExamples() {
-		new StatModifier(Stat.Speed, 1.5f).OnPickup();
-		new StatModifier(Stat.Speed, 1.5f, 2f).OnPickup();
+		new Effect(Stat.Speed, 1.5f).OnPickup();
+		new Effect(Stat.Speed, 1.5f, 2f).OnPickup();
 	}
 
 	[NaughtyAttributes.Button("Add Example Stat")]
 	private void AddExamples() {
-		new StatModifier(Stat.Speed, 1.2f).OnPickup();
-		new StatModifier(Stat.Speed, 1.2f, 2f).OnPickup();
+		new Effect(Stat.Speed, 1.2f).OnPickup();
+		new Effect(Stat.Speed, 1.2f, 2f).OnPickup();
 	}
 	// Based on @SkilluDev's inputs
 	private void Update() {

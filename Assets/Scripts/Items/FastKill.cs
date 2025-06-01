@@ -19,6 +19,6 @@ public class FastKill : Item {
 	private void MovementBuff(Child child) {
 
 
-        m_krampus.Stats.RegisterStatModifier(new StatModifier(KrampusStats.Stat.Speed, m_speedValue, m_duration));
+        m_krampus.Stats.RegisterEffect(new Effect(KrampusStats.Stat.Speed, m_speedValue, m_duration));
      }
 }

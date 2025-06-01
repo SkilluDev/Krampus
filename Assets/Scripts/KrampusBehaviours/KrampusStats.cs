@@ -39,9 +39,9 @@ public class KrampusStats : KrampusBehaviour {
     private Dictionary<Stat, RawStat> m_rawStatDict;
 
     public IReadOnlyDictionary<Stat, RawStat> RawStats => m_rawStatDict;
-    private Dictionary<Stat, List<StatModifier>> m_statsModifiers = new Dictionary<Stat, List<StatModifier>>();
+    private Dictionary<Stat, List<Effect>> m_effects = new Dictionary<Stat, List<Effect>>();
 
-    private Dictionary<Stat, float> m_calculatedStatModifiers = new Dictionary<Stat, float>();
+    private Dictionary<Stat, float> m_calculatedMultipliers = new Dictionary<Stat, float>();
 
 
     [SerializeField] public List<Item> items = new List<Item>();
@@ -74,8 +74,8 @@ public class KrampusStats : KrampusBehaviour {
 
     private void Start() {
         foreach (RawStat rs in m_rawStatList) {
-            m_statsModifiers.Add(rs.Stat, new List<StatModifier>());
-            m_calculatedStatModifiers.Add(rs.Stat, 1f);
+            m_effects.Add(rs.Stat, new List<Effect>());
+            m_calculatedMultipliers.Add(rs.Stat, 1f);
         }
 
         foreach (Item item in items) {
@@ -84,13 +84,13 @@ public class KrampusStats : KrampusBehaviour {
          }
 
     }
-    public void RegisterStatModifier(StatModifier statModifier) {
-        m_statsModifiers[statModifier.Stat].Add(statModifier);
+    public void RegisterEffect(Effect effect) {
+        m_effects[effect.StatModifier.Stat].Add(effect);
         RecalculateStats();
     }
 
-    public void UnRegisterStatModifier(StatModifier statModifier) {
-        m_statsModifiers[statModifier.Stat].Remove(statModifier);
+    public void UnregisterEffect(Effect effect) {
+        m_effects[effect.StatModifier.Stat].Remove(effect);
         RecalculateStats();
     }
 
@@ -100,19 +100,19 @@ public class KrampusStats : KrampusBehaviour {
 
     private void RecalculateStats() {
         foreach (RawStat rs in m_rawStatList) {
-            float totalModifier = 0f;
+            float totalMultiplier = 0f;
             switch (rs.StatMode) {
                 case StatMode.MultiplyPercent:
-                    totalModifier = m_statsModifiers[rs.Stat].Aggregate(1.0f, (accumulator, sm) => accumulator * sm.Modifier);
+                    totalMultiplier = m_effects[rs.Stat].Aggregate(1.0f, (accumulator, e) => accumulator * e.StatModifier.Modifier);
                     break;
                 case StatMode.AddPercent:
-                    totalModifier = 1.0f + m_statsModifiers[rs.Stat].Sum(sm => sm.Modifier);
+                    totalMultiplier = 1.0f + m_effects[rs.Stat].Sum(e => e.StatModifier.Modifier);
                     break;
                 case StatMode.AddRaw:
-                    totalModifier = m_statsModifiers[rs.Stat].Sum(sm => sm.Modifier);
+                    totalMultiplier = m_effects[rs.Stat].Sum(e => e.StatModifier.Modifier);
                     break;
             }
-            m_calculatedStatModifiers[rs.Stat] = totalModifier;
+            m_calculatedMultipliers[rs.Stat] = totalMultiplier;
         }
     }
 
@@ -121,13 +121,13 @@ public class KrampusStats : KrampusBehaviour {
         float finalStat = rawStat.Value;
         switch (rawStat.StatMode) {
             case StatMode.MultiplyPercent:
-                finalStat *= m_calculatedStatModifiers[stat];
+                finalStat *= m_calculatedMultipliers[stat];
                 break;
             case StatMode.AddPercent:
-                finalStat *= m_calculatedStatModifiers[stat];
+                finalStat *= m_calculatedMultipliers[stat];
                 break;
             case StatMode.AddRaw:
-                finalStat += m_calculatedStatModifiers[stat];
+                finalStat += m_calculatedMultipliers[stat];
                 break;
         }
         return finalStat;
