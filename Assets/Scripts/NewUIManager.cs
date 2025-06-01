@@ -43,6 +43,9 @@ public class NewUIManager : MonoBehaviour {
     public BlackBars BlackBars => m_blackBars;
     [SerializeField] private BlackBars m_blackBars;
 
+    [SerializeField] private ItemChoiceMenuUI m_itemChoiceMenuUI;
+    public ItemChoiceMenuUI ItemChoiceMenu => m_itemChoiceMenuUI;
+
     private MotionHandle m_currentBounce;
 
     private bool m_uiOn = false;
@@ -190,6 +193,12 @@ public class NewUIManager : MonoBehaviour {
         if (!showTutorial) return;
         if (Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.SetActive(true);
     }
+
+
+    public void DisplayItemChoiceMenu() {
+
+        m_itemChoiceMenuUI.gameObject.SetActive(true);
+     }
 
     public void UIElementsEntryAnimation() {
         if (m_uiOn) return;

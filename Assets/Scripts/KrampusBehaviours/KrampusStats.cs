@@ -73,15 +73,13 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     private void Start() {
+        SetItems();
         foreach (RawStat rs in m_rawStatList) {
             m_effects.Add(rs.Stat, new List<Effect>());
             m_calculatedMultipliers.Add(rs.Stat, 1f);
         }
 
-        foreach (Item item in items) {
-            item.RegisterItem(Kramp);
-
-         }
+        
 
     }
     public void RegisterEffect(Effect effect) {
@@ -115,6 +113,19 @@ public class KrampusStats : KrampusBehaviour {
             m_calculatedMultipliers[rs.Stat] = totalMultiplier;
         }
     }
+
+
+    public void SetItems() {
+
+        items = Game.PogMan.m_KrampusItems;
+       // Game.PogMan.m_KrampusItems.Clear();
+
+
+        foreach (Item item in items) {
+                item.RegisterItem(Kramp);
+         }
+
+     }  
 
     public float GetFinalStat(Stat stat) {
         RawStat rawStat = m_rawStatDict[stat];

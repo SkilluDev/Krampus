@@ -5,6 +5,7 @@ using TMPro;
 using TMPro.Examples;
 using UnityEngine;
 using UnityEngine.UI;
+using LitMotion.Extensions;
 
 public class EffectIcon : MonoBehaviour {
 
@@ -23,7 +24,7 @@ public class EffectIcon : MonoBehaviour {
     public void SetIcon(Sprite icon, float duration) {
 
         SetIcon(icon);
-        // LMotion.Create(1, 0, duration).BindToFillAmount(m_fillImage);
+        LMotion.Create(1.0f,0,(float)duration).WithDelay(0.7f).BindToFillAmount(m_fillImage);
 
     }
 

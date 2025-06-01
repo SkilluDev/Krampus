@@ -35,8 +35,8 @@ public class Intro : MonoBehaviour {
 
             m_spawnPoint.gameObject.SetActive(false);
             m_vcam.enabled = false;
-            Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-            Game.MainGameInfo.UI.UIElementsEntryAnimation();
+            Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
+            Game.MainGameInfo.UI.DisplayItemChoiceMenu();
         }
     }
 

@@ -81,7 +81,10 @@ public class MainGameInfo : LevelInfo {
 
     public new enum State {
         Intro,
-        WaitingToStart,
+        WaitingToStart, 
+
+        ItemChoosing,
+
         Game,
         Paused,
         Over,
@@ -129,10 +132,11 @@ public class MainGameInfo : LevelInfo {
 
         Krampus.Stats.items = Game.PogMan.m_KrampusItems;
 
-        
+
 
         if (m_skipIntro) {
-            SetState(State.Game);
+            SetState(State.ItemChoosing);
+            UI.DisplayItemChoiceMenu();
         }
     }
 
@@ -198,6 +202,8 @@ public class MainGameInfo : LevelInfo {
             Krampus.Kontroller.KrampTermination(Ending.LoseTime);
             return;
         }
+
+        if (CurrentState == State.ItemChoosing){ Debug.Log("WOW"); }
     }
 
     public void ProcessEndGame(Ending ending) {
