@@ -54,20 +54,35 @@ public class KrampusStats : KrampusBehaviour {
 
         foreach (var stat in m_effects) {
             foreach (var effect in stat.Value) {
+                if (effect.EffectType == Effect.Type.Temporary) {
+                    effect.UpdateTimer(Time.deltaTime);
+                }
                 if (effect.IsExpired) {
                     m_effectsToClear.Add(effect);
-                    continue;
-                }
-                if (effect.EffectType == Effect.Type.Expirable) {
-                    effect.UpdateTimer(Time.deltaTime);
                 }
             }
         }
 
+        ClearEffectsToClear();
+    }
+
+    private void ClearEffectsToClear() {
         foreach (var effect in m_effectsToClear) {
             UnregisterEffect(effect);
         }
         m_effectsToClear.Clear();
+    }
+
+    private void ClearAllTemporaryEffects() {
+        foreach (var stat in m_effects) {
+            foreach (var effect in stat.Value) {
+                if (effect.EffectType != Effect.Type.Temporary) continue;
+                effect.IsExpired = true;
+                m_effectsToClear.Add(effect);
+            }
+        }
+
+        ClearEffectsToClear();
     }
 
     
