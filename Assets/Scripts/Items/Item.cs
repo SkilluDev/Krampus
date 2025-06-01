@@ -7,11 +7,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game/Items/Item", fileName = "Item")]
 public class Item : ScriptableObject {
 
-    [SerializeField] private string m_ItemName = "Item Name";
-    [SerializeField] private Sprite m_ItemIcon;
+    [SerializeField] private string m_itemName = "Item Name";
+    [SerializeField] private Sprite m_itemIcon;
 
     [TextArea(4,25)]
-    [SerializeField] private string m_Description;
+    [SerializeField] private string m_description;
 
     protected Krampus m_krampus;
 

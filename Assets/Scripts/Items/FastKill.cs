@@ -7,7 +7,7 @@ public class FastKill : Item {
 
 
     [SerializeField] private float m_speedValue;
-    [SerializeField] private float m_duretion;
+    [SerializeField] private float m_duration;
 
 
     public override void RegisterItem(Krampus krampus) {
@@ -16,9 +16,9 @@ public class FastKill : Item {
     }
 
 
-    void MovementBuff(Child child) {
+	private void MovementBuff(Child child) {
 
 
-        m_krampus.Stats.RegisterStatModifier(new StatModifier(KrampusStats.Stat.Speed, m_speedValue, m_duretion));
+        m_krampus.Stats.RegisterStatModifier(new StatModifier(KrampusStats.Stat.Speed, m_speedValue, m_duration));
      }
 }
