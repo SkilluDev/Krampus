@@ -30,6 +30,7 @@ public class ItemChoiceMenuUI : MonoBehaviour {
     public void ChooseItem(int pos) {
 
         Game.PogMan.AddItem(m_itemsDisplayed[pos]);
+        
 
         Game.MainGameInfo.SetState(MainGameInfo.State.Game);
         Game.MainGameInfo.UI.UIElementsEntryAnimation();

@@ -19,12 +19,15 @@ public class EffectIcon : MonoBehaviour {
 
     public void SetIcon(Sprite icon = null) {
         m_icon.sprite = icon;
+        m_stackText.text = "";
      }
 
     public void SetIcon(Sprite icon, float duration) {
 
         SetIcon(icon);
-        LMotion.Create(1.0f,0,duration).BindToFillAmount(m_fillImage);
+        LMotion.Create(0, 1.0f, duration).WithOnComplete(() => Destroy(gameObject)).BindToFillAmount(m_fillImage);
+
+        m_stackText.text = "";
 
     }
 

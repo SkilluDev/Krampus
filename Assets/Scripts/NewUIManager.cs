@@ -78,6 +78,15 @@ public class NewUIManager : MonoBehaviour {
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarTutorialKeys;
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarMenuKeys;
 
+
+    
+   [BoxGroup("Effect Bar")] [SerializeField] private EffectIcon m_effectIconPref;
+    [BoxGroup("Effect Bar")][SerializeField] private RectTransform m_effectBar;
+
+    
+
+
+
     [Button]
     private void EatNiceChild() {
         var child = new Child();
@@ -143,6 +152,18 @@ public class NewUIManager : MonoBehaviour {
         m_blackBars.SetBottomBarText(m_bottomBarTutorialKeys);
         ShowQuickActionIcon(false);
     }
+
+
+    public void DisplayEffect(float duration, Sprite icon) {
+        EffectIcon effectIcon = Instantiate(m_effectIconPref);
+        effectIcon.transform.SetParent(m_effectBar);
+        effectIcon.SetIcon(icon,duration);
+    }
+    public void DisplayEffect(Sprite icon) {
+        EffectIcon effectIcon = Instantiate(m_effectIconPref);
+        effectIcon.transform.SetParent(m_effectBar);
+        effectIcon.SetIcon(icon);
+     }
 
 
     private void Update() {

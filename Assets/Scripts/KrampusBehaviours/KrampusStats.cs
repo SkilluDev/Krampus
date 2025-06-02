@@ -119,6 +119,8 @@ public class KrampusStats : KrampusBehaviour {
     public void RegisterEffect(Effect effect) {
         m_effects[effect.StatModifier.Stat].Add(effect);
         RecalculateStats();
+
+        
     }
 
     public void UnregisterEffect(Effect effect) {

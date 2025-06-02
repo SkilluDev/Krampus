@@ -16,9 +16,11 @@ public class FastKill : Item {
     }
 
 
-	private void MovementBuff(Child child) {
+    private void MovementBuff(Child child) {
 
-
+        Debug.Log("kILL KILL KILL");
         m_krampus.Stats.RegisterEffect(new Effect(KrampusStats.Stat.Speed, m_speedValue, m_duration));
+
+        Game.MainGameInfo.UI.DisplayEffect(m_duration, ItemIcon);
      }
 }

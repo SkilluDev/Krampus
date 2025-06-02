@@ -22,7 +22,8 @@ public class PogMan : MonoBehaviour {
     }
 
     public void AddItem(Item item) {
-        m_KrampusItems.Add(item);        
+        m_KrampusItems.Add(item);
+        item.RegisterItem(Game.MainGameInfo.Krampus);
      }
 		
 	

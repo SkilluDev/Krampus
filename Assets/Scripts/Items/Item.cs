@@ -7,7 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game/Items/Item", fileName = "Item")]
 public class Item : ScriptableObject {
 
-    [SerializeField] private string m_itemName = "Item Name";
+    [SerializeField] protected string m_itemName = "Item Name";
     public string ItemName => m_itemName;
 
 
