@@ -21,6 +21,6 @@ public class FastKill : Item {
         Debug.Log("kILL KILL KILL");
         m_krampus.Stats.RegisterEffect(new Effect(KrampusStats.Stat.Speed, m_speedValue, m_duration));
 
-        Game.MainGameInfo.UI.DisplayEffect(m_duration, ItemIcon);
+        Game.MainGameInfo.UI.DisplayEffect(m_duration, ItemIcon, ItemName);
      }
 }
