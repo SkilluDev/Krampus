@@ -44,8 +44,8 @@ public class KrampusStats : KrampusBehaviour {
     private Dictionary<Stat, float> m_calculatedMultipliers = new Dictionary<Stat, float>();
 
 
-    [SerializeField] public List<Item> items = new List<Item>();
-
+    [SerializeField] private List<Item> m_items = new List<Item>();
+    public IReadOnlyList<Item> Items => m_items;
     private List<Effect> m_effectsToClear = new List<Effect>();
 
     public void Update() {
@@ -85,7 +85,7 @@ public class KrampusStats : KrampusBehaviour {
         ClearEffectsToClear();
     }
 
-    
+
 
     private void OnEnable() {
         PopulateDictionary();
@@ -107,21 +107,25 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     private void Start() {
-        SetItems();
-        foreach (RawStat rs in m_rawStatList) {
+        LoadItems();
+        foreach (var rs in m_rawStatList) {
             m_effects.Add(rs.Stat, new List<Effect>());
             m_calculatedMultipliers.Add(rs.Stat, 1f);
         }
-
-        
-
     }
+
+    private void LoadItems() {
+        Game.PogMan.Unpack(ref m_items);
+    }
+    private void StoreItems() {
+        Game.PogMan.Store(ref m_items);
+    }
+
     public void RegisterEffect(Effect effect) {
         m_effects[effect.StatModifier.Stat].Add(effect);
         RecalculateStats();
-
-        
     }
+
 
     public void UnregisterEffect(Effect effect) {
         m_effects[effect.StatModifier.Stat].Remove(effect);
@@ -134,7 +138,7 @@ public class KrampusStats : KrampusBehaviour {
 
     private void RecalculateStats() {
         if (!Game.Balling) return;
-        foreach (RawStat rs in m_rawStatList) {
+        foreach (var rs in m_rawStatList) {
             float totalMultiplier = 0f;
             switch (rs.StatMode) {
                 case StatMode.MultiplyPercent:
@@ -152,29 +156,33 @@ public class KrampusStats : KrampusBehaviour {
     }
 
 
-    public void SetItems() {
 
-        items = Game.PogMan.m_KrampusItems;
-       // Game.PogMan.m_KrampusItems.Clear();
-
-
-        foreach (Item item in items) {
-                item.RegisterItem(Kramp);
-         }
-
-     }
-
-    
-
-      public bool HasItem(Item item) {
-        foreach (Item i in items) {
-            if (i.IsItem(item)) { return true; }
+    public void AddItem(Item item) {
+        item.ItemAdded(Kramp);
+        if (m_items.Contains(item)) {
+            item.RegisterEvents(Kramp.KrampusEvents);
         }
-        return false;
+        m_items.Add(item);
+    }
+
+    public void RemoveItem(Item item) {
+        if (!m_items.Contains(item)) {
+            Debug.LogError("Attempted to remove an item {item} which the player did not have.");
+            return;
+        }
+
+        m_items.Remove(item);
+        item.ItemRemoved(Kramp);
+        if (!m_items.Contains(item)) item.UnregisterEvents(Kramp.KrampusEvents);
+    }
+
+
+    public bool HasItem(Item item) {
+        return m_items.Contains(item);
     }
 
     public float GetFinalStat(Stat stat) {
-        RawStat rawStat = m_rawStatDict[stat];
+        var rawStat = m_rawStatDict[stat];
         float finalStat = rawStat.Value;
         switch (rawStat.StatMode) {
             case StatMode.MultiplyPercent:
@@ -190,7 +198,6 @@ public class KrampusStats : KrampusBehaviour {
         return finalStat;
     }
 
-    
 }
 
 
@@ -198,36 +205,30 @@ public class KrampusStats : KrampusBehaviour {
 
 
 [CustomEditor(typeof(KrampusStats))]
-public class StatHolderEditor : Editor
-{
+public class StatHolderEditor : Editor {
     private SerializedProperty m_rawStatListProperty;
 
-    private void OnEnable()
-    {
+    private void OnEnable() {
         m_rawStatListProperty = serializedObject.FindProperty("m_rawStatList");
     }
 
-    public override void OnInspectorGUI()
-    {
+    public override void OnInspectorGUI() {
         serializedObject.Update();
         DrawDefaultInspector();
 
         KrampusStats krampusStats = (KrampusStats)target;
         IReadOnlyCollection<RawStat> rawStatList = krampusStats.RawStatList;
 
-        if (rawStatList != null)
-        {
+        if (rawStatList != null) {
             var duplicateStats = rawStatList
                 .GroupBy(rs => rs.Stat)
                 .Where(g => g.Count() > 1)
                 .Select(g => g.Key)
                 .ToList();
 
-            if (duplicateStats.Any())
-            {
+            if (duplicateStats.Any()) {
                 string warningMessage = "Warning: Duplicate Stat entries found in the list!\n";
-                foreach (var stat in duplicateStats)
-                {
+                foreach (var stat in duplicateStats) {
                     warningMessage += $"- {stat}\n";
                 }
                 EditorGUILayout.HelpBox(warningMessage, MessageType.Warning);
@@ -235,17 +236,15 @@ public class StatHolderEditor : Editor
 
             int totalStatEnums = System.Enum.GetValues(typeof(Stat)).Length;
 
-            if (rawStatList.Count < totalStatEnums)
-            {
+            if (rawStatList.Count < totalStatEnums) {
                 var missingStats = new List<Stat>();
                 foreach (Stat stat in System.Enum.GetValues(typeof(Stat))) {
-                    if (!rawStatList.Select(rs=>rs.Stat).Contains(stat)) {
+                    if (!rawStatList.Select(rs => rs.Stat).Contains(stat)) {
                         missingStats.Add(stat);
                     }
                 }
                 string warningMessage = $"Warning: The list count ({rawStatList.Count}) does not match the total number of unique Stat enum values ({totalStatEnums}). Missing stats:\n";
-                foreach (var stat in missingStats)
-                {
+                foreach (var stat in missingStats) {
                     warningMessage += $"- {stat}\n";
                 }
                 EditorGUILayout.HelpBox(warningMessage, MessageType.Warning);
