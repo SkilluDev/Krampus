@@ -17,15 +17,13 @@ public class Item : ScriptableObject {
     /// <summary>
     /// Caled when this Item's events should be registered
     /// </summary>
-    /// <param name="krampus"></param>
-    public virtual void RegisterEvents(Krampus krampus) {
+    public virtual void RegisterEvents(KrampusEvents events) {
 
     }
     /// <summary>
     /// Called when this Item's events should be unregistered
     /// </summary>
-    /// <param name="krampus"></param>
-    public virtual void UnregisterEvents(Krampus krampus) {
+    public virtual void UnregisterEvents(KrampusEvents events) {
 
     }
     /// <summary>
