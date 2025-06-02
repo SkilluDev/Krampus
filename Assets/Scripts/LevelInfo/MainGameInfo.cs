@@ -42,7 +42,8 @@ public class MainGameInfo : LevelInfo {
     [BoxGroup("Combo")][SerializeField] private float m_maxComboPoints =100.0f;
 
 
-
+    [BoxGroup("Item Pool")][SerializeField] private ItemPool m_itemPool;
+    public ItemPool ItemPool => m_itemPool;
 
 
     public ChildType NiceChildType { get; set; }

@@ -160,7 +160,16 @@ public class KrampusStats : KrampusBehaviour {
                 item.RegisterItem(Kramp);
          }
 
-     }  
+     }
+
+    
+
+      public bool HasItem(Item item) {
+        foreach (Item i in items) {
+            if (i.IsItem(item)) { return true; }
+        }
+        return false;
+    }
 
     public float GetFinalStat(Stat stat) {
         RawStat rawStat = m_rawStatDict[stat];

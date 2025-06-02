@@ -8,10 +8,16 @@ using UnityEngine;
 public class Item : ScriptableObject {
 
     [SerializeField] private string m_itemName = "Item Name";
-    [SerializeField] private Sprite m_itemIcon;
+    public string ItemName => m_itemName;
 
-    [TextArea(4,25)]
+
+    [SerializeField] private Sprite m_itemIcon;
+    public Sprite ItemIcon => m_itemIcon;
+
+
+    [TextArea(4, 25)]
     [SerializeField] private string m_description;
+    public string Description => m_description;
 
     protected Krampus m_krampus;
 
@@ -19,9 +25,12 @@ public class Item : ScriptableObject {
     virtual public void RegisterItem(Krampus krampus) {
 
         m_krampus = krampus;
-     }
+    }
 
-    
+
+    public bool IsItem(Item item) {
+        return this.m_itemName.Equals(item.m_itemName);
+     }
 
 
 
