@@ -263,7 +263,7 @@ public class KrampusController : KrampusBehaviour {
 		Game.MainGameInfo.UI.ShowQuickActionIcon(CanSting);
 	}
 
-	public void OnNaughtyChildEaten(Child child) { 
+	public void OnNaughtyChildEaten(Krampus krampus, Child child) {
 		AddComboPoints(Game.MainGameInfo.ComboGainFromChildren);
 	}
 }

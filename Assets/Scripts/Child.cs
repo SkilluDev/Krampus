@@ -201,16 +201,15 @@ public class Child : NPC, IEdible, INoiseReactor {
         Game.MainGameInfo.GlobalEvents.onChildEaten.Invoke(krampus, this);
 
         if (IsNaughty) {
-            krampus.KrampusEvents.onNaughtyChildEaten.Invoke(this);
+            krampus.KrampusEvents.onNaughtyChildEaten.Invoke(krampus, this);
         } else {
-            krampus.KrampusEvents.onNiceChildEaten.Invoke(this);
+            krampus.KrampusEvents.onNiceChildEaten.Invoke(krampus, this);
         }
+        krampus.KrampusEvents.onChildEaten.Invoke(krampus, this);
         SwitchState(State.Consumed);
-
-
         Destroy(gameObject);
-
     }
+
     public void Hit(Krampus krampus) {
         SwitchState(State.Dead);
     }

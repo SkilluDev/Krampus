@@ -1,19 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
 [CreateAssetMenu(menuName = "Game/Items/ItemTest", fileName = "ItemTest")]
 public class TestItem : Item {
-    public override void RegisterItem(Krampus krampus) {
-
-        base.RegisterItem(krampus);
-        krampus.KrampusEvents.onNaughtyChildEaten.AddListener(OnNaughtyChildEaten);
+    public override void RegisterEvents(KrampusEvents events) {
+        events.onNaughtyChildEaten.AddListener(OnNaughtyChildEaten);
         Debug.Log("Event Registered");
-
     }
 
-    private void OnNaughtyChildEaten(Child child) {
+    public override void UnregisterEvents(KrampusEvents events) {
+        events.onNaughtyChildEaten.RemoveListener(OnNaughtyChildEaten);
+        Debug.Log("Event unregistered");
+    }
+
+    private void OnNaughtyChildEaten(Krampus krampus, Child child) {
         Debug.Log("Siema");
     }
 }

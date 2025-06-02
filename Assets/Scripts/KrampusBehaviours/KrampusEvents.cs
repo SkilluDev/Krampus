@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Events;
 
-
-
-public class KrampusEvents : KrampusBehaviour
-{
-    public UnityEvent<Child> onNaughtyChildEaten;
-    public UnityEvent<Child> onNiceChildEaten;
-    public UnityEvent<Nun> onNunStunned;
+public class KrampusEvents : KrampusBehaviour {
+    public UnityEvent<Krampus, Child> onNaughtyChildEaten;
+    public UnityEvent<Krampus, Child> onNiceChildEaten;
+    public UnityEvent<Krampus, Child> onChildEaten;
+    public UnityEvent<Krampus, Nun> onNunStunned;
 
 }
