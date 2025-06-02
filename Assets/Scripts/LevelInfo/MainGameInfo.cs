@@ -37,9 +37,9 @@ public class MainGameInfo : LevelInfo {
     [SerializeField] private GlobalEvents m_globalEvents;
 
     public float ComboGainFromChildren => m_comboGainFromChildren;
-    [BoxGroup("Combo")] [SerializeField] private float m_comboGainFromChildren;
+    [BoxGroup("Combo")][SerializeField] private float m_comboGainFromChildren;
     public float MaxComboPoints => m_maxComboPoints;
-    [BoxGroup("Combo")][SerializeField] private float m_maxComboPoints =100.0f;
+    [BoxGroup("Combo")][SerializeField] private float m_maxComboPoints = 100.0f;
 
 
     [BoxGroup("Item Pool")][SerializeField] private ItemPool m_itemPool;
@@ -84,7 +84,7 @@ public class MainGameInfo : LevelInfo {
 
     public new enum State {
         Intro,
-        WaitingToStart, 
+        WaitingToStart,
 
         ItemChoosing,
 
@@ -133,11 +133,6 @@ public class MainGameInfo : LevelInfo {
     }
 
     private void Ready() {
-
-        Krampus.Stats.items = Game.PogMan.m_KrampusItems;
-
-
-
         if (m_skipIntro) {
             SetState(State.ItemChoosing);
             UI.DisplayItemChoiceMenu();
@@ -207,7 +202,7 @@ public class MainGameInfo : LevelInfo {
             return;
         }
 
-        if (CurrentState == State.ItemChoosing){ Debug.Log("WOW"); }
+        if (CurrentState == State.ItemChoosing) { Debug.Log("WOW"); }
     }
 
     public void ProcessEndGame(Ending ending) {

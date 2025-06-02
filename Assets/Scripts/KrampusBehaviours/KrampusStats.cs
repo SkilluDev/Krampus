@@ -114,6 +114,12 @@ public class KrampusStats : KrampusBehaviour {
         }
     }
 
+    private void OnDestroy() { // to be absolutely fair, i have no clue whether this will get correctly called; TODO:
+        if (Game.IsLoading) {
+            StoreItems();
+        }
+    }
+
     private void LoadItems() {
         Game.PogMan.Unpack(ref m_items);
     }
