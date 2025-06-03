@@ -168,7 +168,7 @@ public class KrampusController : KrampusBehaviour {
 		if (CurrentState == State.Idle) m_timeHoldingInput = 0f;
 		m_previousFrameVelocity = m_rigidbody.velocity.sqrMagnitude;
 
-		if (CanSting & InputSubscribe.Special) {
+		if (CanSting && InputSubscribe.Special) {
 			Dash();
 		}
 	}
