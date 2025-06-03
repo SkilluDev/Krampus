@@ -276,6 +276,7 @@ MonoBehaviour:
   m_itemIconImage: {fileID: 408394338471696095}
   m_titleText: {fileID: 7658730554352290496}
   m_descriptionText: {fileID: 2074812710376522980}
+  m_button: {fileID: 0}
 --- !u!114 &9028568568021160673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -968,6 +969,7 @@ MonoBehaviour:
   m_itemIconImage: {fileID: 8750363743558476735}
   m_titleText: {fileID: 957560279101487529}
   m_descriptionText: {fileID: 6151133245902243766}
+  m_button: {fileID: 0}
 --- !u!114 &2554998430383993622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1090,6 +1092,7 @@ MonoBehaviour:
   m_itemIconImage: {fileID: 1396492571816410839}
   m_titleText: {fileID: 459746590458271093}
   m_descriptionText: {fileID: 2030618664688831186}
+  m_button: {fileID: 0}
 --- !u!114 &8421276939016214899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1726,7 +1729,9 @@ GameObject:
   m_Component:
   - component: {fileID: 452511732293737484}
   - component: {fileID: 1175454151576443450}
+  - component: {fileID: 6885790853057629019}
   - component: {fileID: 6498501035608810273}
+  - component: {fileID: 7180431048455708117}
   m_Layer: 5
   m_Name: ItemChoiceUI
   m_TagString: Untagged
@@ -1782,6 +1787,36 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &6885790853057629019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8404692236160305240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.03773582, g: 0.03577783, b: 0.03577783, a: 0.9490196}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &6498501035608810273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1798,6 +1833,14 @@ MonoBehaviour:
   - {fileID: 4889048497274136940}
   - {fileID: 5257853388563553353}
   - {fileID: 1710070677787448112}
+--- !u!222 &7180431048455708117
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8404692236160305240}
+  m_CullTransparentMesh: 1
 --- !u!1 &8739057867109646431
 GameObject:
   m_ObjectHideFlags: 0
