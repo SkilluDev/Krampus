@@ -11,6 +11,8 @@ public class ItemCard : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI m_titleText;
     [SerializeField] private TextMeshProUGUI m_descriptionText;
 
+    [SerializeField] private Button m_button;
+
 
 
     public void SetInfo(Sprite icon, string title, string description) {
@@ -19,5 +21,6 @@ public class ItemCard : MonoBehaviour {
         m_titleText.text = title;
         m_descriptionText.text = description;
 
-     }
+       
+    }
 }

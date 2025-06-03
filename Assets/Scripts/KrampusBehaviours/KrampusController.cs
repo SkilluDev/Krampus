@@ -177,6 +177,7 @@ public class KrampusController : KrampusBehaviour {
 		if (!CanSting) return;
 		m_dashTime = m_dashDuration;
 		m_dashDirection = Kramp.Tongue.TongueDirection;
+		Kramp.KrampusEvents.onStingerUsed.Invoke(Kramp);
 		ChangeState(State.Dash, StateChangeReason.Rapid);
 		Debug.Log("Do dashing " + m_dashDirection);
 
