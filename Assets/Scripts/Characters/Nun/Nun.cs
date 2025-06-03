@@ -92,6 +92,10 @@ public class Nun : NPC {
     }
 
 
+    void SeeKrampus() {
+        Game.MainGameInfo.Krampus.KrampusEvents.onKrampusFoundByNun.Invoke(Game.MainGameInfo.Krampus, this);
+          SwitchState(State.FoundKrampus);
+     }
 
     private void Update() {
         if (!Game.Balling) return;
@@ -116,7 +120,11 @@ public class Nun : NPC {
                 if (m_viewCone.Detect()) {
                     Debug.Log("[Nun] viewcone detected krampy");
                     m_timeout = m_shockTimeout;
-                    SwitchState(State.FoundKrampus);
+                    //Change in multi
+
+                    SeeKrampus();
+
+                   
                 }
 
 
@@ -129,7 +137,7 @@ public class Nun : NPC {
                     if (m_timeout > m_krampusDetectTime) {
                         Debug.Log("[Nun] Alerted & detected krampy");
                         m_timeout = m_shockTimeout;
-                        SwitchState(State.FoundKrampus);
+                        SeeKrampus();
                     } else {
                         m_timeout += Time.deltaTime;
                     }
@@ -153,6 +161,9 @@ public class Nun : NPC {
                 SetVelocity(Vector3.zero);
                 m_timeout -= Time.deltaTime;
                 SetFacingToPoint(Game.MainGameInfo.Krampus.transform.position);
+
+
+
                 if (m_timeout < 0) SwitchState(State.ChasingKrampus);
                 break;
             case State.Listening:

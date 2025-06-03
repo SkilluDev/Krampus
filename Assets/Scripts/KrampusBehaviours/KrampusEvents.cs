@@ -6,4 +6,6 @@ public class KrampusEvents : KrampusBehaviour {
     public UnityEvent<Krampus, Child> onChildEaten;
     public UnityEvent<Krampus, Nun> onNunStunned;
 
+    public UnityEvent<Krampus,Nun>  onKrampusFoundByNun;
+
 }

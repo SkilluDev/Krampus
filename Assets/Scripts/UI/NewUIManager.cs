@@ -156,7 +156,7 @@ public class NewUIManager : MonoBehaviour {
 
     public void DisplayEffect(float duration, Sprite icon, string nam) {
         EffectIcon effectIcon = Instantiate(m_effectIconPref);
-        effectIcon.transform.SetParent(m_effectBar);
+        effectIcon.transform.SetParent(m_effectBar,false);
         effectIcon.SetIcon(icon,duration,name);
     }
     public void DisplayEffect(Sprite icon, string name) {

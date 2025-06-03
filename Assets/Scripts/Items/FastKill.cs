@@ -9,10 +9,12 @@ public class FastKill : Item {
 
     public override void RegisterEvents(KrampusEvents events) {
         events.onNaughtyChildEaten.AddListener(MovementBuff);
+        events.onNiceChildEaten.AddListener(MovementBuff);
     }
 
     public override void UnregisterEvents(KrampusEvents events) {
         events.onNaughtyChildEaten.RemoveListener(MovementBuff);
+         events.onNiceChildEaten.RemoveListener(MovementBuff);
     }
 
     private void MovementBuff(Krampus krampus, Child child) {
