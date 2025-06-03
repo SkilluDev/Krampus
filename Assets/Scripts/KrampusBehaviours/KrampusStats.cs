@@ -165,7 +165,7 @@ public class KrampusStats : KrampusBehaviour {
 
     public void AddItem(Item item) {
         item.ItemAdded(Kramp);
-        if (m_items.Contains(item)) {
+        if (!m_items.Contains(item)) {
             item.RegisterEvents(Kramp.KrampusEvents);
         }
         m_items.Add(item);
