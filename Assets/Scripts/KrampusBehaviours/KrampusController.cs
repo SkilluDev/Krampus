@@ -47,6 +47,7 @@ public class KrampusController : KrampusBehaviour {
 	public Vector3 NextStingDirection { get => m_dashDirection; set => m_dashDirection = value; }
 	[SerializeField] private float m_comboStingCost = 30;
 	public float ComboStingCost => m_comboStingCost;
+	private IInteractable m_stingerTarget;
 
 
 
@@ -175,11 +176,11 @@ public class KrampusController : KrampusBehaviour {
 
 	public void Dash() {
 		if (!CanSting) return;
-		m_dashTime = m_dashDuration;
-		m_dashDirection = Kramp.Tongue.TongueDirection;
+		//m_dashTime = m_dashDuration;
+		//m_dashDirection = Kramp.Tongue.TongueDirection;
 		Kramp.KrampusEvents.onStingerUsed.Invoke(Kramp);
 		ChangeState(State.Dash, StateChangeReason.Rapid);
-		Debug.Log("Do dashing " + m_dashDirection);
+		//Debug.Log("Do dashing " + m_dashDirection);
 
 		m_comboGainLock = 2;
 		SpendComboPoints(ComboStingCost);
@@ -214,11 +215,15 @@ public class KrampusController : KrampusBehaviour {
 		if (CurrentState == State.Dead) return;
 
 		if (CurrentState == State.Dash) {
-			m_dashTime -= Time.fixedDeltaTime;
-			Debug.Log("Dash TIme: " + m_dashTime);
-			m_rigidbody.velocity = m_dashDirection.normalized * m_dashSpeed;
+			//m_dashTime -= Time.fixedDeltaTime;
+			//Debug.Log("Dash TIme: " + m_dashTime);
+			Vector3 direction = m_stingerTarget.GameObject.transform.position - transform.position;
+			float distance = direction.sqrMagnitude;
+			m_rigidbody.velocity = direction.normalized * m_dashSpeed;
 
-			if (m_dashTime < 0) ChangeState(State.Run, StateChangeReason.Rapid);
+			if (distance < 10) {
+				ChangeState(State.Run, StateChangeReason.Rapid);
+			}
 			return;
 		}
 
@@ -260,11 +265,21 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void SetCanSting(bool canSting) {
-		CanSting = canSting & (ComboPoints >= ComboStingCost);
+		if (ComboPoints < ComboStingCost) {
+			CanSting = false;
+		} else {
+			CanSting = canSting;
+		}
+
 		Game.MainGameInfo.UI.ShowQuickActionIcon(CanSting);
+
 	}
 
 	public void OnNaughtyChildEaten(Krampus krampus, Child child) {
 		AddComboPoints(Game.MainGameInfo.ComboGainFromChildren);
+	}
+
+	public void SetStingTarget(IInteractable interactable) {
+			m_stingerTarget = interactable;
 	}
 }

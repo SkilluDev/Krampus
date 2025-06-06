@@ -261,8 +261,9 @@ public class KrampusTongue : KrampusBehaviour {
                 if (m_hitInteractable != null) {
                     try {
                         m_hitInteractable.Interact(Kramp);
-                        if (m_hitInteractable is Child ) {
-                           Kramp.Kontroller.SetCanSting(true);
+                        if (m_hitInteractable is Child) {
+                        	Kramp.Kontroller.SetCanSting(true);
+                            Kramp.Kontroller.SetStingTarget(m_hitInteractable);
                         }
                     } catch (Exception e) {
                         LogException(e, m_hitInteractable);
@@ -315,7 +316,7 @@ public class KrampusTongue : KrampusBehaviour {
                     try {
                         Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
                         m_hitEdible.Consume(Kramp);
-                        
+
 
                     } catch (Exception e) {
                         LogException(e, m_hitEdible);
@@ -323,6 +324,7 @@ public class KrampusTongue : KrampusBehaviour {
                 }
 
                 Kramp.Kontroller.SetCanSting(false);
+				Kramp.Kontroller.SetStingTarget(null);
                 m_hitEdible = null;
                 m_hitInteractable = null;
                 m_hitTonguable = null;
