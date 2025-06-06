@@ -234,10 +234,12 @@ public class Child : NPC, IEdible, INoiseReactor {
         m_animator.SetChildType(type);
     }
 
-    public void Alert(RoomData roomData, Vector3 place, ICharacter actor) {
-        if (actor is not Krampus) return;
-        Debug.Log("[Child] Child alerted");
-        m_timeout = m_stunDuration;
-        SwitchState(State.Stunned);
+	public void Alert(RoomData roomData, Vector3 place, ICharacter actor) {
+		if (actor is not Krampus) return;
+		Debug.Log("[Child] Child alerted");
+		//SwitchState(State.Stunned);
+		m_timeout = m_stunDuration;
+		SetDestination(place);
+		SetFacingDirection(place);
     }
 }
