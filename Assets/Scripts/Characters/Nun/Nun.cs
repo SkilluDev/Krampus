@@ -12,12 +12,12 @@ using UnityEngine.Events;
 public class Nun : NPC {
     public enum State {
         Idle,
-        Patrolling, // Follow a pre-determined path. Use view cone to notice krampus 
+        Patrolling, // Follow a pre-determined path. Use view cone to notice krampus
         Listening, // Wait and listen for the kid
         LookingForKrampus, // Go to the room that was reported by the kid. If krampus is in a room the nun is in, start chasing him. Otherwise back to patrolling.
         FoundKrampus, // shock state
         ChasingKrampus, // self-explanatory
-        Stunned // self-explanatory. post stun, go to lookingforkrampus
+        Stunned // self-explanatory. post stun, go to Patrolling
     }
 
     public float RunSpeed => m_runSpeed;
@@ -124,7 +124,7 @@ public class Nun : NPC {
 
                     SeeKrampus();
 
-                   
+
                 }
 
 
@@ -189,7 +189,7 @@ public class Nun : NPC {
                                                 .First()
                                                 .Other(CurrentRoom);
 
-                    SwitchState(State.LookingForKrampus);
+                    SwitchState(State.Patrolling);
                     SetDestination(m_reportedKrampusRoom.GetRandomPointOnFloor().OnNavMesh(5));
                 }
 

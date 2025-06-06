@@ -74,7 +74,7 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
 
     protected Vector3 GetPathDirection() {
         if (m_currentPath == null || m_currentPath.status == NavMeshPathStatus.PathInvalid) {
-            Debug.LogError("Path invalid");
+            Debug.LogWarning("Path invalid");
             return Vector3.zero;
         }
 
