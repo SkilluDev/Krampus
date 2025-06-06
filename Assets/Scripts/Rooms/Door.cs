@@ -20,7 +20,7 @@ public class Door : Passage, IInteractable {
     [SerializeField] private float m_stunLinger = 0.3f;
 
 
-    [SerializeField] private VisualEffect doorBurst;
+    [SerializeField] private VisualEffect m_doorBurst;
 
     private float m_stunTime;
 
@@ -81,7 +81,7 @@ public class Door : Passage, IInteractable {
         if (swiftly) {
             m_stunTime = m_stunLinger;
             //doorBurst.transform.localRotation = Quaternion.Euler(0, 90*(m_animator.GetBool(m_invertProperty)?1:-1), 0);
-            doorBurst.Play();
+            m_doorBurst.Play();
             foreach (var w in m_charactersInDoor) {
                 if (w is Nun n) n.Stun(m_stunDuration);
             }
