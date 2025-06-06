@@ -27,8 +27,10 @@ public class Nun : NPC {
     [SerializeField] private float m_interactionDistance = 8;
     [SerializeField] private float m_detectionRange = 4;
     public State CurrentState { get; private set; }
+	private bool m_hasLineOfSight = false;
+	[SerializeField] private LayerMask m_visionMask;
 
-    [SerializeField] private float m_runSpeed = 8;
+	[SerializeField] private float m_runSpeed = 8;
 
     [SerializeField] private float m_shockTimeout = 0.2f;
 
@@ -92,7 +94,7 @@ public class Nun : NPC {
     }
 
 
-    void SeeKrampus() {
+	private void SeeKrampus() {
         Game.MainGameInfo.Krampus.KrampusEvents.onKrampusFoundByNun.Invoke(Game.MainGameInfo.Krampus, this);
           SwitchState(State.FoundKrampus);
      }
@@ -100,103 +102,109 @@ public class Nun : NPC {
     private void Update() {
         if (!Game.Balling) return;
 
+		Physics.Raycast(transform.position, Game.MainGameInfo.Krampus.transform.position - transform.position, out var hit, 100f, m_visionMask);
+		if (hit.collider.transform == Game.MainGameInfo.Krampus.transform) {
+			m_hasLineOfSight = true;
+		} else {
+			m_hasLineOfSight = false;
+		}
         switch (CurrentState) {
-            case State.Idle:
-                m_timeout -= Time.deltaTime;
-                if (m_timeout < 0) SwitchState(State.Patrolling);
-                CurrentDestination = transform.position;
-                m_viewCone.SetActive(true);
-                Debug.Log("[Nun] Begin patrolling");
-                break;
-            case State.Patrolling:
-                if (NearDestination(m_interactionDistance)) {
-                    m_currentControlPoint++;
-                    m_currentControlPoint %= m_patrolPath.Count;
-                    SetDestination(m_patrolPath[m_currentControlPoint]);
-                    Debug.Log("[Nun] Reached patrol point");
-                }
+			case State.Idle:
+				m_timeout -= Time.deltaTime;
+				if (m_timeout < 0) SwitchState(State.Patrolling);
+				CurrentDestination = transform.position;
+				m_viewCone.SetActive(true);
+				Debug.Log("[Nun] Begin patrolling");
+				break;
+			case State.Patrolling:
+				if (NearDestination(m_interactionDistance)) {
+					m_currentControlPoint++;
+					m_currentControlPoint %= m_patrolPath.Count;
+					SetDestination(m_patrolPath[m_currentControlPoint]);
+					Debug.Log("[Nun] Reached patrol point");
+				}
 
-                m_viewCone.SetActive(true);
-                if (m_viewCone.Detect()) {
-                    Debug.Log("[Nun] viewcone detected krampy");
-                    m_timeout = m_shockTimeout;
-                    //Change in multi
+				m_viewCone.SetActive(true);
+				if (m_viewCone.Detect()) {
+					Debug.Log("[Nun] viewcone detected krampy");
+					m_timeout = m_shockTimeout;
+					//Change in multi
 
-                    SeeKrampus();
-
-
-                }
+					SeeKrampus();
 
 
-                SetVelocity(GetPathDirection() * m_baseMovementSpeed);
-                SetFacingDirection(GetPathDirection());
-                break;
-            case State.LookingForKrampus:
-                m_viewCone.SetActive(false);
-                if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
-                    if (m_timeout > m_krampusDetectTime) {
-                        Debug.Log("[Nun] Alerted & detected krampy");
-                        m_timeout = m_shockTimeout;
-                        SeeKrampus();
-                    } else {
-                        m_timeout += Time.deltaTime;
-                    }
-
-                } else if (NearDestination(m_interactionDistance)) {
-                    m_timeout += Time.deltaTime;
-                    if (m_timeout > m_patrolIdleDuration) {
-                        SwitchState(State.Idle);
-                    }
-                    SetVelocity(Vector3.zero);
-                    SetFacingDirection(Vector3.zero);
-
-                } else {
-                    SetVelocity(GetPathDirection() * m_runSpeed);
-                    SetFacingDirection(GetPathDirection());
-                }
-
-                break;
-            case State.FoundKrampus:
-                m_viewCone.SetActive(false);
-                SetVelocity(Vector3.zero);
-                m_timeout -= Time.deltaTime;
-                SetFacingToPoint(Game.MainGameInfo.Krampus.transform.position);
+				}
 
 
+				SetVelocity(GetPathDirection() * m_baseMovementSpeed);
+				SetFacingDirection(GetPathDirection());
+				break;
+			case State.LookingForKrampus:
+				m_viewCone.SetActive(false);
+				if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>() && m_hasLineOfSight) {
+					if (m_timeout > m_krampusDetectTime) {
+						Debug.Log("[Nun] Alerted & detected krampy");
+						m_timeout = m_shockTimeout;
+						SeeKrampus();
+					} else {
+						m_timeout += Time.deltaTime;
+					}
 
-                if (m_timeout < 0) SwitchState(State.ChasingKrampus);
-                break;
-            case State.Listening:
-                m_viewCone.SetActive(false);
-                m_timeout -= Time.deltaTime;
-                if (m_timeout < 0) {
-                    SwitchState(State.LookingForKrampus);
-                    SetDestination(m_reportedKrampusRoom.GetRandomPointOnFloor().OnNavMesh(5));
-                }
-                break;
-            case State.ChasingKrampus:
-                m_viewCone.SetActive(false);
-                SetDestination(Game.MainGameInfo.Krampus.transform.position);
-                SetFacingDirection(GetPathDirection());
-                SetVelocity(GetPathDirection() * m_runSpeed);
-                break;
-            case State.Stunned:
-                m_timeout -= Time.deltaTime;
+				} else if (NearDestination(m_interactionDistance)) {
+					m_timeout += Time.deltaTime;
+					if (m_timeout > m_patrolIdleDuration) {
+						SwitchState(State.Idle);
+					}
+					SetVelocity(Vector3.zero);
+					SetFacingDirection(Vector3.zero);
 
-                if (m_timeout < 0) {
-                    m_reportedKrampusRoom = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages
-                                                .OrderBy(w => Vector3.SqrMagnitude(w.transform.position - transform.position))
-                                                .First()
-                                                .Other(CurrentRoom);
+				} else {
+					SetVelocity(GetPathDirection() * m_runSpeed);
+					SetFacingDirection(GetPathDirection());
+				}
 
-                    SwitchState(State.Patrolling);
-                    SetDestination(m_reportedKrampusRoom.GetRandomPointOnFloor().OnNavMesh(5));
-                }
+				break;
+			case State.FoundKrampus:
+				m_viewCone.SetActive(false);
+				SetVelocity(Vector3.zero);
+				m_timeout -= Time.deltaTime;
+				SetFacingToPoint(Game.MainGameInfo.Krampus.transform.position);
 
-                SetVelocity(Vector3.zero);
-                m_viewCone.SetActive(false);
-                break;
-        }
+
+
+				if (m_timeout < 0) SwitchState(State.ChasingKrampus);
+				break;
+			case State.Listening:
+				m_viewCone.SetActive(false);
+				m_timeout -= Time.deltaTime;
+				if (m_timeout < 0) {
+					SwitchState(State.LookingForKrampus);
+					SetDestination(m_reportedKrampusRoom.GetRandomPointOnFloor().OnNavMesh(5));
+				}
+				break;
+			case State.ChasingKrampus:
+				m_viewCone.SetActive(false);
+				SetDestination(Game.MainGameInfo.Krampus.transform.position);
+				SetFacingDirection(GetPathDirection());
+				SetVelocity(GetPathDirection() * m_runSpeed);
+				break;
+			case State.Stunned:
+				m_timeout -= Time.deltaTime;
+
+				if (m_timeout < 0) {
+					m_reportedKrampusRoom = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages
+												.OrderBy(w => Vector3.SqrMagnitude(w.transform.position - transform.position))
+												.First()
+												.Other(CurrentRoom);
+
+					SwitchState(State.Patrolling);
+					SetDestination(m_reportedKrampusRoom.GetRandomPointOnFloor().OnNavMesh(5));
+				}
+
+				SetVelocity(Vector3.zero);
+				m_viewCone.SetActive(false);
+				break;
+		}
 
         // m_viewCone.SetFacing(Quaternion.Euler(0, FacingAngle, 0) * Vector3.forward);
         m_viewCone.SetFacing(m_modelTransform.forward); // TODO: SMART ROTATION
