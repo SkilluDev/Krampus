@@ -248,6 +248,7 @@ public class Nun : NPC {
 
     public void Stun(float duration) {
         Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
+        Game.MainGameInfo.Krampus.KrampusEvents.onNunStunned.Invoke(Game.MainGameInfo.Krampus, this);
         m_timeout = duration;
         SwitchState(State.Stunned);
     }
