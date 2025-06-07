@@ -154,15 +154,26 @@ public class NewUIManager : MonoBehaviour {
     }
 
 
-    public void DisplayEffect(float duration, Sprite icon, string nam) {
+    public void DisplayEffect(float duration, Sprite icon, string nam, string id) {
         EffectIcon effectIcon = Instantiate(m_effectIconPref);
         effectIcon.transform.SetParent(m_effectBar,false);
-        effectIcon.SetIcon(icon,duration,name);
+        effectIcon.SetIcon(id, icon,duration,name);
     }
-    public void DisplayEffect(Sprite icon, string name) {
+    public void DisplayEffect(Sprite icon, string name, string id) {
         EffectIcon effectIcon = Instantiate(m_effectIconPref);
         effectIcon.transform.SetParent(m_effectBar);
-        effectIcon.SetIcon(icon,name);
+        effectIcon.SetIcon(id,icon,name);
+     }
+
+    public void RemovEffectIcon(string id) {
+
+        for (int i = 0; i < m_effectBar.childCount; i++) {
+            EffectIcon effectIcon = m_effectBar.GetChild(i).GetComponent<EffectIcon>();
+            if (effectIcon.EffectId == id) {
+                Destroy(effectIcon.gameObject);
+                break;
+             }
+         }
      }
 
 

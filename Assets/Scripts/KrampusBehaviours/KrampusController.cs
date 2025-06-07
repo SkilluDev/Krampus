@@ -81,14 +81,12 @@ public class KrampusController : KrampusBehaviour {
 
 	[NaughtyAttributes.Button("Add New Example Stat")]
 	private void AddNewExamples() {
-		Kramp.Stats.RegisterEffect(new Effect(Stat.Speed, 1.5f));
-		Kramp.Stats.RegisterEffect(new Effect(Stat.Speed, 1.5f, 2f));
+		
 	}
 
 	[NaughtyAttributes.Button("Add Example Stat")]
 	private void AddExamples() {
-		Kramp.Stats.RegisterEffect(new Effect(Stat.Speed, 1.2f));
-		Kramp.Stats.RegisterEffect(new Effect(Stat.Speed, 1.2f, 2f));
+		
 	}
 	// Based on @SkilluDev's inputs
 	private void Update() {
@@ -261,11 +259,13 @@ public class KrampusController : KrampusBehaviour {
 			m_comboPoints = Game.MainGameInfo.MaxComboPoints;
 		}
 		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints);
+		Kramp.KrampusEvents.onComboChanged.Invoke(Kramp, m_comboPoints);
 	}
 
 	public void SpendComboPoints(float value) {
 		m_comboPoints -= value;
 		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints, 0.1f);
+		Kramp.KrampusEvents.onComboChanged.Invoke(Kramp, m_comboPoints);
 	}
 
 	public void SetCanSting(bool canSting) {

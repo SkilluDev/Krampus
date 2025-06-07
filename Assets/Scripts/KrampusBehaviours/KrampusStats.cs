@@ -118,7 +118,7 @@ public class KrampusStats : KrampusBehaviour {
             m_effects.Add(rs.Stat, new List<Effect>());
             m_calculatedMultipliers.Add(rs.Stat, 1f);
         }
-       
+
     }
 
     private void OnDestroy() { // to be absolutely fair, i have no clue whether this will get correctly called; TODO:
@@ -173,7 +173,7 @@ public class KrampusStats : KrampusBehaviour {
         } else {
             hasMov = false;
             Kramp.Animator.StopSmoke();
-         }
+        }
     }
 
 
@@ -218,6 +218,19 @@ public class KrampusStats : KrampusBehaviour {
         }
         return finalStat;
     }
+
+    public Effect GetEffect(string id) {
+
+        foreach(var e in m_effects.Values) {
+            foreach (var o in e) {
+                if (o.m_id == id) {
+                    return o;
+                 }
+             }
+         }
+        
+        return null;
+     }
 
 }
 
