@@ -215,6 +215,10 @@ public class KrampusController : KrampusBehaviour {
 		if (CurrentState == State.Dead) return;
 
 		if (CurrentState == State.Dash) {
+			if (m_stingerTarget == null) {
+				ChangeState(State.Run, StateChangeReason.Rapid);
+				return;
+			}
 			//m_dashTime -= Time.fixedDeltaTime;
 			//Debug.Log("Dash TIme: " + m_dashTime);
 			Vector3 direction = m_stingerTarget.GameObject.transform.position - transform.position;
