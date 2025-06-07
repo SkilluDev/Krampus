@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.VFX;
 using static KrampusStats;
 
 public class KrampusStats : KrampusBehaviour {
@@ -32,6 +34,7 @@ public class KrampusStats : KrampusBehaviour {
 
     }
 
+
     [SerializeField] private List<RawStat> m_rawStatList;
 
     public IReadOnlyCollection<RawStat> RawStatList => m_rawStatList;
@@ -42,6 +45,8 @@ public class KrampusStats : KrampusBehaviour {
     private Dictionary<Stat, List<Effect>> m_effects = new Dictionary<Stat, List<Effect>>();
 
     private Dictionary<Stat, float> m_calculatedMultipliers = new Dictionary<Stat, float>();
+
+    public bool hasMov;
 
 
     [SerializeField] private List<Item> m_items = new List<Item>();
@@ -62,6 +67,7 @@ public class KrampusStats : KrampusBehaviour {
                 }
             }
         }
+        Debug.Log("Ma speed buff:" + hasMov);
 
         ClearEffectsToClear();
     }
@@ -112,6 +118,7 @@ public class KrampusStats : KrampusBehaviour {
             m_effects.Add(rs.Stat, new List<Effect>());
             m_calculatedMultipliers.Add(rs.Stat, 1f);
         }
+       
     }
 
     private void OnDestroy() { // to be absolutely fair, i have no clue whether this will get correctly called; TODO:
@@ -159,6 +166,14 @@ public class KrampusStats : KrampusBehaviour {
             }
             m_calculatedMultipliers[rs.Stat] = totalMultiplier;
         }
+
+
+        if (m_calculatedMultipliers[Stat.Speed] > 1) {
+            hasMov = true;
+        } else {
+            hasMov = false;
+            Kramp.Animator.StopSmoke();
+         }
     }
 
 

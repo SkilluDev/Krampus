@@ -29,7 +29,7 @@ public class KrampusAnimator : KrampusBehaviour {
     private void Start() {
         Kramp.Tongue.onStateChanged += TongueStateChanged;
         Kramp.Kontroller.onStateChanged += MovementStateChanged;
-        m_runningEffect.Stop();
+
         SetEnableModel(false);
     }
 
@@ -70,7 +70,7 @@ public class KrampusAnimator : KrampusBehaviour {
                 SetTargetView(Kramp.Tongue.TongueDirection);
                 break;
             case (KrampusTongue.State.Extending, KrampusTongue.State.Full):
-                if(Kramp.Tongue.HitInteractable is Child) m_crackSoundBite.Play(transform.position, 1);
+                if (Kramp.Tongue.HitInteractable is Child) m_crackSoundBite.Play(transform.position, 1);
                 break;
             case (KrampusTongue.State.PreRetreat, KrampusTongue.State.Retreating):
                 if (Kramp.Tongue.HitInteractable != null) {
@@ -99,7 +99,9 @@ public class KrampusAnimator : KrampusBehaviour {
                 m_animator.SetTrigger(m_wakeupProperty);
                 break;
             case (_, KrampusController.State.Run):
-                m_runningEffect.Play();
+                if (Kramp.Stats.hasMov) {
+                    m_runningEffect.Play();
+                }
                 m_minimalVelocity = 1f;
                 break;
 
@@ -113,10 +115,10 @@ public class KrampusAnimator : KrampusBehaviour {
                 break;
             case (_, KrampusController.State.Dead):
                 m_runningEffect.Stop();
-                m_animator.SetBool(m_deathProperty,true);
+                m_animator.SetBool(m_deathProperty, true);
 
-                m_deathSoundBite.Play(transform.position,1f);
-				m_animator.SetLayerWeight(1,0);
+                m_deathSoundBite.Play(transform.position, 1f);
+                m_animator.SetLayerWeight(1, 0);
                 break;
         }
     }
@@ -128,4 +130,8 @@ public class KrampusAnimator : KrampusBehaviour {
     public void SetEnableModel(bool b) {
         m_modelTransform.gameObject.SetActive(b);
     }
+
+    public void StopSmoke() {
+        m_runningEffect.Stop();
+     }
 }
