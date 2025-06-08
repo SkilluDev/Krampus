@@ -14,6 +14,6 @@ public class LevelModifier : ScriptableObject {
 
 
 	public  virtual void UpdateLevel() {
-
+		
 	 }
 }
