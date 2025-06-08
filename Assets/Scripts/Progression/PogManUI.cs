@@ -87,7 +87,7 @@ public class PogManUI : MonoBehaviour {
 
 
        
-        m_levelModifiers = m_pool.getRandom(m_challangeModifierUIs.Length);
+        m_levelModifiers = m_pool.getRandom(m_challangeModifierUIs.Length,m_CurrentLevel);
 
 
         for (int i = 0; i < m_levelModifiers.Length; i++) {
