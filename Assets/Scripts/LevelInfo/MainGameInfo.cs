@@ -74,6 +74,8 @@ public class MainGameInfo : LevelInfo {
     public float timeFromStart = 0;
 
 
+    [SerializeField] private  bool m_useLevelModifer = true;
+
     private float m_score;
 
     public float Score => m_score;
@@ -133,6 +135,9 @@ public class MainGameInfo : LevelInfo {
     }
 
     private void Ready() {
+        if (m_useLevelModifer) {
+            Game.PogMan.NextLevelModifier.UpdateLevel();
+         }
         if (m_skipIntro) {
             SetState(State.ItemChoosing);
             UI.DisplayItemChoiceMenu();

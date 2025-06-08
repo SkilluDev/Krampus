@@ -9,8 +9,10 @@ public class PogMan : MonoBehaviour {
     private List<Item> m_krampusItems;
     public IReadOnlyList<Item> KrampusItems => m_krampusItems;
 
-    private LevelModifier m_NextLevelModifer;
 
+
+    private LevelModifier m_NextLevelModifer;
+    public LevelModifier NextLevelModifier => m_NextLevelModifer;
 
     public void ResetProgress() {
         m_currentLevel = 0;
