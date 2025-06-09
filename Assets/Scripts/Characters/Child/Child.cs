@@ -235,7 +235,7 @@ public class Child : NPC, IEdible, INoiseReactor {
     }
 
 	public void Alert(RoomData roomData, Vector3 place, ICharacter actor) {
-		if (actor is not Krampus) return;
+		if (actor is not Krampus || CurrentState != State.Idle) return;
 		Debug.Log("[Child] Child alerted");
 		//SwitchState(State.Stunned);
 		m_timeout = m_stunDuration;
