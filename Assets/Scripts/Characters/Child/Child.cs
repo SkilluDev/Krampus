@@ -24,6 +24,10 @@ public class Child : NPC, IEdible, INoiseReactor {
     [SerializeField] private float m_runSpeed = 8;
 
     private Nun m_selectedNun;
+
+	private Vector3 m_selectedPosition;
+
+	private bool m_hasPositionTarget = false;
     private Room m_selectedRoom;
     private Room m_lastKrampusSpotted;
 
@@ -73,151 +77,162 @@ public class Child : NPC, IEdible, INoiseReactor {
         NavMesh.SetAreaCost(NavMesh.GetAreaFromName("Kramped"), 99f);
     }
 
+	private void SelectPositionInRoomAwayFromKrampy() {
+		if (m_hasPositionTarget) return;
+		var passages = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
+		m_selectedRoom = passages.First().Other(CurrentRoom);
+		m_selectedPosition = m_selectedRoom.GetRandomPointOnFloor().OnNavMesh(5);
+		SetDestination(m_selectedPosition);
+		m_hasPositionTarget = true;
+    }
+
+	private void SelectRandomNun() {
+		m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun);
+		if (m_selectedNun == null) m_selectedNun = (Nun)Game.MainGameInfo.Nuns.UnityRandomElement();
+		if (m_selectedNun != null) {
+			m_selectedPosition = m_selectedNun.transform.position;
+		} else {
+			SelectPositionInRoomAwayFromKrampy();
+		}
+	}
+
     private void Update() {
-        if (!CurrentRoom) return;
+		if (!CurrentRoom) return;
 
-        void SelectNewWanderLocation() {
-            if (NavMesh.SamplePosition(MoreMath.RandomInBounds(CurrentRoom.GetBounds()), out var hit, 10, NavMesh.AllAreas)) {
-                SetDestination(hit.position);
-            } else {
-                Debug.Log("ever considered ending your life");
-            }
-        }
+		Debug.Log("MOVING TO:" + m_selectedPosition);
 
-        void SelectRandomNun() {
-            m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun);
-            if (m_selectedNun == null) m_selectedNun = Game.MainGameInfo.Nuns.UnityRandomElement();
-        }
-
-        void SelectRoomAwayFromKrampy() {
-            var passages = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
-            m_selectedRoom = passages.First().Other(CurrentRoom);
-            SetDestination(m_selectedRoom.GetRandomPointOnFloor().OnNavMesh(5));
-        }
-
-        switch (CurrentState) {
-            case State.Idle: // Child wanders around at random
-                if (m_currentPath?.status == NavMeshPathStatus.PathInvalid)
-                    SelectNewWanderLocation();
-
-                if (NearDestination(m_stoppingDistance) && m_timeout <= 0) {
-                    // TODO: Magic
-                    m_timeout = Random.Range(0.1f, 2f);
-                    SelectNewWanderLocation();
-                }
-
-                if (m_viewCone.Detect()) {
-                    m_timeout = m_stunDuration;
-                    SwitchState(State.Stunned);
-                }
-
-                if (m_timeout > 0) {
-                    m_timeout -= Time.deltaTime;
-                    SetVelocity(Vector3.zero);
-                } else {
-                    SetVelocity(GetPathDirection() * m_baseMovementSpeed);
-                    SetFacingDirection(GetPathDirection());
-                }
-
-                m_viewCone.SetActive(true);
-                break;
-            case State.Stunned:
-                m_viewCone.SetActive(false);
-                m_timeout -= Time.deltaTime;
-                if (m_timeout <= 0) {
-                    m_lastKrampusSpotted = CurrentRoom;
-                    Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
-                    SelectRoomAwayFromKrampy();
-                    SwitchState(State.InitialPanic);
-                }
-                break;
-
-            case State.InitialPanic: // basically run away franticlly from krampus, however, given the opportunity to go to a nun without turning around, use it
-                if (!Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
-                    SelectRandomNun();
-                    SetDestination(m_selectedNun.transform.position);
-                    SwitchState(State.Panic);
-                } else if (NearDestination(m_stoppingDistance)) {
-                    SelectRandomNun();
-                    SetDestination(m_selectedNun.transform.position);
-                    if (Vector3.Dot(GetPathDirection(), Game.MainGameInfo.Krampus.transform.position - transform.position) > 0f) {
-                        m_lastKrampusSpotted = CurrentRoom;
-                        Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
-                        Game.MainGameInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
-                        SelectRoomAwayFromKrampy();
-                    } else {
-                        SwitchState(State.Panic);
-                    }
-                } else if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
-                    SelectRandomNun();
-                    SetDestination(m_selectedNun.transform.position);
-                    SwitchState(State.Panic);
-                }
-
-                SetVelocity(GetPathDirection() * m_runSpeed);
-                SetFacingDirection(GetPathDirection());
-                break;
-            case State.Panic: // regular panic. just go to the nun and report
-                if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
-                    SelectRandomNun();
-                }
-
-                SetVelocity(GetPathDirection() * m_runSpeed);
-                SetFacingDirection(GetPathDirection());
-
-                SetDestination(m_selectedNun.transform.position);
-
-                if (m_selectedNun.CurrentState == Nun.State.ChasingKrampus) {
-                    SelectNewWanderLocation();
-                    m_selectedNun = null;
-                    SwitchState(State.Idle);
-                }
-
-                if (NearDestination(m_stoppingDistance)) {
-                    if (m_selectedNun.CurrentState is Nun.State.Idle or Nun.State.Patrolling or Nun.State.LookingForKrampus) {
-                        m_selectedNun.ActivateTheBitch(this, m_reportingDuration, m_lastKrampusSpotted);
-                        m_timeout = m_reportingDuration;
-                        SwitchState(State.Reporting);
-                    } else {
-                        SwitchState(State.Idle);
-                    }
-                }
-                break;
-            case State.Reporting:
-                m_timeout -= Time.deltaTime;
-                SetVelocity(Vector3.zero);
-                if (m_timeout <= 0) {
-                    SwitchState(State.Idle);
-                }
-                break;
-        }
-
-        m_viewCone.SetFacing(m_modelTransform.forward); // TODO Smart rotation
-    }
+		void SelectNewWanderLocation() {
+			if (NavMesh.SamplePosition(MoreMath.RandomInBounds(CurrentRoom.GetBounds()), out var hit, 10, NavMesh.AllAreas)) {
+				SetDestination(hit.position);
+			} else {
+				Debug.Log("ever considered ending your life");
+			}
+		}
 
 
+
+		switch (CurrentState) {
+			case State.Idle: // Child wanders around at random
+				if (m_currentPath?.status == NavMeshPathStatus.PathInvalid)
+					SelectNewWanderLocation();
+
+				if (NearDestination(m_stoppingDistance) && m_timeout <= 0) {
+					// TODO: Magic
+					m_timeout = Random.Range(0.1f, 2f);
+					SelectNewWanderLocation();
+				}
+
+				if (m_viewCone.Detect()) {
+					m_timeout = m_stunDuration;
+					SwitchState(State.Stunned);
+				}
+
+				if (m_timeout > 0) {
+					m_timeout -= Time.deltaTime;
+					SetVelocity(Vector3.zero);
+				} else {
+					SetVelocity(GetPathDirection() * m_baseMovementSpeed);
+					SetFacingDirection(GetPathDirection());
+				}
+
+				m_viewCone.SetActive(true);
+				break;
+			case State.Stunned:
+				m_viewCone.SetActive(false);
+				m_timeout -= Time.deltaTime;
+				if (m_timeout <= 0) {
+					m_lastKrampusSpotted = CurrentRoom;
+					Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+					SelectPositionInRoomAwayFromKrampy();
+					SwitchState(State.InitialPanic);
+				}
+				break;
+
+			case State.InitialPanic: // basically run away franticlly from krampus, however, given the opportunity to go to a nun without turning around, use it
+				if (!Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
+					SelectRandomNunAndSetDestination();
+					SwitchState(State.Panic);
+				} else if (NearDestination(m_stoppingDistance)) {
+					SelectRandomNunAndSetDestination();
+					if (Vector3.Dot(GetPathDirection(), Game.MainGameInfo.Krampus.transform.position - transform.position) > 0f) {
+						m_lastKrampusSpotted = CurrentRoom;
+						Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+						Game.MainGameInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
+						SelectPositionInRoomAwayFromKrampy();
+					} else {
+						SwitchState(State.Panic);
+					}
+				} else if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
+					SelectRandomNunAndSetDestination();
+					SwitchState(State.Panic);
+				}
+
+				SetVelocity(GetPathDirection() * m_runSpeed);
+				SetFacingDirection(GetPathDirection());
+				break;
+			case State.Panic: // regular panic. just go to the nun and report
+
+				SetVelocity(GetPathDirection() * m_runSpeed);
+				SetFacingDirection(GetPathDirection());
+
+				SelectRandomNunAndSetDestination();
+				if (m_selectedNun != null && m_selectedNun.CurrentState == Nun.State.ChasingKrampus) {
+					SelectNewWanderLocation();
+					m_selectedNun = null;
+					SwitchState(State.Idle);
+				}
+
+
+				if (NearDestination(m_stoppingDistance)) {
+					if (m_selectedNun != null && m_selectedNun.CurrentState is Nun.State.Idle or Nun.State.Patrolling or Nun.State.LookingForKrampus) {
+						m_selectedNun.ActivateTheBitch(this, m_reportingDuration, m_lastKrampusSpotted);
+						m_timeout = m_reportingDuration;
+						SwitchState(State.Reporting);
+					} else {
+						SwitchState(State.Idle);
+						m_hasPositionTarget = false;
+					}
+				}
+				break;
+			case State.Reporting:
+				m_timeout -= Time.deltaTime;
+				SetVelocity(Vector3.zero);
+				if (m_timeout <= 0) {
+					SwitchState(State.Idle);
+				}
+				break;
+		}
+
+		m_viewCone.SetFacing(m_modelTransform.forward); // TODO Smart rotation
+	}
+
+	public void SelectRandomNunAndSetDestination() {
+		SelectRandomNun();
+		SetDestination(m_selectedPosition);
+	}
     public void Consume(Krampus krampus) {
-        Game.MainGameInfo.UnregisterChild(this);
-        Game.MainGameInfo.GlobalEvents.onChildEaten.Invoke(krampus, this);
+		Game.MainGameInfo.UnregisterChild(this);
+		Game.MainGameInfo.GlobalEvents.onChildEaten.Invoke(krampus, this);
 
-        if (IsNaughty) {
-            krampus.KrampusEvents.onNaughtyChildEaten.Invoke(krampus, this);
-        } else {
-            krampus.KrampusEvents.onNiceChildEaten.Invoke(krampus, this);
-        }
-        krampus.KrampusEvents.onChildEaten.Invoke(krampus, this);
-        SwitchState(State.Consumed);
-        Destroy(gameObject);
-    }
+		if (IsNaughty) {
+			krampus.KrampusEvents.onNaughtyChildEaten.Invoke(krampus, this);
+		} else {
+			krampus.KrampusEvents.onNiceChildEaten.Invoke(krampus, this);
+		}
+		krampus.KrampusEvents.onChildEaten.Invoke(krampus, this);
+		SwitchState(State.Consumed);
+		Destroy(gameObject);
+	}
 
     public void Hit(Krampus krampus) {
         SwitchState(State.Dead);
     }
 
-    private void SwitchState(State previous) {
-        if (previous == CurrentState) return;
-        onStateChanged?.Invoke(CurrentState, previous);
-        CurrentState = previous;
+    private void SwitchState(State next) {
+		//Debug.Log("SWITCHTO:" + next);
+        if (next == CurrentState) return;
+        onStateChanged?.Invoke(CurrentState, next);
+        CurrentState = next;
     }
 
     public void Prepare(Krampus krampus) {

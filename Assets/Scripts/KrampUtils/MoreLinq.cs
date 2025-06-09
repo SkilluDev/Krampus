@@ -23,7 +23,7 @@ namespace KrampUtils {
         public static IEnumerable<TItem> NullIfEmpty<TItem>(this IEnumerable<TItem> enumerable) => enumerable.Count() == 0 ? null : enumerable;
 
         public static TItem UnityRandomElement<TItem>(this IEnumerable<TItem> enumerable) =>
-            enumerable.ElementAt(UnityEngine.Random.Range(0, enumerable.Count()));
+            enumerable.Count()>0?enumerable.ElementAt(UnityEngine.Random.Range(0, enumerable.Count())):default(TItem);
 
 
         public static TItem UnityRandomElement<TItem>(this IEnumerable<TItem> enumerable, Random rand) =>
