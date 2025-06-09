@@ -171,11 +171,13 @@ public class Child : NPC, IEdible, INoiseReactor {
 				SetFacingDirection(GetPathDirection());
 				break;
 			case State.Panic: // regular panic. just go to the nun and report
-
+				if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
+                    SelectRandomNun();
+                }
 				SetVelocity(GetPathDirection() * m_runSpeed);
 				SetFacingDirection(GetPathDirection());
 
-				SelectRandomNunAndSetDestination();
+				SetDestination(m_selectedPosition);
 				if (m_selectedNun != null && m_selectedNun.CurrentState == Nun.State.ChasingKrampus) {
 					SelectNewWanderLocation();
 					m_selectedNun = null;
