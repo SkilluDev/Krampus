@@ -31,7 +31,6 @@ public class Nun : NPC {
     [SerializeField] private float m_interactionDistance = 8;
     [SerializeField] private float m_detectionRange = 4;
     public State CurrentState { get; private set; }
-    private bool m_hasLineOfSight = false;
     [SerializeField] private LayerMask m_visionMask;
 
     [SerializeField] private float m_runSpeed = 8;
@@ -111,13 +110,6 @@ public class Nun : NPC {
 
     private void Update() {
         if (!Game.Balling) return;
-
-        Physics.Raycast(transform.position, Game.MainGameInfo.Krampus.transform.position - transform.position, out var hit, 100f, m_visionMask);
-        if (hit.collider.transform == Game.MainGameInfo.Krampus.transform) {
-            m_hasLineOfSight = true;
-        } else {
-            m_hasLineOfSight = false;
-        }
         switch (CurrentState) {
             case State.Idle:
                 m_timeout -= Time.deltaTime;
@@ -151,7 +143,7 @@ public class Nun : NPC {
                 break;
             case State.LookingForKrampus:
                 m_viewCone.SetActive(false);
-                if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>() && m_hasLineOfSight) {
+                if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>() && HasLineOfSight()) {
                     if (m_timeout > m_krampusDetectTime) {
                         Debug.Log("[Nun] Alerted & detected krampy");
                         m_timeout = m_shockTimeout;
@@ -203,7 +195,7 @@ public class Nun : NPC {
                 //Debug.Log("Rage:" + m_rageMeter);
 
                 if (m_rageMeter >= 100) {
-                    if (hasLineOfSight()) {
+                    if (HasLineOfSight()) {
                         m_timeout = m_castingTime;
                         SwitchState(State.Shooting);
                         onFire.Invoke(State.Shooting);
@@ -303,9 +295,9 @@ public class Nun : NPC {
     }
 
 
-    bool hasLineOfSight() {
+    private bool HasLineOfSight(float range = 100f) {
 
-        Physics.Raycast(transform.position, Game.MainGameInfo.Krampus.transform.position - transform.position, out var hit, 100f, m_visionMask);
+        Physics.Raycast(transform.position, Game.MainGameInfo.Krampus.transform.position - transform.position, out var hit, range, m_visionMask);
         if (hit.collider.transform == Game.MainGameInfo.Krampus.transform) {
             return true;
         } else {
