@@ -26,6 +26,7 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private float m_timerBounceIntensity;
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
+	[SerializeField] private AnimationCurve m_fillUpCurve;
 
 
     [SerializeField] private GameObject m_quickActionIcon;
@@ -206,7 +207,7 @@ public class NewUIManager : MonoBehaviour {
         m_currentFillHandle.TryCancel();
         float oldValue = m_fillBar.fillAmount;
         m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 1, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
-                                 Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.7f).BindToFillAmount(m_fillBar);
+                                 Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar);
     }
 
     public void ChangeComboValue(float value, float time = 1f) {
