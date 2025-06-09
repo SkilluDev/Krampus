@@ -17,6 +17,8 @@ public class PogMan : MonoBehaviour {
 		return m_levelSet.LevelStats[m_currentLevel];
 	}
 
+	private bool m_clearItemsOnLoad = false;
+
 
 
 	private LevelModifier m_nextLevelModifer;
@@ -25,6 +27,7 @@ public class PogMan : MonoBehaviour {
 	public void ResetProgress() {
 		m_currentLevel = 0;
 		m_krampusItems = null;
+		m_clearItemsOnLoad = true;
 	}
 
 	// those essentially move the list in and out without copying it and making sure no reference lives too long.
@@ -34,6 +37,12 @@ public class PogMan : MonoBehaviour {
 	}
 
 	public void Unpack(ref List<Item> items) {
+		if (m_clearItemsOnLoad) {
+			items = new List<Item>();
+			m_clearItemsOnLoad = false;
+			return;
+		}
+
 		if (m_krampusItems == null) items = new List<Item>();
 		else items = m_krampusItems;
 		m_krampusItems = null;
