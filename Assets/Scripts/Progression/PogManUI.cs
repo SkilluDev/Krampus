@@ -41,18 +41,18 @@ public class PogManUI : MonoBehaviour {
         for (int i = 1; i < m_CurrentLevel; i++) {
 
             Button b = Instantiate(m_mapButtonPref);
-            b.transform.SetParent(m_mapContainer);
+            b.transform.SetParent(m_mapContainer, false);
             b.GetComponent<Image>().sprite = m_doneLevelSprtie;
             b.enabled = false;
 
         }
         Button cc = Instantiate(m_mapButtonPref);
-        cc.transform.SetParent(m_mapContainer);
+        cc.transform.SetParent(m_mapContainer, false);
         cc.GetComponent<Image>().sprite = m_currentLevelSprite;
 
         for (int j = m_CurrentLevel + 1; j <= maxLevel; j++) {
             Button b = Instantiate(m_mapButtonPref);
-            b.transform.SetParent(m_mapContainer);
+            b.transform.SetParent(m_mapContainer, false);
             b.GetComponent<Image>().sprite = m_futureLevelSprtie;
             b.enabled = false;
         }
@@ -72,7 +72,7 @@ public class PogManUI : MonoBehaviour {
 
     public void LoadGameScene() {
 
-        
+
         Game.PogMan.SetNextLevelModifier(m_selectedModifier);
         IEnumerator Internal() {
 
@@ -86,7 +86,7 @@ public class PogManUI : MonoBehaviour {
     void SetRandomModifiers() {
 
 
-       
+
         m_levelModifiers = m_pool.getRandom(m_challangeModifierUIs.Length,m_CurrentLevel);
 
 
