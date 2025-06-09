@@ -23,7 +23,7 @@ public class MusicMan : MonoBehaviour {
 			case Game.State.MainGame:
 				if (m_motionHandle1.IsActive()) m_motionHandle1.Cancel();
 				if (m_motionHandle2.IsActive()) m_motionHandle2.Cancel();
-				m_gameMusicLayer1.volume = 1;
+				m_gameMusicLayer1.volume = 0.5f;
 				m_gameMusicLayer1.Play();
 				m_gameMusicLayer2.volume = 0;
 				m_gameMusicLayer2.Play();
@@ -44,7 +44,7 @@ public class MusicMan : MonoBehaviour {
 	}
 
 	public void UpdateMixer() {
-		m_mixer.SetFloat("MusicVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("Music volume"), -10f));
+		m_mixer.SetFloat("MusicVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("Music volume")));
 		m_mixer.SetFloat("SFXVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("SFX volume")));
 	}
 
