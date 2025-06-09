@@ -176,8 +176,6 @@ public class KrampusStats : KrampusBehaviour {
         }
     }
 
-
-
     public void AddItem(Item item) {
         item.ItemAdded(Kramp);
         if (!m_items.Contains(item)) {
@@ -218,20 +216,6 @@ public class KrampusStats : KrampusBehaviour {
         }
         return finalStat;
     }
-
-    public Effect GetEffect(string id) {
-
-        foreach(var e in m_effects.Values) {
-            foreach (var o in e) {
-                if (o.m_id == id) {
-                    return o;
-                 }
-             }
-         }
-        
-        return null;
-     }
-
 }
 
 

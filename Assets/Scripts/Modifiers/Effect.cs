@@ -23,10 +23,9 @@ public class Effect {
 		public enum Type {
 			Permanent,
 			Temporary
-
 		}
 
-		public string m_id;
+		private string m_id;
 
 		private Type m_type;
 		public Type EffectType => m_type;
