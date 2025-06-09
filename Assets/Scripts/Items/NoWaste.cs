@@ -4,9 +4,9 @@ using UnityEngine;
 
 [CreateAssetMenu(menuName = "Game/Items/NoWaste", fileName = "NoWaste")]
 public class NoWaste : Item {
-   
 
-    [SerializeField] private float m_comboGaind;
+
+    [SerializeField] private float m_comboGained;
    public override void RegisterEvents(KrampusEvents events) {
         events.onNiceChildEaten.AddListener(GainCombo);
     }
@@ -16,8 +16,6 @@ public class NoWaste : Item {
     }
 
     private void GainCombo(Krampus krampus, Child child) {
-        Debug.Log("kILL KILL KILL");
-        krampus.Kontroller.AddComboPoints(m_comboGaind);
-       
+        krampus.Kontroller.AddComboPoints(m_comboGained);
     }
 }
