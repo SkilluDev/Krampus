@@ -52,9 +52,9 @@ public class Child : NPC, IEdible, INoiseReactor {
     public int Priority => IsNaughty ? 0 : -10;
 
 
-    public void Start() {
+    /* public void Start() {
         SetChildType(Game.MainGameInfo.Types.UnityRandomElement());
-    }
+    } */
 
     private void Ready() {
         Game.MainGameInfo.RegisterChild(this);

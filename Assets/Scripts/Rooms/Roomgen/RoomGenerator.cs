@@ -11,7 +11,7 @@ using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class RoomGenerator : RoomGeneratorBase {
-	[SerializeField] private int m_width, m_height;
+	[SerializeField] private int m_width, m_length;
 	[SerializeField] private RoomSet m_roomSet;
 	[SerializeField] private int m_loopRectangles;
 	[SerializeField] private Krampus m_krampus;
@@ -20,14 +20,19 @@ public class RoomGenerator : RoomGeneratorBase {
 	private Vector2Int m_spawnPoint;
 	private int m_spawnOrient;
 	[SerializeField] private List<Room> m_placedRooms;
-	[SerializeField] private int m_minSpacesOnMap;
+	//[SerializeField] private int m_minSpacesOnMap;
 
-	[BoxGroup("EntityGen")][SerializeField] private int m_maxChildrenPerRoom;
+	/* [BoxGroup("EntityGen")][SerializeField] private int m_maxChildrenPerRoom;
 	[BoxGroup("EntityGen")][SerializeField] private int m_minChildrenPerRoom;
 	[BoxGroup("EntityGen")][SerializeField] private int m_maxNuns;
-	[BoxGroup("EntityGen")][SerializeField] private int m_minNuns;
+	[BoxGroup("EntityGen")][SerializeField] private int m_minNuns; */
 	[BoxGroup("Tags")][SerializeField] private Tag m_kidProof;
 	[BoxGroup("Tags")][SerializeField] private Tag m_nunProof;
+
+	private LevelStats m_currentLevelStats;
+
+	[SerializeField] private ChildType m_niceChildType;
+	[SerializeField] private ChildType m_naughtyChildType;
 
 
 
@@ -38,41 +43,45 @@ public class RoomGenerator : RoomGeneratorBase {
 	public override IReadOnlyCollection<Room> Rooms => m_placedRooms;
 
 	public override void Prepare() {
-		
+
 	}
 
 	public override IEnumerator Generate() {
 		yield return null;
 		void Init() {
 
-			int mapSize = (int)Game.SetMan.GetValue<long>("Map Size");
-			switch (mapSize) {
+			//int mapSize = (int)Game.SetMan.GetValue<long>("Map Size");
+			/* switch (mapSize) {
 				case 0:
-					m_width = 5; m_height = 5; m_loopRectangles = 4; m_minNuns = 1; m_maxNuns = 1;
+					m_width = 5; m_length = 5; m_loopRectangles = 4; m_minNuns = 1; m_maxNuns = 1;
 					break;
 
 				// 1: default
 				case 2:
-					m_width = 9; m_height = 9; m_loopRectangles = 8; m_minNuns = 1; m_maxNuns = 2;
+					m_width = 9; m_length = 9; m_loopRectangles = 8; m_minNuns = 1; m_maxNuns = 2;
 					break;
 				case 3:
-					m_width = 11; m_height = 11; m_loopRectangles = 12; m_minNuns = 3; m_maxNuns = 4;
+					m_width = 11; m_length = 11; m_loopRectangles = 12; m_minNuns = 3; m_maxNuns = 4;
 					break;
 				case 4:
-					m_width = 13; m_height = 13; m_loopRectangles = 16; m_minNuns = 3; m_maxNuns = 4;
+					m_width = 13; m_length = 13; m_loopRectangles = 16; m_minNuns = 3; m_maxNuns = 4;
 					break;
 				case 5:
-					m_width = 15; m_height = 15; m_loopRectangles = 20; m_minNuns = 3; m_maxNuns = 4;
+					m_width = 15; m_length = 15; m_loopRectangles = 20; m_minNuns = 3; m_maxNuns = 4;
 					break;
 				default:
-					m_width = 7; m_height = 7; m_loopRectangles = 4;
+					m_width = 7; m_length = 7; m_loopRectangles = 4;
 					break;
-			}
+			} */
+			m_currentLevelStats = Game.PogMan.GetCurrentLevelStats();
+			m_width = m_currentLevelStats.GridWidth;
+			m_length = m_currentLevelStats.GridLength;
+			m_loopRectangles = 4;
 
-			m_doorGrid = new DoorFlags[m_width, m_height];
-			m_generationGrid = new Room[m_width, m_height];
+			m_doorGrid = new DoorFlags[m_width, m_length];
+			m_generationGrid = new Room[m_width, m_length];
 			m_placedRooms = new List<Room>();
-			for (int i = 0; i < m_width; i++) for (int j = 0; j < m_height; j++) m_doorGrid[i, j] = new DoorFlags();
+			for (int i = 0; i < m_width; i++) for (int j = 0; j < m_length; j++) m_doorGrid[i, j] = new DoorFlags();
 			Game.MainGameInfo.ClearRoomData();
 		}
 
@@ -114,7 +123,7 @@ public class RoomGenerator : RoomGeneratorBase {
 			// Create a rect that goes through the spawn
 			{ // yes this scope is useful, keeps the naming conventions and stuff
 				int ex = Random.Range(0, m_width - 1);
-				int ey = Random.Range(0, m_height - 1);
+				int ey = Random.Range(0, m_length - 1);
 				if (ex >= m_spawnPoint.x) ex++;
 				if (ey >= m_spawnPoint.y) ey++;
 				CreateRectangle(m_spawnPoint.x, m_spawnPoint.y, ex, ey);
@@ -124,20 +133,20 @@ public class RoomGenerator : RoomGeneratorBase {
 			for (int i = 0; i < m_loopRectangles - 1; i++) {
 				int sx = Random.Range(0, m_width - 1);
 				int ex = Random.Range(sx + 1, m_width);
-				int sy = Random.Range(0, m_height - 1);
-				int ey = Random.Range(sy + 1, m_height);
+				int sy = Random.Range(0, m_length - 1);
+				int ey = Random.Range(sy + 1, m_length);
 				CreateRectangle(sx, sy, ex, ey);
 			}
 		}
 
 		int RemoveDeadDoors() {
-			bool[,] floodFill = new bool[m_width, m_height];
+			bool[,] floodFill = new bool[m_width, m_length];
 
 			void FillCell(int x, int y) {
 				if (floodFill[x, y]) return;
 				floodFill[x, y] = true;
 				if (m_doorGrid[x, y].North && y > 0) FillCell(x, y - 1);
-				if (m_doorGrid[x, y].South && y < m_height - 1) FillCell(x, y + 1);
+				if (m_doorGrid[x, y].South && y < m_length - 1) FillCell(x, y + 1);
 				if (m_doorGrid[x, y].East && x < m_width - 1) FillCell(x + 1, y);
 				if (m_doorGrid[x, y].West && x > 0) FillCell(x - 1, y);
 			}
@@ -147,7 +156,7 @@ public class RoomGenerator : RoomGeneratorBase {
 			int filledSpaces = 0;
 
 			for (int i = 0; i < m_width; i++) {
-				for (int j = 0; j < m_height; j++) {
+				for (int j = 0; j < m_length; j++) {
 					if (!floodFill[i, j]) {
 						m_doorGrid[i, j].Reset();
 					} else {
@@ -161,7 +170,7 @@ public class RoomGenerator : RoomGeneratorBase {
 		List<Vector2Int> FindPossiblePlacements(RoomType room) {
 			var list = new List<Vector2Int>();
 			for (int i = 0; i < m_width - room.Width + 1; i++) {
-				for (int j = 0; j < m_height - room.Height + 1; j++) {
+				for (int j = 0; j < m_length - room.Height + 1; j++) {
 					if (room.CanPlace(i, j, m_doorGrid, m_generationGrid)) list.Add(new Vector2Int(i, j));
 				}
 			}
@@ -186,8 +195,8 @@ public class RoomGenerator : RoomGeneratorBase {
 		}
 
 		void GenerateNunsAndKids() {
-			int kidCount = Random.Range(m_minChildrenPerRoom, m_maxChildrenPerRoom) * m_placedRooms.Count;
-			for (int i = 0; i < kidCount; i++) {
+			int niceKidCount = m_currentLevelStats.NiceCount;
+			for (int i = 0; i < niceKidCount; i++) {
 				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
 				if (room.HasTag(m_kidProof)) {
 					Debug.LogWarning("[Roomgen]" + room.name + "is Kid-Proof - cannot spawn Child.");
@@ -196,14 +205,33 @@ public class RoomGenerator : RoomGeneratorBase {
 				}
 
 				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 0.2f, NavMesh.AllAreas)) {
-					Instantiate(m_childPrefab, hit.position, Quaternion.identity);
+					var child = Instantiate(m_childPrefab, hit.position, Quaternion.identity);
+					child.GetComponent<Child>().SetChildType(m_niceChildType);
 				} else {
 					Debug.LogWarning("[Roomgen] Could not spawn Child in " + room.name);
 					i--;
 					continue;
 				}
 			}
-			int nunCount = Random.Range(m_minNuns, m_maxNuns);
+			int naughtyKidCount = m_currentLevelStats.NaughtyCount;
+			for (int i = 0; i < naughtyKidCount; i++) {
+				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
+				if (room.HasTag(m_kidProof)) {
+					Debug.LogWarning("[Roomgen]" + room.name + "is Kid-Proof - cannot spawn Child.");
+					i--;
+					continue;
+				}
+
+				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 0.2f, NavMesh.AllAreas)) {
+					var child = Instantiate(m_childPrefab, hit.position, Quaternion.identity);
+					child.GetComponent<Child>().SetChildType(m_naughtyChildType);
+				} else {
+					Debug.LogWarning("[Roomgen] Could not spawn Child in " + room.name);
+					i--;
+					continue;
+				}
+			}
+			int nunCount = m_currentLevelStats.NunCount;
 			for (int i = 0; i < nunCount; i++) {
 				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
 
@@ -226,8 +254,8 @@ public class RoomGenerator : RoomGeneratorBase {
 
 		void GenerateDoors() {
 			for (int i = 0; i < m_width; i++) {
-				for (int j = 0; j < m_height; j++) {
-					if (j != m_height - 1 && m_doorGrid[i, j].South && m_generationGrid[i, j] != m_generationGrid[i, j + 1] && m_generationGrid[i, j] != null) {
+				for (int j = 0; j < m_length; j++) {
+					if (j != m_length - 1 && m_doorGrid[i, j].South && m_generationGrid[i, j] != m_generationGrid[i, j + 1] && m_generationGrid[i, j] != null) {
 						var psg = Instantiate(
 							m_roomSet.doorPrefabs.UnityRandomElement().gameObject,
 							Room.GetCellCenter(i, j) - new Vector3(0, 0, Room.CELL_SIZE / 2f),
@@ -255,7 +283,7 @@ public class RoomGenerator : RoomGeneratorBase {
 
 		bool FindSpawnPoint() {
 			for (int i = 0; i < m_width; i++) {
-				for (int j = 0; j < m_height; j++) {
+				for (int j = 0; j < m_length; j++) {
 					if (m_doorGrid[i, j].Count == 0) {
 						if (i - 1 >= 0 && m_doorGrid[i - 1, j].Count != 0) {
 							m_spawnPoint = new Vector2Int(i, j);
@@ -280,7 +308,7 @@ public class RoomGenerator : RoomGeneratorBase {
 		int filledSpaces = 0;
 		bool foundSpawn = false;
 		int regenCounter = 1;
-		while (filledSpaces <= m_minSpacesOnMap || !foundSpawn) {
+		while (filledSpaces <= (m_width+m_length) || !foundSpawn) {
 			Status = "Creating layout attempt" + regenCounter;
 			Init();
 			CreateGrid();
@@ -361,7 +389,7 @@ public class RoomGenerator : RoomGeneratorBase {
 
 	private void DebugLogDoorset() {
 		var sb = new StringBuilder();
-		for (int j = 0; j < m_height; j++) {
+		for (int j = 0; j < m_length; j++) {
 			for (int i = 0; i < m_width; i++) {
 				var directions = m_doorGrid[i, j];
 				char c = (directions.North, directions.East, directions.South, directions.West) switch {
@@ -412,7 +440,7 @@ public class RoomGenerator : RoomGeneratorBase {
 		if (m_doorGrid == null) return;
 		Gizmos.color = Color.gray;
 		for (int i = 0; i < m_width; i++) {
-			for (int j = 0; j < m_height; j++) {
+			for (int j = 0; j < m_length; j++) {
 				if (m_doorGrid[i, j] == null) continue;
 				var rd = m_doorGrid[i, j];
 

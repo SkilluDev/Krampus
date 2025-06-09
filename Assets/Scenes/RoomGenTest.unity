@@ -259,6 +259,7 @@ MonoBehaviour:
   m_skipIntro: 0
   m_timer: {fileID: 358014040}
   timeFromStart: 0
+  m_useLevelModifer: 1
   m_outro: {fileID: 1940560123}
 --- !u!4 &358014036
 Transform:
@@ -384,6 +385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_timeBonus: 10
   m_timePenalty: 15
+  m_startTime: 60
   m_changeDuration: 1
   m_lowTime: 10
 --- !u!114 &358014043
@@ -425,6 +427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883bcb91c28d02942b4c1bfec3401248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_levelSet: {fileID: 0}
   m_currentLevel: 0
 --- !u!1 &423022856
 GameObject:
@@ -458,18 +461,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_navMesh: {fileID: 423022859}
   m_width: 5
-  m_height: 5
+  m_length: 0
   m_roomSet: {fileID: 11400000, guid: 379eee92131fc4848b0d135988a9fe61, type: 2}
   m_loopRectangles: 9
   m_krampus: {fileID: 1936252573}
   m_placedRooms: []
   m_minSpacesOnMap: 15
-  m_maxChildrenPerRoom: 2
-  m_minChildrenPerRoom: 1
-  m_maxNuns: 3
-  m_minNuns: 2
   m_kidProof: {fileID: 11400000, guid: ffbc218448a5a644499f9be2be825d95, type: 2}
   m_nunProof: {fileID: 11400000, guid: 060614bbc887e0c428d08703f37bbcd5, type: 2}
+  m_niceChildType: {fileID: 11400000, guid: 63ab45d866ec5be42bcf362fbffafbec, type: 2}
+  m_naughtyChildType: {fileID: 11400000, guid: 14df7b7041904fa44b4c88b4d0089b9a, type: 2}
   m_nunPrefab: {fileID: 5834805556960546680, guid: 03ca62ad0dfb6bb49aa51ac698249d81,
     type: 3}
   m_childPrefab: {fileID: 6287952351036182209, guid: 7f78f2e651fa5c43c9c33c7bb102e7ed,

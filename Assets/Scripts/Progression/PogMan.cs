@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class PogMan : MonoBehaviour {
 
-	// [SerializeField] private LevelSet
+	[SerializeField] private LevelSet m_levelSet;
 
     [SerializeField] private int m_currentLevel = 0;
     public int CurrentLevel => m_currentLevel;
     private List<Item> m_krampusItems;
     public IReadOnlyList<Item> KrampusItems => m_krampusItems;
+
+	public LevelStats GetCurrentLevelStats() {
+		return m_levelSet.LevelStats[m_currentLevel];
+	}
 
 
 

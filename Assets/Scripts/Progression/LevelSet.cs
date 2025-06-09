@@ -23,8 +23,7 @@ public class LevelStats
 }
 
 [CreateAssetMenu(menuName = "Game/LevelProgression/Stats", fileName = "LevelProgressionStats")]
-public class LevelSet : ScriptableObject
-{
+public class LevelSet : ScriptableObject {
 	[SerializeField] protected string m_name = "Level Set name";
 	public string Name => m_name;
 
