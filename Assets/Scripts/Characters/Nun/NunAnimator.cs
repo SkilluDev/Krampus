@@ -16,6 +16,7 @@ public class NunAnimator : MonoBehaviour {
 	private void Start() {
 		m_nun.onStateChanged += MovementStateChanged;
 		m_nun.onAttack += OnNunAttack;
+		m_nun.onFire += OnNunAttack;
 	}
 
 	private void Update() {

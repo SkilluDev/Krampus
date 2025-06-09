@@ -5,6 +5,7 @@ using System.Linq;
 using Cinemachine;
 using KrampUtils;
 using Roomgen;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -17,13 +18,16 @@ public class Nun : NPC {
         LookingForKrampus, // Go to the room that was reported by the kid. If krampus is in a room the nun is in, start chasing him. Otherwise back to patrolling.
         FoundKrampus, // shock state
         ChasingKrampus, // self-explanatory
-        Stunned // self-explanatory. post stun, go to Patrolling
+        Stunned,
+        Shooting // self-explanatory. post stun, go to Patrolling
     }
 
     public float RunSpeed => m_runSpeed;
 
     public UnityAction<Nun.State, Nun.State> onStateChanged;
     public UnityAction<Nun.State> onAttack;
+
+    public UnityAction<Nun.State> onFire;
     [SerializeField] private float m_interactionDistance = 8;
     [SerializeField] private float m_detectionRange = 4;
     public State CurrentState { get; private set; }
@@ -42,6 +46,12 @@ public class Nun : NPC {
     [SerializeField] private float m_patrolIdleDuration = 2f;
 
     [SerializeField] private Tag m_dontPatrolTag;
+
+
+    [SerializeField] private float m_castingTime = 1.03f;
+    [SerializeField] private float m_ragePerSecond = 30;
+    [SerializeField] private NunMissle m_MisslePref;
+    private float m_rageMeter;
 
 
 
@@ -187,6 +197,29 @@ public class Nun : NPC {
                 SetDestination(Game.MainGameInfo.Krampus.transform.position);
                 SetFacingDirection(GetPathDirection());
                 SetVelocity(GetPathDirection() * m_runSpeed);
+
+
+                m_rageMeter += m_ragePerSecond * Time.deltaTime;
+                //Debug.Log("Rage:" + m_rageMeter);
+
+                if (m_rageMeter >= 100) {
+                    if (hasLineOfSight()) {
+                        m_timeout = m_castingTime;
+                        SwitchState(State.Shooting);
+                        onFire.Invoke(State.Shooting);
+                    }
+                }
+
+
+                break;
+            case State.Shooting:
+                SetVelocity(Vector3.zero);
+                SetFacingToPoint(Game.MainGameInfo.Krampus.transform.position);
+                m_timeout -= Time.deltaTime;
+                if (m_timeout < 0) {
+                    Shoot();
+                    SwitchState(State.ChasingKrampus);
+                }
                 break;
             case State.Stunned:
                 m_timeout -= Time.deltaTime;
@@ -250,11 +283,33 @@ public class Nun : NPC {
         Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
         Game.MainGameInfo.Krampus.KrampusEvents.onNunStunned.Invoke(Game.MainGameInfo.Krampus, this);
         m_timeout = duration;
+        m_rageMeter = 0;
         SwitchState(State.Stunned);
     }
 
     public void SetRunSpeed(float value) {
         m_runSpeed = value;
-     }
+    }
 
+
+
+    public void Shoot() {
+        m_rageMeter = 0;
+        Vector3 direction = (Game.MainGameInfo.Krampus.transform.position.NoY() - transform.position.NoY()).normalized;
+        Vector3 pos = transform.position + (2 * direction) + new Vector3(0, 1, 0);
+        Quaternion rot = Quaternion.LookRotation(direction);
+        NunMissle nunMissle = Instantiate(m_MisslePref, pos, Quaternion.identity);
+        nunMissle.SetTarget(Game.MainGameInfo.Krampus.transform, direction);
+    }
+
+
+    bool hasLineOfSight() {
+
+        Physics.Raycast(transform.position, Game.MainGameInfo.Krampus.transform.position - transform.position, out var hit, 100f, m_visionMask);
+        if (hit.collider.transform == Game.MainGameInfo.Krampus.transform) {
+            return true;
+        } else {
+            return false;
+        }
+     }
 }
