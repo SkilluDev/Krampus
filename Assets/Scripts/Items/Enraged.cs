@@ -5,17 +5,13 @@ using UnityEngine;
 
 [CreateAssetMenu(menuName = "Game/Items/Enraged", fileName = "Enraged")]
 public class Enraged : Item {
-    
-    [SerializeField] private float m_speedValue;
     [SerializeField] private float m_comboTreshold;
 
-    bool isActive = false;
-
-    const string m_effectId = "E_S";
+	private bool m_isActive = false;
 
     public override void RegisterEvents(KrampusEvents events) {
         events.onComboChanged.AddListener(MovementBuff);
-        isActive = false;
+        m_isActive = false;
     }
 
     public override void UnregisterEvents(KrampusEvents events) {
@@ -24,21 +20,15 @@ public class Enraged : Item {
 
     private void MovementBuff(Krampus krampus, float combo) {
 
-        if (combo >= m_comboTreshold) {
-            if (isActive == false) {
-                krampus.Stats.RegisterEffect(new Effect(KrampusStats.Stat.Speed, m_speedValue, m_effectId));
-                Game.MainGameInfo.UI.DisplayEffect(ItemIcon, ItemName, m_effectId);
-                isActive = true;
-            }
-        } else if(isActive) {
-            
-                Effect e = krampus.Stats.GetEffect(m_effectId);
-                if (e != null) {
-                    krampus.Stats.UnregisterEffect(e);
-                    Game.MainGameInfo.UI.RemovEffectIcon(m_effectId);
-                }
-
-            }
-       
+        if (combo >= m_comboTreshold && !m_isActive) {
+			//Debug.Log("COMBOACTIVE");
+			RegisterAllEffects(krampus);
+			m_isActive = true;
+			//Game.MainGameInfo.UI.DisplayEffect(ItemIcon, ItemName, m_effectId);
+        } else if(m_isActive) {
+			//Debug.Log("COMBODISACTIVE");
+            UnregisterAllEffects(krampus);
+            //Game.MainGameInfo.UI.RemovEffectIcon(m_effectId);
+		}
     }
 }
