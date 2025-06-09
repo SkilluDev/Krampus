@@ -10,9 +10,11 @@ public class EffectInEditor {
 
 	public Effect ToEffect(string itemName) {
 		if (m_duration > 0) {
-			return new Effect(m_stat, m_modifier, itemName+"_"+m_stat);
+			return new Effect(m_stat, m_modifier, m_duration, itemName+"_"+m_stat);
 		}
-		return new Effect(m_stat, m_modifier, m_duration, itemName+"_"+m_stat);
+
+		return new Effect(m_stat, m_modifier, itemName + "_" + m_stat);
+
 
 	}
 }
