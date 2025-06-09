@@ -127,8 +127,12 @@ public class KrampusStats : KrampusBehaviour {
         }
     }
 
-    private void LoadItems() {
-        Game.PogMan.Unpack(ref m_items);
+	private void LoadItems() {
+		var itemsToAdd = new List<Item>();
+		Game.PogMan.Unpack(ref itemsToAdd);
+		foreach (var item in itemsToAdd) {
+			AddItem(item);
+		}
     }
     private void StoreItems() {
         Game.PogMan.Store(ref m_items);
