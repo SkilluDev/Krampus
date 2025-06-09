@@ -94,6 +94,7 @@ public static PogMan PogMan {
     }
 
     public static void LoadState(State state) {
+		Debug.Log("LOADING" + state);
         SourceState = CurrentState;
         DestinationState = state;
         CurrentState = State.Loading;

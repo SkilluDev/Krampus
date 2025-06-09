@@ -8,28 +8,31 @@ public class InputHandler : MonoBehaviour
 {
 
 	// Update is called once per frame
-	private void Update()
-    {
+	private void Update() {
 
-        if (InputSubscribe.Raw.UI.Pause.triggered) {
-            if (Game.Balling || Game.MainGameInfo.CurrentState == MainGameInfo.State.Paused) SwitchPause();
-        }
-        if (Game.MainGameInfo.Ended || Game.MainGameInfo.CurrentState == MainGameInfo.State.Paused) {//if the game is over, won, or paused, you can
-            if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
-                Game.RoomGenInfo.Regenerate = RoomGenerationType.First;
-                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-                Game.LoadState(Game.State.MainMenu);
-            }
-            if (InputSubscribe.Raw.UI.Restart.triggered) { //restart with R
-                Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
-                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-                Game.LoadState(Game.State.MainGame);
-            }
+		if (Game.Balling || Game.MainGameInfo.CurrentState == MainGameInfo.State.Paused){
+			if (InputSubscribe.Raw.UI.Pause.triggered) SwitchPause();
+		}
 
-            if (InputSubscribe.Raw.UI.RestartAndRegen.triggered) { //generate and restart with G
-                Game.RoomGenInfo.Regenerate = RoomGenerationType.New;
-                Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-                Game.LoadState(Game.State.MainGame);
+		if (Game.MainGameInfo.Lost || Game.MainGameInfo.CurrentState == MainGameInfo.State.Paused) {//if the game is over, or paused, you can
+			if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
+				Game.PogMan.GoBackToMenu();
+			}
+			if (InputSubscribe.Raw.UI.Restart.triggered) { //restart with R
+				Game.PogMan.LoadFirstLevel(false);
+			}
+
+			if (InputSubscribe.Raw.UI.RestartAndRegen.triggered) { //generate and restart with G
+				Game.PogMan.LoadFirstLevel(true);
+			}
+		}
+
+		if (Game.MainGameInfo.Won) {//if the game is won, you can
+			if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
+				Game.PogMan.GoBackToMenu();
+            }
+            if (InputSubscribe.Raw.UI.NextLevel.triggered) { //go to next level with space
+				Game.PogMan.LoadNextLevel();
             }
         }
     }

@@ -98,6 +98,10 @@ public class MainGameInfo : LevelInfo {
 
     public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
 
+	public bool Won => CurrentState == State.Won;
+
+	public bool Lost => CurrentState == State.Over;
+
     public bool Ballin => CurrentState == State.Game;
 
     public void SetState(State state) {
@@ -137,7 +141,7 @@ public class MainGameInfo : LevelInfo {
     private void Ready() {
         if (m_useLevelModifer) {
             Game.PogMan.NextLevelModifier.UpdateLevel();
-         }
+		}
         if (m_skipIntro) {
             SetState(State.ItemChoosing);
             UI.DisplayItemChoiceMenu();
