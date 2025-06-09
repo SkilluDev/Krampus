@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +48,7 @@ public class Nun : NPC {
 
 
     [SerializeField] private float m_castingTime = 1.03f;
-    [SerializeField] private float m_ragePerSecond = 30;
+    [SerializeField] private Vector2 m_randomRagePerSeconds;  
     [SerializeField] private NunMissle m_MisslePref;
     private float m_rageMeter;
 
@@ -191,7 +191,7 @@ public class Nun : NPC {
                 SetVelocity(GetPathDirection() * m_runSpeed);
 
 
-                m_rageMeter += m_ragePerSecond * Time.deltaTime;
+                m_rageMeter += UnityEngine.Random.Range(m_randomRagePerSeconds.x,m_randomRagePerSeconds.y) * Time.deltaTime;
                 //Debug.Log("Rage:" + m_rageMeter);
 
                 if (m_rageMeter >= 100) {
