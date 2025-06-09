@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea8ba6e4a243b42449fd5e7d0c3fd5c2, type: 3}
+  m_Name: NewPool
+  m_EditorClassIdentifier: 
+  nonLevelModifier: {fileID: 11400000, guid: a2e986ab9af3ff24eb4f3841941a1516, type: 2}
+  levelModifiers:
+  - m_minLevel: 4
+    m_levelModifier: {fileID: 11400000, guid: f6c3d7800a05938458779559c477f57a, type: 2}
+  - m_minLevel: 4
+    m_levelModifier: {fileID: 11400000, guid: 5ad0b076e737121449b74a0a5bd110b9, type: 2}
+  - m_minLevel: 2
+    m_levelModifier: {fileID: 11400000, guid: dcca9f79e98f59748b11872f8a22f299, type: 2}

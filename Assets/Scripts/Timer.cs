@@ -8,6 +8,7 @@ public class Timer : MonoBehaviour {
 
 	[ShowNativeProperty] public float GameTime { get; private set; } = 10f;
 
+	[SerializeField] private float m_startTime = 60; 
 	[SerializeField] private float m_changeDuration;
 	[SerializeField] private float m_lowTime = 10;
 
@@ -23,8 +24,12 @@ public class Timer : MonoBehaviour {
 		}
 	}
 
+	private void Start() {
+		GameTime = m_startTime;	
+	}
 	public void Ready() {
-		GameTime = (int)Game.SetMan.GetValue<long>("Timer");
+
+
 		Game.MainGameInfo.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
 	}
 
@@ -50,4 +55,8 @@ public class Timer : MonoBehaviour {
 	public void Penalty() {
 		GameTime -= m_timePenalty;
 	}
+
+	public void SetGameTime(float timer) {
+		GameTime = timer;
+	 }
 }
