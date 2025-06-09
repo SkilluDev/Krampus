@@ -17,8 +17,8 @@ public class PogMan : MonoBehaviour {
 
 
 
-    private LevelModifier m_NextLevelModifer;
-    public LevelModifier NextLevelModifier => m_NextLevelModifer;
+    private LevelModifier m_nextLevelModifer;
+    public LevelModifier NextLevelModifier => m_nextLevelModifer;
 
     public void ResetProgress() {
         m_currentLevel = 0;
@@ -38,7 +38,7 @@ public class PogMan : MonoBehaviour {
     }
 
     public void SetNextLevelModifier(LevelModifier lm) {
-        m_NextLevelModifer = lm;
+        m_nextLevelModifer = lm;
      }
 
 }
