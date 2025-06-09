@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PogMan : MonoBehaviour {
 
+	// [SerializeField] private LevelSet
+
     [SerializeField] private int m_currentLevel = 0;
     public int CurrentLevel => m_currentLevel;
     private List<Item> m_krampusItems;

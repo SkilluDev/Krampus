@@ -46,7 +46,6 @@ public class Item : ScriptableObject {
 		foreach (var e in m_effectsInEditor) {
 			m_effects.Add(e.ToEffect(ItemName, ItemIcon));
 		}
-
 	}
 	/// <summary>
 	/// Called when this item gets removed from a Krampus
