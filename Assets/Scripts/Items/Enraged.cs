@@ -22,10 +22,8 @@ public class Enraged : Item {
         if (combo >= m_comboTreshold && !m_isActive) {
 			RegisterAllEffects(krampus);
 			m_isActive = true;
-			//Game.MainGameInfo.UI.DisplayEffect(ItemIcon, ItemName, m_effectId);
         } else if(m_isActive) {
             UnregisterAllEffects(krampus);
-            //Game.MainGameInfo.UI.RemovEffectIcon(m_effectId);
 		}
     }
 }

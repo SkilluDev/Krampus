@@ -44,7 +44,7 @@ public class Item : ScriptableObject {
 	/// </summary>
 	public virtual void ItemAdded(Krampus krampus) {
 		foreach (var e in m_effectsInEditor) {
-			m_effects.Add(e.ToEffect(ItemName));
+			m_effects.Add(e.ToEffect(ItemName, ItemIcon));
 		}
 
 	}
@@ -52,12 +52,11 @@ public class Item : ScriptableObject {
 	/// Called when this item gets removed from a Krampus
 	/// </summary>
 	public virtual void ItemRemoved(Krampus krampus) {
-		foreach (var e in m_effectsInEditor) {
-			m_effects.Remove(e.ToEffect(ItemName));
-		}
+		m_effects.Clear();
 	}
 
 	public virtual void RegisterAllEffects(Krampus krampus) {
+		ResetItem();
 		foreach (var effect in m_effects) {
 			krampus.Stats.RegisterEffect(effect);
 		}
@@ -67,5 +66,10 @@ public class Item : ScriptableObject {
 		foreach (var effect in m_effects) {
 			krampus.Stats.UnregisterEffect(effect);
 		}
+	}
+
+	public void ResetItem() {
+		ItemRemoved(Game.MainGameInfo.Krampus);
+		ItemAdded(Game.MainGameInfo.Krampus);
 	}
 }

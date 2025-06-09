@@ -8,12 +8,12 @@ public class EffectInEditor {
 	[SerializeField] private float m_duration;
 	[SerializeField] private float m_modifier;
 
-	public Effect ToEffect(string itemName) {
+	public Effect ToEffect(string itemName, Sprite itemIcon) {
 		if (m_duration > 0) {
-			return new Effect(m_stat, m_modifier, m_duration, itemName+"_"+m_stat);
+			return new Effect(m_stat, m_modifier, m_duration, itemName+"_"+m_stat, itemIcon);
 		}
 
-		return new Effect(m_stat, m_modifier, itemName + "_" + m_stat);
+		return new Effect(m_stat, m_modifier, itemName + "_" + m_stat, itemIcon);
 
 
 	}
@@ -26,15 +26,20 @@ public class Effect {
 		}
 
 		private string m_id;
+		public string Id => m_id;
 
 		private Type m_type;
 		public Type EffectType => m_type;
+		private Sprite m_itemIcon;
+
+		public Sprite ItemIcon => m_itemIcon;
 
 
 
 		private bool m_isExpired = false;
 		public bool IsExpired { get => m_isExpired; set => m_isExpired = value; }
 		protected float m_timer;
+		public float Timer => m_timer;
 
 		private StatModifier m_statModifier;
 
@@ -42,17 +47,19 @@ public class Effect {
 
 
 
-		public Effect(KrampusStats.Stat stat, float modifier, string id) {
-			m_statModifier = new StatModifier(stat, modifier);
-			m_type = Type.Permanent;
-			m_id = id;
+	public Effect(KrampusStats.Stat stat, float modifier, string id, Sprite itemIcon) {
+		m_statModifier = new StatModifier(stat, modifier);
+		m_type = Type.Permanent;
+		m_id = id;
+		m_itemIcon = itemIcon;
 		}
 
-		public Effect(KrampusStats.Stat stat, float modifier, float duration, string id) {
-			m_statModifier = m_statModifier = new StatModifier(stat, modifier);
-			m_timer = duration;
-			m_type = Type.Temporary;
-			m_id = id;
+	public Effect(KrampusStats.Stat stat, float modifier, float duration, string id, Sprite itemIcon) {
+		m_statModifier = m_statModifier = new StatModifier(stat, modifier);
+		m_timer = duration;
+		m_type = Type.Temporary;
+		m_id = id;
+		m_itemIcon = itemIcon;
 		}
 
 		public void UpdateTimer(float deltaTime) {

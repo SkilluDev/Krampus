@@ -6,17 +6,16 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game/Items/NunFoundSpeed", fileName = "NunFoundSpeed")]
 public class NunFoundSpeed : Item {
     public override void RegisterEvents(KrampusEvents events) {
-        events.onKrampusFoundByNun.AddListener(MovementBuff);
+        events.onKrampusFoundByNun.AddListener(BuffKrampus);
     }
 
     public override void UnregisterEvents(KrampusEvents events) {
-        events.onKrampusFoundByNun.RemoveListener(MovementBuff);
+        events.onKrampusFoundByNun.RemoveListener(BuffKrampus);
 
     }
 
-    private void MovementBuff(Krampus krampus, Nun nun) {
+    private void BuffKrampus(Krampus krampus, Nun nun) {
 		RegisterAllEffects(krampus);
-        //Game.MainGameInfo.UI.DisplayEffect(m_duration, ItemIcon, ItemName,m_effectId);
     }
 
 

@@ -79,11 +79,11 @@ public class NewUIManager : MonoBehaviour {
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarMenuKeys;
 
 
-    
+
    [BoxGroup("Effect Bar")] [SerializeField] private EffectIcon m_effectIconPref;
     [BoxGroup("Effect Bar")][SerializeField] private RectTransform m_effectBar;
 
-    
+
 
 
 
@@ -101,10 +101,9 @@ public class NewUIManager : MonoBehaviour {
         OnChildEaten(Game.MainGameInfo.Krampus, child);
     }
 
-    private void Awake() {
-        m_originalTimerLocalScale = m_timer.localScale;
-        m_startFill = m_fillBar.fillAmount;
-
+	private void Awake() {
+		m_originalTimerLocalScale = m_timer.localScale;
+		m_startFill = m_fillBar.fillAmount;
     }
 
     private void OnChildEaten(Krampus krampus, Child child) {
@@ -153,27 +152,28 @@ public class NewUIManager : MonoBehaviour {
         ShowQuickActionIcon(false);
     }
 
+	public void DisplayEffect(Krampus krampus, Effect effect) {
+		EffectIcon effectIcon = Instantiate(m_effectIconPref);
+		effectIcon.transform.SetParent(m_effectBar, false);
+		if (effect.EffectType == Effect.Type.Permanent) {
+			effectIcon.SetIcon(effect.Id, effect.ItemIcon, "test");
+		} else {
+			effectIcon.SetIcon(effect.Id, effect.ItemIcon, effect.Timer, "test2");
+		}
+		Debug.Log("SHOWDISPLAY" + effect.Id + effect.Timer);
+	}
 
-    public void DisplayEffect(float duration, Sprite icon, string nam, string id) {
-        EffectIcon effectIcon = Instantiate(m_effectIconPref);
-        effectIcon.transform.SetParent(m_effectBar,false);
-        effectIcon.SetIcon(id, icon,duration,name);
-    }
-    public void DisplayEffect(Sprite icon, string name, string id) {
-        EffectIcon effectIcon = Instantiate(m_effectIconPref);
-        effectIcon.transform.SetParent(m_effectBar);
-        effectIcon.SetIcon(id,icon,name);
-     }
+	public void RemoveEffect(Krampus krampus, Effect effect) {
 
-    public void RemovEffectIcon(string id) {
+		for (int i = 0; i < m_effectBar.childCount; i++) {
+			var effectIcon = m_effectBar.GetChild(i).GetComponent<EffectIcon>();
+			if (effectIcon.EffectId == effect.Id) {
+				Destroy(effectIcon.gameObject);
+				break;
+			}
+		}
 
-        for (int i = 0; i < m_effectBar.childCount; i++) {
-            EffectIcon effectIcon = m_effectBar.GetChild(i).GetComponent<EffectIcon>();
-            if (effectIcon.EffectId == id) {
-                Destroy(effectIcon.gameObject);
-                break;
-             }
-         }
+		 Debug.Log("HIDEDISPLAY" + effect.Id);
      }
 
 
@@ -184,8 +184,6 @@ public class NewUIManager : MonoBehaviour {
             m_timerDisplay.gameObject.SetActive(true);
         }
 
-
-
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
     }
 
@@ -195,6 +193,9 @@ public class NewUIManager : MonoBehaviour {
 
     private void Ready() {
         Game.MainGameInfo.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
+		Game.MainGameInfo.Krampus.KrampusEvents.onEffectRegistered.AddListener(DisplayEffect);
+		Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
+
         m_originalTimerColor = m_timerDisplay.Color;
         m_tutorial.gameObject.SetActive(false);
         m_uiBlockLeft.gameObject.SetActive(false);
@@ -214,12 +215,6 @@ public class NewUIManager : MonoBehaviour {
 		m_currentComboFillHandle = LMotion.Create(oldValue, value / Game.MainGameInfo.MaxComboPoints, time)
         .WithDelay(0.4f).BindToFillAmount(m_comboFiller);
     }
-
-
-    public void DisplayScoreBoard() {
-        // m_scoreboard.SetActive(true);
-    }
-
     public void HideBlackBars(bool showTutorial) {
         m_blackBars.Hide();
         if (!showTutorial) return;
@@ -228,7 +223,6 @@ public class NewUIManager : MonoBehaviour {
 
 
     public void DisplayItemChoiceMenu() {
-
         m_itemChoiceMenuUI.gameObject.SetActive(true);
      }
 
@@ -249,7 +243,6 @@ public class NewUIManager : MonoBehaviour {
         m_endScreenHandler.PreActivate(ending);
         yield return new WaitForSeconds(3);
         m_endScreenHandler.Activate(ending);
-        DisplayScoreBoard();
     }
 
     public void PopupTimer() {
@@ -262,11 +255,6 @@ public class NewUIManager : MonoBehaviour {
 
    public  void SetComboCostBar(float cost) {
 	    m_comboCostBar.anchoredPosition = new Vector2(0, Mathf.Lerp(0,m_comboFiller.rectTransform.sizeDelta.y, cost/Game.MainGameInfo.MaxComboPoints) );
-    }
-
-    public void StartQuickTimeTimer(float seconds) {
-
-
     }
 
     public void ShowQuickActionIcon(bool canSting) {

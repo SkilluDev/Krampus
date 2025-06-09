@@ -15,7 +15,6 @@ public class StingerSpeed : Item {
 
     private void BuffKrampus(Krampus krampus) {
 		RegisterAllEffects(krampus);
-        //Game.MainGameInfo.UI.DisplayEffect(m_duration, ItemIcon, ItemName,m_effectId);
     }
 
 }

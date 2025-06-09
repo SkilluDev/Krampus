@@ -135,12 +135,14 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     public void RegisterEffect(Effect effect) {
+		Kramp.KrampusEvents.onEffectRegistered.Invoke(Kramp, effect);
         m_effects[effect.StatModifier.Stat].Add(effect);
         RecalculateStats();
     }
 
 
     public void UnregisterEffect(Effect effect) {
+		Kramp.KrampusEvents.onEffectUnregistered.Invoke(Kramp, effect);
         m_effects[effect.StatModifier.Stat].Remove(effect);
         RecalculateStats();
     }

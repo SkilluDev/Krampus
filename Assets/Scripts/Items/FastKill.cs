@@ -14,7 +14,6 @@ public class FastKill : Item {
 	}
 
 	private void BuffKrampus(Krampus krampus, Child child) {
-		//Game.MainGameInfo.UI.DisplayEffect(m_duration, ItemIcon, ItemName,m_effectId);
 		RegisterAllEffects(krampus);
 	}
 }
