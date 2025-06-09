@@ -29,7 +29,7 @@ public class ItemPool : ScriptableObject {
     }
 
 
-    int[] Shuffle(int[] el) {
+    private int[] Shuffle(int[] el) {
         // Knuth shuffle algorithm :: courtesy of Wikipedia :)
         for (int t = 0; t < el.Length; t++) {
             int tmp = el[t];
