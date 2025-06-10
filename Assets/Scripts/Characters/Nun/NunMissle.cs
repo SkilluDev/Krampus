@@ -18,7 +18,7 @@ public class NunMissle : MonoBehaviour {
 
 
     private void Update() {
-        if (m_target == null) return;
+        if (m_target == null)    return;
         if (m_isActive == false) {
             return;
         }
