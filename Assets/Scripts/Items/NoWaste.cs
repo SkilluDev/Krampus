@@ -6,16 +6,16 @@ using UnityEngine;
 public class NoWaste : Item {
 
 
-    [SerializeField] private float m_comboGained;
+    [SerializeField] private float m_windUpGained;
    public override void RegisterEvents(KrampusEvents events) {
-        events.onNiceChildEaten.AddListener(GainCombo);
+        events.onNiceChildEaten.AddListener(GainWindUp);
     }
 
     public override void UnregisterEvents(KrampusEvents events) {
-         events.onNiceChildEaten.RemoveListener(GainCombo);
+         events.onNiceChildEaten.RemoveListener(GainWindUp);
     }
 
-    private void GainCombo(Krampus krampus, Child child) {
-        krampus.Kontroller.AddComboPoints(m_comboGained);
+    private void GainWindUp(Krampus krampus, Child child) {
+        krampus.Kontroller.AddWindUpPoints(m_windUpGained);
     }
 }

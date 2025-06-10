@@ -243,7 +243,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 
-	public void AddComboPoints(float value) {
+	public void AddWindUpPoints(float value) {
 
 		if (m_comboGainLock > 0) { Debug.Log("Block"); return; }
 
@@ -273,7 +273,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void OnNaughtyChildEaten(Krampus krampus, Child child) {
-		AddComboPoints(Game.MainGameInfo.ComboGainFromChildren);
+		AddWindUpPoints(Game.MainGameInfo.ComboGainFromChildren);
 	}
 
 	public void SetStingTarget(IInteractable interactable) {
