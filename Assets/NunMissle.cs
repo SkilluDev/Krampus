@@ -11,6 +11,7 @@ public class NunMissle : MonoBehaviour {
     [SerializeField] private Rigidbody m_rigidbody;
     [SerializeField] private Transform m_visuals;
     [SerializeField] private GameObject m_missleMesh;
+    [SerializeField] public Sprite m_slowEffectIcon;
 
     private Vector3 m_direction;
     private bool m_isActive = true;
@@ -44,7 +45,7 @@ public class NunMissle : MonoBehaviour {
         }
         if (other.gameObject.tag == "Player") {
             KrampusStats krampus = other.GetComponent<KrampusStats>();
-            krampus.RegisterEffect(new Effect(KrampusStats.Stat.Speed, -0.3f, 3, "Nun_Slow", null));
+            krampus.RegisterEffect(new Effect(KrampusStats.Stat.Speed, -0.3f, 2, "Nun_Slow", m_slowEffectIcon));
             DesactivateMissle();
         }
     }
