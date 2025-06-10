@@ -22,7 +22,7 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private NumericDisplay m_timerDisplay;
     [SerializeField] private float m_timerShakeDuration;
     [SerializeField] private float m_timerShakeIntensity;
-    [SerializeField] private float m_timerBounceDuration;
+    //[SerializeField] private float m_timerBounceDuration;
     [SerializeField] private float m_timerBounceIntensity;
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
@@ -55,23 +55,9 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("Wind-up")] [SerializeField] private Image m_windUpFiller;
     [BoxGroup("Wind-up")] [SerializeField] private RectTransform m_windUpCostBar;
 
-
-
-    [BoxGroup("Pause Screen")][SerializeField] private Image m_resumePauseButton;
-    [BoxGroup("Pause Screen")][SerializeField] private Image m_restartPauseButton;
-    [BoxGroup("Pause Screen")][SerializeField] private Image m_rerollPauseButton;
-    [BoxGroup("Pause Screen")][SerializeField] private Image m_menuPauseButton;
-
-
-    [BoxGroup("Score Board")][SerializeField] private GameObject m_scoreboard;
-    [BoxGroup("Score Board")][SerializeField] private TextMeshProUGUI m_childPerMinuteText;
-
     [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
     [BoxGroup("End Screen")][SerializeField] private EndScreenHandler m_endScreenHandler;
-    [BoxGroup("End Screen")][SerializeField] private Image m_restartEndScreenButton;
-    [BoxGroup("End Screen")][SerializeField] private Image m_rerollEndScreenButton;
-    [BoxGroup("End Screen")][SerializeField] private Image m_menuEndScreenButton;
 
 
     [BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockLeft;
