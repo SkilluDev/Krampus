@@ -242,7 +242,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rigidbody: {fileID: 7069810453768087152}
   m_sneakSpeed: 5
-  m_dashSpeed: 30
   m_assistValue: 45
   m_assistCheckLength: 1
   m_avoidableObjects:
@@ -279,7 +278,33 @@ MonoBehaviour:
   m_deltaIdleThreshold: 120
   m_startRunSpeed: 2
   m_getUpDuration: 1
-  m_dashDuration: 0.4
+  m_dashTime: 0
+  m_dashDuration: 1
+  m_dashSpeed: 30
+  m_dashCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.20031738
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_comboStingCost: 30
 --- !u!114 &6024168017209539665
 MonoBehaviour:
@@ -359,16 +384,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8411bc9fcac4bc43b65e7114ec13586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onAnyChildEaten:
-    m_PersistentCalls:
-      m_Calls: []
   onNaughtyChildEaten:
     m_PersistentCalls:
       m_Calls: []
   onNiceChildEaten:
     m_PersistentCalls:
       m_Calls: []
+  onChildEaten:
+    m_PersistentCalls:
+      m_Calls: []
   onNunStunned:
+    m_PersistentCalls:
+      m_Calls: []
+  onComboChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onKrampusFoundByNun:
+    m_PersistentCalls:
+      m_Calls: []
+  onStingerUsed:
+    m_PersistentCalls:
+      m_Calls: []
+  onEffectRegistered:
+    m_PersistentCalls:
+      m_Calls: []
+  onEffectUnregistered:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1376265350818594481
@@ -393,7 +433,8 @@ MonoBehaviour:
   - m_stat: 2
     m_value: 1
     m_statMode: 0
-  items: []
+  hasMov: 0
+  m_items: []
 --- !u!1 &4670869950198197567
 GameObject:
   m_ObjectHideFlags: 0
