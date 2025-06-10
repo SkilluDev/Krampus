@@ -22,7 +22,7 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private NumericDisplay m_timerDisplay;
     [SerializeField] private float m_timerShakeDuration;
     [SerializeField] private float m_timerShakeIntensity;
-    [SerializeField] private float m_timerBounceDuration;
+    //[SerializeField] private float m_timerBounceDuration;
     [SerializeField] private float m_timerBounceIntensity;
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
@@ -35,7 +35,7 @@ public class NewUIManager : MonoBehaviour {
     private float m_startFill;
 
     private MotionHandle m_currentFillHandle;
-    private MotionHandle m_currentComboFillHandle;
+    private MotionHandle m_currentWindUpFillHandle;
     private Color m_originalTimerColor;
     private Vector3 m_originalTimerLocalScale;
     [SerializeField] private Color m_niceTimerColor;
@@ -52,26 +52,12 @@ public class NewUIManager : MonoBehaviour {
     private bool m_uiOn = false;
 
 
-    [BoxGroup("Combo")] [SerializeField] private Image m_comboFiller;
-    [BoxGroup("Combo")] [SerializeField] private RectTransform m_comboCostBar;
-
-
-
-    [BoxGroup("Pause Screen")][SerializeField] private Image m_resumePauseButton;
-    [BoxGroup("Pause Screen")][SerializeField] private Image m_restartPauseButton;
-    [BoxGroup("Pause Screen")][SerializeField] private Image m_rerollPauseButton;
-    [BoxGroup("Pause Screen")][SerializeField] private Image m_menuPauseButton;
-
-
-    [BoxGroup("Score Board")][SerializeField] private GameObject m_scoreboard;
-    [BoxGroup("Score Board")][SerializeField] private TextMeshProUGUI m_childPerMinuteText;
+    [BoxGroup("Wind-up")] [SerializeField] private Image m_windUpFiller;
+    [BoxGroup("Wind-up")] [SerializeField] private RectTransform m_windUpCostBar;
 
     [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
     [BoxGroup("End Screen")][SerializeField] private EndScreenHandler m_endScreenHandler;
-    [BoxGroup("End Screen")][SerializeField] private Image m_restartEndScreenButton;
-    [BoxGroup("End Screen")][SerializeField] private Image m_rerollEndScreenButton;
-    [BoxGroup("End Screen")][SerializeField] private Image m_menuEndScreenButton;
 
 
     [BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockLeft;
@@ -210,11 +196,11 @@ public class NewUIManager : MonoBehaviour {
                                  Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar);
     }
 
-    public void ChangeComboValue(float value, float time = 1f) {
-	    m_currentComboFillHandle.TryCancel();
-		float oldValue = m_comboFiller.fillAmount;
-		m_currentComboFillHandle = LMotion.Create(oldValue, value / Game.MainGameInfo.MaxComboPoints, time)
-        .WithDelay(0.4f).BindToFillAmount(m_comboFiller);
+    public void ChangeWindUpValue(float value, float time = 1f) {
+	    m_currentWindUpFillHandle.TryCancel();
+		float oldValue = m_windUpFiller.fillAmount;
+		m_currentWindUpFillHandle = LMotion.Create(oldValue, value / Game.MainGameInfo.MaxWindUpPoints, time)
+        .WithDelay(0.4f).BindToFillAmount(m_windUpFiller);
     }
     public void HideBlackBars(bool showTutorial) {
         m_blackBars.Hide();
@@ -254,8 +240,8 @@ public class NewUIManager : MonoBehaviour {
             ).BindToLocalScale(m_timer);
     }
 
-   public  void SetComboCostBar(float cost) {
-	    m_comboCostBar.anchoredPosition = new Vector2(0, Mathf.Lerp(0,m_comboFiller.rectTransform.sizeDelta.y, cost/Game.MainGameInfo.MaxComboPoints) );
+   public  void SetWindUpCostBar(float cost) {
+	    m_windUpCostBar.anchoredPosition = new Vector2(0, Mathf.Lerp(0,m_windUpFiller.rectTransform.sizeDelta.y, cost/Game.MainGameInfo.MaxWindUpPoints) );
     }
 
     public void ShowQuickActionIcon(bool canSting) {

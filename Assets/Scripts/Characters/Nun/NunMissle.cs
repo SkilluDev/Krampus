@@ -37,11 +37,11 @@ public class NunMissle : MonoBehaviour {
         m_visuals.rotation = Quaternion.LookRotation(direction);
     }
 
-    void OnTriggerEnter(Collider other) {
+	private void OnTriggerEnter(Collider other) {
         if (m_isActive == false) return;
         if (other.gameObject.layer == LayerMask.NameToLayer("Wall")) {
-            DesactivateMissle();
-           
+            DisactivateMissle();
+
         }
         if (other.gameObject.tag == "Player") {
             KrampusStats krampus = other.GetComponent<KrampusStats>();
@@ -50,7 +50,7 @@ public class NunMissle : MonoBehaviour {
         }
     }
 
-    void DesactivateMissle() {
+    private void DisactivateMissle() {
         m_isActive = false;
         m_missleMesh.SetActive(false);
          Destroy(gameObject, 2);

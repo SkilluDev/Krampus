@@ -5,7 +5,7 @@ public class KrampusEvents : KrampusBehaviour {
 	public UnityEvent<Krampus, Child> onNiceChildEaten;
 	public UnityEvent<Krampus, Child> onChildEaten;
 	public UnityEvent<Krampus, Nun> onNunStunned;
-	public UnityEvent<Krampus, float> onComboChanged;
+	public UnityEvent<Krampus, float> onWindUpChanged;
 
 	public UnityEvent<Krampus, Nun> onKrampusFoundByNun;
 
