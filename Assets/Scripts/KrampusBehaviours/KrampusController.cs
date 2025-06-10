@@ -48,22 +48,22 @@ public class KrampusController : KrampusBehaviour {
 	public bool CanSting { get; set; } = false;
 	private Vector3 m_dashDirection;
 	public Vector3 NextStingDirection { get => m_dashDirection; set => m_dashDirection = value; }
-	[SerializeField] private float m_comboStingCost;
-	public float ComboStingCost => m_comboStingCost;
+	[SerializeField] private float m_windUpStingCost;
+	public float WindUpStingCost => m_windUpStingCost;
 	private IInteractable m_stingerTarget;
 
 
 
-	//Combo
-	private float m_comboPoints;
-	private float ComboBonus => Kramp.Stats.GetFinalStat(Stat.ComboGain);
-	public float ComboPoints { get => m_comboPoints; set => m_comboPoints = value; }
-	private float m_comboGainLock = 0;
+	//Wind-up
+	private float m_windUpPoints;
+	private float WindUpBonus => Kramp.Stats.GetFinalStat(Stat.WindUpGain);
+	public float WindUpPoints { get => m_windUpPoints; set => m_windUpPoints = value; }
+	private float m_windUpGainLock = 0;
 
 
 
 	private void Start() {
-		Game.MainGameInfo.UI.SetComboCostBar(m_comboStingCost);
+		Game.MainGameInfo.UI.SetWindUpCostBar(m_windUpStingCost);
 		Kramp.KrampusEvents.onNaughtyChildEaten.AddListener(OnNaughtyChildEaten);
 	}
 
@@ -100,8 +100,8 @@ public class KrampusController : KrampusBehaviour {
 			return;
 		}
 
-		if (m_comboGainLock > 0) {
-			m_comboGainLock -= Time.deltaTime;
+		if (m_windUpGainLock > 0) {
+			m_windUpGainLock -= Time.deltaTime;
 		}
 
 		if (CurrentState is State.Dead or State.Dash) return;
@@ -173,8 +173,8 @@ public class KrampusController : KrampusBehaviour {
 		ChangeState(State.Dash, StateChangeReason.Rapid);
 		//Debug.Log("Do dashing " + m_dashDirection);
 
-		m_comboGainLock = 2;
-		SpendComboPoints(ComboStingCost);
+		m_windUpGainLock = 2;
+		SpendWindUpPoints(WindUpStingCost);
 		SetCanSting(false);
 	}
 
@@ -245,24 +245,24 @@ public class KrampusController : KrampusBehaviour {
 
 	public void AddWindUpPoints(float value) {
 
-		if (m_comboGainLock > 0) { Debug.Log("Block"); return; }
+		if (m_windUpGainLock > 0) { Debug.Log("Block"); return; }
 
-		m_comboPoints += value * ComboBonus;
-		if (m_comboPoints > Game.MainGameInfo.MaxComboPoints) {
-			m_comboPoints = Game.MainGameInfo.MaxComboPoints;
+		m_windUpPoints += value * WindUpBonus;
+		if (m_windUpPoints > Game.MainGameInfo.MaxWindUpPoints) {
+			m_windUpPoints = Game.MainGameInfo.MaxWindUpPoints;
 		}
-		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints);
-		Kramp.KrampusEvents.onWindUpChanged.Invoke(Kramp, m_comboPoints);
+		Game.MainGameInfo.UI.ChangeWindUpValue(m_windUpPoints);
+		Kramp.KrampusEvents.onWindUpChanged.Invoke(Kramp, m_windUpPoints);
 	}
 
-	public void SpendComboPoints(float value) {
-		m_comboPoints -= value;
-		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints, 0.1f);
-		Kramp.KrampusEvents.onWindUpChanged.Invoke(Kramp, m_comboPoints);
+	public void SpendWindUpPoints(float value) {
+		m_windUpPoints -= value;
+		Game.MainGameInfo.UI.ChangeWindUpValue(m_windUpPoints, 0.1f);
+		Kramp.KrampusEvents.onWindUpChanged.Invoke(Kramp, m_windUpPoints);
 	}
 
 	public void SetCanSting(bool canSting) {
-		if (ComboPoints < ComboStingCost) {
+		if (WindUpPoints < WindUpStingCost) {
 			CanSting = false;
 		} else {
 			CanSting = canSting;
@@ -273,7 +273,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void OnNaughtyChildEaten(Krampus krampus, Child child) {
-		AddWindUpPoints(Game.MainGameInfo.ComboGainFromChildren);
+		AddWindUpPoints(Game.MainGameInfo.WindUpGainFromChildren);
 	}
 
 	public void SetStingTarget(IInteractable interactable) {

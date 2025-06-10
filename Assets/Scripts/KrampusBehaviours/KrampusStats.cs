@@ -14,7 +14,7 @@ public class KrampusStats : KrampusBehaviour {
     public enum Stat {
         Speed,
         TongueRange,
-        ComboGain
+        WindUpGain
     }
 
     public enum StatMode {
