@@ -18,15 +18,23 @@ public class CameraController : MonoBehaviour {
 	[SerializeField] private Vector3 m_baseOffset = Vector3.one * 10;
 	[BoxGroup("Movement")][SerializeField] private float m_lookAheadStrength;
 
-	[BoxGroup("Zoom")][SerializeField] private float m_zoomedOrtoSize = 5;
-	[BoxGroup("Zoom")][SerializeField] private float m_unzoomedOrtoSize = 8;
+	[BoxGroup("Zoom")][SerializeField] private float m_zoomedOrtoSize = 20;
+	[BoxGroup("Zoom")][SerializeField] private float m_unzoomedOrtoSize = 25;
 	[BoxGroup("Camera Smoothing")][SerializeField] private float m_cameraSpeed = 0.125f;
 	[BoxGroup("Zoom")][SerializeField] private float m_zoomSpeed = 0.2f;
 	[BoxGroup("Zoom")][SerializeField] private float m_zoomBuffer = 0.75f;
 	[BoxGroup("Zoom")][SerializeField] private float m_unzoomSpeed = 1f;
 	[BoxGroup("Zoom")][SerializeField] private float m_aimZoomSpeed = 1f;
 	private float m_zoomFactor = 1;
+	[SerializeField] private float m_ortoChangeSpeed = 1f;
 
+	private float m_ortoZoomBaseToAdd = 0f;
+	private float m_ortoUnzoomBaseToAdd = 0f;
+
+	private float m_ortoZoomBaseToSubstract = 0f;
+	private float m_ortoUnzoomBaseToSubstract = 0f;
+
+	private float m_unzoomToZoomStartRatio;
 
 	private void Awake() {
 		Matrix = Matrix4x4.Rotate(Quaternion.Euler(0, transform.eulerAngles.y, 0));
@@ -34,6 +42,18 @@ public class CameraController : MonoBehaviour {
 
 	private void Ready() {
 		m_krampus = Game.MainGameInfo.Krampus;
+		Game.MainGameInfo.Krampus.KrampusEvents.onTongueLengthChanged.AddListener(ChangeOrto);
+		m_unzoomToZoomStartRatio = m_unzoomedOrtoSize / m_zoomedOrtoSize;
+		Debug.Log("ratio" + m_unzoomToZoomStartRatio);
+	}
+
+	private void OnDestroy() {
+		Game.MainGameInfo.Krampus.KrampusEvents.onTongueLengthChanged.RemoveListener(ChangeOrto);
+	}
+
+	private void FixedUpdate() {
+		AddBaseOrto();
+		SubstractBaseOrto();
 	}
 
 	private void LateUpdate() {
@@ -60,6 +80,44 @@ public class CameraController : MonoBehaviour {
 
 		return Mathf.Lerp(m_unzoomedOrtoSize, m_zoomedOrtoSize, m_zoomCurve.Evaluate(Mathf.Clamp01(m_zoomFactor)));
 	}
+
+	private void ChangeOrto(Krampus krampus, float diff) {
+		if (diff >= 0) {
+			m_ortoZoomBaseToAdd += diff;
+			m_ortoUnzoomBaseToAdd += diff*m_unzoomToZoomStartRatio;
+		} else {
+			m_ortoZoomBaseToSubstract -= diff;
+			m_ortoUnzoomBaseToSubstract -= diff*m_unzoomToZoomStartRatio;
+		}
+	}
+
+	private void AddBaseOrto() {
+		if (m_ortoZoomBaseToAdd > 0) {
+			float diff = Time.fixedDeltaTime * m_ortoChangeSpeed;
+			m_ortoZoomBaseToAdd -= diff;
+			m_zoomedOrtoSize += diff;
+		}
+		if (m_ortoUnzoomBaseToAdd > 0) {
+			float diff = Time.fixedDeltaTime * m_ortoChangeSpeed;
+			m_ortoUnzoomBaseToAdd -= diff;
+			m_unzoomedOrtoSize += diff * m_unzoomToZoomStartRatio;
+		}
+	}
+
+	private void SubstractBaseOrto() {
+		if (m_ortoZoomBaseToSubstract > 0) {
+			float diff = Time.fixedDeltaTime * m_ortoChangeSpeed;
+			m_ortoZoomBaseToSubstract -= diff;
+			m_zoomedOrtoSize -= diff;
+		}
+		if (m_ortoUnzoomBaseToSubstract > 0) {
+			float diff = Time.fixedDeltaTime * m_ortoChangeSpeed;
+			m_ortoUnzoomBaseToSubstract -= diff;
+			m_unzoomedOrtoSize -= diff * m_unzoomToZoomStartRatio;
+		}
+	}
+
+
 
 
 	[Button("Set Current As Base")]
