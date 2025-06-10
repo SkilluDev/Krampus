@@ -219,6 +219,7 @@ public class MainGameInfo : LevelInfo {
             case Ending.Win:
                 Game.MainGameInfo.SetState(State.Won);
                 m_outro.PlayOutro();
+				StartCoroutine(AllowNextLevelAfterSeconds(3f));
                 break;
             case Ending.LoseNun:
                 Game.MainGameInfo.SetState(State.Over);
@@ -230,4 +231,9 @@ public class MainGameInfo : LevelInfo {
         Game.MusicMan.StopMusic();
         StartCoroutine(UI.ProcessEnding(ending));
     }
+
+	private IEnumerator AllowNextLevelAfterSeconds(float time) {
+		yield return new WaitForSeconds(time);
+		Game.PogMan.AllowNextLevel();
+	}
 }

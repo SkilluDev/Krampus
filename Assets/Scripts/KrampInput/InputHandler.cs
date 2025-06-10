@@ -31,7 +31,7 @@ public class InputHandler : MonoBehaviour
 			if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
 				Game.PogMan.GoBackToMenu();
             }
-            if (InputSubscribe.Raw.UI.NextLevel.triggered) { //go to next level with space
+            if (InputSubscribe.Raw.UI.Advance.triggered && Game.PogMan.CanGoToNextLevel) { //go to next level with space
 				Game.PogMan.LoadNextLevel();
             }
         }

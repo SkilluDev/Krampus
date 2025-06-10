@@ -24,6 +24,10 @@ public class PogMan : MonoBehaviour {
 	private LevelModifier m_nextLevelModifer;
 	public LevelModifier NextLevelModifier => m_nextLevelModifer;
 
+	private bool m_canGoToNextLevel;
+
+	public bool CanGoToNextLevel => m_canGoToNextLevel;
+
 	public void ResetProgress() {
 		m_currentLevel = 0;
 		m_krampusItems = null;
@@ -53,6 +57,7 @@ public class PogMan : MonoBehaviour {
 	}
 
 	public void LoadNextLevel() {
+		m_canGoToNextLevel = false;
 		m_currentLevel += 1;
 		if (m_currentLevel < m_levelSet.LevelStats.Count) {
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
@@ -64,6 +69,7 @@ public class PogMan : MonoBehaviour {
 	}
 
 	public void LoadFirstLevel(bool newSeed) {
+		m_canGoToNextLevel = false;
 		if (newSeed) {
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.New;
 		} else {
@@ -77,8 +83,13 @@ public class PogMan : MonoBehaviour {
 	}
 
 	public void GoBackToMenu() {
+		m_canGoToNextLevel = false;
 		ResetProgress();
 		Game.RoomGenInfo.Regenerate = RoomGenerationType.First;
 		Game.LoadState(Game.State.MainMenu);
+	}
+
+	public void AllowNextLevel() {
+		m_canGoToNextLevel = true;
 	}
 }
