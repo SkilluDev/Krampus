@@ -80,16 +80,6 @@ public class KrampusController : KrampusBehaviour {
 		Normal,
 		Rapid
 	}
-
-	[NaughtyAttributes.Button("Add New Example Stat")]
-	private void AddNewExamples() {
-
-	}
-
-	[NaughtyAttributes.Button("Add Example Stat")]
-	private void AddExamples() {
-
-	}
 	// Based on @SkilluDev's inputs
 	private void Update() {
 
