@@ -252,13 +252,13 @@ public class KrampusController : KrampusBehaviour {
 			m_comboPoints = Game.MainGameInfo.MaxComboPoints;
 		}
 		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints);
-		Kramp.KrampusEvents.onComboChanged.Invoke(Kramp, m_comboPoints);
+		Kramp.KrampusEvents.onWindUpChanged.Invoke(Kramp, m_comboPoints);
 	}
 
 	public void SpendComboPoints(float value) {
 		m_comboPoints -= value;
 		Game.MainGameInfo.UI.ChangeComboValue(m_comboPoints, 0.1f);
-		Kramp.KrampusEvents.onComboChanged.Invoke(Kramp, m_comboPoints);
+		Kramp.KrampusEvents.onWindUpChanged.Invoke(Kramp, m_comboPoints);
 	}
 
 	public void SetCanSting(bool canSting) {
