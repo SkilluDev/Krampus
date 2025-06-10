@@ -39,17 +39,17 @@ public class NunMissle : MonoBehaviour {
     void OnTriggerEnter(Collider other) {
         if (m_isActive == false) return;
         if (other.gameObject.layer == LayerMask.NameToLayer("Wall")) {
-            DesactivateMissle();
-           
+            DisactivateMissle();
+
         }
         if (other.gameObject.tag == "Player") {
             KrampusStats krampus = other.GetComponent<KrampusStats>();
             krampus.RegisterEffect(new Effect(KrampusStats.Stat.Speed, -0.3f, 3, "Nun_Slow", null));
-            DesactivateMissle();
+            DisactivateMissle();
         }
     }
 
-    void DesactivateMissle() {
+    void DisactivateMissle() {
         m_isActive = false;
         m_missleMesh.SetActive(false);
          Destroy(gameObject, 2);
