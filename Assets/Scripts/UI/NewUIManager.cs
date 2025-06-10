@@ -63,7 +63,8 @@ public class NewUIManager : MonoBehaviour {
     [BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockLeft;
     [BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockRight;
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarTutorialKeys;
-    [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarMenuKeys;
+    [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarLoseKeys;
+    [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarWinKeys;
 
 
 
@@ -226,7 +227,11 @@ public class NewUIManager : MonoBehaviour {
     public IEnumerator ProcessEnding(Ending ending) {
         m_blackBars.Show();
         m_blackBars.SetTopBarText("");
-        m_blackBars.SetBottomBarText(m_bottomBarMenuKeys);
+		if (ending.IsWin()) {
+			m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
+		} else {
+			m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
+		}
         m_endScreenHandler.PreActivate(ending);
         yield return new WaitForSeconds(3);
         m_endScreenHandler.Activate(ending);
