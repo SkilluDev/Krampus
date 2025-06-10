@@ -322,7 +322,7 @@ public class KrampusTongue : KrampusBehaviour {
                         LogException(e, m_hitEdible);
                     }
                 }
-
+				Kramp.Kontroller.LockOut();
                 Kramp.Kontroller.SetCanSting(false);
 				Kramp.Kontroller.SetStingTarget(null);
                 m_hitEdible = null;

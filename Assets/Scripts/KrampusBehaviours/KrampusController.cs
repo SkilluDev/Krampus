@@ -52,6 +52,13 @@ public class KrampusController : KrampusBehaviour {
 	public float WindUpStingCost => m_windUpStingCost;
 	private IInteractable m_stingerTarget;
 
+	private bool m_isLockedIn;
+	public bool IsLockedIn => m_isLockedIn;
+
+	private float m_lockInTimer = 0f;
+
+	[SerializeField] private float m_lockInThreshold;
+
 
 
 	//Wind-up
@@ -102,6 +109,17 @@ public class KrampusController : KrampusBehaviour {
 
 		if (m_windUpGainLock > 0) {
 			m_windUpGainLock -= Time.deltaTime;
+		}
+
+		if (CurrentState == State.Walk || CurrentState == State.Idle) {
+			if (!IsLockedIn) {
+				m_lockInTimer += Time.deltaTime;
+				if (m_lockInTimer > m_lockInThreshold) {
+					LockIn();
+				}
+			}
+		} else {
+			LockOut();
 		}
 
 		if (CurrentState is State.Dead or State.Dash) return;
@@ -165,6 +183,18 @@ public class KrampusController : KrampusBehaviour {
 		}
 	}
 
+	public void LockIn() {
+		Kramp.KrampusEvents.onLockIn.Invoke(Kramp);
+		m_isLockedIn = true;
+	}
+
+	public void LockOut() {
+		if (IsLockedIn) {
+			Kramp.KrampusEvents.onLockOut.Invoke(Kramp);
+			m_isLockedIn = false;
+		}
+		m_lockInTimer = 0f;
+	}
 	public void Dash() {
 		if (!CanSting) return;
 		m_dashTime = 0;

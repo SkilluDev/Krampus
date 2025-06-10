@@ -1088,11 +1088,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1316778976212434275, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: onNaughtyChildEaten.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1316778976212434275, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: onNaughtyChildEaten.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1316778976212434275, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: onNaughtyChildEaten.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_runningEffect
       value: 
       objectReference: {fileID: 865904282}
+    - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_rawStatList.Array.data[1].m_value
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_rawStatList.Array.data[1].m_statMode
@@ -1107,6 +1127,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_comboStingCost
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698299321934093973, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_lockInThreshold
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1698299321934093973, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
