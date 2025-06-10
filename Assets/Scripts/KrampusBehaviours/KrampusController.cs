@@ -40,14 +40,15 @@ public class KrampusController : KrampusBehaviour {
 	private float m_timeHoldingInput = 0f;
 	private float m_previousFrameVelocity = 0f;
 	private float m_dashTime;
-	[BoxGroup("Dash")][SerializeField] private float m_dashDuration = 1f;
-	[BoxGroup("Dash")][SerializeField] private float m_dashSpeed = 24f;
+	[BoxGroup("Dash")][SerializeField] private float m_dashSpeed;
+	[BoxGroup("Dash")][SerializeField] private float m_dashCurveEvalSpeed;
+
 	[BoxGroup("Dash")][SerializeField] private AnimationCurve m_dashCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
 	public bool CanSting { get; set; } = false;
 	private Vector3 m_dashDirection;
 	public Vector3 NextStingDirection { get => m_dashDirection; set => m_dashDirection = value; }
-	[SerializeField] private float m_comboStingCost = 30;
+	[SerializeField] private float m_comboStingCost;
 	public float ComboStingCost => m_comboStingCost;
 	private IInteractable m_stingerTarget;
 
@@ -166,7 +167,7 @@ public class KrampusController : KrampusBehaviour {
 
 	public void Dash() {
 		if (!CanSting) return;
-		m_dashTime = m_dashDuration;
+		m_dashTime = 0;
 		//m_dashDirection = Kramp.Tongue.TongueDirection;
 		Kramp.KrampusEvents.onStingerUsed.Invoke(Kramp);
 		ChangeState(State.Dash, StateChangeReason.Rapid);
@@ -209,8 +210,8 @@ public class KrampusController : KrampusBehaviour {
 				ChangeState(State.Run, StateChangeReason.Rapid);
 				return;
 			}
-			m_dashTime -= Time.fixedDeltaTime;
-			//Debug.Log("Dash TIme: " + m_dashTime);
+			m_dashTime += Time.fixedDeltaTime*m_dashCurveEvalSpeed;
+			//Debug.Log("Dash Time: " + m_dashTime);
 			Vector3 direction = m_stingerTarget.GameObject.transform.position - transform.position;
 			float distance = direction.sqrMagnitude;
 			m_rigidbody.velocity = direction.normalized * m_dashCurve.Evaluate(m_dashTime) * m_dashSpeed;
