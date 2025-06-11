@@ -26,7 +26,6 @@ public class ItemChoiceMenuUI : MonoBehaviour {
         Game.MainGameInfo.Krampus.Stats.AddItem(m_itemsDisplayed[pos]);
 
         Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-        Game.MainGameInfo.UI.UIElementsEntryAnimation();
 
         gameObject.SetActive(false);
 

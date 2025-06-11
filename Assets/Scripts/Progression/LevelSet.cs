@@ -22,6 +22,9 @@ public class LevelStats {
 
 	[SerializeField] private bool m_canChooseItems = true;
 	public bool CanChooseItems => m_canChooseItems;
+
+	[SerializeField] private float m_timer = 60f;
+	public float Timer => m_timer;
 }
 
 [CreateAssetMenu(menuName = "Game/LevelProgression/Stats", fileName = "LevelProgressionStats")]

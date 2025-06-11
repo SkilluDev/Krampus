@@ -103,9 +103,10 @@ public class MainGameInfo : LevelInfo {
 
 	public void SetState(State state) {
 		if (state == State.ItemChoosing) {
-			ProceedToItemChoosing();
-			return;
+			if (Game.PogMan.GetCurrentLevelStats().CanChooseItems) state = State.ItemChoosing;
+			else state = State.Game;
 		}
+		Game.MainGameInfo.GlobalEvents.onLevelStateChanged.Invoke(CurrentState, state);
 		CurrentState = state;
 	}
 	[NaughtyAttributes.Button("Press To Win")]
@@ -230,13 +231,5 @@ public class MainGameInfo : LevelInfo {
 	private IEnumerator AllowNextLevelAfterSeconds(float time) {
 		yield return new WaitForSeconds(time);
 		Game.PogMan.AllowNextLevel();
-	}
-
-	public void ProceedToItemChoosing() {
-		if (Game.PogMan.GetCurrentLevelStats().CanChooseItems) {
-			CurrentState = State.ItemChoosing;
-		} else {
-			CurrentState = State.Game;
-		}
 	}
 }

@@ -186,6 +186,7 @@ public class NewUIManager : MonoBehaviour {
         Game.MainGameInfo.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
 		Game.MainGameInfo.Krampus.KrampusEvents.onEffectRegistered.AddListener(DisplayEffect);
 		Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
+		Game.MainGameInfo.GlobalEvents.onLevelStateChanged.AddListener(OnLevelStateChanged);
 
         m_originalTimerColor = m_timerDisplay.Color;
         m_tutorial.gameObject.SetActive(false);
@@ -193,12 +194,23 @@ public class NewUIManager : MonoBehaviour {
         m_uiBlockRight.gameObject.SetActive(false);
     }
 
+	private void OnLevelStateChanged(MainGameInfo.State previous, MainGameInfo.State next) {
+		if (next == MainGameInfo.State.Game &&
+			(previous == MainGameInfo.State.ItemChoosing ||
+		 	previous == MainGameInfo.State.Intro ||
+		  	previous == MainGameInfo.State.WaitingToStart)
+			) {
+			UIElementsEntryAnimation();
+		}
+
+	}
+
     public void ChangeChildCounter() {
-        m_currentFillHandle.TryCancel();
-        float oldValue = m_fillBar.fillAmount;
-        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 1, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
-                                 Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar);
-    }
+		m_currentFillHandle.TryCancel();
+		float oldValue = m_fillBar.fillAmount;
+		m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 1, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
+								 Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar);
+	}
 
     public void ChangeWindUpValue(float value, float time = 1f) {
 	    m_currentWindUpFillHandle.TryCancel();
