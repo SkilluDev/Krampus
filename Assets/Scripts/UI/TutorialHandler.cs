@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,8 +8,17 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Flags]
+public enum TutorialPages {
+	None = 0,
+	Page1 = 1,
+	Page2 = 2,
+	Page3 = 4,
+	Everything = ~0
+}
 public class TutorialHandler : MonoBehaviour {
-    private Transform[] m_tutorials;
+	[SerializeField] private TutorialPages m_tutorialPagesChosen;
+    private Transform[] m_tutorialPages;
     private int m_tutorialCounter = 0;
 
 
@@ -30,10 +40,10 @@ public class TutorialHandler : MonoBehaviour {
 
 
     private void Awake() {
-        m_tutorials = new Transform[m_tutorialHolder.transform.childCount];
-        for (int i = 0; i < m_tutorials.Length; i++) {
-            m_tutorials[m_tutorials.Length - 1 - i] = m_tutorialHolder.transform.GetChild(i);
-            m_tutorials[m_tutorials.Length - 1 - i].transform.localPosition += new Vector3(0, 0, m_distanceBetween * i);
+        m_tutorialPages = new Transform[m_tutorialHolder.transform.childCount];
+        for (int i = 0; i < m_tutorialPages.Length; i++) {
+            m_tutorialPages[m_tutorialPages.Length - 1 - i] = m_tutorialHolder.transform.GetChild(i);
+            m_tutorialPages[m_tutorialPages.Length - 1 - i].transform.localPosition += new Vector3(0, 0, m_distanceBetween * i);
         }
     }
 
@@ -51,7 +61,7 @@ public class TutorialHandler : MonoBehaviour {
 
         }
         if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
-            MoveBack(m_tutorialCounter++ % m_tutorials.Length);
+            MoveBack(m_tutorialCounter++ % m_tutorialPages.Length);
             if(--m_uiMoveInCounter==0) Game.MainGameInfo.UI.UIElementsEntryAnimation();
         }
 
@@ -61,7 +71,7 @@ public class TutorialHandler : MonoBehaviour {
 
         m_isMoving = true;
 
-        var page = m_tutorials[id].transform;
+        var page = m_tutorialPages[id].transform;
         var oldLocalPosition = page.localPosition;
         var oldLocalMainPosition = m_tutorialHolder.transform.localPosition;
 
@@ -95,7 +105,7 @@ public class TutorialHandler : MonoBehaviour {
        .BindToLocalPosition(m_keybindPrompt));
 
         currentLocalPagePosition = nextLocalPagePosition;
-        nextLocalPagePosition = currentLocalPagePosition - Vector3.forward * (m_tutorials.Length + 1) * m_distanceBetween;
+        nextLocalPagePosition = currentLocalPagePosition - Vector3.forward * (m_tutorialPages.Length + 1) * m_distanceBetween;
 
         lSequence.Append(LMotion.Create(currentLocalPagePosition, nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic).
         WithOnComplete(() => page.SetAsFirstSibling()).BindToLocalPosition(page));
@@ -126,10 +136,10 @@ public class TutorialHandler : MonoBehaviour {
 
         m_keybindPrompt.localPosition = keybindPromptLocalMainPosition;
 
-        m_tutorials[id].transform.position = oldPosition;
-        m_tutorials[id].transform.localPosition = oldLocalPosition;
+        m_tutorialPages[id].transform.position = oldPosition;
+        m_tutorialPages[id].transform.localPosition = oldLocalPosition;
 
-        m_tutorials[id].transform.rotation = oldRotation;
+        m_tutorialPages[id].transform.rotation = oldRotation;
         m_tutorialHolder.transform.localPosition = oldLocalMainPosition;
 
         m_handle = lSequence.Run();
