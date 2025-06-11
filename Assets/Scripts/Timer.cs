@@ -6,9 +6,7 @@ public class Timer : MonoBehaviour {
 	[BoxGroup("Timer")][SerializeField] private int m_timeBonus;
 	[BoxGroup("Timer")][SerializeField] private int m_timePenalty;
 
-	[ShowNativeProperty] public float GameTime { get; private set; } = 10f;
-
-	[SerializeField] private float m_startTime = 60; 
+	[ShowNativeProperty] public float GameTime { get; private set; } = 60f;
 	[SerializeField] private float m_changeDuration;
 	[SerializeField] private float m_lowTime = 10;
 
@@ -23,12 +21,11 @@ public class Timer : MonoBehaviour {
 			Penalty();
 		}
 	}
-
-	private void Start() {
-		GameTime = m_startTime;	
-	}
 	public void Ready() {
-
+		GameTime = Game.PogMan.GetCurrentLevelStats().Timer;
+		if (GameTime <= 0) {
+			GameTime = float.MaxValue;
+		}
 
 		Game.MainGameInfo.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
 	}

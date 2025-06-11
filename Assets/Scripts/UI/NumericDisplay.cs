@@ -48,9 +48,9 @@ public class NumericDisplay : MonoBehaviour {
         int integral = Mathf.FloorToInt(value);
         int fractional = Mathf.RoundToInt((value - integral) * Mathf.Pow(10, m_fractionalPlaces.Length));
 
-        if (integral >= Mathf.Pow(10, m_integralPlaces.Length)) {
-            integral = Mathf.FloorToInt(Mathf.Pow(10, m_integralPlaces.Length) - 1);
-            fractional = Mathf.FloorToInt(Mathf.Pow(10, m_fractionalPlaces.Length) - 1);
+		if (value >= Mathf.Pow(10, m_integralPlaces.Length)) {
+			integral = Mathf.FloorToInt(Mathf.Pow(10, m_integralPlaces.Length) - 1);
+			fractional = Mathf.FloorToInt(Mathf.Pow(10, m_fractionalPlaces.Length) - 1);
         }
 
         for (int i = 0; i < m_integralPlaces.Length; i++) {
