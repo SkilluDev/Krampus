@@ -58,6 +58,8 @@ public class KrampusController : KrampusBehaviour {
 
 	private float m_lockInTimer = 0f;
 
+
+	
 	[SerializeField] private float m_lockInThreshold;
 	public float LockInThreshold => m_lockInThreshold;
 	private MotionHandle m_lockInMotion;
