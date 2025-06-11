@@ -384,7 +384,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_timeBonus: 10
   m_timePenalty: 15
-  m_startTime: 60
   m_changeDuration: 1
   m_lowTime: 10
 --- !u!114 &358014043
@@ -400,6 +399,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onChildEaten:
+    m_PersistentCalls:
+      m_Calls: []
+  onLevelStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &358014044
@@ -1115,6 +1117,11 @@ PrefabInstance:
     - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_rawStatList.Array.data[1].m_statMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376265350818594481, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_rawStatList.Array.data[2].m_statMode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1698299321934093973, guid: 1370af54edd30564086e0f4717044a13,

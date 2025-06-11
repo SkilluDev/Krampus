@@ -64,6 +64,7 @@ public class KrampusController : KrampusBehaviour {
 	//Wind-up
 	private float m_windUpPoints;
 	private float WindUpBonus => Kramp.Stats.GetFinalStat(Stat.WindUpGain);
+
 	public float WindUpPoints { get => m_windUpPoints; set => m_windUpPoints = value; }
 	private float m_windUpGainLock = 0;
 
@@ -277,7 +278,10 @@ public class KrampusController : KrampusBehaviour {
 
 		if (m_windUpGainLock > 0) { Debug.Log("Block"); return; }
 
-		m_windUpPoints += value * WindUpBonus;
+
+		Debug.Log("Windup bonus: " + WindUpBonus);
+
+		m_windUpPoints += value *  WindUpBonus;
 		if (m_windUpPoints > Game.MainGameInfo.MaxWindUpPoints) {
 			m_windUpPoints = Game.MainGameInfo.MaxWindUpPoints;
 		}
