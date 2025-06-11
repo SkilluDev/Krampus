@@ -7,6 +7,10 @@ public class TestScript : MonoBehaviour {
 	private void Update() {
 		Debug.Log("Speed===" + m_customEnumDictionary[KrampusStats.Stat.Speed].Value);
 	}
+
+	private void OnValidate() {
+		m_customEnumDictionary.Validate();
+	}
 }
 
 [Serializable]

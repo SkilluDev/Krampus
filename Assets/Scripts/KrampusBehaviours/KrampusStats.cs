@@ -11,10 +11,10 @@ using static KrampusStats;
 
 public class KrampusStats : KrampusBehaviour {
 
-    public enum Stat {
-        Speed,
-        TongueRange,
-        WindUpGain
+	public enum Stat {
+		Speed,
+		TongueRange,
+		WindUpGain,
     }
 
     public enum StatMode {
