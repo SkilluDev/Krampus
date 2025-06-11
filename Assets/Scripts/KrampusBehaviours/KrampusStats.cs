@@ -127,26 +127,26 @@ public class KrampusStats : KrampusBehaviour {
         }
     }
 
-	private void LoadItems() {
-		var itemsToAdd = new List<Item>();
-		Game.PogMan.Unpack(ref itemsToAdd);
-		foreach (var item in itemsToAdd) {
-			AddItem(item);
-		}
+    private void LoadItems() {
+        var itemsToAdd = new List<Item>();
+        Game.PogMan.Unpack(ref itemsToAdd);
+        foreach (var item in itemsToAdd) {
+            AddItem(item);
+        }
     }
     private void StoreItems() {
         Game.PogMan.Store(ref m_items);
     }
 
     public void RegisterEffect(Effect effect) {
-		Kramp.KrampusEvents.onEffectRegistered.Invoke(Kramp, effect);
+        Kramp.KrampusEvents.onEffectRegistered.Invoke(Kramp, effect);
         m_effects[effect.StatModifier.Stat].Add(effect);
         RecalculateStats();
     }
 
 
     public void UnregisterEffect(Effect effect) {
-		Kramp.KrampusEvents.onEffectUnregistered.Invoke(Kramp, effect);
+        Kramp.KrampusEvents.onEffectUnregistered.Invoke(Kramp, effect);
         m_effects[effect.StatModifier.Stat].Remove(effect);
         RecalculateStats();
     }
@@ -222,6 +222,13 @@ public class KrampusStats : KrampusBehaviour {
         }
         return finalStat;
     }
+
+    public bool hasItemWithTag(ItemTag tag) {
+        foreach (var i in m_items) {
+            if (i.hasTag(tag)) { return true; }
+        }
+        return false;
+     }
 }
 
 

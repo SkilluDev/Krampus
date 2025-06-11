@@ -29,6 +29,8 @@ public class KrampusAnimator : KrampusBehaviour {
     private float m_minimalVelocity;
     private Quaternion m_rotationTarget;
 
+    private bool HasLockInItem => Kramp.Stats.hasItemWithTag(ItemTag.LockIn);
+
     private void Start() {
         Kramp.Tongue.onStateChanged += TongueStateChanged;
         Kramp.Kontroller.onStateChanged += MovementStateChanged;
@@ -153,16 +155,19 @@ public class KrampusAnimator : KrampusBehaviour {
     }
 
     void LockInAnimation() {
-        if (m_inLockInAnimation) { Debug.Log("Siema zatrzymalem ci lockIn"); return; };
+        if (!HasLockInItem) return;
+        if (m_inLockInAnimation) { Debug.Log("Siema zatrzymalem ci lockIn"); return; }
+        ;
 
 
-        m_lockInAnimation_2 = LMotion.Create(0, 1, 1).WithOnComplete(() => m_lockInCircle.gameObject.SetActive(true)).Bind(null);
+        m_lockInAnimation_2 = LMotion.Create(0, 1, 0.25f).WithOnComplete(() => m_lockInCircle.gameObject.SetActive(true)).Bind(null);
         m_lockInAnimation = LMotion.Create(0.4f, 0.14f, Kramp.Kontroller.LockInThreshold).Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3));
         m_inLockInAnimation = true;
 
     }
 
     void LockOutAnimation() {
+         if (!HasLockInItem) return;
         if (!m_inLockInAnimation) return;
         Debug.Log("Lock out baby");
         m_lockInCircle.gameObject.SetActive(false);

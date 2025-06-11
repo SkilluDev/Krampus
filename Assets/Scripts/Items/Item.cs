@@ -2,6 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[Serializable]
+public enum ItemTag {
+	LockIn,
+
+	
+
+	
+ }
+
 [CreateAssetMenu(menuName = "Game/Items/Item", fileName = "Item")]
 public class Item : ScriptableObject {
 	[SerializeField] protected string m_itemName = "Item Name";
@@ -15,6 +25,7 @@ public class Item : ScriptableObject {
 	public string Description => m_description;
 
 	[SerializeField] private List<EffectInEditor> m_effectsInEditor = new List<EffectInEditor>();
+	[SerializeField] private List<ItemTag> m_itemTags = new List<ItemTag>();
 
 	protected List<Effect> m_effects = new List<Effect>();
 
@@ -74,4 +85,9 @@ public class Item : ScriptableObject {
 		ItemRemoved(Game.MainGameInfo.Krampus);
 		ItemAdded(Game.MainGameInfo.Krampus);
 	}
+
+	public bool hasTag(ItemTag tag) {
+		return m_itemTags.Contains(tag);
+		
+	 }
 }
