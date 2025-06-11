@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class LevelStats
-{
+public class LevelStats {
 
 	[SerializeField] private int m_naughtyCount;
 	public int NaughtyCount => m_naughtyCount;
@@ -20,6 +19,9 @@ public class LevelStats
 
 	[SerializeField] private int m_gridLength;
 	public int GridLength => m_gridLength;
+
+	[SerializeField] private bool m_canChooseItems = true;
+	public bool CanChooseItems => m_canChooseItems;
 }
 
 [CreateAssetMenu(menuName = "Game/LevelProgression/Stats", fileName = "LevelProgressionStats")]

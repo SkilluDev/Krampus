@@ -16,218 +16,227 @@ using Random = UnityEngine.Random;
 /// De-facto game controller for the main gaame scene
 /// </summary>
 public class MainGameInfo : LevelInfo {
-    [ShowNativeProperty] public State CurrentState { get; private set; }
-    public RoomGeneratorBase RoomGenerator => m_roomGenerator;
-    [SerializeField] private RoomGeneratorBase m_roomGenerator;
+	[ShowNativeProperty] public State CurrentState { get; private set; }
+	public RoomGeneratorBase RoomGenerator => m_roomGenerator;
+	[SerializeField] private RoomGeneratorBase m_roomGenerator;
 
-    public NewUIManager UI => m_ui;
-    [SerializeField] private NewUIManager m_ui;
+	public NewUIManager UI => m_ui;
+	[SerializeField] private NewUIManager m_ui;
 
-    public ShaderManager ShaderManager => m_shaderManager;
-    [SerializeField] private ShaderManager m_shaderManager;
-
-
-    public IReadOnlyList<ChildType> Types => m_types;
-    [SerializeField] private ChildType[] m_types;
-
-    public Krampus Krampus => m_krampus;
-    [SerializeField] private Krampus m_krampus;
-
-    public GlobalEvents GlobalEvents => m_globalEvents;
-    [SerializeField] private GlobalEvents m_globalEvents;
-
-    public float WindUpGainFromChildren => m_windUpGainFromChildren;
-    [BoxGroup("Wind-up")][SerializeField] private float m_windUpGainFromChildren;
-    public float MaxWindUpPoints => m_maxWindUpPoints;
-    [BoxGroup("Wind-up")][SerializeField] private float m_maxWindUpPoints = 100.0f;
+	public ShaderManager ShaderManager => m_shaderManager;
+	[SerializeField] private ShaderManager m_shaderManager;
 
 
-    [BoxGroup("Item Pool")][SerializeField] private ItemPool m_itemPool;
-    public ItemPool ItemPool => m_itemPool;
+	public IReadOnlyList<ChildType> Types => m_types;
+	[SerializeField] private ChildType[] m_types;
+
+	public Krampus Krampus => m_krampus;
+	[SerializeField] private Krampus m_krampus;
+
+	public GlobalEvents GlobalEvents => m_globalEvents;
+	[SerializeField] private GlobalEvents m_globalEvents;
+
+	public float WindUpGainFromChildren => m_windUpGainFromChildren;
+	[BoxGroup("Wind-up")][SerializeField] private float m_windUpGainFromChildren;
+	public float MaxWindUpPoints => m_maxWindUpPoints;
+	[BoxGroup("Wind-up")][SerializeField] private float m_maxWindUpPoints = 100.0f;
 
 
-    public ChildType NiceChildType { get; set; }
-
-    public ChildType NaughtyChildType { get; set; }
-
-    public ChildType RandomNaughtyChildType => Types.First(x => x != NiceChildType);
-    public IEnumerable<ChildType> NaughtyChildTypes => Types.Where(x => x != NiceChildType);
-
-    public IReadOnlyCollection<Child> Children => m_childRegistry;
-    public IEnumerable<Child> NaughtyChildren => m_naughtyChildRegistry;
-    public IEnumerable<Child> NiceChildren => m_niceChildRegistry;
-    private List<Child> m_childRegistry = new List<Child>();
-    private List<Child> m_naughtyChildRegistry = new List<Child>();
-    private List<Child> m_niceChildRegistry = new List<Child>();
-
-    public int NaughtyChildrenCountOnStart { get; private set; }
-    public int NiceChildrenCountOnStart { get; private set; }
-
-    public IReadOnlyCollection<Nun> Nuns => m_nunRegistry;
-    private List<Nun> m_nunRegistry = new List<Nun>();
-    private Dictionary<Room, RoomData> m_roomdata = new Dictionary<Room, RoomData>();
-
-    [SerializeField] private Timer m_timer;
-    public Timer Timer => m_timer;
-
-    public float timeFromStart = 0;
+	[BoxGroup("Item Pool")][SerializeField] private ItemPool m_itemPool;
+	public ItemPool ItemPool => m_itemPool;
 
 
-    [SerializeField] private  bool m_useLevelModifer = true;
+	public ChildType NiceChildType { get; set; }
 
-    private float m_score;
+	public ChildType NaughtyChildType { get; set; }
 
-    public float Score => m_score;
+	public ChildType RandomNaughtyChildType => Types.First(x => x != NiceChildType);
+	public IEnumerable<ChildType> NaughtyChildTypes => Types.Where(x => x != NiceChildType);
+
+	public IReadOnlyCollection<Child> Children => m_childRegistry;
+	public IEnumerable<Child> NaughtyChildren => m_naughtyChildRegistry;
+	public IEnumerable<Child> NiceChildren => m_niceChildRegistry;
+	private List<Child> m_childRegistry = new List<Child>();
+	private List<Child> m_naughtyChildRegistry = new List<Child>();
+	private List<Child> m_niceChildRegistry = new List<Child>();
+
+	public int NaughtyChildrenCountOnStart { get; private set; }
+	public int NiceChildrenCountOnStart { get; private set; }
+
+	public IReadOnlyCollection<Nun> Nuns => m_nunRegistry;
+	private List<Nun> m_nunRegistry = new List<Nun>();
+	private Dictionary<Room, RoomData> m_roomdata = new Dictionary<Room, RoomData>();
+
+	[SerializeField] private Timer m_timer;
+	public Timer Timer => m_timer;
+
+	public float timeFromStart = 0;
+
+
+	[SerializeField] private bool m_useLevelModifer = true;
+
+	private float m_score;
+
+	public float Score => m_score;
 
 
 
-    [SerializeField] private OutroScript m_outro;
+	[SerializeField] private OutroScript m_outro;
 
-    public new enum State {
-        Intro,
-        WaitingToStart,
+	public new enum State {
+		Intro,
+		WaitingToStart,
+		ItemChoosing,
+		Game,
+		Paused,
+		Over,
+		Won
+	}
 
-        ItemChoosing,
-        Game,
-        Paused,
-        Over,
-        Won
-    }
-
-    public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
+	public bool Ended => CurrentState == State.Over || CurrentState == State.Won;
 
 	public bool Won => CurrentState == State.Won;
 
 	public bool Lost => CurrentState == State.Over;
 
-    public bool Ballin => CurrentState == State.Game;
+	public bool Ballin => CurrentState == State.Game;
 
-    public void SetState(State state) {
-        CurrentState = state;
-    }
-    [NaughtyAttributes.Button("Press To Win")]
-    public void DebugWinButton() {
-        ProcessEndGame(Ending.Win);
-        //Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
-    }
-
-    private IEnumerator Start() {
-        yield return new WaitUntil(() => Game.RoomGenInfo != null);
-
-        switch (Game.RoomGenInfo.Regenerate) {
-            case RoomGenerationType.First:
-                Game.RoomGenInfo.SetInitialSeed();
-                break;
-            case RoomGenerationType.New:
-                Game.RoomGenInfo.SetNewSeed();
-                break;
-            case RoomGenerationType.Old:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-
-        Random.InitState(Game.RoomGenInfo.Seed);
-        Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
-
-        CurrentState = State.Intro;
-        NiceChildType = Types[0];
-        NaughtyChildType = Types[1];
-        UI.SetChildrenIcon(NaughtyChildType.uiIcon);
-    }
-
-    private void Ready() {
-        if (m_useLevelModifer) {
-            Game.PogMan.NextLevelModifier.UpdateLevel();
+	public void SetState(State state) {
+		if (state == State.ItemChoosing) {
+			ProceedToItemChoosing();
+			return;
 		}
-    }
+		CurrentState = state;
+	}
+	[NaughtyAttributes.Button("Press To Win")]
+	public void DebugWinButton() {
+		ProcessEndGame(Ending.Win);
+		//Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
+	}
 
-    public RoomData GetRoomData(Room r) {
-        if (r == null) return null;
-        return m_roomdata[r];
-    }
+	private IEnumerator Start() {
+		yield return new WaitUntil(() => Game.RoomGenInfo != null);
 
-    public void CreateRoomData(Room r) {
-        if (m_roomdata.ContainsKey(r)) throw new System.Exception("What the fuck");
-        var data = r.gameObject.AddComponent<RoomData>();
-        data.Init(r);
-        m_roomdata.Add(r, data);
-    }
+		switch (Game.RoomGenInfo.Regenerate) {
+			case RoomGenerationType.First:
+				Game.RoomGenInfo.SetInitialSeed();
+				break;
+			case RoomGenerationType.New:
+				Game.RoomGenInfo.SetNewSeed();
+				break;
+			case RoomGenerationType.Old:
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
 
-    public void ClearRoomData() {
-        m_roomdata.Clear();
-    }
+		Random.InitState(Game.RoomGenInfo.Seed);
+		Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
 
-    public void RegisterChild(Child child) {
-        m_childRegistry.Add(child);
-        if (!child.IsNaughty) {
-            m_niceChildRegistry.Add(child);
-            NiceChildrenCountOnStart += 1;
+		CurrentState = State.Intro;
+		NiceChildType = Types[0];
+		NaughtyChildType = Types[1];
+		UI.SetChildrenIcon(NaughtyChildType.uiIcon);
+	}
 
-        } else {
-            m_naughtyChildRegistry.Add(child);
-            NaughtyChildrenCountOnStart += 1;
-        }
-    }
+	private void Ready() {
+		if (m_useLevelModifer) {
+			Game.PogMan.NextLevelModifier.UpdateLevel();
+		}
+	}
 
-    public void UnregisterChild(Child child) {
-        foreach (var r in m_roomdata.Values.Where(w => w.Contains(child)))
-            r.RemoveCharacter(child);
+	public RoomData GetRoomData(Room r) {
+		if (r == null) return null;
+		return m_roomdata[r];
+	}
 
-        m_childRegistry.Remove(child);
-        if (!child.IsNaughty) {
-            m_niceChildRegistry.Remove(child);
-        } else {
-            m_naughtyChildRegistry.Remove(child);
-            m_score++;
-        }
-    }
+	public void CreateRoomData(Room r) {
+		if (m_roomdata.ContainsKey(r)) throw new System.Exception("What the fuck");
+		var data = r.gameObject.AddComponent<RoomData>();
+		data.Init(r);
+		m_roomdata.Add(r, data);
+	}
 
-    public void RegisterNun(Nun nun) {
-        m_nunRegistry.Add(nun);
-    }
+	public void ClearRoomData() {
+		m_roomdata.Clear();
+	}
 
-    public void UnregisterNun(Nun nun) {
-        foreach (var r in m_roomdata.Values.Where(w => w.Contains(nun)))
-            r.RemoveCharacter(nun);
-        m_nunRegistry.Remove(nun);
-    }
+	public void RegisterChild(Child child) {
+		m_childRegistry.Add(child);
+		if (!child.IsNaughty) {
+			m_niceChildRegistry.Add(child);
+			NiceChildrenCountOnStart += 1;
+
+		} else {
+			m_naughtyChildRegistry.Add(child);
+			NaughtyChildrenCountOnStart += 1;
+		}
+	}
+
+	public void UnregisterChild(Child child) {
+		foreach (var r in m_roomdata.Values.Where(w => w.Contains(child)))
+			r.RemoveCharacter(child);
+
+		m_childRegistry.Remove(child);
+		if (!child.IsNaughty) {
+			m_niceChildRegistry.Remove(child);
+		} else {
+			m_naughtyChildRegistry.Remove(child);
+			m_score++;
+		}
+	}
+
+	public void RegisterNun(Nun nun) {
+		m_nunRegistry.Add(nun);
+	}
+
+	public void UnregisterNun(Nun nun) {
+		foreach (var r in m_roomdata.Values.Where(w => w.Contains(nun)))
+			r.RemoveCharacter(nun);
+		m_nunRegistry.Remove(nun);
+	}
 
 
 
-    private void Update() {
-        if (!Game.MainGameInfo.NaughtyChildren.Any() && Game.Balling) {
-            Game.MainGameInfo.ProcessEndGame(Ending.Win);
-        }
+	private void Update() {
+		if (!Game.MainGameInfo.NaughtyChildren.Any() && Game.Balling) {
+			Game.MainGameInfo.ProcessEndGame(Ending.Win);
+		}
 
-        if (Game.MainGameInfo.Timer.GameTime < 0 && Game.Balling && Krampus.Tongue.CurrentState == KrampusTongue.State.Idle) {
-            Krampus.Kontroller.KrampTermination(Ending.LoseTime);
-            return;
-        }
+		if (Game.MainGameInfo.Timer.GameTime < 0 && Game.Balling && Krampus.Tongue.CurrentState == KrampusTongue.State.Idle) {
+			Krampus.Kontroller.KrampTermination(Ending.LoseTime);
+			return;
+		}
+	}
 
-        if (CurrentState == State.ItemChoosing) { Debug.Log("WOW"); }
-    }
-
-    public void ProcessEndGame(Ending ending) {
-        switch (ending) {
-            case Ending.Win:
-                Game.MainGameInfo.SetState(State.Won);
-                m_outro.PlayOutro();
+	public void ProcessEndGame(Ending ending) {
+		switch (ending) {
+			case Ending.Win:
+				Game.MainGameInfo.SetState(State.Won);
+				m_outro.PlayOutro();
 				StartCoroutine(AllowNextLevelAfterSeconds(1f));
-                break;
-            case Ending.LoseNun:
-                Game.MainGameInfo.SetState(State.Over);
-                break;
-            case Ending.LoseTime:
-                Game.MainGameInfo.SetState(State.Over);
-                break;
-        }
-        Game.MusicMan.StopMusic();
-        StartCoroutine(UI.ProcessEnding(ending));
-    }
+				break;
+			case Ending.LoseNun:
+				Game.MainGameInfo.SetState(State.Over);
+				break;
+			case Ending.LoseTime:
+				Game.MainGameInfo.SetState(State.Over);
+				break;
+		}
+		Game.MusicMan.StopMusic();
+		StartCoroutine(UI.ProcessEnding(ending));
+	}
 
 	private IEnumerator AllowNextLevelAfterSeconds(float time) {
 		yield return new WaitForSeconds(time);
 		Game.PogMan.AllowNextLevel();
+	}
+
+	public void ProceedToItemChoosing() {
+		if (Game.PogMan.GetCurrentLevelStats().CanChooseItems) {
+			CurrentState = State.ItemChoosing;
+		} else {
+			CurrentState = State.Game;
+		}
 	}
 }
