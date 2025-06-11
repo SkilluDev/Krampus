@@ -1565,6 +1565,7 @@ GameObject:
   - component: {fileID: 1553979835}
   - component: {fileID: 1553979836}
   - component: {fileID: 1553979837}
+  - component: {fileID: 1553979838}
   m_Layer: 0
   m_Name: '#GAME'
   m_TagString: Untagged
@@ -1607,6 +1608,7 @@ MonoBehaviour:
   m_musicMan: {fileID: 828710175}
   m_pogMan: {fileID: 544388241}
   m_setMan: {fileID: 117939619}
+  m_globalEvents: {fileID: 1553979838}
 --- !u!114 &1553979835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1643,6 +1645,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1bf7ee5d18d9b141b0d437b036c3202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1553979838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553979832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eee50207e79f436409cff01df69acf04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onChildEaten:
+    m_PersistentCalls:
+      m_Calls: []
+  onLevelStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onValidate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1571651735
 GameObject:
   m_ObjectHideFlags: 0

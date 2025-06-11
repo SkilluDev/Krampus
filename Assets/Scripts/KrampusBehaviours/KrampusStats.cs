@@ -46,23 +46,23 @@ public class KrampusStats : KrampusBehaviour {
     private List<Effect> m_effectsToClear = new List<Effect>();
 
     public void Update() {
-        Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
-        Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
+		Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
+		Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
 
-        foreach (var stat in m_effects) {
-            foreach (var effect in stat.Value) {
-                if (effect.EffectType == Effect.Type.Temporary) {
-                    effect.UpdateTimer(Time.deltaTime);
-                }
-                if (effect.IsExpired) {
-                    m_effectsToClear.Add(effect);
-                }
-            }
-        }
-        Debug.Log("Ma speed buff:" + hasMov);
+		foreach (var stat in m_effects) {
+			foreach (var effect in stat.Value) {
+				if (effect.EffectType == Effect.Type.Temporary) {
+					effect.UpdateTimer(Time.deltaTime);
+				}
+				if (effect.IsExpired) {
+					m_effectsToClear.Add(effect);
+				}
+			}
+		}
+		Debug.Log("Ma speed buff:" + hasMov);
 
-        ClearEffectsToClear();
-    }
+		ClearEffectsToClear();
+	}
 
     private void ClearEffectsToClear() {
         foreach (var effect in m_effectsToClear) {
@@ -122,6 +122,7 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     private void OnValidate() {
+		m_rawStatDict.Validate();
         RecalculateStats();
     }
 

@@ -33,9 +33,6 @@ public class MainGameInfo : LevelInfo {
 	public Krampus Krampus => m_krampus;
 	[SerializeField] private Krampus m_krampus;
 
-	public GlobalEvents GlobalEvents => m_globalEvents;
-	[SerializeField] private GlobalEvents m_globalEvents;
-
 	public float WindUpGainFromChildren => m_windUpGainFromChildren;
 	[BoxGroup("Wind-up")][SerializeField] private float m_windUpGainFromChildren;
 	public float MaxWindUpPoints => m_maxWindUpPoints;
@@ -106,7 +103,7 @@ public class MainGameInfo : LevelInfo {
 			if (Game.PogMan.GetCurrentLevelStats().CanChooseItems) state = State.ItemChoosing;
 			else state = State.Game;
 		}
-		Game.MainGameInfo.GlobalEvents.onLevelStateChanged.Invoke(CurrentState, state);
+		Game.GlobalEvents.onLevelStateChanged.Invoke(CurrentState, state);
 		CurrentState = state;
 	}
 	[NaughtyAttributes.Button("Press To Win")]

@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 public class PostProcessHandler : MonoBehaviour {
-    
+
     private Vignette m_vignette;
     private ChromaticAberration m_aberration;
     private MotionBlur m_blur;
@@ -57,7 +57,7 @@ public class PostProcessHandler : MonoBehaviour {
         //m_originalMaxAberrationIntensity = m_maxAberrationIntensity;
         //m_originalMinAberrationIntensity = m_minAberrationIntensity;
 
-        Game.MainGameInfo.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
+        Game.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
     }
 
     [Button]
@@ -68,7 +68,7 @@ public class PostProcessHandler : MonoBehaviour {
     }
 	private void OnChildEaten(Krampus krampus, Child child) {
         if (child.IsNaughty) return;
-        
+
         /* //Aberr
         LMotion.Create(m_originalMinAberrationIntensity, m_originalMinAberrationIntensity+m_aberrationFlashIntensity, m_aberrationFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
             ()=>LMotion.Create(m_originalMinAberrationIntensity+m_aberrationFlashIntensity, m_originalMinAberrationIntensity, m_aberrationFlashDuration/2).WithEase(Ease.OutCubic).Bind(i=>m_minAberrationIntensity=i)
@@ -101,6 +101,6 @@ public class PostProcessHandler : MonoBehaviour {
 
         m_vignette.intensity.value = math.remap(0,1, m_minVignetteIntensity, m_maxVignetteIntensity, deltaDistance);
         m_aberration.intensity.value = math.remap(0,1, m_minAberrationIntensity, m_maxAberrationIntensity, deltaDistance);
-        
+
     }
 }

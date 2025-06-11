@@ -85,13 +85,21 @@ public static PogMan PogMan {
 
     private static Game m_instance;
 
-    private static void PrepareCurrentState() {
-        SourceState = CurrentState;
-        DestinationState = CurrentState;
-        CurrentState = State.Loading;
-        RequireFullReload = false;
-        SceneManager.LoadScene(LOADER_SCENE, LoadSceneMode.Additive);
+	public static GlobalEvents GlobalEvents {
+        get {
+            if (m_instance.m_globalEvents == null) Debug.LogError("GlobalEvents was not assigned in " + m_instance.gameObject.name);
+            return m_instance.m_globalEvents;
+        }
     }
+	[SerializeField] private GlobalEvents m_globalEvents;
+
+    private static void PrepareCurrentState() {
+		SourceState = CurrentState;
+		DestinationState = CurrentState;
+		CurrentState = State.Loading;
+		RequireFullReload = false;
+		SceneManager.LoadScene(LOADER_SCENE, LoadSceneMode.Additive);
+	}
 
     public static void LoadState(State state) {
 		Debug.Log("LOADING" + state);
