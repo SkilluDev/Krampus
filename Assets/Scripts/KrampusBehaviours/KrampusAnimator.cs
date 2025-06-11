@@ -29,7 +29,7 @@ public class KrampusAnimator : KrampusBehaviour {
     private float m_minimalVelocity;
     private Quaternion m_rotationTarget;
 
-    private bool HasLockInItem => Kramp.Stats.hasItemWithTag(ItemTag.LockIn);
+    private bool HasLockInItem => Kramp.Stats.HasItemWithTag(ItemTag.LockIn);
 
     private void Start() {
         Kramp.Tongue.onStateChanged += TongueStateChanged;
@@ -72,7 +72,7 @@ public class KrampusAnimator : KrampusBehaviour {
 
                 m_animator.SetBool(m_tongueReadyProperty, false);
                 m_animator.SetBool(m_tongueShouldEatProperty, false);
-                 LockOutAnimation();  
+                 LockOutAnimation();
                 break;
             case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
                 SetTargetView(Kramp.Tongue.TongueDirection);
@@ -92,7 +92,7 @@ public class KrampusAnimator : KrampusBehaviour {
             case (_, KrampusTongue.State.Eating):
 
                  if (Kramp.Kontroller.CurrentState == KrampusController.State.Walk || Kramp.Kontroller.CurrentState == KrampusController.State.Idle) {
-                   
+
                     LockInAnimation();
                  }
 
