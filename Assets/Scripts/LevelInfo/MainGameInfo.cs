@@ -66,7 +66,6 @@ public class MainGameInfo : LevelInfo {
     public IReadOnlyCollection<Nun> Nuns => m_nunRegistry;
     private List<Nun> m_nunRegistry = new List<Nun>();
     private Dictionary<Room, RoomData> m_roomdata = new Dictionary<Room, RoomData>();
-    [SerializeField] private bool m_skipIntro = false;
 
     [SerializeField] private Timer m_timer;
     public Timer Timer => m_timer;
@@ -89,7 +88,6 @@ public class MainGameInfo : LevelInfo {
         WaitingToStart,
 
         ItemChoosing,
-
         Game,
         Paused,
         Over,
@@ -142,10 +140,6 @@ public class MainGameInfo : LevelInfo {
         if (m_useLevelModifer) {
             Game.PogMan.NextLevelModifier.UpdateLevel();
 		}
-        if (m_skipIntro) {
-            SetState(State.ItemChoosing);
-            UI.DisplayItemChoiceMenu();
-        }
     }
 
     public RoomData GetRoomData(Room r) {

@@ -171,6 +171,9 @@ public class NewUIManager : MonoBehaviour {
         } else {
             m_timerDisplay.gameObject.SetActive(true);
         }
+		if (Game.MainGameInfo.CurrentState == MainGameInfo.State.ItemChoosing) {
+			DisplayItemChoiceMenu();
+		}
 
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
     }
@@ -211,6 +214,7 @@ public class NewUIManager : MonoBehaviour {
 
 
     public void DisplayItemChoiceMenu() {
+		if (m_itemChoiceMenuUI.isActiveAndEnabled == true) return;
         m_itemChoiceMenuUI.gameObject.SetActive(true);
      }
 

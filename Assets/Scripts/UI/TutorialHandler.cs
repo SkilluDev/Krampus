@@ -47,11 +47,12 @@ public class TutorialHandler : MonoBehaviour {
             Debug.Log("Should quit tutorial now");
             if (m_handle.IsActive()) m_handle.Cancel();
             gameObject.SetActive(false);
-            Game.MainGameInfo.UI.DisplayItemChoiceMenu();
+			Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
+
         }
         if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
             MoveBack(m_tutorialCounter++ % m_tutorials.Length);
-            if(--m_uiMoveInCounter==0) Game.MainGameInfo.UI.DisplayItemChoiceMenu();
+            if(--m_uiMoveInCounter==0) Game.MainGameInfo.UI.UIElementsEntryAnimation();
         }
 
     }
