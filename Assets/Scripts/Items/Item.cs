@@ -60,6 +60,9 @@ public class Item : ScriptableObject {
 			krampus.Stats.RegisterEffect(effect);
 		}
 	}
+	public virtual void RegisterEffect(Krampus krampus, int i) {
+		krampus.Stats.RegisterEffect(m_effects[i]);
+	}
 
 	public virtual void UnregisterAllEffects(Krampus krampus) {
 		foreach (var effect in m_effects) {
