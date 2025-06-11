@@ -7,141 +7,154 @@ using LitMotion.Extensions;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
 [Flags]
 public enum TutorialPages {
-	None = 0,
-	Page1 = 1,
-	Page2 = 2,
-	Page3 = 4,
-	Everything = ~0
+	WalkAndRun = 1,
+	AttackNaughty = 2,
+	DontAttackNice = 4,
+	Timer = 8,
+	AvoidNuns = 16,
+	InteractAndStun = 32
 }
+[Serializable]
+public class TutorialPage : ValueConnectedToEnum<TutorialPages> {
+	[SerializeField] private GameObject m_page;
+	public GameObject Page => m_page;
+}
+
+
 public class TutorialHandler : MonoBehaviour {
 	[SerializeField] private TutorialPages m_tutorialPagesChosen;
-    private Transform[] m_tutorialPages;
-    private int m_tutorialCounter = 0;
+
+	[SerializeField] private SerializedEnumDictionary<TutorialPages, TutorialPage> m_tutorialPagesDict;
+	private Transform[] m_tutorialPages;
+	private int m_tutorialCounter = 0;
 
 
-    [SerializeField] private float m_transitionLength;
-    [SerializeField] private float m_rotateAngle;
-    [SerializeField] private float m_slideLength;
-    [SerializeField] private RectTransform m_keybindPrompt;
-    [SerializeField] private GameObject m_tutorialHolder;
+	[SerializeField] private float m_transitionLength;
+	[SerializeField] private float m_rotateAngle;
+	[SerializeField] private float m_slideLength;
+	[SerializeField] private RectTransform m_keybindPrompt;
+	[SerializeField] private GameObject m_tutorialHolder;
 
-    [SerializeField] private Image m_naughtyChildIcon;
+	[SerializeField] private Image m_naughtyChildIcon;
 
-    private float m_distanceBetween = 1f;
+	private float m_distanceBetween = 1f;
 
-    private bool m_isMoving = false;
+	private bool m_isMoving = false;
 
-    private MotionHandle m_handle;
+	private MotionHandle m_handle;
 
-    [SerializeField] private int m_uiMoveInCounter = 3;
+	[SerializeField] private int m_uiMoveInCounter = 3;
+
+	private void OnValidate() {
+		m_tutorialPagesDict.Validate();
+	}
 
 
-    private void Awake() {
-        m_tutorialPages = new Transform[m_tutorialHolder.transform.childCount];
-        for (int i = 0; i < m_tutorialPages.Length; i++) {
-            m_tutorialPages[m_tutorialPages.Length - 1 - i] = m_tutorialHolder.transform.GetChild(i);
-            m_tutorialPages[m_tutorialPages.Length - 1 - i].transform.localPosition += new Vector3(0, 0, m_distanceBetween * i);
-        }
-    }
+	private void Awake() {
+		m_tutorialPages = new Transform[m_tutorialHolder.transform.childCount];
+		for (int i = 0; i < m_tutorialPages.Length; i++) {
+			m_tutorialPages[m_tutorialPages.Length - 1 - i] = m_tutorialHolder.transform.GetChild(i);
+			m_tutorialPages[m_tutorialPages.Length - 1 - i].transform.localPosition += new Vector3(0, 0, m_distanceBetween * i);
+		}
+	}
 
-    private void OnEnable() {
-        Debug.Log(Game.MainGameInfo.NiceChildType.uiIcon);
-        m_naughtyChildIcon.sprite = Game.MainGameInfo.NaughtyChildType.uiIcon;
-    }
-    private void Update() {
-        //LMB to go forward RMB to skip
-        if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame() && gameObject.activeSelf) {
-            Debug.Log("Should quit tutorial now");
-            if (m_handle.IsActive()) m_handle.Cancel();
-            gameObject.SetActive(false);
+	private void OnEnable() {
+		Debug.Log(Game.MainGameInfo.NiceChildType.uiIcon);
+		m_naughtyChildIcon.sprite = Game.MainGameInfo.NaughtyChildType.uiIcon;
+	}
+	private void Update() {
+		//LMB to go forward RMB to skip
+		if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame() && gameObject.activeSelf) {
+			Debug.Log("Should quit tutorial now");
+			if (m_handle.IsActive()) m_handle.Cancel();
+			gameObject.SetActive(false);
 			Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
 
-        }
-        if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
-            MoveBack(m_tutorialCounter++ % m_tutorialPages.Length);
-            if(--m_uiMoveInCounter==0) Game.MainGameInfo.UI.UIElementsEntryAnimation();
-        }
+		}
+		if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
+			MoveBack(m_tutorialCounter++ % m_tutorialPages.Length);
+			if (--m_uiMoveInCounter == 0) Game.MainGameInfo.UI.UIElementsEntryAnimation();
+		}
 
-    }
+	}
 
-    private void MoveBack(int id) {
+	private void MoveBack(int id) {
 
-        m_isMoving = true;
+		m_isMoving = true;
 
-        var page = m_tutorialPages[id].transform;
-        var oldLocalPosition = page.localPosition;
-        var oldLocalMainPosition = m_tutorialHolder.transform.localPosition;
+		var page = m_tutorialPages[id].transform;
+		var oldLocalPosition = page.localPosition;
+		var oldLocalMainPosition = m_tutorialHolder.transform.localPosition;
 
-        var oldPosition = page.position;
-        var oldRotation = page.rotation;
-        var lSequence = LSequence.Create();
-
-
+		var oldPosition = page.position;
+		var oldRotation = page.rotation;
+		var lSequence = LSequence.Create();
 
 
-        lSequence.Append(LMotion.Create(page.localRotation, page.localRotation * Quaternion.Euler(new Vector3(0, 0, m_rotateAngle)), m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToLocalRotation(page));
 
-        var currentLocalPagePosition = oldLocalPosition;
-        var nextLocalPagePosition = currentLocalPagePosition + Vector3.right * m_slideLength * 2;
-        // Debug.Log(currentLocalPagePosition+"->"+nextLocalPagePosition);
 
-        lSequence.Join(LMotion.Create(currentLocalPagePosition, nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToLocalPosition(page));
+		lSequence.Append(LMotion.Create(page.localRotation, page.localRotation * Quaternion.Euler(new Vector3(0, 0, m_rotateAngle)), m_transitionLength).WithEase(Ease.InOutCubic)
+		.BindToLocalRotation(page));
 
-        var currentLocalMainPosition = oldLocalMainPosition;
-        var nextLocalMainPosition = currentLocalMainPosition - Vector3.right * m_slideLength;
+		var currentLocalPagePosition = oldLocalPosition;
+		var nextLocalPagePosition = currentLocalPagePosition + Vector3.right * m_slideLength * 2;
+		// Debug.Log(currentLocalPagePosition+"->"+nextLocalPagePosition);
 
-        var keybindPromptLocalMainPosition = m_keybindPrompt.localPosition;
-        var nextKeybindPromptLocalMainPosition = m_keybindPrompt.localPosition - Vector3.right * m_slideLength;
+		lSequence.Join(LMotion.Create(currentLocalPagePosition, nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic)
+		.BindToLocalPosition(page));
 
-        lSequence.Join(LMotion.Create(currentLocalMainPosition, nextLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToLocalPosition(m_tutorialHolder.transform));
+		var currentLocalMainPosition = oldLocalMainPosition;
+		var nextLocalMainPosition = currentLocalMainPosition - Vector3.right * m_slideLength;
 
-        lSequence.Join(LMotion.Create(keybindPromptLocalMainPosition, nextKeybindPromptLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
-       .BindToLocalPosition(m_keybindPrompt));
+		var keybindPromptLocalMainPosition = m_keybindPrompt.localPosition;
+		var nextKeybindPromptLocalMainPosition = m_keybindPrompt.localPosition - Vector3.right * m_slideLength;
 
-        currentLocalPagePosition = nextLocalPagePosition;
-        nextLocalPagePosition = currentLocalPagePosition - Vector3.forward * (m_tutorialPages.Length + 1) * m_distanceBetween;
+		lSequence.Join(LMotion.Create(currentLocalMainPosition, nextLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
+		.BindToLocalPosition(m_tutorialHolder.transform));
 
-        lSequence.Append(LMotion.Create(currentLocalPagePosition, nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic).
-        WithOnComplete(() => page.SetAsFirstSibling()).BindToLocalPosition(page));
+		lSequence.Join(LMotion.Create(keybindPromptLocalMainPosition, nextKeybindPromptLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
+	   .BindToLocalPosition(m_keybindPrompt));
 
-        lSequence.Append(LMotion.Create(page.localRotation * Quaternion.Euler(new Vector3(0, 0, m_rotateAngle)), page.localRotation, m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToLocalRotation(page));
+		currentLocalPagePosition = nextLocalPagePosition;
+		nextLocalPagePosition = currentLocalPagePosition - Vector3.forward * (m_tutorialPages.Length + 1) * m_distanceBetween;
 
-        currentLocalPagePosition = nextLocalPagePosition;
-        nextLocalPagePosition = currentLocalPagePosition - Vector3.right * m_slideLength * 2;
+		lSequence.Append(LMotion.Create(currentLocalPagePosition, nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic).
+		WithOnComplete(() => page.SetAsFirstSibling()).BindToLocalPosition(page));
 
-        lSequence.Join(LMotion.Create(currentLocalPagePosition, nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToLocalPosition(page));
+		lSequence.Append(LMotion.Create(page.localRotation * Quaternion.Euler(new Vector3(0, 0, m_rotateAngle)), page.localRotation, m_transitionLength).WithEase(Ease.InOutCubic)
+		.BindToLocalRotation(page));
 
-        currentLocalMainPosition = nextLocalMainPosition;
-        nextLocalMainPosition = currentLocalMainPosition + Vector3.right * m_slideLength;
+		currentLocalPagePosition = nextLocalPagePosition;
+		nextLocalPagePosition = currentLocalPagePosition - Vector3.right * m_slideLength * 2;
 
-        lSequence.Join(LMotion.Create(currentLocalMainPosition, nextLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
-        .BindToLocalPosition(m_tutorialHolder.transform));
+		lSequence.Join(LMotion.Create(currentLocalPagePosition, nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic)
+		.BindToLocalPosition(page));
 
-        lSequence.Join(LMotion.Create(nextKeybindPromptLocalMainPosition, keybindPromptLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
-       .BindToLocalPosition(m_keybindPrompt));
+		currentLocalMainPosition = nextLocalMainPosition;
+		nextLocalMainPosition = currentLocalMainPosition + Vector3.right * m_slideLength;
 
-        currentLocalMainPosition = nextLocalMainPosition;
-        nextLocalMainPosition = currentLocalMainPosition + Vector3.forward * m_distanceBetween;
+		lSequence.Join(LMotion.Create(currentLocalMainPosition, nextLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
+		.BindToLocalPosition(m_tutorialHolder.transform));
 
-        lSequence.Append(LMotion.Create(currentLocalMainPosition, nextLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
-        .WithOnComplete(() => m_isMoving = false).BindToLocalPosition(m_tutorialHolder.transform));
+		lSequence.Join(LMotion.Create(nextKeybindPromptLocalMainPosition, keybindPromptLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
+	   .BindToLocalPosition(m_keybindPrompt));
 
-        m_keybindPrompt.localPosition = keybindPromptLocalMainPosition;
+		currentLocalMainPosition = nextLocalMainPosition;
+		nextLocalMainPosition = currentLocalMainPosition + Vector3.forward * m_distanceBetween;
 
-        m_tutorialPages[id].transform.position = oldPosition;
-        m_tutorialPages[id].transform.localPosition = oldLocalPosition;
+		lSequence.Append(LMotion.Create(currentLocalMainPosition, nextLocalMainPosition, m_transitionLength).WithEase(Ease.InOutCubic)
+		.WithOnComplete(() => m_isMoving = false).BindToLocalPosition(m_tutorialHolder.transform));
 
-        m_tutorialPages[id].transform.rotation = oldRotation;
-        m_tutorialHolder.transform.localPosition = oldLocalMainPosition;
+		m_keybindPrompt.localPosition = keybindPromptLocalMainPosition;
 
-        m_handle = lSequence.Run();
-    }
+		m_tutorialPages[id].transform.position = oldPosition;
+		m_tutorialPages[id].transform.localPosition = oldLocalPosition;
+
+		m_tutorialPages[id].transform.rotation = oldRotation;
+		m_tutorialHolder.transform.localPosition = oldLocalMainPosition;
+
+		m_handle = lSequence.Run();
+	}
 }

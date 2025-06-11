@@ -1,13 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.VFX;
-using static KrampusStats;
 
 public class KrampusStats : KrampusBehaviour {
 
