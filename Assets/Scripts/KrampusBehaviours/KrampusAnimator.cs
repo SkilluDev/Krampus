@@ -66,28 +66,36 @@ public class KrampusAnimator : KrampusBehaviour {
                 m_animator.SetTrigger(m_tongueOutProperty);
                 m_animator.SetBool(m_tongueReadyProperty, false);
                 m_tongueSoundBite.Play(transform.position, 1);
-                LockOutAnimation();
+
                 break;
             case (_, KrampusTongue.State.PreRetreat):
-                
+
                 m_animator.SetBool(m_tongueReadyProperty, false);
                 m_animator.SetBool(m_tongueShouldEatProperty, false);
+                 LockOutAnimation();  
                 break;
             case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
                 SetTargetView(Kramp.Tongue.TongueDirection);
                 break;
             case (KrampusTongue.State.Extending, KrampusTongue.State.Full):
+
                 if (Kramp.Tongue.HitInteractable is Child) m_crackSoundBite.Play(transform.position, 1);
                 break;
             case (KrampusTongue.State.PreRetreat, KrampusTongue.State.Retreating):
 
-                if (Kramp.Kontroller.CurrentState == KrampusController.State.Walk || Kramp.Kontroller.CurrentState == KrampusController.State.Idle) {
-                    LockInAnimation();
-                 }
+
                 if (Kramp.Tongue.HitInteractable != null) {
                     m_catchSoundBite.Play(transform.position, 1);
                     m_animator.SetBool(m_tongueShouldEatProperty, Kramp.Tongue.HitInteractable is IEdible);
                 }
+                break;
+            case (_, KrampusTongue.State.Eating):
+
+                 if (Kramp.Kontroller.CurrentState == KrampusController.State.Walk || Kramp.Kontroller.CurrentState == KrampusController.State.Idle) {
+                   
+                    LockInAnimation();
+                 }
+
                 break;
 
 
@@ -161,7 +169,16 @@ public class KrampusAnimator : KrampusBehaviour {
 
 
         m_lockInAnimation_2 = LMotion.Create(0, 1, 0.25f).WithOnComplete(() => m_lockInCircle.gameObject.SetActive(true)).Bind(null);
-        m_lockInAnimation = LMotion.Create(0.4f, 0.14f, Kramp.Kontroller.LockInThreshold).Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3));
+        m_lockInAnimation = LMotion.Create(0.4f, 0.14f, Kramp.Kontroller.LockInThreshold).WithOnComplete(()=> LMotion.Create(0.14f,0.16f,0.1f).WithOnComplete(()=> LMotion.Create(0.16f,0.14f,0.1f).
+        Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3))).
+
+        Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3))
+        
+        )
+
+
+
+        .Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3));
         m_inLockInAnimation = true;
 
     }
