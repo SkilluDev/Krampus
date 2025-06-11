@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using KrampUtils;
+using LitMotion;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
@@ -58,6 +59,9 @@ public class KrampusController : KrampusBehaviour {
 	private float m_lockInTimer = 0f;
 
 	[SerializeField] private float m_lockInThreshold;
+	public float LockInThreshold => m_lockInThreshold;
+	private MotionHandle m_lockInMotion;
+	[SerializeField] private SpriteRenderer m_lockInVis;
 
 
 
@@ -114,6 +118,7 @@ public class KrampusController : KrampusBehaviour {
 
 		if (CurrentState == State.Walk || CurrentState == State.Idle) {
 			if (!IsLockedIn) {
+	
 				m_lockInTimer += Time.deltaTime;
 				if (m_lockInTimer > m_lockInThreshold) {
 					LockIn();
