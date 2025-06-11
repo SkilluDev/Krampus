@@ -8,7 +8,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 [Flags]
-public enum TutorialPages {
+public enum TutorialPage {
 	WalkAndRun = 1,
 	AttackNaughty = 2,
 	DontAttackNice = 4,
@@ -17,17 +17,17 @@ public enum TutorialPages {
 	InteractAndStun = 32
 }
 [Serializable]
-public class TutorialPage : ValueConnectedToEnum<TutorialPages> {
+public class TutorialScreen : ValueConnectedToEnum<TutorialPage> {
 	[SerializeField] private GameObject m_page;
 	public GameObject Page => m_page;
 }
 
 
 public class TutorialHandler : MonoBehaviour {
-	[SerializeField] private TutorialPages m_tutorialPagesChosen;
+	//[SerializeField] private TutorialPage m_tutorialPagesChosen;
 
-	[SerializeField] private SerializedEnumDictionary<TutorialPages, TutorialPage> m_tutorialPagesDict;
-	private Transform[] m_tutorialPages;
+	[SerializeField] private SerializedEnumDictionary<TutorialPage, TutorialScreen> m_tutorialPagesDict;
+	private IList<Transform> m_tutorialPages;
 	private int m_tutorialCounter = 0;
 
 
@@ -51,18 +51,34 @@ public class TutorialHandler : MonoBehaviour {
 		m_tutorialPagesDict.Validate();
 	}
 
-
-	private void Awake() {
-		m_tutorialPages = new Transform[m_tutorialHolder.transform.childCount];
-		for (int i = 0; i < m_tutorialPages.Length; i++) {
-			m_tutorialPages[m_tutorialPages.Length - 1 - i] = m_tutorialHolder.transform.GetChild(i);
-			m_tutorialPages[m_tutorialPages.Length - 1 - i].transform.localPosition += new Vector3(0, 0, m_distanceBetween * i);
+	private void PrepareTutorials(TutorialPage pages) {
+		m_tutorialPages = new List<Transform>();
+		foreach (TutorialPage page in Enum.GetValues(typeof(TutorialPage))) {
+			if (pages.HasFlag(page)) {
+				GameObject p = m_tutorialPagesDict[page].Page;
+				p.SetActive(true);
+				p.transform.SetAsFirstSibling();
+				m_tutorialPages.Add(p.transform);
+			}
+		}
+		for (int i = 0; i < m_tutorialPages.Count; i++) {
+			m_tutorialPages[m_tutorialPages.Count - 1 - i].transform.localPosition += new Vector3(0, 0, m_distanceBetween * i);
 		}
 	}
 
-	private void OnEnable() {
-		Debug.Log(Game.MainGameInfo.NiceChildType.uiIcon);
+	private void Start() {
+		Game.GlobalEvents.onTutorialTrigger.AddListener(OnTutorialTrigger);
+	}
+
+	private void OnDisable() {
 		m_naughtyChildIcon.sprite = Game.MainGameInfo.NaughtyChildType.uiIcon;
+	}
+
+	private void OnTutorialTrigger(TutorialPage pages) {
+		if (!Game.SetMan.GetValue<bool>("Show Tutorial")) return;
+		if (pages == 0) return;
+		gameObject.SetActive(true);
+		PrepareTutorials(pages);
 	}
 	private void Update() {
 		//LMB to go forward RMB to skip
@@ -74,7 +90,7 @@ public class TutorialHandler : MonoBehaviour {
 
 		}
 		if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
-			MoveBack(m_tutorialCounter++ % m_tutorialPages.Length);
+			MoveBack(m_tutorialCounter++ % m_tutorialPages.Count);
 			if (--m_uiMoveInCounter == 0) Game.MainGameInfo.UI.UIElementsEntryAnimation();
 		}
 
@@ -118,7 +134,7 @@ public class TutorialHandler : MonoBehaviour {
 	   .BindToLocalPosition(m_keybindPrompt));
 
 		currentLocalPagePosition = nextLocalPagePosition;
-		nextLocalPagePosition = currentLocalPagePosition - Vector3.forward * (m_tutorialPages.Length + 1) * m_distanceBetween;
+		nextLocalPagePosition = currentLocalPagePosition - Vector3.forward * (m_tutorialPages.Count + 1) * m_distanceBetween;
 
 		lSequence.Append(LMotion.Create(currentLocalPagePosition, nextLocalPagePosition, m_transitionLength).WithEase(Ease.InOutCubic).
 		WithOnComplete(() => page.SetAsFirstSibling()).BindToLocalPosition(page));

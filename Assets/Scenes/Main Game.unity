@@ -252,7 +252,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 63ab45d866ec5be42bcf362fbffafbec, type: 2}
   - {fileID: 11400000, guid: 14df7b7041904fa44b4c88b4d0089b9a, type: 2}
   m_krampus: {fileID: 1936252573}
-  m_globalEvents: {fileID: 358014043}
   m_windUpGainFromChildren: 20
   m_maxWindUpPoints: 100
   m_itemPool: {fileID: 11400000, guid: 185f01be8ca9fa74fbf42243248bda64, type: 2}
@@ -402,6 +401,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onLevelStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onTutorialTrigger:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &358014044
@@ -699,6 +701,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4262503464282658909, guid: f0b7c5050b2137f448c51fc46427748b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7172931892233990810, guid: f0b7c5050b2137f448c51fc46427748b,
         type: 3}
       propertyPath: m_Name

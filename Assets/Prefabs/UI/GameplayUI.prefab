@@ -5620,7 +5620,7 @@ MonoBehaviour:
   m_endScreenHandler: {fileID: 8443022075738394590}
   m_uiBlockLeft: {fileID: 3784101493357200345}
   m_uiBlockRight: {fileID: 5138685301503632781}
-  m_bottomBarTutorialKeys: <binding="UI/QuitTutorial"> Skip intro and tutorial
+  m_bottomBarTutorialKeys: <binding="UI/QuitTutorial"> Skip intro
   m_bottomBarLoseKeys: <binding="UI/Restart"> Replay <binding="UI/RestartAndRegen">
     New Game <binding="UI/MenuReturn"> Main Menu
   m_bottomBarWinKeys: "<binding=\"UI/Advance\"> Next Level \t\t\t<binding=\"UI/MenuReturn\">
@@ -7288,6 +7288,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1840197625932347006, guid: 01fc9c0b49256e64388c831467cc2ba4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563404248731661521, guid: 01fc9c0b49256e64388c831467cc2ba4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3819441490098722992, guid: 01fc9c0b49256e64388c831467cc2ba4,
+        type: 3}
+      propertyPath: m_tutorialPagesDict.m_values.Array.data[3].m_page
+      value: 
+      objectReference: {fileID: 2069103283706128646}
+    - target: {fileID: 3819441490098722992, guid: 01fc9c0b49256e64388c831467cc2ba4,
+        type: 3}
+      propertyPath: m_tutorialPagesDict.m_values.Array.data[4].m_page
+      value: 
+      objectReference: {fileID: 2707909020661654627}
+    - target: {fileID: 4292346346145630575, guid: 01fc9c0b49256e64388c831467cc2ba4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5995114807626627331, guid: 01fc9c0b49256e64388c831467cc2ba4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7642731395529061478, guid: 01fc9c0b49256e64388c831467cc2ba4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8404692236160305240, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
       propertyPath: m_Name
@@ -7296,7 +7331,7 @@ PrefabInstance:
     - target: {fileID: 8404692236160305240, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8568628825467685302, guid: 01fc9c0b49256e64388c831467cc2ba4,
         type: 3}
@@ -7367,6 +7402,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01fc9c0b49256e64388c831467cc2ba4, type: 3}
+--- !u!1 &2069103283706128646 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5995114807626627331, guid: 01fc9c0b49256e64388c831467cc2ba4,
+    type: 3}
+  m_PrefabInstance: {fileID: 5729708328798457861}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2707909020661654627 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7642731395529061478, guid: 01fc9c0b49256e64388c831467cc2ba4,
+    type: 3}
+  m_PrefabInstance: {fileID: 5729708328798457861}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5315274898232413193 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 452511732293737484, guid: 01fc9c0b49256e64388c831467cc2ba4,

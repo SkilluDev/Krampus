@@ -203,6 +203,14 @@ public class NewUIManager : MonoBehaviour {
 			UIElementsEntryAnimation();
 		}
 
+		if (next == MainGameInfo.State.WaitingToStart) {
+			if (Game.PogMan.GetCurrentLevelStats().Tutorials == 0) {
+				Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
+			} else {
+				Game.GlobalEvents.onTutorialTrigger.Invoke(Game.PogMan.GetCurrentLevelStats().Tutorials);
+			}
+		}
+
 	}
 
     public void ChangeChildCounter() {
@@ -218,10 +226,8 @@ public class NewUIManager : MonoBehaviour {
 		m_currentWindUpFillHandle = LMotion.Create(oldValue, value / Game.MainGameInfo.MaxWindUpPoints, time)
         .WithDelay(0.4f).BindToFillAmount(m_windUpFiller);
     }
-    public void HideBlackBars(bool showTutorial) {
+    public void HideBlackBars() {
         m_blackBars.Hide();
-        if (!showTutorial) return;
-        if (Game.SetMan.GetValue<bool>("Show Tutorial")) m_tutorial.gameObject.SetActive(true);
     }
 
 
