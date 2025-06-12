@@ -148,7 +148,7 @@ public class NewUIManager : MonoBehaviour {
 		} else {
 			effectIcon.SetIcon(effect.Id, effect.ItemIcon, effect.Timer, "test2");
 		}
-		Debug.Log("SHOWDISPLAY" + effect.Id + effect.Timer);
+		//Debug.Log("SHOWDISPLAY" + effect.Id + effect.Timer);
 	}
 
 	public void RemoveEffect(Krampus krampus, Effect effect) {
@@ -161,7 +161,7 @@ public class NewUIManager : MonoBehaviour {
 			}
 		}
 
-		 Debug.Log("HIDEDISPLAY" + effect.Id);
+		 //Debug.Log("HIDEDISPLAY" + effect.Id);
      }
 
 
@@ -195,7 +195,7 @@ public class NewUIManager : MonoBehaviour {
     }
 
 	private void OnLevelStateChanged(MainGameInfo.State previous, MainGameInfo.State next) {
-		Debug.Log("PREVIOUS:" + previous + "NEXT:" + next);
+		//Debug.Log("PREVIOUS:" + previous + "NEXT:" + next);
 		if (next == MainGameInfo.State.Game &&
 			(previous == MainGameInfo.State.ItemChoosing ||
 		 	previous == MainGameInfo.State.Intro ||
@@ -206,7 +206,7 @@ public class NewUIManager : MonoBehaviour {
 
 		if (next == MainGameInfo.State.WaitingToStart) {
 			if (Game.PogMan.GetCurrentLevelStats().Tutorials == 0) {
-				Debug.Log("ZERO");
+				//Debug.Log("ZERO");
 				Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
 			} else {
 				Game.GlobalEvents.onTutorialTrigger.Invoke(Game.PogMan.GetCurrentLevelStats().Tutorials);
@@ -240,7 +240,7 @@ public class NewUIManager : MonoBehaviour {
 
     public void UIElementsEntryAnimation() {
         if (m_uiOn) return;
-        Debug.Log("Entry");
+        //Debug.Log("Entry");
         m_uiBlockLeft.gameObject.SetActive(true);
         LMotion.Create(-200, 50, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition = new Vector2(x, m_uiBlockLeft.anchoredPosition.y));
         m_uiBlockRight.gameObject.SetActive(true);

@@ -48,7 +48,7 @@ public class Nun : NPC {
 
 
     [SerializeField] private float m_castingTime = 1.03f;
-    [SerializeField] private Vector2 m_randomRagePerSeconds;  
+    [SerializeField] private Vector2 m_randomRagePerSeconds;
     [SerializeField] private NunMissle m_MisslePref;
     private float m_rageMeter;
 
@@ -116,19 +116,19 @@ public class Nun : NPC {
                 if (m_timeout < 0) SwitchState(State.Patrolling);
                 CurrentDestination = transform.position;
                 m_viewCone.SetActive(true);
-                Debug.Log("[Nun] Begin patrolling");
+                //Debug.Log("[Nun] Begin patrolling");
                 break;
             case State.Patrolling:
                 if (NearDestination(m_interactionDistance)) {
                     m_currentControlPoint++;
                     m_currentControlPoint %= m_patrolPath.Count;
                     SetDestination(m_patrolPath[m_currentControlPoint]);
-                    Debug.Log("[Nun] Reached patrol point");
+                    //Debug.Log("[Nun] Reached patrol point");
                 }
 
                 m_viewCone.SetActive(true);
                 if (m_viewCone.Detect()) {
-                    Debug.Log("[Nun] viewcone detected krampy");
+                    //Debug.Log("[Nun] viewcone detected krampy");
                     m_timeout = m_shockTimeout;
                     //Change in multi
 
@@ -145,7 +145,7 @@ public class Nun : NPC {
                 m_viewCone.SetActive(false);
                 if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>() && HasLineOfSight()) {
                     if (m_timeout > m_krampusDetectTime) {
-                        Debug.Log("[Nun] Alerted & detected krampy");
+                        //Debug.Log("[Nun] Alerted & detected krampy");
                         m_timeout = m_shockTimeout;
                         SeeKrampus();
                     } else {
@@ -240,7 +240,7 @@ public class Nun : NPC {
         if (previous == CurrentState) return;
         onStateChanged?.Invoke(CurrentState, previous);
         CurrentState = previous;
-        Debug.Log($"[Nun] Switch state to {CurrentState}");
+        //Debug.Log($"[Nun] Switch state to {CurrentState}");
     }
 
     public void ActivateTheBitch(Child who, float timeout, Room room) {

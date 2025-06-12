@@ -44,7 +44,7 @@ public class ShaderManager : MonoBehaviour {
 		SetIntensity(m_testValue);
 	}
 	private void SetIntensity(float intensity) {
-		Debug.Log(intensity+"intensity");
+		//Debug.Log(intensity+"intensity");
 		LMotion.Create(0,intensity, m_shaderDurationIn).WithEase(m_shaderCurveIn).WithOnComplete(
 			()=>LMotion.Create(intensity, 0, m_shaderDurationOut).WithEase(m_shaderCurveOut).Bind(f=>m_material.SetFloat("_Intensity", f))
 		).Bind(f=>m_material.SetFloat("_Intensity", f));

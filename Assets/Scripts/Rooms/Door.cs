@@ -65,10 +65,10 @@ public class Door : Passage, IInteractable {
             Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
             Game.MainGameInfo.GetRoomData(B).MakeNoise(transform.position, m_noiseDistance, actor);
             m_doorOpen.Play(transform.position, 1f);
-            Debug.Log("Open1.0");
+            //Debug.Log("Open1.0");
 
         } else {
-            Debug.Log("Open0.4");
+            //Debug.Log("Open0.4");
             m_doorOpen.Play(transform.position, 0.4f);
         }
 

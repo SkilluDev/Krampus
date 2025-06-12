@@ -40,8 +40,8 @@ public class KrampusStats : KrampusBehaviour {
     private List<Effect> m_effectsToClear = new List<Effect>();
 
     public void Update() {
-		Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
-		Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
+		//Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
+		//Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
 
 		foreach (var stat in m_effects) {
 			foreach (var effect in stat.Value) {
@@ -53,7 +53,7 @@ public class KrampusStats : KrampusBehaviour {
 				}
 			}
 		}
-		Debug.Log("Ma speed buff:" + hasMov);
+		//Debug.Log("Ma speed buff:" + hasMov);
 
 		ClearEffectsToClear();
 	}

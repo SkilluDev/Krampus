@@ -99,13 +99,13 @@ public class Child : NPC, IEdible, INoiseReactor {
     private void Update() {
 		if (!CurrentRoom) return;
 
-		Debug.Log("MOVING TO:" + m_selectedPosition);
+		//Debug.Log("MOVING TO:" + m_selectedPosition);
 
 		void SelectNewWanderLocation() {
 			if (NavMesh.SamplePosition(MoreMath.RandomInBounds(CurrentRoom.GetBounds()), out var hit, 10, NavMesh.AllAreas)) {
 				SetDestination(hit.position);
 			} else {
-				Debug.Log("ever considered ending your life");
+				//Debug.Log("ever considered ending your life");
 			}
 		}
 
@@ -253,7 +253,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 
 	public void Alert(RoomData roomData, Vector3 place, ICharacter actor) {
 		if (actor is not Krampus || CurrentState != State.Idle) return;
-		Debug.Log("[Child] Child alerted");
+		//Debug.Log("[Child] Child alerted");
 		//SwitchState(State.Stunned);
 		m_timeout = m_stunDuration;
 		SetDestination(place);

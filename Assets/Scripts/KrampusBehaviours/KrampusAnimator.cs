@@ -175,10 +175,10 @@ public class KrampusAnimator : KrampusBehaviour {
 
     }
 
-    void LockOutAnimation() {
+	private void LockOutAnimation() {
          if (!HasLockInItem) return;
         if (!m_inLockInAnimation) return;
-        Debug.Log("Lock out baby");
+        //Debug.Log("Lock out baby");
         m_lockInCircle.gameObject.SetActive(false);
         m_lockInAnimation.TryCancel();
          m_lockInAnimation_2.TryCancel();

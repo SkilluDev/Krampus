@@ -11,10 +11,10 @@ public class ItemPool : ScriptableObject {
         List<int> indexes = new List<int>();
         for (int i = 0; i < items.Length; i++) {
             Item item = items[i];
-            Debug.Log("Checking " + item.ItemName);
+            //Debug.Log("Checking " + item.ItemName);
             if (!krampusStats.HasItem(item)) {
                 indexes.Add(i);
-                Debug.Log("Added " + i);
+                //Debug.Log("Added " + i);
             }
         }
 

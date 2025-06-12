@@ -15,7 +15,6 @@ public class QuickEscape : Item {
 	}
 
 	private void BuffKrampus(Krampus krampus) {
-		Debug.Log("LOCKEDTONGUE");
 		RegisterAllEffects(krampus);
 	}
 

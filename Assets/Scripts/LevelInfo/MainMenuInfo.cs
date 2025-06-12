@@ -31,11 +31,11 @@ public class MainMenuInfo : LevelInfo {
         m_motions = new MotionHandle[m_canvases.Length];
         foreach (var c in m_canvases) c.alpha = 0;
         SetState(State.Default);
-        Debug.Log("Set state default!");
+        //Debug.Log("Set state default!");
     }
 
     private void Unready() {
-        Debug.Log("Kill motions");
+        //Debug.Log("Kill motions");
         for (int i = 0; i < m_motions.Length; i++) {
             m_motions[i].TryCancel();
         }

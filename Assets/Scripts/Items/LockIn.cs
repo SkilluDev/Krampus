@@ -18,7 +18,6 @@ public class LockIn : Item {
 	}
 
 	private void BuffKrampus(Krampus krampus) {
-		Debug.Log("LOCKEDTONGUE");
 		RegisterAllEffects(krampus);
 	}
 
