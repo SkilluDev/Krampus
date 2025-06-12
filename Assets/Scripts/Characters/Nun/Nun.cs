@@ -266,6 +266,7 @@ public class Nun : NPC {
         }
         if (Game.MainGameInfo.Krampus.Kontroller.CurrentState == KrampusController.State.Dash) return;
         onAttack?.Invoke(CurrentState);
+        
         SwitchState(State.Idle);
         Game.MainGameInfo.Krampus.Kontroller.KrampTermination(Ending.LoseNun);
 
