@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using Roomgen;
 using UnityEngine;
+using UnityEngine.Android;
 
 public class PogMan : MonoBehaviour {
 
@@ -16,6 +18,14 @@ public class PogMan : MonoBehaviour {
 	public bool IsThereNextLevel => m_currentLevel < m_levelSet.LevelStats.Count-1;
 	private List<Item> m_krampusItems;
 	public IReadOnlyList<Item> KrampusItems => m_krampusItems;
+
+	private float m_timer;
+
+	[ShowNativeProperty] public float TotalRunTime { get => m_timer; }
+
+	private void FixedUpdate() {
+		if(Game.Balling) m_timer += Time.fixedDeltaTime;
+	}
 
 	public LevelStats GetCurrentLevelStats() {
 		return m_levelSet.LevelStats[m_currentLevel];
@@ -36,6 +46,7 @@ public class PogMan : MonoBehaviour {
 		m_currentLevel = 0;
 		m_krampusItems = null;
 		m_clearItemsOnLoad = true;
+		m_timer = 0;
 	}
 
 	// those essentially move the list in and out without copying it and making sure no reference lives too long.
