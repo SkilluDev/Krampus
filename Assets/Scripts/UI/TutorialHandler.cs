@@ -11,8 +11,8 @@ using UnityEngine.UI;
 public enum TutorialPage {
 	WalkAndRun = 1,
 	AttackNaughty = 2,
-	DontAttackNice = 4,
-	Timer = 8,
+	Timer = 4,
+	DontAttackNice = 8,
 	AvoidNuns = 16,
 	InteractAndStun = 32
 }
@@ -91,7 +91,7 @@ public class TutorialHandler : MonoBehaviour {
 		}
 		if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
 			MoveBack(m_tutorialCounter++ % m_tutorialPages.Count);
-			if (--m_uiMoveInCounter == 0) Game.MainGameInfo.UI.UIElementsEntryAnimation();
+			//if (--m_uiMoveInCounter == 0) Game.MainGameInfo.UI.UIElementsEntryAnimation();
 		}
 
 	}

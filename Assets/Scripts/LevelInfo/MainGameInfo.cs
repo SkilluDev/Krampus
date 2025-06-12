@@ -103,8 +103,9 @@ public class MainGameInfo : LevelInfo {
 			if (Game.PogMan.GetCurrentLevelStats().CanChooseItems) state = State.ItemChoosing;
 			else state = State.Game;
 		}
-		Game.GlobalEvents.onLevelStateChanged.Invoke(CurrentState, state);
+		var previous = CurrentState;
 		CurrentState = state;
+		Game.GlobalEvents.onLevelStateChanged.Invoke(previous, CurrentState);
 	}
 	[NaughtyAttributes.Button("Press To Win")]
 	public void DebugWinButton() {
@@ -147,6 +148,7 @@ public class MainGameInfo : LevelInfo {
 		if (r == null) return null;
 		return m_roomdata[r];
 	}
+
 
 	public void CreateRoomData(Room r) {
 		if (m_roomdata.ContainsKey(r)) throw new System.Exception("What the fuck");
@@ -197,6 +199,7 @@ public class MainGameInfo : LevelInfo {
 
 
 	private void Update() {
+		Debug.Log(CurrentState + "CURRENT");
 		if (!Game.MainGameInfo.NaughtyChildren.Any() && Game.Balling) {
 			Game.MainGameInfo.ProcessEndGame(Ending.Win);
 		}
