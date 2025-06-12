@@ -1000,7 +1000,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &442502577968480470
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1844,7 +1844,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -318872988, guid: 9364a69f7c4fb1a40b7a1a11e6cefbd8, type: 3}
+  m_Sprite: {fileID: 551829724, guid: 9364a69f7c4fb1a40b7a1a11e6cefbd8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1867,8 +1867,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_spriteSheet:
-  - {fileID: -318872988, guid: 9364a69f7c4fb1a40b7a1a11e6cefbd8, type: 3}
   - {fileID: 551829724, guid: 9364a69f7c4fb1a40b7a1a11e6cefbd8, type: 3}
+  - {fileID: -318872988, guid: 9364a69f7c4fb1a40b7a1a11e6cefbd8, type: 3}
   m_image: {fileID: 5775387365207201997}
   m_fps: 2
   m_colorChange: 0
@@ -4543,7 +4543,6 @@ GameObject:
   - component: {fileID: 3197589028399793056}
   - component: {fileID: 9073911869580722819}
   - component: {fileID: 2391964813373823254}
-  - component: {fileID: 977153530599263133}
   m_Layer: 0
   m_Name: Tongue sprite (1)
   m_TagString: Untagged
@@ -4608,24 +4607,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &977153530599263133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8625159794388331942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63c301484587a2a4780534172879fd27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_spriteSheet:
-  - {fileID: -318872988, guid: 9364a69f7c4fb1a40b7a1a11e6cefbd8, type: 3}
-  - {fileID: 551829724, guid: 9364a69f7c4fb1a40b7a1a11e6cefbd8, type: 3}
-  m_image: {fileID: 2391964813373823254}
-  m_fps: 2
-  m_colorChange: 0
 --- !u!1 &8682236440819278945
 GameObject:
   m_ObjectHideFlags: 0
@@ -4637,7 +4618,7 @@ GameObject:
   - component: {fileID: 4317880140434961772}
   - component: {fileID: 4989797744179652982}
   - component: {fileID: 2369196735105498885}
-  - component: {fileID: 8786099513761594534}
+  - component: {fileID: 900712177023761149}
   m_Layer: 0
   m_Name: Tongue sprite (3)
   m_TagString: Untagged
@@ -4661,7 +4642,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -429.5, y: 250}
+  m_AnchoredPosition: {x: -343, y: 204.2}
   m_SizeDelta: {x: 1069.6655, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4989797744179652982
@@ -4702,7 +4683,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8786099513761594534
+--- !u!114 &900712177023761149
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4715,8 +4696,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_spriteSheet:
-  - {fileID: -318872988, guid: 9364a69f7c4fb1a40b7a1a11e6cefbd8, type: 3}
-  - {fileID: 551829724, guid: 9364a69f7c4fb1a40b7a1a11e6cefbd8, type: 3}
+  - {fileID: 21300000, guid: 1d25422bb55bb0926b6b1f91420c37b9, type: 3}
+  - {fileID: 21300000, guid: 2d6d33e99702f134898b0959582ec6de, type: 3}
   m_image: {fileID: 2369196735105498885}
   m_fps: 2
   m_colorChange: 0
