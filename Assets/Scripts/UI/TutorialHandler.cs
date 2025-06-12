@@ -14,7 +14,9 @@ public enum TutorialPage {
 	Timer = 4,
 	DontAttackNice = 8,
 	AvoidNuns = 16,
-	InteractAndStun = 32
+	InteractAndStun = 32,
+	WindupAndStinger = 64,
+	ItemsAndLockIn = 128
 }
 [Serializable]
 public class TutorialScreen : ValueConnectedToEnum<TutorialPage> {
