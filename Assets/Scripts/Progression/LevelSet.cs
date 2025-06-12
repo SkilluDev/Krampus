@@ -28,6 +28,10 @@ public class LevelStats {
 
 	[SerializeField] private TutorialPage m_tutorials;
 	public TutorialPage Tutorials => m_tutorials;
+
+	[SerializeField] private bool m_lockWindUpUse = false;
+
+	public bool LockWindUpUse => m_lockWindUpUse;
 }
 
 [CreateAssetMenu(menuName = "Game/LevelProgression/Stats", fileName = "LevelProgressionStats")]
