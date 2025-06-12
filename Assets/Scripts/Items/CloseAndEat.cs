@@ -31,7 +31,7 @@ public class CloseAndEat : Item {
         if (!m_isActive) return;
 
         UnregisterAllEffects(krampus);
-        krampus.Kontroller.AddWindUpPoints(m_windupGained);
+        krampus.Kontroller.AddWindUpPoints(m_windupGained); 
 
         m_isActive = false;
      }

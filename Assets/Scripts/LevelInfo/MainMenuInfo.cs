@@ -19,6 +19,9 @@ public class MainMenuInfo : LevelInfo {
     [SerializeField] private CinemachineVirtualCamera[] m_cameras;
     [SerializeField] private CanvasGroup[] m_canvases;
 
+    [SerializeField] private LevelSet m_tutorialSet;
+    [SerializeField] private LevelSet m_hardMode;
+
     private MotionHandle[] m_motions;
 
     private void Update() {
@@ -66,6 +69,18 @@ public class MainMenuInfo : LevelInfo {
 
         StartCoroutine(Internal());
     }
+
+    public void TutorialLevel() {
+
+        Game.PogMan.SetLevelSet(m_tutorialSet);
+        LoadGameScene();
+     }
+     
+    public void NotTutorialLevel() {
+
+        Game.PogMan.SetLevelSet(m_tutorialSet);
+        LoadGameScene();
+     }
 
     // bad code ahead!
     private void UpdateGroups() {

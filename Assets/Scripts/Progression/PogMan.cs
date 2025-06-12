@@ -15,7 +15,7 @@ public class PogMan : MonoBehaviour {
 	public int LevelCount => m_levelSet.LevelStats.Count;
 	public int CurrentLevel => m_currentLevel;
 
-	public bool IsThereNextLevel => m_currentLevel < m_levelSet.LevelStats.Count-1;
+	public bool IsThereNextLevel => m_currentLevel < m_levelSet.LevelStats.Count - 1;
 	private List<Item> m_krampusItems;
 	public IReadOnlyList<Item> KrampusItems => m_krampusItems;
 
@@ -24,7 +24,7 @@ public class PogMan : MonoBehaviour {
 	[ShowNativeProperty] public float TotalRunTime { get => m_timer; }
 
 	private void FixedUpdate() {
-		if(Game.Balling) m_timer += Time.fixedDeltaTime;
+		if (Game.Balling) m_timer += Time.fixedDeltaTime;
 	}
 
 	public LevelStats GetCurrentLevelStats() {
@@ -107,4 +107,8 @@ public class PogMan : MonoBehaviour {
 	public void AllowNextLevel() {
 		m_canGoToNextLevel = true;
 	}
+
+	public void SetLevelSet(LevelSet set) {
+		m_levelSet = set;
+	 }
 }
