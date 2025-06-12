@@ -268,10 +268,10 @@ public class KrampusTongue : KrampusBehaviour {
 				if (m_hitInteractable != null) {
 					try {
 						m_hitInteractable.Interact(Kramp);
-						if (m_hitInteractable is Child) {
+						//if (m_hitInteractable is Child) {
 							Kramp.Kontroller.SetCanSting(true);
 							Kramp.Kontroller.SetStingTarget(m_hitInteractable);
-						}
+						//}
 					} catch (Exception e) {
 						LogException(e, m_hitInteractable);
 						m_hitInteractable = null;

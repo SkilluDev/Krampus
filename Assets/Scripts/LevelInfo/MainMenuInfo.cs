@@ -78,7 +78,7 @@ public class MainMenuInfo : LevelInfo {
      
     public void NotTutorialLevel() {
 
-        Game.PogMan.SetLevelSet(m_tutorialSet);
+        Game.PogMan.SetLevelSet(m_hardMode);
         LoadGameScene();
      }
 
