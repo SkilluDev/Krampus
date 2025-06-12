@@ -87,7 +87,7 @@ public class MainGameInfo : LevelInfo {
 		Game,
 		Paused,
 		Over,
-		Won
+		Won,
 	}
 
 	public bool Ended => CurrentState == State.Over || CurrentState == State.Won;

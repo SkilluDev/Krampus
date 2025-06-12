@@ -54,6 +54,20 @@ public class ProcessInputs : MonoBehaviour, ITextPreprocessor {
             }
         }
 
+		var currentLevelRegex = new Regex(@"<currentLevel>");
+        var currentLevelMatches = currentLevelRegex.Matches(text);
+
+        foreach (Match lMatch in currentLevelMatches) {
+			text = text.Replace(lMatch.Value, ""+(Game.PogMan.CurrentLevel+1));
+		}
+
+		var levelsRegex = new Regex(@"<levels>");
+        var levelsMatches = levelsRegex.Matches(text);
+
+		foreach (Match lMatch in levelsMatches) {
+			text = text.Replace(lMatch.Value, ""+Game.PogMan.LevelCount);
+		}
+
         var bindingRegex = new Regex(@"<binding=""(.*?)"">");
         var bindingMatches = bindingRegex.Matches(text);
 

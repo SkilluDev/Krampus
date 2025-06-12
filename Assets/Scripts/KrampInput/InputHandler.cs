@@ -28,12 +28,26 @@ public class InputHandler : MonoBehaviour
 		}
 
 		if (Game.MainGameInfo.Won) {//if the game is won, you can
-			if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
-				Game.PogMan.GoBackToMenu();
-            }
-            if (InputSubscribe.Raw.UI.Advance.triggered && Game.PogMan.CanGoToNextLevel) { //go to next level with space
-				Game.PogMan.LoadNextLevel();
-            }
+			if (Game.PogMan.IsThereNextLevel) {
+				if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
+					Game.PogMan.GoBackToMenu();
+				}
+				if (InputSubscribe.Raw.UI.Advance.triggered && Game.PogMan.CanGoToNextLevel) { //go to next level with space
+					Game.PogMan.LoadNextLevel();
+				}
+			} else {
+				if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M
+					Game.PogMan.GoBackToMenu();
+				}
+				if (InputSubscribe.Raw.UI.Restart.triggered) { //restart with R
+					Game.PogMan.LoadFirstLevel(false);
+				}
+
+				if (InputSubscribe.Raw.UI.RestartAndRegen.triggered) { //generate and restart with G
+					Game.PogMan.LoadFirstLevel(true);
+				}
+			}
+
         }
     }
 

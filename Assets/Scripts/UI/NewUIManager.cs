@@ -66,6 +66,10 @@ public class NewUIManager : MonoBehaviour {
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarLoseKeys;
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarWinKeys;
 
+    [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topSideBarWinText;
+    [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topSideBarLoseText;
+
+
 
 
    [BoxGroup("Effect Bar")] [SerializeField] private EffectIcon m_effectIconPref;
@@ -252,9 +256,15 @@ public class NewUIManager : MonoBehaviour {
         m_blackBars.Show();
         m_blackBars.SetTopBarText("");
 		if (ending.IsWin()) {
-			m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
+			if (Game.PogMan.IsThereNextLevel) {
+				m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
+			} else {
+				m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
+			}
+			m_blackBars.SetTopBarSideText(m_topSideBarWinText);
 		} else {
 			m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
+			m_blackBars.SetTopBarSideText(m_topSideBarLoseText);
 		}
         m_endScreenHandler.PreActivate(ending);
         yield return new WaitForSeconds(3);

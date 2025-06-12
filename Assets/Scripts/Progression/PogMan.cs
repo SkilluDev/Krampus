@@ -9,7 +9,11 @@ public class PogMan : MonoBehaviour {
 	[SerializeField] private LevelSet m_levelSet;
 
 	[SerializeField] private int m_currentLevel = 0;
+
+	public int LevelCount => m_levelSet.LevelStats.Count;
 	public int CurrentLevel => m_currentLevel;
+
+	public bool IsThereNextLevel => m_currentLevel < m_levelSet.LevelStats.Count-1;
 	private List<Item> m_krampusItems;
 	public IReadOnlyList<Item> KrampusItems => m_krampusItems;
 
@@ -58,8 +62,8 @@ public class PogMan : MonoBehaviour {
 
 	public void LoadNextLevel() {
 		m_canGoToNextLevel = false;
-		m_currentLevel += 1;
-		if (m_currentLevel < m_levelSet.LevelStats.Count) {
+		if (IsThereNextLevel) {
+			m_currentLevel += 1;
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
 			Game.MainGameInfo.SetState(MainGameInfo.State.Game);
 			Game.LoadState(Game.State.MainGame);
