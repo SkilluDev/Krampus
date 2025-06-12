@@ -306,7 +306,7 @@ public class KrampusController : KrampusBehaviour {
 	}
 
 	public void SetCanSting(bool canSting) {
-		if (WindUpPoints < WindUpStingCost) {
+		if (Game.PogMan.GetCurrentLevelStats().LockWindUpUse || WindUpPoints < WindUpStingCost) {
 			CanSting = false;
 		} else {
 			CanSting = canSting;
