@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal.Internal;
 
 
-[CreateAssetMenu(menuName = "Game/Items/LockIn", fileName = "LockIn")]
-public class LockIn : Item {
+[CreateAssetMenu(menuName = "Game/Items/FullFocus", fileName = "FullFocus")]
+public class FullFocus : Item {
 	public override void RegisterEvents(KrampusEvents events) {
 		events.onLockIn.AddListener(BuffKrampus);
 		events.onLockOut.AddListener(DebuffKrampus);

@@ -162,11 +162,9 @@ public class KrampusAnimator : KrampusBehaviour {
         m_runningEffect.Stop();
     }
 
-    void LockInAnimation() {
+	private void LockInAnimation() {
         if (!HasLockInItem) return;
         if (m_inLockInAnimation) { Debug.Log("Siema zatrzymalem ci lockIn"); return; }
-        ;
-
 
         m_lockInAnimation_2 = LMotion.Create(0, 1, 0.25f).WithOnComplete(() => m_lockInCircle.gameObject.SetActive(true)).Bind(null);
         m_lockInAnimation = LMotion.Create(0.4f, 0.14f, Kramp.Kontroller.LockInThreshold).WithOnComplete(()=> LMotion.Create(0.14f,0.16f,0.1f).WithOnComplete(()=> LMotion.Create(0.16f,0.14f,0.1f).

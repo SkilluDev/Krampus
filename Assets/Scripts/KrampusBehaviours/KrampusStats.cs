@@ -190,7 +190,7 @@ public class KrampusStats : KrampusBehaviour {
 
     public bool HasItemWithTag(ItemTag tag) {
         foreach (var i in m_items) {
-            if (i.hasTag(tag)) { return true; }
+            if (i.HasTag(tag)) { return true; }
         }
         return false;
      }
