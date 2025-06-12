@@ -24,12 +24,14 @@ public class ItemChoiceMenuUI : MonoBehaviour {
 
     public void ChooseItem(int pos) {
         Game.MainGameInfo.Krampus.Stats.AddItem(m_itemsDisplayed[pos]);
-
+        Game.MainGameInfo.UI.UpdateInventory();
         Game.MainGameInfo.SetState(MainGameInfo.State.Game);
 
         gameObject.SetActive(false);
 
         Debug.Log("Got item: " + m_itemsDisplayed[pos].ItemName);
+
+        
     }
 
 

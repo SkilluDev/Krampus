@@ -18,6 +18,10 @@ public class NewUIManager : MonoBehaviour {
 
     [SerializeField] private TextMeshProUGUI m_currentSeed;
     [SerializeField] private GameObject m_pauseScreen;
+
+    [BoxGroup("Inventory")][SerializeField] private RectTransform m_inventoryContainer;
+    [BoxGroup("Inventory")][SerializeField] private InventoryCard m_inventoryCardPref;
+
     [SerializeField] private Transform m_timer;
     [SerializeField] private NumericDisplay m_timerDisplay;
     [SerializeField] private float m_timerShakeDuration;
@@ -26,10 +30,12 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private float m_timerBounceIntensity;
     [SerializeField] private Image m_childIconImage;
     [SerializeField] private Image m_fillBar;
-	[SerializeField] private AnimationCurve m_fillUpCurve;
+    [SerializeField] private AnimationCurve m_fillUpCurve;
 
 
     [SerializeField] private GameObject m_quickActionIcon;
+
+
     public GameObject QuickActionIcon => m_quickActionIcon;
 
     private float m_startFill;
@@ -52,8 +58,8 @@ public class NewUIManager : MonoBehaviour {
     private bool m_uiOn = false;
 
 
-    [BoxGroup("Wind-up")] [SerializeField] private Image m_windUpFiller;
-    [BoxGroup("Wind-up")] [SerializeField] private RectTransform m_windUpCostBar;
+    [BoxGroup("Wind-up")][SerializeField] private Image m_windUpFiller;
+    [BoxGroup("Wind-up")][SerializeField] private RectTransform m_windUpCostBar;
 
     [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
@@ -72,7 +78,7 @@ public class NewUIManager : MonoBehaviour {
 
 
 
-   [BoxGroup("Effect Bar")] [SerializeField] private EffectIcon m_effectIconPref;
+    [BoxGroup("Effect Bar")][SerializeField] private EffectIcon m_effectIconPref;
     [BoxGroup("Effect Bar")][SerializeField] private RectTransform m_effectBar;
 
 
@@ -93,9 +99,9 @@ public class NewUIManager : MonoBehaviour {
         OnChildEaten(Game.MainGameInfo.Krampus, child);
     }
 
-	private void Awake() {
-		m_originalTimerLocalScale = m_timer.localScale;
-		m_startFill = m_fillBar.fillAmount;
+    private void Awake() {
+        m_originalTimerLocalScale = m_timer.localScale;
+        m_startFill = m_fillBar.fillAmount;
     }
 
     private void OnChildEaten(Krampus krampus, Child child) {
@@ -144,29 +150,29 @@ public class NewUIManager : MonoBehaviour {
         ShowQuickActionIcon(false);
     }
 
-	public void DisplayEffect(Krampus krampus, Effect effect) {
-		EffectIcon effectIcon = Instantiate(m_effectIconPref);
-		effectIcon.transform.SetParent(m_effectBar, false);
-		if (effect.EffectType == Effect.Type.Permanent) {
-			effectIcon.SetIcon(effect.Id, effect.ItemIcon, "test");
-		} else {
-			effectIcon.SetIcon(effect.Id, effect.ItemIcon, effect.Timer, "test2");
-		}
-		//Debug.Log("SHOWDISPLAY" + effect.Id + effect.Timer);
-	}
+    public void DisplayEffect(Krampus krampus, Effect effect) {
+        EffectIcon effectIcon = Instantiate(m_effectIconPref);
+        effectIcon.transform.SetParent(m_effectBar, false);
+        if (effect.EffectType == Effect.Type.Permanent) {
+            effectIcon.SetIcon(effect.Id, effect.ItemIcon, "test");
+        } else {
+            effectIcon.SetIcon(effect.Id, effect.ItemIcon, effect.Timer, "test2");
+        }
+        //Debug.Log("SHOWDISPLAY" + effect.Id + effect.Timer);
+    }
 
-	public void RemoveEffect(Krampus krampus, Effect effect) {
+    public void RemoveEffect(Krampus krampus, Effect effect) {
 
-		for (int i = 0; i < m_effectBar.childCount; i++) {
-			var effectIcon = m_effectBar.GetChild(i).GetComponent<EffectIcon>();
-			if (effectIcon.EffectId == effect.Id) {
-				Destroy(effectIcon.gameObject);
-				break;
-			}
-		}
+        for (int i = 0; i < m_effectBar.childCount; i++) {
+            var effectIcon = m_effectBar.GetChild(i).GetComponent<EffectIcon>();
+            if (effectIcon.EffectId == effect.Id) {
+                Destroy(effectIcon.gameObject);
+                break;
+            }
+        }
 
-		 //Debug.Log("HIDEDISPLAY" + effect.Id);
-     }
+        //Debug.Log("HIDEDISPLAY" + effect.Id);
+    }
 
 
     private void Update() {
@@ -175,9 +181,9 @@ public class NewUIManager : MonoBehaviour {
         } else {
             m_timerDisplay.gameObject.SetActive(true);
         }
-		if (Game.MainGameInfo.CurrentState == MainGameInfo.State.ItemChoosing) {
-			DisplayItemChoiceMenu();
-		}
+        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.ItemChoosing) {
+            DisplayItemChoiceMenu();
+        }
 
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
     }
@@ -188,48 +194,49 @@ public class NewUIManager : MonoBehaviour {
 
     private void Ready() {
         Game.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
-		Game.MainGameInfo.Krampus.KrampusEvents.onEffectRegistered.AddListener(DisplayEffect);
-		Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
-		Game.GlobalEvents.onLevelStateChanged.AddListener(OnLevelStateChanged);
+        Game.MainGameInfo.Krampus.KrampusEvents.onEffectRegistered.AddListener(DisplayEffect);
+        Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
+        Game.GlobalEvents.onLevelStateChanged.AddListener(OnLevelStateChanged);
 
         m_originalTimerColor = m_timerDisplay.Color;
         m_tutorial.gameObject.SetActive(false);
         m_uiBlockLeft.gameObject.SetActive(false);
         m_uiBlockRight.gameObject.SetActive(false);
+        UpdateInventory();
     }
 
-	private void OnLevelStateChanged(MainGameInfo.State previous, MainGameInfo.State next) {
-		//Debug.Log("PREVIOUS:" + previous + "NEXT:" + next);
-		if (next == MainGameInfo.State.Game &&
-			(previous == MainGameInfo.State.ItemChoosing ||
-		 	previous == MainGameInfo.State.Intro ||
-		  	previous == MainGameInfo.State.WaitingToStart)
-			) {
-			UIElementsEntryAnimation();
-		}
+    private void OnLevelStateChanged(MainGameInfo.State previous, MainGameInfo.State next) {
+        //Debug.Log("PREVIOUS:" + previous + "NEXT:" + next);
+        if (next == MainGameInfo.State.Game &&
+            (previous == MainGameInfo.State.ItemChoosing ||
+             previous == MainGameInfo.State.Intro ||
+              previous == MainGameInfo.State.WaitingToStart)
+            ) {
+            UIElementsEntryAnimation();
+        }
 
-		if (next == MainGameInfo.State.WaitingToStart) {
-			if (Game.PogMan.GetCurrentLevelStats().Tutorials == 0) {
-				//Debug.Log("ZERO");
-				Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
-			} else {
-				Game.GlobalEvents.onTutorialTrigger.Invoke(Game.PogMan.GetCurrentLevelStats().Tutorials);
-			}
-		}
+        if (next == MainGameInfo.State.WaitingToStart) {
+            if (Game.PogMan.GetCurrentLevelStats().Tutorials == 0) {
+                //Debug.Log("ZERO");
+                Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
+            } else {
+                Game.GlobalEvents.onTutorialTrigger.Invoke(Game.PogMan.GetCurrentLevelStats().Tutorials);
+            }
+        }
 
-	}
+    }
 
     public void ChangeChildCounter() {
-		m_currentFillHandle.TryCancel();
-		float oldValue = m_fillBar.fillAmount;
-		m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 1, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
-								 Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar);
-	}
+        m_currentFillHandle.TryCancel();
+        float oldValue = m_fillBar.fillAmount;
+        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 1, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
+                                 Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar);
+    }
 
     public void ChangeWindUpValue(float value, float time = 1f) {
-	    m_currentWindUpFillHandle.TryCancel();
-		float oldValue = m_windUpFiller.fillAmount;
-		m_currentWindUpFillHandle = LMotion.Create(oldValue, value / Game.MainGameInfo.MaxWindUpPoints, time)
+        m_currentWindUpFillHandle.TryCancel();
+        float oldValue = m_windUpFiller.fillAmount;
+        m_currentWindUpFillHandle = LMotion.Create(oldValue, value / Game.MainGameInfo.MaxWindUpPoints, time)
         .WithDelay(0.4f).BindToFillAmount(m_windUpFiller);
     }
     public void HideBlackBars() {
@@ -238,9 +245,9 @@ public class NewUIManager : MonoBehaviour {
 
 
     public void DisplayItemChoiceMenu() {
-		if (m_itemChoiceMenuUI.isActiveAndEnabled == true) return;
+        if (m_itemChoiceMenuUI.isActiveAndEnabled == true) return;
         m_itemChoiceMenuUI.gameObject.SetActive(true);
-     }
+    }
 
     public void UIElementsEntryAnimation() {
         if (m_uiOn) return;
@@ -255,17 +262,17 @@ public class NewUIManager : MonoBehaviour {
     public IEnumerator ProcessEnding(Ending ending) {
         m_blackBars.Show();
         m_blackBars.SetTopBarText("");
-		if (ending.IsWin()) {
-			if (Game.PogMan.IsThereNextLevel) {
-				m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
-			} else {
-				m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-			}
-			m_blackBars.SetTopBarSideText(m_topSideBarWinText);
-		} else {
-			m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-			m_blackBars.SetTopBarSideText(m_topSideBarLoseText);
-		}
+        if (ending.IsWin()) {
+            if (Game.PogMan.IsThereNextLevel) {
+                m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
+            } else {
+                m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
+            }
+            m_blackBars.SetTopBarSideText(m_topSideBarWinText);
+        } else {
+            m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
+            m_blackBars.SetTopBarSideText(m_topSideBarLoseText);
+        }
         m_endScreenHandler.PreActivate(ending);
         yield return new WaitForSeconds(3);
         m_endScreenHandler.Activate(ending);
@@ -279,11 +286,28 @@ public class NewUIManager : MonoBehaviour {
             ).BindToLocalScale(m_timer);
     }
 
-   public  void SetWindUpCostBar(float cost) {
-	    m_windUpCostBar.anchoredPosition = new Vector2(0, Mathf.Lerp(0,m_windUpFiller.rectTransform.sizeDelta.y, cost/Game.MainGameInfo.MaxWindUpPoints) );
+    public void SetWindUpCostBar(float cost) {
+        m_windUpCostBar.anchoredPosition = new Vector2(0, Mathf.Lerp(0, m_windUpFiller.rectTransform.sizeDelta.y, cost / Game.MainGameInfo.MaxWindUpPoints));
     }
 
     public void ShowQuickActionIcon(bool canSting) {
         Game.MainGameInfo.UI.QuickActionIcon.gameObject.SetActive(canSting);
     }
+
+    public void UpdateInventory() {
+
+        foreach (Transform child in m_inventoryContainer) {
+            Destroy(child.gameObject);
+        }
+        var items = Game.MainGameInfo.Krampus.Stats.Items;
+
+        foreach (var i in items) {
+
+            InventoryCard ic = Instantiate(m_inventoryCardPref);
+            ic.SetInfo(i.ItemIcon);
+            ic.transform.SetParent(m_inventoryContainer);
+         }
+
+        
+     }
 }
