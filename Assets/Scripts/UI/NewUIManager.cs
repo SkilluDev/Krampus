@@ -237,7 +237,7 @@ public class NewUIManager : MonoBehaviour {
     public void ChangeWindUpValue(float value, float time = 1f) {
         m_currentWindUpFillHandle.TryCancel();
         float oldValue = m_windUpFiller.fillAmount;
-        m_currentWindUpFillHandle = LMotion.Create(oldValue, value / Game.MainGameInfo.MaxWindUpPoints, time)
+        m_currentWindUpFillHandle = LMotion.Create(oldValue, (value / Game.MainGameInfo.MaxWindUpPoints)*0.6f, time)
         .WithDelay(0.4f).BindToFillAmount(m_windUpFiller);
     }
     public void HideBlackBars() {
@@ -309,6 +309,6 @@ public class NewUIManager : MonoBehaviour {
             ic.transform.SetParent(m_inventoryContainer);
          }
 
-        
+
      }
 }
