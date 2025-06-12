@@ -35,7 +35,7 @@ public class NunMissle : MonoBehaviour {
     }
 
     public void SetTarget(Transform target, Vector3 direction) {
-        m_missleShoot.Play(transform.position, 1f);
+        m_missleShoot.Play(transform.position);
         m_isActive = true;
         m_target = target;
         m_direction = direction;
@@ -56,7 +56,7 @@ public class NunMissle : MonoBehaviour {
     }
 
     private void DeactivateMissle() {
-        m_missleHit.Play(transform.position, 1f);
+        m_missleHit.Play(transform.position);
         m_isActive = false;
         m_missleMesh.SetActive(false);
         Destroy(gameObject, 2);
