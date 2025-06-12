@@ -14,6 +14,9 @@ public class MusicMan : MonoBehaviour {
 
 	[SerializeField] private float m_fadeOutTime = 5f;
 
+	[SerializeField] private float m_maxMusicVol = 0f;
+	[SerializeField] private float m_maxSFXVol = 0f;
+
 	public float GameMusicLayer2Volume { get => m_gameMusicLayer2.volume; set => m_gameMusicLayer2.volume = value; }
 
 	private MotionHandle m_motionHandle1;
@@ -44,8 +47,8 @@ public class MusicMan : MonoBehaviour {
 	}
 
 	public void UpdateMixer() {
-		m_mixer.SetFloat("MusicVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("Music volume")));
-		m_mixer.SetFloat("SFXVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("SFX volume")));
+		m_mixer.SetFloat("MusicVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("Music volume"),m_maxMusicVol));
+		m_mixer.SetFloat("SFXVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("SFX volume"),m_maxSFXVol));
 	}
 
 	private float ProcessFloatVolume(float volume, float max = 0f) {
