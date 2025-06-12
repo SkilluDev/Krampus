@@ -215,7 +215,7 @@ public class MainGameInfo : LevelInfo {
 			case Ending.Win:
 				Game.MainGameInfo.SetState(State.Won);
 				m_outro.PlayOutro();
-				StartCoroutine(AllowNextLevelAfterSeconds(1f));
+				StartCoroutine(AllowNextLevelAfterSeconds(0.5f));
 				break;
 			case Ending.LoseNun:
 				Game.MainGameInfo.SetState(State.Over);

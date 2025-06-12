@@ -68,6 +68,17 @@ public class ProcessInputs : MonoBehaviour, ITextPreprocessor {
 			text = text.Replace(lMatch.Value, ""+Game.PogMan.LevelCount);
 		}
 
+		var timerRegex = new Regex(@"<totalRunTime>");
+        var timerMatches = timerRegex.Matches(text);
+
+		foreach (Match lMatch in timerMatches) {
+			var totalTime = Game.PogMan.TotalRunTime;
+			var minutes = (int) (totalTime / 60);
+			var remainingSeconds = (int) (totalTime - minutes * 60);
+			var formattedTime = minutes.ToString("00") + ':' + remainingSeconds.ToString("00");
+			text = text.Replace(lMatch.Value, formattedTime);
+		}
+
         var bindingRegex = new Regex(@"<binding=""(.*?)"">");
         var bindingMatches = bindingRegex.Matches(text);
 
