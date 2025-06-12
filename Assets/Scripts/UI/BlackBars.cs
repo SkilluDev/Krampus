@@ -11,7 +11,7 @@ public class BlackBars : MonoBehaviour {
     [SerializeField] private float m_duration;
 
     [SerializeField] private RectTransform m_top, m_bottom;
-    [SerializeField] private TMP_Text m_textTop, m_textBottom, m_textSideTop;
+    [SerializeField] private TMP_Text m_textTop, m_textBottom, m_textSideTop, m_textTimerTop;
     private float m_yDistanceTop, m_yDistanceBottom;
 
     private void Awake() {
@@ -49,6 +49,10 @@ public class BlackBars : MonoBehaviour {
 
 	public void SetTopBarSideText(string text) {
         m_textSideTop.SetText(text);
+    }
+
+	public void SetTopTimerText(string text) {
+        m_textTimerTop.SetText(text);
     }
 
     public void SetTopBarText(string text) {
