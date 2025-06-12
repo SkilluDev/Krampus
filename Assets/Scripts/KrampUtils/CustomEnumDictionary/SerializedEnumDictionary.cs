@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 
@@ -107,7 +109,7 @@ public class SerializedEnumDictionary<TKey, TValue>: IReadOnlyDictionary<TKey, T
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 
-
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(SerializedEnumDictionary<,>), true)]
 public class SerializedEnumDictDrawer : PropertyDrawer {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
@@ -129,4 +131,4 @@ public class SerializedEnumDictDrawer : PropertyDrawer {
         return values != null ? EditorGUI.GetPropertyHeight(values, true) : base.GetPropertyHeight(property, label);
     }
 }
-
+#endif
