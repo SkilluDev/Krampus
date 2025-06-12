@@ -24,7 +24,7 @@ namespace Sound {
             source.volume = Random.Range(volumeRange.x, volumeRange.y) * volume;
             source.pitch = Random.Range(pitchRange.x, pitchRange.y);
             source.spatialBlend = spatialBlend;
-            source.rolloffMode = AudioRolloffMode.Linear;
+            //source.rolloffMode = AudioRolloffMode.Linear;
             source.maxDistance = maxDistance;
             source.minDistance = minDistance;
             source.rolloffMode = rolloff;
