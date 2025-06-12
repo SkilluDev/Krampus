@@ -211,7 +211,7 @@ public class KrampusController : KrampusBehaviour {
 		ChangeState(State.Dash, StateChangeReason.Rapid);
 		//Debug.Log("Do dashing " + m_dashDirection);
 
-		m_windUpGainLock = 2;
+		m_windUpGainLock = 1;
 		SpendWindUpPoints(WindUpStingCost);
 		SetCanSting(false);
 	}
