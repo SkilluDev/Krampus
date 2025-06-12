@@ -74,6 +74,7 @@ public class NewUIManager : MonoBehaviour {
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarWinKeys;
 
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topSideBarWinText;
+	[ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topTimerBarText;
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topSideBarLoseText;
 
 
@@ -263,17 +264,18 @@ public class NewUIManager : MonoBehaviour {
     public IEnumerator ProcessEnding(Ending ending) {
         m_blackBars.Show();
         m_blackBars.SetTopBarText("");
+		m_blackBars.SetTopTimerText(m_topTimerBarText);
         if (ending.IsWin()) {
-            if (Game.PogMan.IsThereNextLevel) {
-                m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
-            } else {
-                m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-            }
-            m_blackBars.SetTopBarSideText(m_topSideBarWinText);
-        } else {
-            m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-            m_blackBars.SetTopBarSideText(m_topSideBarLoseText);
-        }
+			if (Game.PogMan.IsThereNextLevel) {
+				m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
+			} else {
+				m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
+			}
+			m_blackBars.SetTopBarSideText(m_topSideBarWinText);
+		} else {
+			m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
+			m_blackBars.SetTopBarSideText(m_topSideBarLoseText);
+		}
         m_endScreenHandler.PreActivate(ending);
         yield return new WaitForSeconds(3);
         m_endScreenHandler.Activate(ending);
