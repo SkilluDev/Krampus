@@ -60,6 +60,7 @@ public class NewUIManager : MonoBehaviour {
 
     [BoxGroup("Wind-up")][SerializeField] private Image m_windUpFiller;
     [BoxGroup("Wind-up")][SerializeField] private RectTransform m_windUpCostBar;
+    [BoxGroup("Wind-up")][SerializeField] private Vector2 m_markerRotatorEndPoints;
 
     [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
@@ -287,7 +288,7 @@ public class NewUIManager : MonoBehaviour {
     }
 
     public void SetWindUpCostBar(float cost) {
-        m_windUpCostBar.anchoredPosition = new Vector2(0, Mathf.Lerp(0, m_windUpFiller.rectTransform.sizeDelta.y, cost / Game.MainGameInfo.MaxWindUpPoints));
+        m_windUpCostBar.rotation =  Quaternion.Euler(0,0,Mathf.Lerp(m_markerRotatorEndPoints.x,m_markerRotatorEndPoints.y,cost / Game.MainGameInfo.MaxWindUpPoints));
     }
 
     public void ShowQuickActionIcon(bool canSting) {
