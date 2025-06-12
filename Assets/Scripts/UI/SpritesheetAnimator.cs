@@ -28,7 +28,7 @@ public class SpriteSheetAnimator : MonoBehaviour {
     private int m_colorCounter;
 
     private void OnEnable() {
-        
+
         switch (m_colorChange) {
             case ColorChange.NiceChild:
                 m_colors = new Color[] { Game.MainGameInfo.NiceChildType.color };
@@ -54,7 +54,7 @@ public class SpriteSheetAnimator : MonoBehaviour {
 
         m_colorTimer += Time.deltaTime/2;
         if (m_colorTimer > 1 / m_fps) {
-            Debug.Log("dlugosc" + m_colors.Length);
+            //Debug.Log("dlugosc" + m_colors.Length);
             m_image.color = m_colors[(m_colorCounter++) % m_colors.Length];
             m_colorTimer = 0;
         }

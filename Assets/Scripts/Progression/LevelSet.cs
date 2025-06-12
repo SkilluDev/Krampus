@@ -25,6 +25,9 @@ public class LevelStats {
 
 	[SerializeField] private float m_timer = 60f;
 	public float Timer => m_timer;
+
+	[SerializeField] private TutorialPage m_tutorials;
+	public TutorialPage Tutorials => m_tutorials;
 }
 
 [CreateAssetMenu(menuName = "Game/LevelProgression/Stats", fileName = "LevelProgressionStats")]

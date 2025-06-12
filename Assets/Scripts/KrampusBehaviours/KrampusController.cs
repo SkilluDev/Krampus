@@ -59,7 +59,7 @@ public class KrampusController : KrampusBehaviour {
 	private float m_lockInTimer = 0f;
 
 
-	
+
 	[SerializeField] private float m_lockInThreshold;
 	public float LockInThreshold => m_lockInThreshold;
 	private MotionHandle m_lockInMotion;
@@ -120,7 +120,7 @@ public class KrampusController : KrampusBehaviour {
 
 		if (CurrentState == State.Walk || CurrentState == State.Idle) {
 			if (!IsLockedIn) {
-	
+
 				m_lockInTimer += Time.deltaTime;
 				if (m_lockInTimer > m_lockInThreshold) {
 					LockIn();
@@ -283,10 +283,13 @@ public class KrampusController : KrampusBehaviour {
 
 	public void AddWindUpPoints(float value) {
 
-		if (m_windUpGainLock > 0) { Debug.Log("Block"); return; }
+		if (m_windUpGainLock > 0) {
+			//Debug.Log("Block");
+			return;
+		}
 
 
-		Debug.Log("Windup bonus: " + WindUpBonus);
+		//Debug.Log("Windup bonus: " + WindUpBonus);
 
 		m_windUpPoints += value *  WindUpBonus;
 		if (m_windUpPoints > Game.MainGameInfo.MaxWindUpPoints) {

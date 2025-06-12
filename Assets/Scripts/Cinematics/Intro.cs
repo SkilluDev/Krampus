@@ -28,21 +28,20 @@ public class Intro : MonoBehaviour {
 	        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Intro) {
 		        Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
 		        Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
-		        Game.MainGameInfo.UI.HideBlackBars(false);
+		        Game.MainGameInfo.UI.HideBlackBars();
 	        }
 
 	        m_director.Stop();
 
             m_spawnPoint.gameObject.SetActive(false);
             m_vcam.enabled = false;
-            Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
         }
     }
 
     public void SetSecondPartOfIntro() {
 	    Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
 	    Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
-	    Game.MainGameInfo.UI.HideBlackBars(true);
+	    Game.MainGameInfo.UI.HideBlackBars();
 
 
 

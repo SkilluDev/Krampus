@@ -2,15 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[Flags]
 [Serializable]
 public enum ItemTag {
-	LockIn,
-
-	
-
-	
- }
+	LockIn = 1,
+	NextTag = 2,
+}
 
 [CreateAssetMenu(menuName = "Game/Items/Item", fileName = "Item")]
 public class Item : ScriptableObject {
@@ -25,7 +22,7 @@ public class Item : ScriptableObject {
 	public string Description => m_description;
 
 	[SerializeField] private List<EffectInEditor> m_effectsInEditor = new List<EffectInEditor>();
-	[SerializeField] private List<ItemTag> m_itemTags = new List<ItemTag>();
+	[SerializeField] private ItemTag m_itemTags;
 
 	protected List<Effect> m_effects = new List<Effect>();
 
@@ -86,8 +83,7 @@ public class Item : ScriptableObject {
 		ItemAdded(Game.MainGameInfo.Krampus);
 	}
 
-	public bool hasTag(ItemTag tag) {
-		return m_itemTags.Contains(tag);
-		
+	public bool HasTag(ItemTag tag) {
+		return m_itemTags.HasFlag(tag);
 	 }
 }

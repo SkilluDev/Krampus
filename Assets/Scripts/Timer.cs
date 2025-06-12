@@ -27,7 +27,7 @@ public class Timer : MonoBehaviour {
 			GameTime = float.MaxValue;
 		}
 
-		Game.MainGameInfo.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
+		Game.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
 	}
 
 	private void Update() {

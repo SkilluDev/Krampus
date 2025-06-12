@@ -29,7 +29,7 @@ public class KrampusAnimator : KrampusBehaviour {
     private float m_minimalVelocity;
     private Quaternion m_rotationTarget;
 
-    private bool HasLockInItem => Kramp.Stats.hasItemWithTag(ItemTag.LockIn);
+    private bool HasLockInItem => Kramp.Stats.HasItemWithTag(ItemTag.LockIn);
 
     private void Start() {
         Kramp.Tongue.onStateChanged += TongueStateChanged;
@@ -72,7 +72,7 @@ public class KrampusAnimator : KrampusBehaviour {
 
                 m_animator.SetBool(m_tongueReadyProperty, false);
                 m_animator.SetBool(m_tongueShouldEatProperty, false);
-                 LockOutAnimation();  
+                 LockOutAnimation();
                 break;
             case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
                 SetTargetView(Kramp.Tongue.TongueDirection);
@@ -92,7 +92,7 @@ public class KrampusAnimator : KrampusBehaviour {
             case (_, KrampusTongue.State.Eating):
 
                  if (Kramp.Kontroller.CurrentState == KrampusController.State.Walk || Kramp.Kontroller.CurrentState == KrampusController.State.Idle) {
-                   
+
                     LockInAnimation();
                  }
 
@@ -162,11 +162,9 @@ public class KrampusAnimator : KrampusBehaviour {
         m_runningEffect.Stop();
     }
 
-    void LockInAnimation() {
+	private void LockInAnimation() {
         if (!HasLockInItem) return;
         if (m_inLockInAnimation) { Debug.Log("Siema zatrzymalem ci lockIn"); return; }
-        ;
-
 
         m_lockInAnimation_2 = LMotion.Create(0, 1, 0.25f).WithOnComplete(() => m_lockInCircle.gameObject.SetActive(true)).Bind(null);
         m_lockInAnimation = LMotion.Create(0.4f, 0.14f, Kramp.Kontroller.LockInThreshold).WithOnComplete(()=> LMotion.Create(0.14f,0.16f,0.1f).WithOnComplete(()=> LMotion.Create(0.16f,0.14f,0.1f).
@@ -175,10 +173,10 @@ public class KrampusAnimator : KrampusBehaviour {
 
     }
 
-    void LockOutAnimation() {
+	private void LockOutAnimation() {
          if (!HasLockInItem) return;
         if (!m_inLockInAnimation) return;
-        Debug.Log("Lock out baby");
+        //Debug.Log("Lock out baby");
         m_lockInCircle.gameObject.SetActive(false);
         m_lockInAnimation.TryCancel();
          m_lockInAnimation_2.TryCancel();
