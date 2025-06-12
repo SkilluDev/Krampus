@@ -8,14 +8,14 @@ public class NunAnimator : MonoBehaviour {
 	[SerializeField] private Transform m_modelTransform;
 	[SerializeField] private float m_turningSpeed = 5f;
 	[SerializeField] private float m_minimalVelocity = 0.5f;
-	[BoxGroup("Animator Properties")][SerializeField][AnimatorParam(nameof(m_animator))] private int m_propertySpeed, m_propertyListening, m_propertyAttack, m_propertyStunned, m_propertyShocked;
+	[BoxGroup("Animator Properties")][SerializeField][AnimatorParam(nameof(m_animator))] private int m_propertySpeed, m_propertyListening, m_propertyAttack, m_propertyStunned, m_propertyShocked, m_propertyUlt;
 	[BoxGroup("State Sprites")][SerializeField] private StatusSprite m_spriteRenderer;
 	[BoxGroup("State Sprites")][SerializeField] private Sprite m_spriteLookingForKrampus, m_spriteListening, m_spriteStunned, m_spriteChasingKrampus;
 	[BoxGroup("Sounds")][SerializeField] private Sex m_soundListen, m_soundFoundKrampus, m_soundPatrol, m_soundNotFoundKrampus;
 
 	private void Start() {
 		m_nun.onStateChanged += MovementStateChanged;
-		m_nun.onAttack += OnNunAttack;
+		m_nun.onAttack += OnUltAttack;
 		m_nun.onFire += OnNunAttack;
 	}
 
@@ -31,7 +31,7 @@ public class NunAnimator : MonoBehaviour {
 	}
 
 	private void MovementStateChanged(Nun.State previous, Nun.State current) {
-		if(!Game.Balling) return;
+		if (!Game.Balling) return;
 		switch (previous, current) {
 			case (_, Nun.State.ChasingKrampus):
 				m_animator.SetBool(m_propertyShocked, false);
@@ -70,6 +70,9 @@ public class NunAnimator : MonoBehaviour {
 	private void OnNunAttack(Nun.State state) {
 		m_animator.SetTrigger(m_propertyAttack);
 	}
+	private void OnUltAttack(Nun.State state) {
+		m_animator.SetTrigger(m_propertyUlt);
+	 }
 }
 
 
