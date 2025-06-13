@@ -326,8 +326,8 @@ MonoBehaviour:
   m_fastVelocity: 8
   m_rotationSmoothing: 15
   m_runningEffect: {fileID: 6316473740624689383}
-  m_catchSoundBite: {fileID: 11400000, guid: d33aee137aed9c9da9880825e3070835, type: 2}
-  m_tongueSoundBite: {fileID: 11400000, guid: 197b438a669f8e2039870f9677798d3d, type: 2}
+  m_catchSoundBite: {fileID: 11400000, guid: 33f6cbbd025c8504db5ae7f9e3596951, type: 2}
+  m_tongueSoundBite: {fileID: 11400000, guid: 61c9d15814fb8934aa90ada4570aac27, type: 2}
   m_windupSoundBite: {fileID: 11400000, guid: 8e73a97a920d82a1583376b4bbda41d8, type: 2}
   m_crackSoundBite: {fileID: 11400000, guid: b6ddd1ea26026824f8a64cc51678f928, type: 2}
   m_deathSoundBite: {fileID: 11400000, guid: baf2beff259953c4fb16beb6a13a89e9, type: 2}
@@ -436,16 +436,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70cf4a5143a591246b9a66bebe01474c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_rawStatList:
-  - m_stat: 0
-    m_value: 10
-    m_statMode: 1
-  - m_stat: 1
-    m_value: 16
-    m_statMode: 0
-  - m_stat: 2
-    m_value: 1
-    m_statMode: 0
+  m_rawStatDict:
+    m_values:
+    - m_key: 0
+      m_value: 0
+      m_statMode: 0
+    - m_key: 1
+      m_value: 0
+      m_statMode: 0
+    - m_key: 2
+      m_value: 0
+      m_statMode: 0
   hasMov: 0
   m_items: []
 --- !u!1 &4670869950198197567
