@@ -28,7 +28,7 @@ public class ChildAnimator : MonoBehaviour {
 
     private void ChildStateChanged(Child.State previous, Child.State current) {
         switch ((previous, current)) {
-            case (_, Child.State.Stunned):
+            case (_, Child.State.Shock):
                 m_animator.SetTrigger(m_propertyStun);
                 m_spriteRenderer.SetSprite(m_panicSprite, 2);
                 m_soundShock.Play(transform.position);
