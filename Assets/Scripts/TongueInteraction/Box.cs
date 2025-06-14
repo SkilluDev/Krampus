@@ -10,6 +10,7 @@ public class Box : MonoBehaviour, IThrowable {
     
     [SerializeField] private LayerMask m_destroyMask;
     [SerializeField] private LayerMask m_stunMask;
+    [SerializeField] private Transform m_model;
     [SerializeField] private GameObject m_specialEffect;
 
     [SerializeField] private float m_stunDuration;
@@ -51,7 +52,7 @@ public class Box : MonoBehaviour, IThrowable {
     public void Throw(Vector3 vector3, Krampus krampus) {
 
         transform.rotation = Quaternion.identity;
-        m_specialEffect.transform.rotation = Quaternion.LookRotation(vector3);
+        m_model.rotation= Quaternion.LookRotation(vector3);
         m_specialEffect.SetActive(true);
         m_rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
         m_rigidbody.velocity = vector3 * m_throwForce;
