@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class Box : MonoBehaviour, IThrowable {
     [BoxGroup("Behaviour")][SerializeField] private Transform m_pinTarget;
-
+    [BoxGroup("Behaviour")][SerializeField] private Vector3 m_inMouthScale;
 
     
     [SerializeField] private LayerMask m_destroyMask;
     [SerializeField] private LayerMask m_stunMask;
+    [SerializeField] private GameObject m_specialEffect;
 
     [SerializeField] private float m_stunDuration;
 
@@ -27,10 +28,12 @@ public class Box : MonoBehaviour, IThrowable {
     public void Hit(Krampus krampus) {
 
     }
-    
 
+    public void Hold() {
+        transform.localScale = m_inMouthScale;
+    }
 
-    public void Interact(IInteractor interactor) { }
+	public void Interact(IInteractor interactor) { }
     public void Prepare(Krampus krampus) {
         m_rigidbody.velocity = Vector3.zero;
         m_collider.enabled = false;
@@ -46,8 +49,10 @@ public class Box : MonoBehaviour, IThrowable {
     }
 
     public void Throw(Vector3 vector3, Krampus krampus) {
-        
-       
+
+        transform.rotation = Quaternion.identity;
+        m_specialEffect.transform.rotation = Quaternion.LookRotation(vector3);
+        m_specialEffect.SetActive(true);
         m_rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
         m_rigidbody.velocity = vector3 * m_throwForce;
         m_collider.enabled = true;

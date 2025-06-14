@@ -455,7 +455,7 @@ public class KrampusTongue : KrampusBehaviour {
 
 		throwable.GameObject.transform.position = m_inMouthOrigin.position;
 		throwable.GameObject.transform.SetParent(m_inMouthOrigin, true);
-
+		throwable.Hold();
 		m_inMouth = throwable;
 
 	}
