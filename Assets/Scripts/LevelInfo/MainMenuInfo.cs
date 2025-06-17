@@ -9,8 +9,10 @@ public class MainMenuInfo : LevelInfo {
     public new enum State {
         Default,
         Transitioning,
+         GameModes,
+       
+        Settings,
         Credits,
-        Settings
     }
 
     public State CurrentState { get; private set; } = State.Transitioning;
