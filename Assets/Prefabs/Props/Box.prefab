@@ -76,7 +76,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Time: 0.1
-  m_PreviewTimeScale: 0.1
+  m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 2
@@ -251,6 +251,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_pinTarget: {fileID: 1378100800249621119}
   m_inMouthScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_hitEffect: {fileID: 6871824169077443105, guid: c378511909a74414185acd8866051895,
+    type: 3}
   m_destroyMask:
     serializedVersion: 2
     m_Bits: 64
@@ -309,7 +311,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 390e6db8e3f546b41b1f12d6b2bb0cd3,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.350004
+      value: 5.0859585
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 390e6db8e3f546b41b1f12d6b2bb0cd3,
         type: 3}
@@ -329,12 +331,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 390e6db8e3f546b41b1f12d6b2bb0cd3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: 0.0047
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 390e6db8e3f546b41b1f12d6b2bb0cd3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.01
+      value: -0.038018
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 390e6db8e3f546b41b1f12d6b2bb0cd3,
         type: 3}

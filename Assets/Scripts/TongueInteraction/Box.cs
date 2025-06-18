@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Box : MonoBehaviour, IThrowable {
     [BoxGroup("Behaviour")][SerializeField] private Transform m_pinTarget;
     [BoxGroup("Behaviour")][SerializeField] private Vector3 m_inMouthScale;
+
+    [SerializeField] private VisualEffect m_hitEffect;
 
     
     [SerializeField] private LayerMask m_destroyMask;
@@ -76,18 +79,23 @@ public class Box : MonoBehaviour, IThrowable {
         if ((m_stunMask & (1 << other.gameObject.layer)) != 0) {
 
 
-            if (other.gameObject.GetComponent<Nun>()  ) {
+            if (other.gameObject.GetComponent<Nun>()) {
                 other.gameObject.GetComponent<Nun>().Stun(m_stunDuration);
-             }
-              if (other.gameObject.GetComponent<Child>()  ) {
+            }
+            if (other.gameObject.GetComponent<Child>()) {
                 other.gameObject.GetComponent<Child>().Stun(m_stunDuration);
-             }
+            }
+             var h = Instantiate(m_hitEffect, transform.position, Quaternion.identity);
+            h.Play();
             Destroy(gameObject);
+           
            
         }
        
         if ((m_destroyMask & (1 << other.gameObject.layer)) != 0) {
 
+            var h = Instantiate(m_hitEffect, transform.position, Quaternion.identity);
+            h.Play();
             Destroy(gameObject);
         }
          
