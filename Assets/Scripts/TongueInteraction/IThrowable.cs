@@ -10,6 +10,8 @@ public interface IThrowable : IInteractable
     public void Hit(Krampus krampus);
     public void ReelIn(Krampus krampus, Vector3 position, float progress);
 
+    public bool canCatch() { return true; }
+
     public void Throw(Vector3 vector3, Krampus krampus);
     public void Hold();
 

@@ -226,12 +226,20 @@ public class KrampusTongue : KrampusBehaviour {
 				}
 				if (m_hitInteractable is IThrowable throwable) {
 					m_hitThrowable = throwable;
-					try {
+
+					if (!m_hitThrowable.canCatch()) {
+						m_hitThrowable = null;
+						m_hitInteractable = null;
+					} else {
 						m_hitThrowable.Prepare(Kramp);
+					 }
+					try {
+
+						
 					} catch (Exception e) {
 						LogException(e, m_hitEdible);
 						m_hitThrowable = null;
-						m_hitThrowable = null;
+						m_hitInteractable = null;
 
 					}
 				}

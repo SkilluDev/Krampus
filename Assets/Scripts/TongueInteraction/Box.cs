@@ -10,11 +10,11 @@ public class Box : MonoBehaviour, IThrowable {
 
     [SerializeField] private VisualEffect m_hitEffect;
 
-    
+
     [SerializeField] private LayerMask m_destroyMask;
     [SerializeField] private LayerMask m_stunMask;
     [SerializeField] private Transform m_allModel;
-     [SerializeField] private Transform m_boxModel;
+    [SerializeField] private Transform m_boxModel;
     [SerializeField] private GameObject m_specialEffect;
 
     [SerializeField] private float m_stunDuration;
@@ -22,7 +22,7 @@ public class Box : MonoBehaviour, IThrowable {
     [SerializeField] private Collider m_collider;
     [SerializeField] private Rigidbody m_rigidbody;
     [SerializeField] private bool m_inMove;
-   private Krampus m_owner;
+    private Krampus m_owner;
 
     [SerializeField] private float m_throwForce;
 
@@ -39,22 +39,22 @@ public class Box : MonoBehaviour, IThrowable {
         transform.localScale = m_inMouthScale;
     }
 
-	public void Interact(IInteractor interactor) { }
+    public void Interact(IInteractor interactor) { }
     public void Prepare(Krampus krampus) {
         m_rigidbody.velocity = Vector3.zero;
         m_collider.enabled = false;
         m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-        
+
 
 
     }
-	private void Update() {
+    private void Update() {
         if (m_inMove) {
             m_boxModel.Rotate(1440 * Time.deltaTime, 0, 0);
         }
-	}
+    }
 
-	public void ReelIn(Krampus krampus, Vector3 position, float progress) {
+    public void ReelIn(Krampus krampus, Vector3 position, float progress) {
         transform.position = position - transform.InverseTransformPoint(m_pinTarget.position);
 
     }
@@ -72,7 +72,7 @@ public class Box : MonoBehaviour, IThrowable {
         m_inMove = true;
 
     }
-    
+
 
     void OnTriggerEnter(Collider other) {
 
@@ -85,19 +85,23 @@ public class Box : MonoBehaviour, IThrowable {
             if (other.gameObject.GetComponent<Child>()) {
                 other.gameObject.GetComponent<Child>().Stun(m_stunDuration);
             }
-             var h = Instantiate(m_hitEffect, transform.position, Quaternion.identity);
+            var h = Instantiate(m_hitEffect, transform.position, Quaternion.identity);
             h.Play();
             Destroy(gameObject);
-           
-           
+
+
         }
-       
+
         if ((m_destroyMask & (1 << other.gameObject.layer)) != 0) {
 
             var h = Instantiate(m_hitEffect, transform.position, Quaternion.identity);
             h.Play();
             Destroy(gameObject);
         }
-         
-	}
+
+    }
+
+    public bool canCatch() {
+        return !m_inMove;
+     }
 }
