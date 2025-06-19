@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using KrampUtils;
 using UnityEngine;
 
@@ -6,28 +6,7 @@ using UnityEngine;
 public class ItemPool : ScriptableObject {
     public Item[] items;
 
-    public Item[] RandomItemFor(int size, KrampusStats krampusStats) {
-
-        var indexes = new List<int>();
-        for (int i = 0; i < items.Length; i++) {
-            Item item = items[i];
-            //Debug.Log("Checking " + item.ItemName);
-            if (!krampusStats.HasItem(item)) {
-                indexes.Add(i);
-                //Debug.Log("Added " + i);
-            }
-        }
-
-        int[] pos = indexes.UnityShuffle();
-        var results = new Item[size];
-
-        for (int j = 0; j < size; j++) {
-            results[j] = items[pos[j]];
-        }
-
-        return results;
-    }
+    public Item[] RandomItemForKrampus(int howMany, KrampusStats krampusStats) =>
+        items.Where(w => !krampusStats.HasItem(w)).UnityShuffle().Take(howMany).ToArray();
 
 }
-
-
