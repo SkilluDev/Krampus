@@ -1,37 +1,39 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Game/Items/EvolvingDanger", fileName = "EvolvingDanger")]
+[ItemState(typeof(EvolvingDanger.State))]
 public class EvolvingDanger : Item {
-    // todo: Item attrbutes system
-    private int m_level;
+    public class State {
+        public int level;
+    }
+
     public override void RegisterEvents(KrampusEvents events) {
         events.onWindUpChanged.AddListener(BuffKrampus);
-        m_level = 0;
     }
 
     public override void UnregisterEvents(KrampusEvents events) {
         events.onWindUpChanged.RemoveListener(BuffKrampus);
-        m_level = 0;
     }
 
     private void BuffKrampus(Krampus krampus, float windup) {
-        if (windup >= 100) {
-            m_level++;
-            switch (m_level) {
-                case 1:
-                    RegisterEffect(krampus, 0);
-                    break;
-
-                case 2:
-                    RegisterEffect(krampus, 1);
-                    break;
-                case 3:
-                    RegisterEffect(krampus, 2);
-                    break;
-                default:
-                    return;
-            }
-            krampus.Kontroller.SpendWindUpPoints(100);
+        if (windup < 100) {
+            return;
         }
+
+        var state = krampus.Stats.GetItemState<State>(this);
+        switch (state.level) {
+            case 1:
+                RegisterEffect(krampus, 0);
+                break;
+            case 2:
+                RegisterEffect(krampus, 1);
+                break;
+            case 3:
+                RegisterEffect(krampus, 2);
+                break;
+            default:
+                return;
+        }
+        krampus.Kontroller.SpendWindUpPoints(100);
     }
 }

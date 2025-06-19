@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class KrampusStats : KrampusBehaviour {
@@ -152,8 +153,11 @@ public class KrampusStats : KrampusBehaviour {
         item.ItemAdded(Kramp);
         if (!m_items.Contains(item)) {
             item.RegisterEvents(Kramp.KrampusEvents);
+            var data = item.GetType().GetCustomAttribute<ItemStateAttribute>();
+            if (data != null) m_itemStates.Add(item, Activator.CreateInstance(data.DataType));
         }
         m_items.Add(item);
+
     }
 
     public void RemoveItem(Item item) {
@@ -164,9 +168,16 @@ public class KrampusStats : KrampusBehaviour {
 
         m_items.Remove(item);
         item.ItemRemoved(Kramp);
-        if (!m_items.Contains(item)) item.UnregisterEvents(Kramp.KrampusEvents);
+        if (!m_items.Contains(item)) {
+            if (m_itemStates.ContainsKey(item)) m_itemStates.Remove(item);
+            item.UnregisterEvents(Kramp.KrampusEvents);
+        }
     }
 
+    public T GetItemState<T>(Item item) {
+        if (m_itemStates.ContainsKey(item)) return (T)m_itemStates[item];
+        else throw new NullReferenceException();
+    }
 
     public bool HasItem(Item item) {
         return m_items.Contains(item);
