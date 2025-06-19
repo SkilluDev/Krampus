@@ -30,6 +30,9 @@ public class PogMan : MonoBehaviour {
 	public LevelStats GetCurrentLevelStats() {
 		return m_levelSet.LevelStats[m_currentLevel];
 	}
+	public int GetMaxLevel() {
+		return m_levelSet.LevelStats.Count + 1;
+	 }
 
 	private bool m_clearItemsOnLoad = false;
 
