@@ -12,15 +12,15 @@ public class BlackBars : MonoBehaviour {
     [SerializeField] private float m_duration;
 
     [SerializeField] private RectTransform m_top, m_bottom;
-    [SerializeField] private TMP_Text m_textTop, m_textBottom, m_textSideTop, m_textTimerTop;
+    [SerializeField] private TMP_Text m_textTop, m_textBottom, m_resultText, m_textTimerTop;
 
 
-     [BoxGroup("Map")][SerializeField] private Button m_mapButtonPref;
-    [BoxGroup("Map")][SerializeField] private RectTransform m_mapContainer;
-    [BoxGroup("Map")][SerializeField] private Sprite m_currentLevelSprite;
-    [BoxGroup("Map")][SerializeField] private Sprite m_doneLevelSprtie;
-    [BoxGroup("Map")][SerializeField] private Sprite m_futureLevelSprtie;
-
+    [BoxGroup("Animation")][SerializeField] private RectTransform m_resultContainer;
+    [BoxGroup("Animation")][SerializeField] private Vector3 m_popScale;
+    
+    [BoxGroup("Animation")][SerializeField] private float m_popTimer;
+    [BoxGroup("Animation")][SerializeField] private float m_shakeIntensity;
+    [BoxGroup("Animation")][SerializeField] private float m_shakeDuration;
     private float m_yDistanceTop, m_yDistanceBottom;
 
     private void Awake() {
@@ -57,8 +57,31 @@ public class BlackBars : MonoBehaviour {
     }
 
     public void SetTopBarSideText(string text) {
-        m_textSideTop.SetText(text);
+        m_resultText.SetText(text);
     }
+
+    public void AnimateResultText(bool hasWon, string text) {
+
+        int currntLevel = Game.PogMan.CurrentLevel;
+        if (hasWon) {
+
+            m_resultText.SetText(currntLevel + "/<levels> Cleared!");
+            m_resultText.color = Color.green;
+            Vector3 oldScale = m_resultContainer.localScale;
+            LMotion.Create(oldScale, m_popScale, m_popTimer / 2).WithDelay(0.35f).WithEase(Ease.OutElastic)
+            .WithOnComplete(() => m_resultText.SetText((currntLevel + 1) + "/<levels> Cleared!"))
+            .WithOnComplete(
+                   () => LMotion.Create(m_popScale, oldScale, m_popTimer / 2).WithEase(Ease.InBounce).WithOnComplete(() => m_resultText.color = Color.white).BindToLocalScale(m_resultContainer)
+               ).BindToLocalScale(m_resultContainer);
+            return;
+
+        }
+        m_resultText.SetText(currntLevel + "/<levels> Failed!");
+        //LMotion.Shake.Create(m_resultContainer.localPosition, Vector3.one * m_shakeIntensity, m_shakeDuration).WithDelay(3).WithEase(Ease.InOutQuad).BindToLocalPosition(m_resultContainer);
+          m_resultText.color = Color.red;
+
+        
+      }
 
     public void SetTopTimerText(string text) {
         m_textTimerTop.SetText(text);
@@ -68,28 +91,5 @@ public class BlackBars : MonoBehaviour {
         m_textTop.SetText(text);
     }
 
-     public void GenerateMap() {
-        int currentLevel = Game.PogMan.CurrentLevel;
-        int maxLevel = Game.PogMan.GetMaxLevel();
-        for (int i = 1; i < currentLevel; i++) {
-
-            Button b = Instantiate(m_mapButtonPref);
-            b.transform.SetParent(m_mapContainer, false);
-            b.GetComponent<Image>().sprite = m_doneLevelSprtie;
-            b.enabled = false;
-
-        }
-        Button cc = Instantiate(m_mapButtonPref);
-        cc.transform.SetParent(m_mapContainer, false);
-        cc.GetComponent<Image>().sprite = m_currentLevelSprite;
-
-        for (int j = currentLevel + 1; j <= maxLevel; j++) {
-            Button b = Instantiate(m_mapButtonPref);
-            b.transform.SetParent(m_mapContainer, false);
-            b.GetComponent<Image>().sprite = m_futureLevelSprtie;
-            b.enabled = false;
-        }
-
-
-    }
+     
 }

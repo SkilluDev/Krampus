@@ -266,16 +266,17 @@ public class NewUIManager : MonoBehaviour {
         m_blackBars.SetTopBarText("");
 		m_blackBars.SetTopTimerText(m_topTimerBarText);
         if (ending.IsWin()) {
-			if (Game.PogMan.IsThereNextLevel) {
-				m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
-			} else {
-				m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-			}
-			m_blackBars.SetTopBarSideText(m_topSideBarWinText);
-		} else {
-			m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-			m_blackBars.SetTopBarSideText(m_topSideBarLoseText);
-		}
+            if (Game.PogMan.IsThereNextLevel) {
+                m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
+            } else {
+                m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
+            }
+            m_blackBars.AnimateResultText(true, m_topSideBarWinText);
+        } else {
+            m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
+            m_blackBars.SetTopBarSideText(m_topSideBarLoseText);
+             m_blackBars.AnimateResultText(false,m_topSideBarWinText);
+        }
         m_endScreenHandler.PreActivate(ending);
         yield return new WaitForSeconds(3);
         m_endScreenHandler.Activate(ending);
