@@ -29,11 +29,16 @@ public class MainMenuInfo : LevelInfo {
     }
 
     private void Ready() {
-        m_motions = new MotionHandle[m_canvases.Length];
-        foreach (var c in m_canvases) c.alpha = 0;
-        SetState(State.Default);
-        //Debug.Log("Set state default!");
-    }
+		if (Game.BootFromMainGame) {
+			Game.BootFromMainGame = false;
+			Game.PogMan.StartNewGame(PogMan.Difficulty.Normal);
+			return;
+		}
+		m_motions = new MotionHandle[m_canvases.Length];
+		foreach (var c in m_canvases) c.alpha = 0;
+		SetState(State.Default);
+		//Debug.Log("Set state default!");
+	}
 
     private void Unready() {
         //Debug.Log("Kill motions");

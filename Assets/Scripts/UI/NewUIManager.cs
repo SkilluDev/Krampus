@@ -200,6 +200,9 @@ public class NewUIManager : MonoBehaviour {
         Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
         Game.GlobalEvents.onLevelStateChanged.AddListener(OnLevelStateChanged);
 
+		SetSeed(Game.RoomGenInfo.Seed);
+
+
         m_originalTimerColor = m_timerDisplay.Color;
         m_tutorial.gameObject.SetActive(false);
         m_uiBlockLeft.gameObject.SetActive(false);
@@ -253,8 +256,6 @@ public class NewUIManager : MonoBehaviour {
 
     public void UIElementsEntryAnimation() {
         if (m_uiOn) return;
-		SetSeed(Game.RoomGenInfo.Seed);
-
         //Debug.Log("Entry");
 		m_uiBlockLeft.gameObject.SetActive(true);
         LMotion.Create(-200, 50, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition = new Vector2(x, m_uiBlockLeft.anchoredPosition.y));

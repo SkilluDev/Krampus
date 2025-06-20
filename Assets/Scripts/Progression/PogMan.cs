@@ -51,6 +51,11 @@ public class PogMan : MonoBehaviour {
 
 	[ShowNativeProperty] public float TotalRunTime { get => m_timer; }
 
+	private void Ready() {
+		if (Game.BootFromMainGame) {
+			Game.LoadState(Game.State.MainMenu);
+		}
+	}
 	private void FixedUpdate() {
 		if (Game.Balling) m_timer += Time.fixedDeltaTime;
 	}
