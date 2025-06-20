@@ -95,6 +95,7 @@ public class PogMan : MonoBehaviour {
 		m_canGoToNextLevel = false;
 		if (IsThereNextLevel) {
 			m_currentLevel += 1;
+			SetNextSeed();
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
 			Game.LoadState(Game.State.MainGame);
 		} else {
@@ -144,7 +145,11 @@ public class PogMan : MonoBehaviour {
 				throw new ArgumentOutOfRangeException();
 		}
 
-		Random.InitState(Game.RoomGenInfo.Seed);
+		SetNextSeed();
+	}
+
+	public void SetNextSeed() {
+		Random.InitState(Game.RoomGenInfo.Seed + CurrentLevel);
 	}
 
 	public void StartNewGame(Difficulty difficulty) {
