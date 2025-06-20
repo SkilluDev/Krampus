@@ -159,7 +159,7 @@ public class KrampusTongue : KrampusBehaviour {
 					m_tongueAimIndicator.gameObject.SetActive(true); // TODO: this should be done by the animator;
 					m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
 					//m_tongueAimIndicator.SetBlendShapeWeight(0, InputGetShootFactor() * 100f);
-					m_tongueAimIndicator.transform.localScale = new Vector3(100f,100f,(100f/6f)*TongueLength);
+					m_tongueAimIndicator.transform.localScale = new Vector3(100f,100f,(100f/7f)*TongueLength);
 
 					if (InputWantsShoot()) {
 
