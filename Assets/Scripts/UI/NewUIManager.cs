@@ -199,8 +199,6 @@ public class NewUIManager : MonoBehaviour {
         Game.MainGameInfo.Krampus.KrampusEvents.onEffectRegistered.AddListener(DisplayEffect);
         Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
         Game.GlobalEvents.onLevelStateChanged.AddListener(OnLevelStateChanged);
-		
-		SetSeed(Game.RoomGenInfo.Seed);
 
         m_originalTimerColor = m_timerDisplay.Color;
         m_tutorial.gameObject.SetActive(false);
@@ -233,14 +231,14 @@ public class NewUIManager : MonoBehaviour {
     public void ChangeChildCounter() {
         m_currentFillHandle.TryCancel();
         float oldValue = m_fillBar.fillAmount;
-        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 1, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
+        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 0.95f, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
                                  Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar);
     }
 
     public void ChangeWindUpValue(float value, float time = 1f) {
         m_currentWindUpFillHandle.TryCancel();
         float oldValue = m_windUpFiller.fillAmount;
-        m_currentWindUpFillHandle = LMotion.Create(oldValue, (value / Game.MainGameInfo.MaxWindUpPoints)*0.6f, time)
+        m_currentWindUpFillHandle = LMotion.Create(oldValue, math.remap(0f,1f, 0.07f, 0.41f, value / Game.MainGameInfo.MaxWindUpPoints), time)
         .WithDelay(0.4f).BindToFillAmount(m_windUpFiller);
     }
     public void HideBlackBars() {
@@ -255,8 +253,10 @@ public class NewUIManager : MonoBehaviour {
 
     public void UIElementsEntryAnimation() {
         if (m_uiOn) return;
+		SetSeed(Game.RoomGenInfo.Seed);
+
         //Debug.Log("Entry");
-        m_uiBlockLeft.gameObject.SetActive(true);
+		m_uiBlockLeft.gameObject.SetActive(true);
         LMotion.Create(-200, 50, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition = new Vector2(x, m_uiBlockLeft.anchoredPosition.y));
         m_uiBlockRight.gameObject.SetActive(true);
         LMotion.Create(300, -50, 0.375f).Bind(x => m_uiBlockRight.anchoredPosition = new Vector2(x, m_uiBlockRight.anchoredPosition.y));
