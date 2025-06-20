@@ -195,6 +195,10 @@ public class MainGameInfo : LevelInfo {
 	}
 
 	public void ProcessEndGame(Ending ending) {
+		if (Game.PogMan.IsTutorial) {
+			ProcessTutorialEnd(ending);
+			return;
+		}
 		switch (ending) {
 			case Ending.Win:
 				Game.MainGameInfo.SetState(State.Won);
@@ -202,18 +206,47 @@ public class MainGameInfo : LevelInfo {
 				StartCoroutine(AllowNextLevelAfterSeconds(0.5f));
 				break;
 			case Ending.LoseNun:
+				Game.MusicMan.StopMusic();
 				Game.MainGameInfo.SetState(State.Over);
 				break;
 			case Ending.LoseTime:
+				Game.MusicMan.StopMusic();
 				Game.MainGameInfo.SetState(State.Over);
 				break;
 		}
-		Game.MusicMan.StopMusic();
 		StartCoroutine(UI.ProcessEnding(ending));
+	}
+
+	private void ProcessTutorialEnd(Ending ending) {
+		switch (ending) {
+			case Ending.Win:
+				Game.MainGameInfo.SetState(State.Won);
+				m_outro.PlayOutro();
+				StartCoroutine(GoToNextLevelAfterSeconds(3f));
+				break;
+			case Ending.LoseNun:
+				Game.MainGameInfo.SetState(State.Over);
+				StartCoroutine(ReloadLevelAfterSeconds(2f));
+				break;
+			case Ending.LoseTime:
+				Game.MainGameInfo.SetState(State.Over);
+				StartCoroutine(ReloadLevelAfterSeconds(2f));
+				break;
+		}
 	}
 
 	private IEnumerator AllowNextLevelAfterSeconds(float time) {
 		yield return new WaitForSeconds(time);
 		Game.PogMan.AllowNextLevel();
+	}
+
+	private IEnumerator GoToNextLevelAfterSeconds(float time) {
+		yield return new WaitForSeconds(time);
+		Game.PogMan.LoadNextLevel();
+	}
+
+	private IEnumerator ReloadLevelAfterSeconds(float time) {
+		yield return new WaitForSeconds(time);
+		Game.PogMan.ReloadCurrentLevel();
 	}
 }

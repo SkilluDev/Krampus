@@ -130,6 +130,10 @@ public class PogMan : MonoBehaviour {
 
 	}
 
+	public void ReloadCurrentLevel() {
+		Game.LoadState(Game.State.MainGame);
+	}
+
 	public void GoBackToMenu() {
 		m_canGoToNextLevel = false;
 		ResetProgress();
