@@ -1,4 +1,4 @@
-    using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,13 +67,13 @@ public class Nun : NPC {
         m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
     }
 
-	public void SetModel() {
-		m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
-	}
+    public void SetModel() {
+        m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
+    }
 
     private void Unready() {
-		Game.MainGameInfo.UnregisterNun(this);
-	}
+        Game.MainGameInfo.UnregisterNun(this);
+    }
 
     private void SelectNewWanderLocation() {
         if (NavMesh.SamplePosition(Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement().GetMidPoint(), out var hit, 10, NavMesh.AllAreas)) {
@@ -90,18 +90,24 @@ public class Nun : NPC {
 
     private void CreatePatrolPath() {
         m_patrolPath = new List<Vector3>();
-        for (int i = 0; i < 3; i++) {
+        var alreadyPatrolled = new List<Room>();
+        for (int i = 0; i < 5; i++) {
             var room = Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement();
-            if (!NavMesh.SamplePosition(room.GetMidPoint(), out var navmeshPoint, 3f, NavMesh.AllAreas)) {
+
+            int retries = 0;
+            while (retries < 6 && alreadyPatrolled.Contains(room)) {
+                room = Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement();
+                retries++;
+            }
+
+            alreadyPatrolled.Add(room);
+
+            if (room.HasTag(m_dontPatrolTag) || !NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var navmeshPoint, 3f, NavMesh.AllAreas)) {
                 i--;
                 Debug.LogWarning($"Problem adding Nun patrol point in {room.name}. Retrying...");
                 continue;
             }
-            if (room.HasTag(m_dontPatrolTag)) {
-                i--;
-                Debug.LogWarning($"Problem adding Nun patrol point in {room.name}. Retrying...");
-                continue;
-            }
+
             m_patrolPath.Add(navmeshPoint.position);
         }
     }
@@ -123,11 +129,17 @@ public class Nun : NPC {
                 //Debug.Log("[Nun] Begin patrolling");
                 break;
             case State.Patrolling:
+                if (m_timeout > 0) {
+                    m_timeout -= Time.deltaTime;
+                    break;
+                }
                 if (NearDestination(m_interactionDistance)) {
                     m_currentControlPoint++;
                     m_currentControlPoint %= m_patrolPath.Count;
+                    // probably should be a min-max
+                    m_timeout = UnityEngine.Random.Range(0, m_patrolIdleDuration);
                     SetDestination(m_patrolPath[m_currentControlPoint]);
-                    //Debug.Log("[Nun] Reached patrol point");
+                    Debug.Log("[Nun] Reached patrol point == " + m_currentControlPoint);
                 }
 
                 m_viewCone.SetActive(true);
@@ -135,12 +147,8 @@ public class Nun : NPC {
                     //Debug.Log("[Nun] viewcone detected krampy");
                     m_timeout = m_shockTimeout;
                     //Change in multi
-
                     SeeKrampus();
-
-
                 }
-
 
                 SetVelocity(GetPathDirection() * m_baseMovementSpeed);
                 SetFacingDirection(GetPathDirection());
@@ -163,7 +171,6 @@ public class Nun : NPC {
                     }
                     SetVelocity(Vector3.zero);
                     SetFacingDirection(Vector3.zero);
-
                 } else {
                     SetVelocity(GetPathDirection() * m_runSpeed);
                     SetFacingDirection(GetPathDirection());
@@ -175,9 +182,6 @@ public class Nun : NPC {
                 SetVelocity(Vector3.zero);
                 m_timeout -= Time.deltaTime;
                 SetFacingToPoint(Game.MainGameInfo.Krampus.transform.position);
-
-
-
                 if (m_timeout < 0) SwitchState(State.ChasingKrampus);
                 break;
             case State.Listening:
@@ -195,7 +199,7 @@ public class Nun : NPC {
                 SetVelocity(GetPathDirection() * m_runSpeed);
 
 
-                m_rageMeter += UnityEngine.Random.Range(m_randomRagePerSeconds.x,m_randomRagePerSeconds.y) * Time.deltaTime;
+                m_rageMeter += UnityEngine.Random.Range(m_randomRagePerSeconds.x, m_randomRagePerSeconds.y) * Time.deltaTime;
                 //Debug.Log("Rage:" + m_rageMeter);
 
                 if (m_rageMeter >= 100) {
@@ -289,24 +293,22 @@ public class Nun : NPC {
     }
 
 
-
     public void Shoot() {
         m_rageMeter = 0;
-        Vector3 direction = (Game.MainGameInfo.Krampus.transform.position.NoY() - transform.position.NoY()).normalized;
-        Vector3 pos = transform.position + (2 * direction) + new Vector3(0, 1, 0);
-        Quaternion rot = Quaternion.LookRotation(direction);
-        NunMissle nunMissle = Instantiate(m_misslePref, pos, Quaternion.identity);
+        var direction = (Game.MainGameInfo.Krampus.transform.position.NoY() - transform.position.NoY()).normalized;
+        var pos = transform.position + (2 * direction) + new Vector3(0, 1, 0);
+        var rot = Quaternion.LookRotation(direction);
+        var nunMissle = Instantiate(m_misslePref, pos, Quaternion.identity);
         nunMissle.SetTarget(Game.MainGameInfo.Krampus.transform, direction);
     }
 
-
+    // TODO: move to viewcone script logic
     private bool HasLineOfSight(float range = 100f) {
-
         Physics.Raycast(transform.position, Game.MainGameInfo.Krampus.transform.position - transform.position, out var hit, range, m_visionMask);
         if (hit.collider.transform == Game.MainGameInfo.Krampus.transform) {
             return true;
         } else {
             return false;
         }
-     }
+    }
 }
