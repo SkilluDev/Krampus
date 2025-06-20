@@ -16,6 +16,7 @@ public class ChildAnimator : MonoBehaviour {
     [BoxGroup("State Sprites")][SerializeField] private StatusSprite m_spriteRenderer;
     [BoxGroup("State Sprites")][SerializeField] private Sprite m_panicSprite;
     [BoxGroup("State Sprites")][SerializeField] private Sprite m_alertedSprite;
+    [BoxGroup("State Sprites")][SerializeField] private Sprite m_stunSprite;
     [BoxGroup("Sounds")][SerializeField] private float m_screamVolume = 0.6f;
     [BoxGroup("Sounds")][SerializeField] private AudioSource m_screamSource;
     [BoxGroup("Sounds")][SerializeField] private Sex m_soundShock;
@@ -61,7 +62,7 @@ public class ChildAnimator : MonoBehaviour {
             case (_, Child.State.Reporting):
                 break;
             case (_,Child.State.Stunned):
-                
+                m_spriteRenderer.SetSprite(m_stunSprite, 2);
                 break;
             case (_, Child.State.Alerted):
                 m_spriteRenderer.SetSprite(m_alertedSprite);
