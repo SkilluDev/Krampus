@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adf96e2dd2f61374483fc3ba43cce0fd, type: 3}
-  m_Name: CloseAndEat
+  m_Script: {fileID: 11500000, guid: 7c455ac00c08a6b4c8680989803f4c1c, type: 3}
+  m_Name: Dark fuel
   m_EditorClassIdentifier: 
-  m_itemName: Close&Eat
-  m_itemIcon: {fileID: 21300000, guid: f92fc4508a240c34bb092e4055be52b1, type: 3}
-  m_description: After stunning a nun, next child gives 30 extra wind-up points.
+  m_itemName: Dark fuel
+  m_itemIcon: {fileID: 21300000, guid: 80e413db7b6cc22488660eaaf5efe099, type: 3}
+  m_description: When your wind-up is above 50%, gain 20% tongue range
   m_effectsInEditor:
-  - m_stat: 2
+  - m_stat: 1
     m_duration: 0
-    m_modifier: 0
+    m_modifier: 0.2
   m_itemTags: 0
-  m_windupGained: 30
+  m_windUpTreshold: 50

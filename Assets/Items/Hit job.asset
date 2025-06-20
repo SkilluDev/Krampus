@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c455ac00c08a6b4c8680989803f4c1c, type: 3}
-  m_Name: Enraged
+  m_Script: {fileID: 11500000, guid: adf96e2dd2f61374483fc3ba43cce0fd, type: 3}
+  m_Name: Hit job
   m_EditorClassIdentifier: 
-  m_itemName: Enraged
-  m_itemIcon: {fileID: 21300000, guid: 6a63f774bee866d479f1d9b47634c71d, type: 3}
-  m_description: When your wind-up is above 50%, gain 10% movement speed
+  m_itemName: Hit job
+  m_itemIcon: {fileID: 21300000, guid: af0ba7272055cae46a8ab0aad9ba1754, type: 3}
+  m_description: After stunning a nun, next child gives 30 extra wind-up points.
   m_effectsInEditor:
-  - m_stat: 0
+  - m_stat: 2
     m_duration: 0
-    m_modifier: 0.1
+    m_modifier: 0
   m_itemTags: 0
-  m_windUpTreshold: 50
+  m_windupGained: 30
