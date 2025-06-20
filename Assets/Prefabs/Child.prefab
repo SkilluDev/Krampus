@@ -291,7 +291,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fov: 70
-  range: 10
+  runRange: 10
+  sneakRange: 5
   unangledRange: 3
   trackedObject: {fileID: 0}
   visionMask:
@@ -486,11 +487,13 @@ MonoBehaviour:
     type: 3}
   m_vanishParticle: {fileID: 1234261804562742570, guid: 927ad55fd62f6134dbb65c35b9093798,
     type: 3}
+  m_stunEffect: {fileID: 0}
   m_propertySpeed: -823668238
-  m_propertyStun: 1397128752
+  m_propertyShock: -1875340989
   m_propertyPanic: 1600564886
   m_propertyReporting: 365604299
   m_propertyDeath: 646380074
+  m_propertyStun: 1280260825
   m_spriteRenderer: {fileID: 8857666001279506495}
   m_panicSprite: {fileID: 21300000, guid: 2d6d33e99702f134898b0959582ec6de, type: 3}
   m_alertedSprite: {fileID: 21300000, guid: 2d6d33e99702f134898b0959582ec6de, type: 3}
@@ -677,12 +680,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 6525325704702165634}
-  m_maskType: 0
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+  m_hasFontAssetChanged: 0
+  m_renderer: {fileID: 6525325704702165634}
+  m_maskType: 0
 --- !u!114 &9165429964022334219
 MonoBehaviour:
   m_ObjectHideFlags: 0

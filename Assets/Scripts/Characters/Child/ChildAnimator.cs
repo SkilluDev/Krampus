@@ -12,7 +12,7 @@ public class ChildAnimator : MonoBehaviour {
     [BoxGroup("Particles")][SerializeField] private VisualEffect m_goreParticle;
     [BoxGroup("Particles")][SerializeField] private VisualEffect m_vanishParticle;
     [BoxGroup("Particles")][SerializeField] private VisualEffect m_stunEffect;
-    [BoxGroup("Animator Properties")][SerializeField][AnimatorParam(nameof(m_animator))] private int m_propertySpeed, m_propertyStun, m_propertyPanic, m_propertyReporting, m_propertyDeath;
+    [BoxGroup("Animator Properties")][SerializeField][AnimatorParam(nameof(m_animator))] private int m_propertySpeed, m_propertyShock, m_propertyPanic, m_propertyReporting, m_propertyDeath,m_propertyStun;
     [BoxGroup("State Sprites")][SerializeField] private StatusSprite m_spriteRenderer;
     [BoxGroup("State Sprites")][SerializeField] private Sprite m_panicSprite;
     [BoxGroup("State Sprites")][SerializeField] private Sprite m_alertedSprite;
@@ -61,7 +61,7 @@ public class ChildAnimator : MonoBehaviour {
             case (_, Child.State.Reporting):
                 break;
             case (_,Child.State.Stunned):
-               // m_stunEffect.Play();
+                
                 break;
             case (_, Child.State.Alerted):
                 m_spriteRenderer.SetSprite(m_alertedSprite);
@@ -77,6 +77,7 @@ public class ChildAnimator : MonoBehaviour {
         m_animator.SetBool(m_propertyPanic, m_child.CurrentState is Child.State.Panic or Child.State.InitialPanic);
         m_animator.SetBool(m_propertyReporting, m_child.CurrentState == Child.State.Reporting);
         m_animator.SetFloat(m_propertySpeed, m_child.Velocity / (m_child.CurrentState == Child.State.Panic ? m_child.RunSpeed : m_child.BaseMovementSpeed));
+        m_animator.SetBool(m_propertyStun, m_child.CurrentState == Child.State.Stunned);
     }
 
     public void SetChildType(ChildType type) {
