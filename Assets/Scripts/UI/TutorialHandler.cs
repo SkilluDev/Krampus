@@ -73,10 +73,6 @@ public class TutorialHandler : MonoBehaviour {
 	}
 
 	private void OnTutorialTrigger(TutorialPage pages) {
-		if (!Game.SetMan.GetValue<bool>("Show Tutorial")) {
-			Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
-			return;
-		}
 		if (pages == 0) return;
 		gameObject.SetActive(true);
 		PrepareTutorials(pages);
