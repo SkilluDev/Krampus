@@ -123,7 +123,7 @@ public class MainGameInfo : LevelInfo {
 	}
 
 	private void Ready() {
-		if (m_useLevelModifer) {
+		if (m_useLevelModifer && Game.PogMan.NextLevelModifier != null) {
 			Game.PogMan.NextLevelModifier.UpdateLevel();
 		}
 	}
