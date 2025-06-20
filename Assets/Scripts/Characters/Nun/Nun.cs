@@ -67,9 +67,13 @@ public class Nun : NPC {
         m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
     }
 
+	public void SetModel() {
+		m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
+	}
+
     private void Unready() {
-        Game.MainGameInfo.UnregisterNun(this);
-    }
+		Game.MainGameInfo.UnregisterNun(this);
+	}
 
     private void SelectNewWanderLocation() {
         if (NavMesh.SamplePosition(Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement().GetMidPoint(), out var hit, 10, NavMesh.AllAreas)) {
