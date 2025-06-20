@@ -49,7 +49,7 @@ public class Nun : NPC {
 
     [SerializeField] private float m_castingTime = 1.03f;
     [SerializeField] private Vector2 m_randomRagePerSeconds;
-    [SerializeField] private NunMissle m_MisslePref;
+    [SerializeField] private NunMissle m_misslePref;
     private float m_rageMeter;
 
 
@@ -266,7 +266,7 @@ public class Nun : NPC {
         }
         if (Game.MainGameInfo.Krampus.Kontroller.CurrentState == KrampusController.State.Dash) return;
         onAttack?.Invoke(CurrentState);
-        
+
         SwitchState(State.Idle);
         Game.MainGameInfo.Krampus.Kontroller.KrampTermination(Ending.LoseNun);
 
@@ -291,7 +291,7 @@ public class Nun : NPC {
         Vector3 direction = (Game.MainGameInfo.Krampus.transform.position.NoY() - transform.position.NoY()).normalized;
         Vector3 pos = transform.position + (2 * direction) + new Vector3(0, 1, 0);
         Quaternion rot = Quaternion.LookRotation(direction);
-        NunMissle nunMissle = Instantiate(m_MisslePref, pos, Quaternion.identity);
+        NunMissle nunMissle = Instantiate(m_misslePref, pos, Quaternion.identity);
         nunMissle.SetTarget(Game.MainGameInfo.Krampus.transform, direction);
     }
 
