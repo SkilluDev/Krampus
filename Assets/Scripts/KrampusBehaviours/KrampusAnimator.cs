@@ -53,53 +53,54 @@ public class KrampusAnimator : KrampusBehaviour {
     }
 
     public void TongueStateChanged(KrampusTongue.State previous, KrampusTongue.State current) {
+		if(previous != current) Debug.Log("Tongue moment:"+previous + " -> " + current);
         switch ((previous, current)) {
-            case (KrampusTongue.State.Idle, KrampusTongue.State.Windup):
-                m_animator.SetBool(m_tongueReadyProperty, true);
-                m_animator.SetBool(m_tongueShouldEatProperty, false);
-                m_windupSoundBite.Play(transform.position, 1);
-                break;
-            case (KrampusTongue.State.Windup, KrampusTongue.State.Idle):
-                m_animator.SetBool(m_tongueReadyProperty, false);
-                break;
-            case (KrampusTongue.State.Windup, KrampusTongue.State.TargetFetch):
-                m_animator.SetTrigger(m_tongueOutProperty);
-                m_animator.SetBool(m_tongueReadyProperty, false);
-                m_tongueSoundBite.Play(transform.position, 1);
+			case (KrampusTongue.State.Idle, KrampusTongue.State.Windup):
+				m_animator.SetBool(m_tongueReadyProperty, true);
+				m_animator.SetBool(m_tongueShouldEatProperty, false);
+				m_windupSoundBite.Play(transform.position, 1);
+				break;
+			case (KrampusTongue.State.Windup, KrampusTongue.State.Idle):
+				m_animator.SetBool(m_tongueReadyProperty, false);
+				break;
+			case (KrampusTongue.State.Windup, KrampusTongue.State.TargetFetch):
+				m_animator.SetTrigger(m_tongueOutProperty);
+				m_animator.SetBool(m_tongueReadyProperty, false);
+				m_tongueSoundBite.Play(transform.position, 1);
 
-                break;
-            case (_, KrampusTongue.State.PreRetreat):
+				break;
+			case (_, KrampusTongue.State.PreRetreat):
 
-                m_animator.SetBool(m_tongueReadyProperty, false);
-                m_animator.SetBool(m_tongueShouldEatProperty, false);
-                 LockOutAnimation();
-                break;
-            case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
-                SetTargetView(Kramp.Tongue.TongueDirection);
-                break;
-            case (KrampusTongue.State.Extending, KrampusTongue.State.Full):
+				m_animator.SetBool(m_tongueReadyProperty, false);
+				m_animator.SetBool(m_tongueShouldEatProperty, false);
+				LockOutAnimation();
+				break;
+			case (KrampusTongue.State.TargetFetch, KrampusTongue.State.Extending):
+				SetTargetView(Kramp.Tongue.TongueDirection);
+				break;
+			case (KrampusTongue.State.Extending, KrampusTongue.State.Full):
 
-                if (Kramp.Tongue.HitInteractable is Child) m_crackSoundBite.Play(transform.position, 1);
-                break;
-            case (KrampusTongue.State.PreRetreat, KrampusTongue.State.Retreating):
-
-
-                if (Kramp.Tongue.HitInteractable != null) {
-                    m_catchSoundBite.Play(transform.position, 1);
-                    m_animator.SetBool(m_tongueShouldEatProperty, Kramp.Tongue.HitInteractable is IEdible);
-                }
-                break;
-            case (_, KrampusTongue.State.Eating):
-
-                 if (Kramp.Kontroller.CurrentState == KrampusController.State.Walk || Kramp.Kontroller.CurrentState == KrampusController.State.Idle) {
-
-                    LockInAnimation();
-                 }
-
-                break;
+				if (Kramp.Tongue.HitInteractable is Child) m_crackSoundBite.Play(transform.position, 1);
+				break;
+			case (KrampusTongue.State.PreRetreat, KrampusTongue.State.Retreating):
 
 
-        }
+				if (Kramp.Tongue.HitInteractable != null) {
+					m_catchSoundBite.Play(transform.position, 1);
+					m_animator.SetBool(m_tongueShouldEatProperty, Kramp.Tongue.HitInteractable is IEdible);
+				}
+				break;
+			case (_, KrampusTongue.State.Eating):
+
+				if (Kramp.Kontroller.CurrentState == KrampusController.State.Walk || Kramp.Kontroller.CurrentState == KrampusController.State.Idle) {
+
+					LockInAnimation();
+				}
+
+				break;
+
+
+		}
     }
 
     public void MovementStateChanged(KrampusController.State previous, KrampusController.State current, KrampusController.StateChangeReason reason) {

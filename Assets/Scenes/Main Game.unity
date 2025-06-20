@@ -430,6 +430,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883bcb91c28d02942b4c1bfec3401248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_levelSets:
+    m_values:
+    - m_key: 0
+      m_levelSet: {fileID: 0}
+    - m_key: 1
+      m_levelSet: {fileID: 0}
+    - m_key: 2
+      m_levelSet: {fileID: 0}
   m_levelSet: {fileID: 0}
   m_currentLevel: 0
 --- !u!1 &423022856
@@ -1337,6 +1345,21 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 1991711019}
+    - target: {fileID: 4029602590084333332, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 16.666666
+      objectReference: {fileID: 0}
+    - target: {fileID: 4029602590084333332, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5616205412533675726, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_inputMaximumMouseDistance
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 6316473740624689383, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_ResetSeedOnPlay
@@ -1431,6 +1454,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8821230663668433133, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[0]
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8858575344988926467, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}

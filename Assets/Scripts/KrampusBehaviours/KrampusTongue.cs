@@ -24,7 +24,7 @@ public class KrampusTongue : KrampusBehaviour {
 	[BoxGroup("Physics")][SerializeField] private float m_tongueHitRadius = 0.5f;
 	[BoxGroup("Controls")][SerializeField] private float m_inputMinimumDrag = 0.4f;
 	[BoxGroup("Controls")][SerializeField] private float m_inputMinimumMouseDistance = 1f;
-	[BoxGroup("Controls")][SerializeField] private float m_inputMaximumMouseDistance = 4f;
+	//[BoxGroup("Controls")][SerializeField] private float m_inputMaximumMouseDistance = 4f;
 	[BoxGroup("Controls")][SerializeField] private float m_inputDragSmoothing = 12f;
 	[BoxGroup("Controls")][SerializeField] private float m_inputMousePlaneY = 1f;
 
@@ -117,7 +117,7 @@ public class KrampusTongue : KrampusBehaviour {
 
 	private float InputGetShootFactor() {
 		return InputSubscribe.InputMethod switch {
-			InputSubscribe.Method.PC => Mathf.InverseLerp(m_inputMinimumMouseDistance, m_inputMaximumMouseDistance, GetDirectionToMouse().magnitude),
+			InputSubscribe.Method.PC => Mathf.InverseLerp(m_inputMinimumMouseDistance, TongueLength, GetDirectionToMouse().magnitude),
 			_ => Mathf.InverseLerp(m_inputMinimumDrag, 1f, InputSubscribe.Aim.magnitude),
 		};
 	}
@@ -158,7 +158,8 @@ public class KrampusTongue : KrampusBehaviour {
 
 					m_tongueAimIndicator.gameObject.SetActive(true); // TODO: this should be done by the animator;
 					m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
-					m_tongueAimIndicator.SetBlendShapeWeight(0, InputGetShootFactor() * 100f);
+					//m_tongueAimIndicator.SetBlendShapeWeight(0, InputGetShootFactor() * 100f);
+					m_tongueAimIndicator.transform.localScale = new Vector3(100f,100f,(100f/6f)*TongueLength);
 
 					if (InputWantsShoot()) {
 
@@ -188,8 +189,6 @@ public class KrampusTongue : KrampusBehaviour {
 
 			case State.TargetFetch: // Actually calculate what gets caught
 									// Actually raycast from Krampus towards where the tongue is supposed to be shot.
-
-
 				if (m_inMouth != null) {
 					ThrowObject(m_tongueDirection);
 					CurrentState = State.Idle;
@@ -380,7 +379,7 @@ public class KrampusTongue : KrampusBehaviour {
 				}
 				if (m_hitThrowable != null) {
 					try {
-						addToMouth(m_hitThrowable);
+						AddToMouth(m_hitThrowable);
 
 					} catch (Exception e) {
 						LogException(e, m_hitTonguable);
@@ -460,7 +459,7 @@ public class KrampusTongue : KrampusBehaviour {
 
 
 
-	private void addToMouth(IThrowable throwable) {
+	private void AddToMouth(IThrowable throwable) {
 
 		throwable.GameObject.transform.position = m_inMouthOrigin.position;
 		throwable.GameObject.transform.SetParent(m_inMouthOrigin, true);
