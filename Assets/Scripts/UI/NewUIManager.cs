@@ -294,8 +294,8 @@ public class NewUIManager : MonoBehaviour {
         m_windUpCostBar.rotation =  Quaternion.Euler(0,0,Mathf.Lerp(m_markerRotatorEndPoints.x,m_markerRotatorEndPoints.y,cost / Game.MainGameInfo.MaxWindUpPoints));
     }
 
-    public void ShowQuickActionIcon(bool canSting) {
-        Game.MainGameInfo.UI.QuickActionIcon.gameObject.SetActive(canSting);
+    public void ShowQuickActionIcon(bool canDash) {
+        Game.MainGameInfo.UI.QuickActionIcon.gameObject.SetActive(canDash);
     }
 
     public void UpdateInventory() {

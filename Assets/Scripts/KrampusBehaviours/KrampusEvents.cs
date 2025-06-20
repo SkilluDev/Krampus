@@ -10,7 +10,7 @@ public class KrampusEvents : KrampusBehaviour {
 
 	public UnityEvent<Krampus, Nun> onKrampusFoundByNun;
 
-	public UnityEvent<Krampus> onStingerUsed;
+	public UnityEvent<Krampus> onDashUsed;
 	public UnityEvent<Krampus> onLockIn;
 	public UnityEvent<Krampus> onLockOut;
 

@@ -235,7 +235,7 @@ public class KrampusTongue : KrampusBehaviour {
 					 }
 					try {
 
-						
+
 					} catch (Exception e) {
 						LogException(e, m_hitEdible);
 						m_hitThrowable = null;
@@ -307,8 +307,8 @@ public class KrampusTongue : KrampusBehaviour {
 					try {
 						m_hitInteractable.Interact(Kramp);
 						//if (m_hitInteractable is Child) {
-						Kramp.Kontroller.SetCanSting(true);
-						Kramp.Kontroller.SetStingTarget(m_hitInteractable);
+						Kramp.Kontroller.SetCanDash(true);
+						Kramp.Kontroller.SetDashTarget(m_hitInteractable);
 						//}
 					} catch (Exception e) {
 						LogException(e, m_hitInteractable);
@@ -387,8 +387,8 @@ public class KrampusTongue : KrampusBehaviour {
 					}
 				}
 				Kramp.Kontroller.LockOut();
-				Kramp.Kontroller.SetCanSting(false);
-				Kramp.Kontroller.SetStingTarget(null);
+				Kramp.Kontroller.SetCanDash(false);
+				Kramp.Kontroller.SetDashTarget(null);
 				m_hitEdible = null;
 				m_hitThrowable = null;
 				m_hitInteractable = null;
@@ -473,7 +473,7 @@ public class KrampusTongue : KrampusBehaviour {
 		m_inMouth.GameObject.transform.SetParent(null);
 		m_inMouth.Throw(direction, Kramp);
 		m_inMouth = null;
-		
+
 	 }
 
 }

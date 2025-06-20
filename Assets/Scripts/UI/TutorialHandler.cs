@@ -15,7 +15,7 @@ public enum TutorialPage {
 	DontAttackNice = 8,
 	AvoidNuns = 16,
 	InteractAndStun = 32,
-	WindupAndStinger = 64,
+	WindupAndDash = 64,
 	ItemsAndLockIn = 128
 }
 [Serializable]

@@ -46,12 +46,12 @@ public class KrampusController : KrampusBehaviour {
 
 	[BoxGroup("Dash")][SerializeField] private AnimationCurve m_dashCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
-	public bool CanSting { get; set; } = false;
-	private Vector3 m_dashDirection;
-	public Vector3 NextStingDirection { get => m_dashDirection; set => m_dashDirection = value; }
-	[SerializeField] private float m_windUpStingCost;
-	public float WindUpStingCost => m_windUpStingCost;
-	private IInteractable m_stingerTarget;
+	private bool m_canDash = false;
+
+	public bool CanDash => m_canDash;
+	[BoxGroup("Dash")][SerializeField] private float m_windUpDashCost;
+	public float WindUpDashCost => m_windUpDashCost;
+	private IInteractable m_dashTarget;
 
 	private bool m_isLockedIn;
 	public bool IsLockedIn => m_isLockedIn;
@@ -60,10 +60,10 @@ public class KrampusController : KrampusBehaviour {
 
 
 
-	[SerializeField] private float m_lockInThreshold;
+	[BoxGroup("Lock In")][SerializeField] private float m_lockInThreshold;
 	public float LockInThreshold => m_lockInThreshold;
 	private MotionHandle m_lockInMotion;
-	[SerializeField] private SpriteRenderer m_lockInVis;
+	[BoxGroup("Lock In")][SerializeField] private SpriteRenderer m_lockInVis;
 
 
 
@@ -77,7 +77,7 @@ public class KrampusController : KrampusBehaviour {
 
 
 	private void Start() {
-		Game.MainGameInfo.UI.SetWindUpCostBar(m_windUpStingCost);
+		Game.MainGameInfo.UI.SetWindUpCostBar(m_windUpDashCost);
 		Kramp.KrampusEvents.onNaughtyChildEaten.AddListener(OnNaughtyChildEaten);
 	}
 
@@ -186,7 +186,7 @@ public class KrampusController : KrampusBehaviour {
 		if (CurrentState == State.Idle) m_timeHoldingInput = 0f;
 		m_previousFrameVelocity = m_rigidbody.velocity.sqrMagnitude;
 
-		if (CanSting && InputSubscribe.Special) {
+		if (CanDash && InputSubscribe.Special) {
 			Dash();
 		}
 	}
@@ -204,16 +204,16 @@ public class KrampusController : KrampusBehaviour {
 		m_lockInTimer = 0f;
 	}
 	public void Dash() {
-		if (!CanSting) return;
+		if (!CanDash) return;
 		m_dashTime = 0;
 		//m_dashDirection = Kramp.Tongue.TongueDirection;
-		Kramp.KrampusEvents.onStingerUsed.Invoke(Kramp);
+		Kramp.KrampusEvents.onDashUsed.Invoke(Kramp);
 		ChangeState(State.Dash, StateChangeReason.Rapid);
 		//Debug.Log("Do dashing " + m_dashDirection);
 
 		m_windUpGainLock = 1;
-		SpendWindUpPoints(WindUpStingCost);
-		SetCanSting(false);
+		SpendWindUpPoints(WindUpDashCost);
+		SetCanDash(false);
 	}
 
 	private void ChangeState(State to, StateChangeReason reason) {
@@ -244,13 +244,13 @@ public class KrampusController : KrampusBehaviour {
 		if (CurrentState == State.Dead) return;
 
 		if (CurrentState == State.Dash) {
-			if (m_stingerTarget == null) {
+			if (m_dashTarget == null) {
 				ChangeState(State.Run, StateChangeReason.Rapid);
 				return;
 			}
 			m_dashTime += Time.fixedDeltaTime*m_dashCurveEvalSpeed;
 			//Debug.Log("Dash Time: " + m_dashTime);
-			Vector3 direction = m_stingerTarget.GameObject.transform.position - transform.position;
+			Vector3 direction = m_dashTarget.GameObject.transform.position - transform.position;
 			float distance = direction.sqrMagnitude;
 			m_rigidbody.velocity = direction.normalized * m_dashCurve.Evaluate(m_dashTime) * m_dashSpeed;
 
@@ -305,14 +305,14 @@ public class KrampusController : KrampusBehaviour {
 		Kramp.KrampusEvents.onWindUpChanged.Invoke(Kramp, m_windUpPoints);
 	}
 
-	public void SetCanSting(bool canSting) {
-		if (Game.PogMan.GetCurrentLevelStats().LockWindUpUse || WindUpPoints < WindUpStingCost) {
-			CanSting = false;
+	public void SetCanDash(bool canDash) {
+		if (Game.PogMan.GetCurrentLevelStats().LockWindUpUse || WindUpPoints < WindUpDashCost) {
+			m_canDash = false;
 		} else {
-			CanSting = canSting;
+			m_canDash = canDash;
 		}
 
-		Game.MainGameInfo.UI.ShowQuickActionIcon(CanSting);
+		Game.MainGameInfo.UI.ShowQuickActionIcon(CanDash);
 
 	}
 
@@ -320,7 +320,7 @@ public class KrampusController : KrampusBehaviour {
 		AddWindUpPoints(Game.MainGameInfo.WindUpGainFromChildren);
 	}
 
-	public void SetStingTarget(IInteractable interactable) {
-		m_stingerTarget = interactable;
+	public void SetDashTarget(IInteractable interactable) {
+		m_dashTarget = interactable;
 	}
 }
