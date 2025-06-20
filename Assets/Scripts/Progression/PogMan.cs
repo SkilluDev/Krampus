@@ -20,6 +20,9 @@ public class PogMan : MonoBehaviour {
 	private Difficulty m_currentDifficulty;
 	public Difficulty CurrentDifficulty => m_currentDifficulty;
 
+	private Difficulty m_difficultyAfterTutorial;
+
+
 	[Serializable]
 	public class LevelSetForDifficulty : ValueConnectedToEnum<Difficulty> {
 		[SerializeField] private LevelSet m_levelSet;
@@ -32,6 +35,10 @@ public class PogMan : MonoBehaviour {
 	[SerializeField] private LevelSet m_levelSet;
 
 	[SerializeField] private int m_currentLevel = 0;
+
+	private bool m_isTutorial = false;
+
+	public bool IsTutorial => m_isTutorial;
 
 	public int LevelCount => m_levelSet.LevelStats.Count;
 	public int CurrentLevel => m_currentLevel;
@@ -100,7 +107,14 @@ public class PogMan : MonoBehaviour {
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
 			Game.LoadState(Game.State.MainGame);
 		} else {
-			GoBackToMenu();
+			if (IsTutorial) {
+				m_isTutorial = false;
+				Game.SetMan.SetValue<bool>("Show Tutorial", false);
+				StartNewGame(m_difficultyAfterTutorial);
+			} else {
+				//TODO add a game completed screen
+				GoBackToMenu();
+			}
 		}
 	}
 
@@ -155,8 +169,11 @@ public class PogMan : MonoBehaviour {
 
 	public void StartNewGame(Difficulty difficulty) {
 		if (Game.SetMan.GetValue<bool>("Show Tutorial")) {
+			m_isTutorial = true;
+			m_difficultyAfterTutorial = difficulty;
 			SetLevelSet(Difficulty.Tutorial);
 		} else {
+			m_isTutorial = false;
 			SetLevelSet(difficulty);
 		}
 		ResetProgress();
