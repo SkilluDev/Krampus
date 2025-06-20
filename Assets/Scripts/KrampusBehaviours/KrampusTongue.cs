@@ -56,6 +56,7 @@ public class KrampusTongue : KrampusBehaviour {
 
 	private IThrowable m_hitThrowable;
 	private IThrowable m_inMouth;
+	public IThrowable InMouth => m_inMouth;
 
 
 	private List<(float dst, ITongueable component)> m_midwayToungables;

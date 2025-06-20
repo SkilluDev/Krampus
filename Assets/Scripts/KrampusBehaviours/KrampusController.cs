@@ -170,7 +170,7 @@ public class KrampusController : KrampusBehaviour {
 		} else if (CurrentState == State.Idle && m_rigidbody.velocity.sqrMagnitude <= m_startRunSpeed) { //if was already idle with no velocity
 			state = State.Idle;
 		} else {
-			if (InputSubscribe.Sneaking || Kramp.Tongue.CurrentState != KrampusTongue.State.Idle) {
+			if (InputSubscribe.Sneaking || Kramp.Tongue.CurrentState != KrampusTongue.State.Idle || Kramp.Tongue.InMouth != null) {
 				state = State.Walk;
 			} else {
 				state = State.Run;
@@ -263,7 +263,9 @@ public class KrampusController : KrampusBehaviour {
 		var computedVelocity = ComputeVelocity();
 		computedVelocity = computedVelocity.normalized * Mathf.Max(Mathf.Abs(computedVelocity.x), Mathf.Abs(computedVelocity.z));
 		var skewedInput = Kramp.Kamera.Matrix.MultiplyPoint3x4(computedVelocity);
+
 		m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed : RunSpeed);
+
 		if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength, m_avoidableObjects, QueryTriggerInteraction.Ignore)) {
 			if (m_avoidableObjects == (m_avoidableObjects | 1 << hit.transform.gameObject.layer)) {
 				if (!Physics.Raycast(transform.position, Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
