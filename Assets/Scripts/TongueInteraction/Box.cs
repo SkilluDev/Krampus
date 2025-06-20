@@ -9,6 +9,7 @@ public class Box : MonoBehaviour, IThrowable {
     [BoxGroup("Behaviour")][SerializeField] private Vector3 m_inMouthScale;
 
     [SerializeField] private VisualEffect m_hitEffect;
+    [SerializeField] private VisualEffect m_hitSmokeEffect;
 
 
     [SerializeField] private LayerMask m_destroyMask;
@@ -86,7 +87,9 @@ public class Box : MonoBehaviour, IThrowable {
                 other.gameObject.GetComponent<Child>().Stun(m_stunDuration);
             }
             var h = Instantiate(m_hitEffect, transform.position, Quaternion.identity);
+            var h2 = Instantiate(m_hitSmokeEffect, transform.position, Quaternion.identity);
             h.Play();
+			h2.Play();
             Destroy(gameObject);
 
 
@@ -95,7 +98,9 @@ public class Box : MonoBehaviour, IThrowable {
         if ((m_destroyMask & (1 << other.gameObject.layer)) != 0) {
 
             var h = Instantiate(m_hitEffect, transform.position, Quaternion.identity);
+            var h2 = Instantiate(m_hitSmokeEffect, transform.position, Quaternion.identity);
             h.Play();
+			h2.Play();
             Destroy(gameObject);
         }
 

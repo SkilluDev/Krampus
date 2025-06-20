@@ -253,6 +253,8 @@ MonoBehaviour:
   m_inMouthScale: {x: 0.5, y: 0.5, z: 0.5}
   m_hitEffect: {fileID: 6871824169077443105, guid: c378511909a74414185acd8866051895,
     type: 3}
+  m_hitSmokeEffect: {fileID: 1234261804562742570, guid: 5afc86117c6307e4cb0fe3695919afe5,
+    type: 3}
   m_destroyMask:
     serializedVersion: 2
     m_Bits: 64
@@ -372,6 +374,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 390e6db8e3f546b41b1f12d6b2bb0cd3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 390e6db8e3f546b41b1f12d6b2bb0cd3,
         type: 3}
