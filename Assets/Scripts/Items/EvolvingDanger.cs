@@ -15,25 +15,27 @@ public class EvolvingDanger : Item {
         events.onWindUpChanged.RemoveListener(BuffKrampus);
     }
 
-    private void BuffKrampus(Krampus krampus, float windup) {
-        if (windup < 100) {
-            return;
-        }
+	private void BuffKrampus(Krampus krampus, float windup) {
+		Debug.Log($"EvolvingDanger: windup = {windup}");
+		if (windup < 100) {
+			return;
+		}
 
-        var state = krampus.Stats.GetItemState<State>(this);
-        switch (state.level) {
-            case 1:
-                RegisterEffect(krampus, 0);
-                break;
-            case 2:
-                RegisterEffect(krampus, 1);
-                break;
-            case 3:
-                RegisterEffect(krampus, 2);
-                break;
-            default:
-                return;
-        }
-        krampus.Kontroller.SpendWindUpPoints(100);
+		var state = krampus.Stats.GetItemState<State>(this);
+		switch (state.level) {
+			case 0:
+				RegisterEffect(krampus, 0);
+				break;
+			case 1:
+				RegisterEffect(krampus, 1);
+				break;
+			case 2:
+				RegisterEffect(krampus, 2);
+				break;
+			default:
+				return;
+		}
+		krampus.Kontroller.SpendWindUpPoints(100);
+		state.level++;
     }
 }

@@ -35,7 +35,7 @@ public class KrampusStats : KrampusBehaviour {
     public bool hasMov;
 
 
-    private Dictionary<Item, object> m_itemStates;
+    private Dictionary<Item, object> m_itemStates = new Dictionary<Item, object>();
 
     [SerializeField] private List<Item> m_items = new List<Item>();
     public IReadOnlyList<Item> Items => m_items;
