@@ -17,10 +17,11 @@ public class KrampusController : KrampusBehaviour {
 	public float VelocitySqr => VelocityVector.sqrMagnitude;
 	public float SneakSpeed => m_sneakSpeed;
 
+
 	public UnityAction<KrampusController.State, KrampusController.State, KrampusController.StateChangeReason> onStateChanged;
 
 	[SerializeField] private Rigidbody m_rigidbody;
-
+	[BoxGroup("Speed Control")][SerializeField] private float m_weightedRunMultiplier = 0.8f;
 	[BoxGroup("Speed Control")][SerializeField] private float m_sneakSpeed = 5f;
 	[BoxGroup("Movement Assist")][SerializeField] private int m_assistValue = 45;
 	[BoxGroup("Movement Assist")][SerializeField] private int m_assistCheckLength = 1;
@@ -170,7 +171,7 @@ public class KrampusController : KrampusBehaviour {
 		} else if (CurrentState == State.Idle && m_rigidbody.velocity.sqrMagnitude <= m_startRunSpeed) { //if was already idle with no velocity
 			state = State.Idle;
 		} else {
-			if (InputSubscribe.Sneaking || Kramp.Tongue.CurrentState != KrampusTongue.State.Idle || Kramp.Tongue.InMouth != null) {
+			if (InputSubscribe.Sneaking || Kramp.Tongue.CurrentState != KrampusTongue.State.Idle) {
 				state = State.Walk;
 			} else {
 				state = State.Run;
@@ -254,7 +255,7 @@ public class KrampusController : KrampusBehaviour {
 			float distance = direction.sqrMagnitude;
 			m_rigidbody.velocity = direction.normalized * m_dashCurve.Evaluate(m_dashTime) * m_dashSpeed;
 
-			if (distance < 10) {
+			if (distance < 1) {
 				ChangeState(State.Run, StateChangeReason.Rapid);
 			}
 			return;
@@ -264,7 +265,15 @@ public class KrampusController : KrampusBehaviour {
 		computedVelocity = computedVelocity.normalized * Mathf.Max(Mathf.Abs(computedVelocity.x), Mathf.Abs(computedVelocity.z));
 		var skewedInput = Kramp.Kamera.Matrix.MultiplyPoint3x4(computedVelocity);
 
-		m_rigidbody.velocity = skewedInput * (CurrentState != State.Run ? m_sneakSpeed : RunSpeed);
+		if (CurrentState != State.Run) {
+			m_rigidbody.velocity = skewedInput * SneakSpeed;
+		} else {
+			m_rigidbody.velocity = skewedInput * RunSpeed;
+			if (Kramp.Tongue.InMouth != null) {
+				Debug.Log($"Slowed by {m_weightedRunMultiplier * 10}");
+				m_rigidbody.velocity *= m_weightedRunMultiplier;
+			}
+		}
 
 		if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength, m_avoidableObjects, QueryTriggerInteraction.Ignore)) {
 			if (m_avoidableObjects == (m_avoidableObjects | 1 << hit.transform.gameObject.layer)) {

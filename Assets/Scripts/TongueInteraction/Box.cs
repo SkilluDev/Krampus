@@ -74,7 +74,7 @@ public class Box : MonoBehaviour, IThrowable {
     }
 
 
-    void OnTriggerEnter(Collider other) {
+	private void OnTriggerEnter(Collider other) {
 
         if ((m_stunMask & (1 << other.gameObject.layer)) != 0) {
 
