@@ -5,8 +5,28 @@ using NaughtyAttributes;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.Android;
+using Random = UnityEngine.Random;
+
 
 public class PogMan : MonoBehaviour {
+
+	public enum Difficulty {
+		Normal,
+		Hard,
+		OnlyNuns
+	}
+
+	private Difficulty m_currentDifficulty;
+	public Difficulty CurrentDifficulty => m_currentDifficulty;
+
+	[Serializable]
+	public class LevelSetForDifficulty : ValueConnectedToEnum<Difficulty> {
+		[SerializeField] private LevelSet m_levelSet;
+		public LevelSet LevelSet => m_levelSet;
+	}
+
+	[SerializeField] private SerializedEnumDictionary<Difficulty, LevelSetForDifficulty> m_levelSets;
+
 
 	[SerializeField] private LevelSet m_levelSet;
 
@@ -32,12 +52,9 @@ public class PogMan : MonoBehaviour {
 	}
 	public int GetMaxLevel() {
 		return m_levelSet.LevelStats.Count + 1;
-	 }
+	}
 
 	private bool m_clearItemsOnLoad = false;
-
-
-
 	private LevelModifier m_nextLevelModifer;
 	public LevelModifier NextLevelModifier => m_nextLevelModifer;
 
@@ -79,7 +96,6 @@ public class PogMan : MonoBehaviour {
 		if (IsThereNextLevel) {
 			m_currentLevel += 1;
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
-			Game.MainGameInfo.SetState(MainGameInfo.State.Game);
 			Game.LoadState(Game.State.MainGame);
 		} else {
 			GoBackToMenu();
@@ -94,9 +110,7 @@ public class PogMan : MonoBehaviour {
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
 		}
 
-		Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-		Game.PogMan.ResetProgress();
-		Game.LoadState(Game.State.MainGame);
+		StartNewGame(CurrentDifficulty);
 
 	}
 
@@ -111,7 +125,32 @@ public class PogMan : MonoBehaviour {
 		m_canGoToNextLevel = true;
 	}
 
-	public void SetLevelSet(LevelSet set) {
-		m_levelSet = set;
-	 }
+	public void SetLevelSet(Difficulty difficulty) {
+		m_levelSet = m_levelSets[difficulty].LevelSet;
+		m_currentDifficulty = difficulty;
+	}
+
+	public void SetSeed() {
+		switch (Game.RoomGenInfo.Regenerate) {
+			case RoomGenerationType.First:
+				Game.RoomGenInfo.SetInitialSeed();
+				break;
+			case RoomGenerationType.New:
+				Game.RoomGenInfo.SetNewSeed();
+				break;
+			case RoomGenerationType.Old:
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+
+		Random.InitState(Game.RoomGenInfo.Seed);
+	}
+
+	public void StartNewGame(Difficulty difficulty) {
+		SetLevelSet(difficulty);
+		ResetProgress();
+		SetSeed();
+		Game.LoadState(Game.State.MainGame);
+	}
 }

@@ -9,8 +9,7 @@ public class MainMenuInfo : LevelInfo {
     public new enum State {
         Default,
         Transitioning,
-         GameModes,
-       
+        GameModes,
         Settings,
         Credits,
     }
@@ -20,9 +19,6 @@ public class MainMenuInfo : LevelInfo {
     public UnityAction<MainMenuInfo.State, MainMenuInfo.State> onStateChanged;
     [SerializeField] private CinemachineVirtualCamera[] m_cameras;
     [SerializeField] private CanvasGroup[] m_canvases;
-
-    [SerializeField] private LevelSet m_tutorialSet;
-    [SerializeField] private LevelSet m_hardMode;
 
     private MotionHandle[] m_motions;
 
@@ -53,11 +49,11 @@ public class MainMenuInfo : LevelInfo {
         UpdateGroups();
     }
 
-    public void LoadGameScene() {
+    public void LoadGameScene(PogMan.Difficulty difficulty) {
         IEnumerator Internal() {
             SetState(State.Transitioning);
             yield return new WaitForSecondsRealtime(1.2f);
-            Game.LoadState(Game.State.MainGame);
+            Game.PogMan.StartNewGame(difficulty);
         }
 
         StartCoroutine(Internal());
@@ -73,15 +69,11 @@ public class MainMenuInfo : LevelInfo {
     }
 
     public void TutorialLevel() {
-
-        Game.PogMan.SetLevelSet(m_tutorialSet);
-        LoadGameScene();
+        LoadGameScene(PogMan.Difficulty.Normal);
      }
-     
-    public void NotTutorialLevel() {
 
-        Game.PogMan.SetLevelSet(m_hardMode);
-        LoadGameScene();
+    public void NotTutorialLevel() {
+        LoadGameScene(PogMan.Difficulty.Hard);
      }
 
     // bad code ahead!

@@ -112,11 +112,11 @@ public static PogMan PogMan {
     }
 
     public static void FinishedLoading() {
-        if (CurrentState != State.Loading) return;
-        CurrentState = DestinationState;
-        DestinationState = State.Loading;
-        SourceState = State.Loading;
-    }
+		if (CurrentState != State.Loading) return;
+		CurrentState = DestinationState;
+		DestinationState = State.Loading;
+		SourceState = State.Loading;
+	}
 
     private void Awake() {
         if (Game.m_instance != null) {

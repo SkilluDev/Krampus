@@ -116,22 +116,6 @@ public class MainGameInfo : LevelInfo {
 	private IEnumerator Start() {
 		yield return new WaitUntil(() => Game.RoomGenInfo != null);
 
-		switch (Game.RoomGenInfo.Regenerate) {
-			case RoomGenerationType.First:
-				Game.RoomGenInfo.SetInitialSeed();
-				break;
-			case RoomGenerationType.New:
-				Game.RoomGenInfo.SetNewSeed();
-				break;
-			case RoomGenerationType.Old:
-				break;
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
-
-		Random.InitState(Game.RoomGenInfo.Seed);
-		Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
-
 		CurrentState = State.Intro;
 		NiceChildType = Types[0];
 		NaughtyChildType = Types[1];

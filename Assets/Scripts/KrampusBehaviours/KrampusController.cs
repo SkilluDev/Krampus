@@ -270,7 +270,6 @@ public class KrampusController : KrampusBehaviour {
 		} else {
 			m_rigidbody.velocity = skewedInput * RunSpeed;
 			if (Kramp.Tongue.InMouth != null) {
-				Debug.Log($"Slowed by {m_weightedRunMultiplier * 10}");
 				m_rigidbody.velocity *= m_weightedRunMultiplier;
 			}
 		}

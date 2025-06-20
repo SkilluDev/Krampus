@@ -199,6 +199,8 @@ public class NewUIManager : MonoBehaviour {
         Game.MainGameInfo.Krampus.KrampusEvents.onEffectRegistered.AddListener(DisplayEffect);
         Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
         Game.GlobalEvents.onLevelStateChanged.AddListener(OnLevelStateChanged);
+		
+		SetSeed(Game.RoomGenInfo.Seed);
 
         m_originalTimerColor = m_timerDisplay.Color;
         m_tutorial.gameObject.SetActive(false);
