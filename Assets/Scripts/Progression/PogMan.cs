@@ -12,6 +12,7 @@ public class PogMan : MonoBehaviour {
 
 	public enum Difficulty {
 		Normal,
+		Tutorial,
 		Hard,
 		OnlyNuns
 	}
@@ -153,7 +154,11 @@ public class PogMan : MonoBehaviour {
 	}
 
 	public void StartNewGame(Difficulty difficulty) {
-		SetLevelSet(difficulty);
+		if (Game.SetMan.GetValue<bool>("Show Tutorial")) {
+			SetLevelSet(Difficulty.Tutorial);
+		} else {
+			SetLevelSet(difficulty);
+		}
 		ResetProgress();
 		SetSeed();
 		Game.LoadState(Game.State.MainGame);

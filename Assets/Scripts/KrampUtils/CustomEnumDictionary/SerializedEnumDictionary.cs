@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -9,7 +11,7 @@ using UnityEngine;
 
 
 [Serializable]
-public class SerializedEnumDictionary<TKey, TValue>: IReadOnlyDictionary<TKey, TValue> where TKey : Enum where TValue : ValueConnectedToEnum<TKey>, new() {
+public class SerializedEnumDictionary<TKey, TValue>: ISerializationCallbackReceiver, IReadOnlyDictionary<TKey, TValue> where TKey : Enum where TValue : ValueConnectedToEnum<TKey>, new() {
 
 	[SerializeField] private List<TValue> m_values = new List<TValue>();
 
@@ -107,6 +109,8 @@ public class SerializedEnumDictionary<TKey, TValue>: IReadOnlyDictionary<TKey, T
 	public bool TryGetValue(TKey key, out TValue value) => m_dictionary.TryGetValue(key,out value);
 	public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => m_dictionary.GetEnumerator();
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	public void OnBeforeSerialize() => Validate();
+	public void OnAfterDeserialize() => Validate();
 }
 
 #if UNITY_EDITOR

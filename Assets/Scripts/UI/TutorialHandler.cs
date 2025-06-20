@@ -49,10 +49,6 @@ public class TutorialHandler : MonoBehaviour {
 
 	[SerializeField] private int m_uiMoveInCounter = 3;
 
-	private void OnValidate() {
-		m_tutorialPagesDict.Validate();
-	}
-
 	private void PrepareTutorials(TutorialPage pages) {
 		m_tutorialPages = new List<Transform>();
 		foreach (TutorialPage page in Enum.GetValues(typeof(TutorialPage))) {

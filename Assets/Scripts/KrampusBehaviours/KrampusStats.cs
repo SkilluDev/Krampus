@@ -118,7 +118,6 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     private void OnValidate() {
-        m_rawStatDict.Validate();
         RecalculateStats();
     }
 
