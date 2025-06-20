@@ -10,46 +10,46 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 029c2a09352e42043a94ccd4583e9d88, type: 3}
-  m_Name: Default Level Set
+  m_Name: Normal Level Set
   m_EditorClassIdentifier: 
-  m_name: Default level set
-  m_description: Default levels
+  m_name: Normal Mode
+  m_description: Default normal levels
   m_levelStats:
   - m_naughtyCount: 2
-    m_niceCount: 0
-    m_nunCount: 0
+    m_niceCount: 2
+    m_nunCount: 1
     m_gridWidth: 3
     m_gridLength: 3
-    m_canChooseItems: 0
-    m_timer: 0
-    m_tutorials: 3
-    m_lockWindUpUse: 1
-  - m_naughtyCount: 3
-    m_niceCount: 7
-    m_nunCount: 0
-    m_gridWidth: 4
-    m_gridLength: 4
-    m_canChooseItems: 0
+    m_canChooseItems: 1
     m_timer: 60
-    m_tutorials: 12
-    m_lockWindUpUse: 1
-  - m_naughtyCount: 5
-    m_niceCount: 2
+    m_tutorials: 0
+    m_lockWindUpUse: 0
+  - m_naughtyCount: 4
+    m_niceCount: 3
     m_nunCount: 1
     m_gridWidth: 4
     m_gridLength: 4
-    m_canChooseItems: 0
+    m_canChooseItems: 1
     m_timer: 60
-    m_tutorials: 48
-    m_lockWindUpUse: 1
+    m_tutorials: 0
+    m_lockWindUpUse: 0
+  - m_naughtyCount: 5
+    m_niceCount: 2
+    m_nunCount: 2
+    m_gridWidth: 5
+    m_gridLength: 5
+    m_canChooseItems: 1
+    m_timer: 60
+    m_tutorials: 0
+    m_lockWindUpUse: 0
   - m_naughtyCount: 6
     m_niceCount: 4
     m_nunCount: 2
     m_gridWidth: 6
     m_gridLength: 6
-    m_canChooseItems: 0
+    m_canChooseItems: 1
     m_timer: 60
-    m_tutorials: 64
+    m_tutorials: 0
     m_lockWindUpUse: 0
   - m_naughtyCount: 9
     m_niceCount: 6
@@ -58,7 +58,7 @@ MonoBehaviour:
     m_gridLength: 7
     m_canChooseItems: 1
     m_timer: 60
-    m_tutorials: 128
+    m_tutorials: 0
     m_lockWindUpUse: 0
   - m_naughtyCount: 11
     m_niceCount: 10
