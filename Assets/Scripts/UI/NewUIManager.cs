@@ -195,10 +195,11 @@ public class NewUIManager : MonoBehaviour {
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
     }
 
-	private void FixedUpdate() {
-		Vector3 mousePos;
-		mousePos = Mouse.current.position.ReadValue();
-		m_quickActionIcon.transform.position = mousePos + new Vector3(-1f, 17f, 0f);
+    private void FixedUpdate() {
+        Vector3 mousePos;
+        mousePos = Mouse.current.position.ReadValue();
+        m_quickActionIcon.transform.position = mousePos + new Vector3(-1f, 17f, 0f);
+       
 	}
 
 	public void SetChildrenIcon(Sprite icon) {
