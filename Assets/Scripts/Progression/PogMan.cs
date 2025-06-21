@@ -99,6 +99,7 @@ public class PogMan : MonoBehaviour {
 		else items = m_krampusItems;
 		m_krampusItems = null;
 	}
+	
 
 	public void SetNextLevelModifier(LevelModifier lm) {
 		m_nextLevelModifer = lm;

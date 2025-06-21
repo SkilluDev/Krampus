@@ -73,6 +73,10 @@ public class BlackBars : MonoBehaviour {
 
     public void AnimateResultText(bool hasWon, string text) {
 
+
+
+        GenerateMap();
+        return;
         int currntLevel = Game.PogMan.CurrentLevel;
         if (hasWon) {
 
@@ -101,22 +105,25 @@ public class BlackBars : MonoBehaviour {
     public void SetTopBarText(string text) {
         m_textTop.SetText(text);
     }
+    
+
     public void GenerateMap() {
 
         int currentLevel = Game.PogMan.CurrentLevel;
+        int maxLevel = Game.PogMan.GetMaxLevel();
         for (int i = 1; i <= currentLevel; i++) {
 
-           Image b = Instantiate(m_mapButtonPref);
+            Image b = Instantiate(m_mapButtonPref);
             b.transform.SetParent(m_mapContainer, false);
             b.GetComponentInChildren<Image>().sprite = m_doneLevelSprtie;
             b.enabled = false;
 
         }
 
-        for (int j = m_CurrentLevel + 1; j <= maxLevel; j++) {
-             Image b = Instantiate(m_mapButtonPref);
+        for (int j = currentLevel + 1; j <= maxLevel; j++) {
+            Image b = Instantiate(m_mapButtonPref);
             b.transform.SetParent(m_mapContainer, false);
-             b.GetComponentInChildren<Image>().sprite = m_doneLevelSprtie;
+            b.GetComponentInChildren<Image>().sprite = m_doneLevelSprtie;
             b.enabled = false;
         }
 
