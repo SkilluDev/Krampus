@@ -29,7 +29,7 @@ public class BlackBars : MonoBehaviour {
 
     [BoxGroup("Animation")][SerializeField] private RectTransform m_resultContainer;
     [BoxGroup("Animation")][SerializeField] private Vector3 m_popScale;
-    
+
     [BoxGroup("Animation")][SerializeField] private float m_popTimer;
     [BoxGroup("Animation")][SerializeField] private float m_shakeIntensity;
     [BoxGroup("Animation")][SerializeField] private float m_shakeDuration;
@@ -73,12 +73,9 @@ public class BlackBars : MonoBehaviour {
     }
 
     public void AnimateResultText(bool hasWon ) {
-
-
-
         GenerateMap(hasWon);
     }
-        
+
 
     public void SetTopTimerText(string text) {
         m_textTimerTop.SetText(text);
@@ -87,7 +84,7 @@ public class BlackBars : MonoBehaviour {
     public void SetTopBarText(string text) {
         m_textTop.SetText(text);
     }
-    
+
 
     public void GenerateMap(bool hasWon) {
 
@@ -98,10 +95,10 @@ public class BlackBars : MonoBehaviour {
             Image b = Instantiate(m_mapButtonPref);
             b.transform.SetParent(m_mapContainer, false);
             b.sprite = m_doneLevelSprtie;
-            
+
 
         }
-        
+
          Image cc = Instantiate(m_mapButtonPref);
             cc.transform.SetParent(m_mapContainer, false);
        cc.sprite = hasWon ? m_doneLevelSprtie : m_failedLevelSprtie;
@@ -115,5 +112,5 @@ public class BlackBars : MonoBehaviour {
 
 
     }
-     
+
 }

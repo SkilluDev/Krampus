@@ -321,9 +321,7 @@ public class KrampusController : KrampusBehaviour {
 		} else {
 			m_canDash = canDash;
 		}
-
-		Game.MainGameInfo.UI.ShowQuickActionIcon(CanDash);
-
+		Game.MainGameInfo.UI.WorldSpaceUI.SetDashIcon(m_canDash);
 	}
 
 	public void OnNaughtyChildEaten(Krampus krampus, Child child) {
@@ -332,5 +330,7 @@ public class KrampusController : KrampusBehaviour {
 
 	public void SetDashTarget(IInteractable interactable) {
 		m_dashTarget = interactable;
+		if(m_dashTarget == null)	return;
+		Game.MainGameInfo.UI.WorldSpaceUI.SetDashIconPosition(m_dashTarget);
 	}
 }

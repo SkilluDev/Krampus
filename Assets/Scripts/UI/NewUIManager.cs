@@ -34,10 +34,9 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private AnimationCurve m_fillUpCurve;
 
 
-    [SerializeField] private GameObject m_quickActionIcon;
+	[SerializeField] private WorldSpaceUI m_worldSpaceUI;
+	public WorldSpaceUI WorldSpaceUI => m_worldSpaceUI;
 
-
-    public GameObject QuickActionIcon => m_quickActionIcon;
 
     private float m_startFill;
 
@@ -150,7 +149,6 @@ public class NewUIManager : MonoBehaviour {
         m_blackBars.ShowInstant();
         m_blackBars.SetTopBarText("");
         m_blackBars.SetBottomBarText(m_bottomBarTutorialKeys);
-        ShowQuickActionIcon(false);
     }
 
     public void DisplayEffect(Krampus krampus, Effect effect) {
@@ -194,13 +192,6 @@ public class NewUIManager : MonoBehaviour {
 
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
     }
-
-    private void FixedUpdate() {
-        Vector3 mousePos;
-        mousePos = Mouse.current.position.ReadValue();
-        //m_quickActionIcon.transform.position = mousePos + new Vector3(-1f, 37f, 0f);
-
-	}
 
 	public void SetChildrenIcon(Sprite icon) {
 		m_childIconImage.sprite = icon;
@@ -289,7 +280,7 @@ public class NewUIManager : MonoBehaviour {
             m_blackBars.AnimateResultText(true);
         } else {
             m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-           
+
              m_blackBars.AnimateResultText(false);
         }
         m_endScreenHandler.PreActivate(ending);
@@ -307,11 +298,6 @@ public class NewUIManager : MonoBehaviour {
 
     public void SetWindUpCostBar(float cost) {
         m_windUpCostBar.rotation =  Quaternion.Euler(0,0,Mathf.Lerp(m_markerRotatorEndPoints.x,m_markerRotatorEndPoints.y,cost / Game.MainGameInfo.MaxWindUpPoints));
-    }
-
-	public void ShowQuickActionIcon(bool canDash) {
-		Game.MainGameInfo.UI.QuickActionIcon.gameObject.SetActive(canDash);
-		if(InputSubscribe.ShouldCursorBeVisible) Cursor.visible = !canDash;
     }
 
     public void UpdateInventory() {
