@@ -190,16 +190,20 @@ public class NewUIManager : MonoBehaviour {
         }
 
 		//cursor
-		Vector3 mousePos;
-		mousePos = Mouse.current.position.ReadValue();
-		m_quickActionIcon.transform.position = mousePos + new Vector3(10f, 0, 10f);
+
 
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
     }
 
-    public void SetChildrenIcon(Sprite icon) {
-        m_childIconImage.sprite = icon;
-    }
+	private void FixedUpdate() {
+		Vector3 mousePos;
+		mousePos = Mouse.current.position.ReadValue();
+		m_quickActionIcon.transform.position = mousePos + new Vector3(-1f, 17f, 0f);
+	}
+
+	public void SetChildrenIcon(Sprite icon) {
+		m_childIconImage.sprite = icon;
+	}
 
     private void Ready() {
         Game.GlobalEvents.onChildEaten.AddListener(OnChildEaten);

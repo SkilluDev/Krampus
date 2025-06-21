@@ -41,10 +41,11 @@ public class MainMenuInfo : LevelInfo {
 	}
 
     private void Unready() {
-        //Debug.Log("Kill motions");
+		//Debug.Log("Kill motions");
+		if (m_motions == null) return;
         for (int i = 0; i < m_motions.Length; i++) {
-            m_motions[i].TryCancel();
-        }
+			m_motions[i].TryCancel();
+		}
     }
 
     public void SetState(State state) {

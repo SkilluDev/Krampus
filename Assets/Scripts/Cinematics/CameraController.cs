@@ -48,6 +48,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void OnDestroy() {
+		if (!Game.MainGameInfo) return;
 		Game.MainGameInfo.Krampus.KrampusEvents.onTongueLengthChanged.RemoveListener(ChangeOrto);
 	}
 
