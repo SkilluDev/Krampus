@@ -14,7 +14,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 	[ShowNativeProperty] public State CurrentState { get; private set; }
 
 	private State m_lastStateBeforeKilling;
-	public State stateBeforeDeath => m_lastStateBeforeKilling;
+	public State StateBeforeDeath => m_lastStateBeforeKilling;
 	public Vector3 InteractionPoint => m_pinTarget.transform.position;
 	public UnityAction<Child.State, Child.State> onStateChanged;
 

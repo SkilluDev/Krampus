@@ -82,8 +82,9 @@ public class Door : Passage, IInteractable {
             m_stunTime = m_stunLinger;
             //doorBurst.transform.localRotation = Quaternion.Euler(0, 90*(m_animator.GetBool(m_invertProperty)?1:-1), 0);
             m_doorBurst.Play();
-            foreach (var w in m_charactersInDoor) {
-                if (w is Nun n) n.Stun(m_stunDuration);
+			foreach (var w in m_charactersInDoor) {
+				if (w is Nun n) n.Stun(m_stunDuration);
+				if (w is Child c) c.Stun(m_stunDuration);
             }
 
             Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);

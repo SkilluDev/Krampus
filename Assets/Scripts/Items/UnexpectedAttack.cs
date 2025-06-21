@@ -16,7 +16,7 @@ public class UnexpectedAttack : Item {
     }
 
     private void BuffKrampus(Krampus krampus, Child child) {
-        if (child.stateBeforeDeath == Child.State.Idle || child.stateBeforeDeath == Child.State.Alerted) {
+        if (child.StateBeforeDeath == Child.State.Idle || child.StateBeforeDeath == Child.State.Alerted) {
             krampus.Kontroller.AddWindUpPoints(m_windupGained);
         }
     }

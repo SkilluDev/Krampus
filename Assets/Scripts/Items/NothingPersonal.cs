@@ -16,7 +16,7 @@ public class NothingPerosnal : Item {
     }
 
     private void BuffKrampus(Krampus krampus, Child child) {
-        if (child.stateBeforeDeath == Child.State.Stunned) {
+        if (child.StateBeforeDeath == Child.State.Stunned) {
             krampus.Kontroller.AddWindUpPoints(m_windupGained);
         }
     }
