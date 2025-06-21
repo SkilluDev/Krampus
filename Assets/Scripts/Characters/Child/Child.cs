@@ -57,7 +57,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 		Consumed
 	}
 
-	public int Priority => IsNaughty ? 0 : -10;
+	public int Priority => IsNaughty ? 5 : -10;
 
 
 	/* public void Start() {
