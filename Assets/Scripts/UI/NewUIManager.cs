@@ -306,7 +306,7 @@ public class NewUIManager : MonoBehaviour {
 
 	public void ShowQuickActionIcon(bool canDash) {
 		Game.MainGameInfo.UI.QuickActionIcon.gameObject.SetActive(canDash);
-		Cursor.visible = !canDash;
+		if(InputSubscribe.ShouldCursorBeVisible) Cursor.visible = !canDash;
     }
 
     public void UpdateInventory() {
