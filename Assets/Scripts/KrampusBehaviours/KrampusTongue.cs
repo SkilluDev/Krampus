@@ -201,28 +201,6 @@ public class KrampusTongue : KrampusBehaviour {
 					m_tongueDirection, TongueLength, m_interactionSearchMask
 				);
 
-				var test = hitObjects.Select(w => (hit: w, interactable: w.collider.GetComponentInParent<IInteractable>()))
-									.Where(w => w.interactable != null && w.interactable.CanInteract(Kramp));
-
-				foreach (var t in test) {
-					Debug.Log("test-1-:" + t.hit.transform.name + " at position: "+t.hit.point);
-				}
-
-				var test2 = hitObjects.Select(w => (hit: w, interactable: w.collider.GetComponentInParent<IInteractable>()))
-									.Where(w => w.interactable != null && w.interactable.CanInteract(Kramp))
-									.NullIfEmpty()?
-									.OrderBy(w => !(w.interactable is IEdible)) // IEdibles first
-									.ThenByDescending(w => w.interactable.Priority) // Priority (highest first)
-									.ThenBy(w => Vector3.SqrMagnitude(m_tongueOrigin.position - w.hit.point)) // Distance (closest first)
-									.Where(w => {Debug.DrawLine(m_tongueOrigin.position, w.hit.point, Color.red, 5f);
-												Debug.Log("Linecast: " + m_tongueOrigin.position + " -> " + w.hit.point);
-													return !Physics.Linecast(m_tongueOrigin.position, w.hit.point, m_interactionBlockerMask); }
-										);
-
-				foreach (var t in test2) {
-					Debug.Log("test-2-:" + t.hit.transform.name);
-				}
-
 				var interactables = hitObjects.Select(w => (hit: w, interactable: w.collider.GetComponentInParent<IInteractable>()))
 									.Where(w => w.interactable != null && w.interactable.CanInteract(Kramp))
 									.NullIfEmpty()?
@@ -232,7 +210,6 @@ public class KrampusTongue : KrampusBehaviour {
 									.Where(w => !Physics.Linecast(m_tongueOrigin.position, w.hit.point, m_interactionBlockerMask) || w.hit.distance == 0)
 									.NullIfEmpty()?
 									.Select(w => w.interactable);
-
 
 				m_hitInteractable = interactables?.FirstOrDefault();
 
