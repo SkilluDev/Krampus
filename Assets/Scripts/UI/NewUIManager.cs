@@ -198,8 +198,8 @@ public class NewUIManager : MonoBehaviour {
     private void FixedUpdate() {
         Vector3 mousePos;
         mousePos = Mouse.current.position.ReadValue();
-        m_quickActionIcon.transform.position = mousePos + new Vector3(-1f, 17f, 0f);
-       
+        m_quickActionIcon.transform.position = mousePos + new Vector3(-1f, 37f, 0f);
+
 	}
 
 	public void SetChildrenIcon(Sprite icon) {
