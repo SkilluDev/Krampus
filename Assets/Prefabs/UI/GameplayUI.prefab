@@ -323,7 +323,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3f58dcea2386ce542b773afbf2be31d2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4a0703132eb92e74086421e553f73c31, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3797,7 +3797,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5873920095784048315
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6128,7 +6128,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_quickActionIcon: {fileID: 5401012481720460271}
+  m_worldSpaceUI: {fileID: 0}
   m_niceTimerColor: {r: 0.15362969, g: 0.5471698, b: 0, a: 1}
   m_naughtyTimerColor: {r: 0.5, g: 0, b: 0, a: 0.5019608}
   m_blackBars: {fileID: 8451316527060737461}
@@ -6146,7 +6146,7 @@ MonoBehaviour:
   m_bottomBarWinKeys: "<binding=\"UI/Advance\"> Next Level \t\t\t<binding=\"UI/MenuReturn\">
     Main Menu"
   m_topSideBarWinText: <currentLevel>/<levels> Cleared!
-  m_topTimerBarText: 
+  m_topTimerBarText: Total elapsed <totalRunTime>
   m_topSideBarLoseText: <currentLevel>/<levels> Failed
   m_effectIconPref: {fileID: 1411872648666857899, guid: 0a316a4ae4a2e87439c1853f2bf7b57e,
     type: 3}
