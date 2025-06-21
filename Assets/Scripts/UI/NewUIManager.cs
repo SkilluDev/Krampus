@@ -286,11 +286,11 @@ public class NewUIManager : MonoBehaviour {
             } else {
                 m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
             }
-            m_blackBars.AnimateResultText(true, m_topSideBarWinText);
+            m_blackBars.AnimateResultText(true);
         } else {
             m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-            m_blackBars.SetTopBarSideText(m_topSideBarLoseText);
-             m_blackBars.AnimateResultText(false,m_topSideBarWinText);
+           
+             m_blackBars.AnimateResultText(false);
         }
         m_endScreenHandler.PreActivate(ending);
         yield return new WaitForSeconds(3);

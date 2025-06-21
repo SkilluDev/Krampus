@@ -22,6 +22,7 @@ public class BlackBars : MonoBehaviour {
 
     [BoxGroup("Map")][SerializeField] private Sprite m_doneLevelSprtie;
     [BoxGroup("Map")][SerializeField] private Sprite m_futureLevelSprtie;
+    [BoxGroup("Map")][SerializeField] private Sprite m_failedLevelSprtie;
 
 
 //============================================================================
@@ -71,32 +72,13 @@ public class BlackBars : MonoBehaviour {
         m_resultText.SetText(text);
     }
 
-    public void AnimateResultText(bool hasWon, string text) {
+    public void AnimateResultText(bool hasWon ) {
 
 
 
-        GenerateMap();
-        return;
-        int currntLevel = Game.PogMan.CurrentLevel;
-        if (hasWon) {
-
-            m_resultText.SetText(currntLevel + "/<levels> Cleared!");
-            m_resultText.color = Color.green;
-            Vector3 oldScale = m_resultContainer.localScale;
-            LMotion.Create(oldScale, m_popScale, m_popTimer / 2).WithDelay(0.35f).WithEase(Ease.OutElastic)
-            .WithOnComplete(() => m_resultText.SetText((currntLevel + 1) + "/<levels> Cleared!"))
-            .WithOnComplete(
-                   () => LMotion.Create(m_popScale, oldScale, m_popTimer / 2).WithEase(Ease.InBounce).WithOnComplete(() => m_resultText.color = Color.white).BindToLocalScale(m_resultContainer)
-               ).BindToLocalScale(m_resultContainer);
-            return;
-
-        }
-        m_resultText.SetText(currntLevel + "/<levels> Failed!");
-        //LMotion.Shake.Create(m_resultContainer.localPosition, Vector3.one * m_shakeIntensity, m_shakeDuration).WithDelay(3).WithEase(Ease.InOutQuad).BindToLocalPosition(m_resultContainer);
-          m_resultText.color = Color.red;
-
+        GenerateMap(hasWon);
+    }
         
-      }
 
     public void SetTopTimerText(string text) {
         m_textTimerTop.SetText(text);
@@ -107,11 +89,11 @@ public class BlackBars : MonoBehaviour {
     }
     
 
-    public void GenerateMap() {
+    public void GenerateMap(bool hasWon) {
 
         int currentLevel = Game.PogMan.CurrentLevel+1;
         int maxLevel = Game.PogMan.GetMaxLevel();
-        for (int i = 1; i <= currentLevel; i++) {
+        for (int i = 1; i < currentLevel; i++) {
 
             Image b = Instantiate(m_mapButtonPref);
             b.transform.SetParent(m_mapContainer, false);
@@ -119,12 +101,16 @@ public class BlackBars : MonoBehaviour {
             
 
         }
+        
+         Image cc = Instantiate(m_mapButtonPref);
+            cc.transform.SetParent(m_mapContainer, false);
+       cc.sprite = hasWon ? m_doneLevelSprtie : m_failedLevelSprtie;
 
         for (int j = currentLevel + 1; j < maxLevel; j++) {
             Image b = Instantiate(m_mapButtonPref);
             b.transform.SetParent(m_mapContainer, false);
             b.sprite = m_futureLevelSprtie;
-          
+
         }
 
 
