@@ -15,6 +15,17 @@ public class BlackBars : MonoBehaviour {
     [SerializeField] private TMP_Text m_textTop, m_textBottom, m_resultText, m_textTimerTop;
 
 
+
+    [Header("======[Map]=====")]
+    [BoxGroup("Map")][SerializeField] private RectTransform m_mapContainer;
+    [BoxGroup("Map")][SerializeField] private Image m_mapButtonPref;
+    [BoxGroup("Map")][SerializeField] private Sprite m_currentLevelSprite;
+    [BoxGroup("Map")][SerializeField] private Sprite m_doneLevelSprtie;
+    [BoxGroup("Map")][SerializeField] private Sprite m_futureLevelSprtie;
+
+
+//============================================================================
+
     [BoxGroup("Animation")][SerializeField] private RectTransform m_resultContainer;
     [BoxGroup("Animation")][SerializeField] private Vector3 m_popScale;
     
@@ -90,6 +101,26 @@ public class BlackBars : MonoBehaviour {
     public void SetTopBarText(string text) {
         m_textTop.SetText(text);
     }
+    public void GenerateMap() {
 
+        int currentLevel = Game.PogMan.CurrentLevel;
+        for (int i = 1; i <= currentLevel; i++) {
+
+           Image b = Instantiate(m_mapButtonPref);
+            b.transform.SetParent(m_mapContainer, false);
+            b.GetComponentInChildren<Image>().sprite = m_doneLevelSprtie;
+            b.enabled = false;
+
+        }
+
+        for (int j = m_CurrentLevel + 1; j <= maxLevel; j++) {
+             Image b = Instantiate(m_mapButtonPref);
+            b.transform.SetParent(m_mapContainer, false);
+             b.GetComponentInChildren<Image>().sprite = m_doneLevelSprtie;
+            b.enabled = false;
+        }
+
+
+    }
      
 }
