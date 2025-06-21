@@ -9,6 +9,7 @@ using Roomgen;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 
@@ -178,14 +179,20 @@ public class NewUIManager : MonoBehaviour {
 
 
     private void Update() {
+
         if (!Game.Balling) {
-            m_timerDisplay.gameObject.SetActive(Mathf.RoundToInt(Time.unscaledTime * 2) % 2 == 0);
-        } else {
-            m_timerDisplay.gameObject.SetActive(true);
-        }
+			m_timerDisplay.gameObject.SetActive(Mathf.RoundToInt(Time.unscaledTime * 2) % 2 == 0);
+		} else {
+			m_timerDisplay.gameObject.SetActive(true);
+		}
         if (Game.MainGameInfo.CurrentState == MainGameInfo.State.ItemChoosing) {
             DisplayItemChoiceMenu();
         }
+
+		//cursor
+		Vector3 mousePos;
+		mousePos = Mouse.current.position.ReadValue();
+		m_quickActionIcon.transform.position = mousePos + new Vector3(10f, 0, 10f);
 
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
     }
@@ -297,8 +304,9 @@ public class NewUIManager : MonoBehaviour {
         m_windUpCostBar.rotation =  Quaternion.Euler(0,0,Mathf.Lerp(m_markerRotatorEndPoints.x,m_markerRotatorEndPoints.y,cost / Game.MainGameInfo.MaxWindUpPoints));
     }
 
-    public void ShowQuickActionIcon(bool canDash) {
-        Game.MainGameInfo.UI.QuickActionIcon.gameObject.SetActive(canDash);
+	public void ShowQuickActionIcon(bool canDash) {
+		Game.MainGameInfo.UI.QuickActionIcon.gameObject.SetActive(canDash);
+		Cursor.visible = !canDash;
     }
 
     public void UpdateInventory() {
