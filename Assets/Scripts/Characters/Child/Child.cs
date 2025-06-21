@@ -133,6 +133,8 @@ public class Child : NPC, IEdible, INoiseReactor {
 					if (m_currentDetectionTime < m_detectionTime) return;
 					m_timeout = m_stunDuration;
 					SwitchState(State.Shock);
+				} else {
+					m_currentDetectionTime = 0f;
 				}
 
 				if (m_timeout > 0) {

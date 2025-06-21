@@ -146,14 +146,16 @@ public class Nun : NPC {
                 }
 
                 m_viewCone.SetActive(true);
-                if (m_viewCone.Detect()) {
-                    //Debug.Log("[Nun] viewcone detected krampy");
-                    m_currentDetectionTime += Time.deltaTime;
-                    if (m_currentDetectionTime < m_detectionTime) return;
-                    m_timeout = m_shockTimeout;
-                    //Change in multi
-                    SeeKrampus();
-                }
+				if (m_viewCone.Detect()) {
+					//Debug.Log("[Nun] viewcone detected krampy");
+					m_currentDetectionTime += Time.deltaTime;
+					if (m_currentDetectionTime < m_detectionTime) return;
+					m_timeout = m_shockTimeout;
+					//Change in multi
+					SeeKrampus();
+				} else {
+					m_currentDetectionTime = 0f;
+				}
 
                 SetVelocity(GetPathDirection() * m_baseMovementSpeed);
                 SetFacingDirection(GetPathDirection());
