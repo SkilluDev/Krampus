@@ -9,6 +9,7 @@ using Roomgen;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 
@@ -33,10 +34,9 @@ public class NewUIManager : MonoBehaviour {
     [SerializeField] private AnimationCurve m_fillUpCurve;
 
 
-    [SerializeField] private GameObject m_quickActionIcon;
+	[SerializeField] private WorldSpaceUI m_worldSpaceUI;
+	public WorldSpaceUI WorldSpaceUI => m_worldSpaceUI;
 
-
-    public GameObject QuickActionIcon => m_quickActionIcon;
 
     private float m_startFill;
 
@@ -60,6 +60,7 @@ public class NewUIManager : MonoBehaviour {
 
     [BoxGroup("Wind-up")][SerializeField] private Image m_windUpFiller;
     [BoxGroup("Wind-up")][SerializeField] private RectTransform m_windUpCostBar;
+    [BoxGroup("Wind-up")][SerializeField] private Vector2 m_markerRotatorEndPoints;
 
     [BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
 
@@ -73,6 +74,7 @@ public class NewUIManager : MonoBehaviour {
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarWinKeys;
 
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topSideBarWinText;
+	[ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topTimerBarText;
     [ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topSideBarLoseText;
 
 
@@ -147,7 +149,6 @@ public class NewUIManager : MonoBehaviour {
         m_blackBars.ShowInstant();
         m_blackBars.SetTopBarText("");
         m_blackBars.SetBottomBarText(m_bottomBarTutorialKeys);
-        ShowQuickActionIcon(false);
     }
 
     public void DisplayEffect(Krampus krampus, Effect effect) {
@@ -176,27 +177,34 @@ public class NewUIManager : MonoBehaviour {
 
 
     private void Update() {
+
         if (!Game.Balling) {
-            m_timerDisplay.gameObject.SetActive(Mathf.RoundToInt(Time.unscaledTime * 2) % 2 == 0);
-        } else {
-            m_timerDisplay.gameObject.SetActive(true);
-        }
+			m_timerDisplay.gameObject.SetActive(Mathf.RoundToInt(Time.unscaledTime * 2) % 2 == 0);
+		} else {
+			m_timerDisplay.gameObject.SetActive(true);
+		}
         if (Game.MainGameInfo.CurrentState == MainGameInfo.State.ItemChoosing) {
             DisplayItemChoiceMenu();
         }
 
+		//cursor
+
+
         m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
     }
 
-    public void SetChildrenIcon(Sprite icon) {
-        m_childIconImage.sprite = icon;
-    }
+	public void SetChildrenIcon(Sprite icon) {
+		m_childIconImage.sprite = icon;
+	}
 
     private void Ready() {
         Game.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
         Game.MainGameInfo.Krampus.KrampusEvents.onEffectRegistered.AddListener(DisplayEffect);
         Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
         Game.GlobalEvents.onLevelStateChanged.AddListener(OnLevelStateChanged);
+
+		SetSeed(Game.RoomGenInfo.Seed);
+
 
         m_originalTimerColor = m_timerDisplay.Color;
         m_tutorial.gameObject.SetActive(false);
@@ -229,14 +237,14 @@ public class NewUIManager : MonoBehaviour {
     public void ChangeChildCounter() {
         m_currentFillHandle.TryCancel();
         float oldValue = m_fillBar.fillAmount;
-        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 1, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
+        m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 0.95f, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
                                  Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar);
     }
 
     public void ChangeWindUpValue(float value, float time = 1f) {
         m_currentWindUpFillHandle.TryCancel();
         float oldValue = m_windUpFiller.fillAmount;
-        m_currentWindUpFillHandle = LMotion.Create(oldValue, value / Game.MainGameInfo.MaxWindUpPoints, time)
+        m_currentWindUpFillHandle = LMotion.Create(oldValue, math.remap(0f,1f, 0.07f, 0.41f, value / Game.MainGameInfo.MaxWindUpPoints), time)
         .WithDelay(0.4f).BindToFillAmount(m_windUpFiller);
     }
     public void HideBlackBars() {
@@ -252,7 +260,7 @@ public class NewUIManager : MonoBehaviour {
     public void UIElementsEntryAnimation() {
         if (m_uiOn) return;
         //Debug.Log("Entry");
-        m_uiBlockLeft.gameObject.SetActive(true);
+		m_uiBlockLeft.gameObject.SetActive(true);
         LMotion.Create(-200, 50, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition = new Vector2(x, m_uiBlockLeft.anchoredPosition.y));
         m_uiBlockRight.gameObject.SetActive(true);
         LMotion.Create(300, -50, 0.375f).Bind(x => m_uiBlockRight.anchoredPosition = new Vector2(x, m_uiBlockRight.anchoredPosition.y));
@@ -262,16 +270,18 @@ public class NewUIManager : MonoBehaviour {
     public IEnumerator ProcessEnding(Ending ending) {
         m_blackBars.Show();
         m_blackBars.SetTopBarText("");
+		m_blackBars.SetTopTimerText(m_topTimerBarText);
         if (ending.IsWin()) {
             if (Game.PogMan.IsThereNextLevel) {
                 m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
             } else {
                 m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
             }
-            m_blackBars.SetTopBarSideText(m_topSideBarWinText);
+            m_blackBars.AnimateResultText(true);
         } else {
             m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-            m_blackBars.SetTopBarSideText(m_topSideBarLoseText);
+
+             m_blackBars.AnimateResultText(false);
         }
         m_endScreenHandler.PreActivate(ending);
         yield return new WaitForSeconds(3);
@@ -287,11 +297,7 @@ public class NewUIManager : MonoBehaviour {
     }
 
     public void SetWindUpCostBar(float cost) {
-        m_windUpCostBar.anchoredPosition = new Vector2(0, Mathf.Lerp(0, m_windUpFiller.rectTransform.sizeDelta.y, cost / Game.MainGameInfo.MaxWindUpPoints));
-    }
-
-    public void ShowQuickActionIcon(bool canSting) {
-        Game.MainGameInfo.UI.QuickActionIcon.gameObject.SetActive(canSting);
+        m_windUpCostBar.rotation =  Quaternion.Euler(0,0,Mathf.Lerp(m_markerRotatorEndPoints.x,m_markerRotatorEndPoints.y,cost / Game.MainGameInfo.MaxWindUpPoints));
     }
 
     public void UpdateInventory() {
@@ -308,6 +314,6 @@ public class NewUIManager : MonoBehaviour {
             ic.transform.SetParent(m_inventoryContainer);
          }
 
-        
+
      }
 }

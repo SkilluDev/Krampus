@@ -16,15 +16,33 @@ public class Game : MonoBehaviour {
             CurrentState = State.MainMenu;
             SceneManager.LoadScene((int)State.MainMenu);
         }
+
+		if (CurrentState == State.MainGame) {
+			m_bootFromMainGame = true;
+		}
         PrepareCurrentState();
 
     }
+	public static bool Exists => m_instance != null;
+
+	public static Game Instance {
+		get {
+			if (m_instance == null) {
+				Debug.LogError("Game instance is null! Did you forget to add the Game component to a GameObject?");
+			}
+			return m_instance;
+		}
+	}
+	private static bool m_bootFromMainGame = false;
+	public static bool BootFromMainGame {
+		get => m_bootFromMainGame;
+		set => m_bootFromMainGame = value;}
     public static RoomGenInfo RoomGenInfo {
-        get {
-            if (m_instance.m_roomGenInfo == null) Debug.LogError("RoomGenInfo was not assigned in " + m_instance.gameObject.name);
-            return m_instance.m_roomGenInfo;
-        }
-    }
+		get {
+			if (m_instance.m_roomGenInfo == null) Debug.LogError("RoomGenInfo was not assigned in " + m_instance.gameObject.name);
+			return m_instance.m_roomGenInfo;
+		}
+	}
     [SerializeField] private RoomGenInfo m_roomGenInfo;
 
     public enum State {
@@ -112,11 +130,11 @@ public static PogMan PogMan {
     }
 
     public static void FinishedLoading() {
-        if (CurrentState != State.Loading) return;
-        CurrentState = DestinationState;
-        DestinationState = State.Loading;
-        SourceState = State.Loading;
-    }
+		if (CurrentState != State.Loading) return;
+		CurrentState = DestinationState;
+		DestinationState = State.Loading;
+		SourceState = State.Loading;
+	}
 
     private void Awake() {
         if (Game.m_instance != null) {

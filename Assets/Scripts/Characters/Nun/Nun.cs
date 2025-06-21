@@ -1,4 +1,4 @@
-    using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +49,7 @@ public class Nun : NPC {
 
     [SerializeField] private float m_castingTime = 1.03f;
     [SerializeField] private Vector2 m_randomRagePerSeconds;
-    [SerializeField] private NunMissle m_MisslePref;
+    [SerializeField] private NunMissle m_misslePref;
     private float m_rageMeter;
 
 
@@ -64,6 +64,10 @@ public class Nun : NPC {
 
         CreatePatrolPath();
         m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.transform;
+        m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
+    }
+
+    public void SetModel() {
         m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
     }
 
@@ -86,18 +90,24 @@ public class Nun : NPC {
 
     private void CreatePatrolPath() {
         m_patrolPath = new List<Vector3>();
-        for (int i = 0; i < 3; i++) {
+        var alreadyPatrolled = new List<Room>();
+        for (int i = 0; i < 5; i++) {
             var room = Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement();
-            if (!NavMesh.SamplePosition(room.GetMidPoint(), out var navmeshPoint, 3f, NavMesh.AllAreas)) {
+
+            int retries = 0;
+            while (retries < 6 && alreadyPatrolled.Contains(room)) {
+                room = Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement();
+                retries++;
+            }
+
+            alreadyPatrolled.Add(room);
+
+            if (room.HasTag(m_dontPatrolTag) || !NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var navmeshPoint, 3f, NavMesh.AllAreas)) {
                 i--;
                 Debug.LogWarning($"Problem adding Nun patrol point in {room.name}. Retrying...");
                 continue;
             }
-            if (room.HasTag(m_dontPatrolTag)) {
-                i--;
-                Debug.LogWarning($"Problem adding Nun patrol point in {room.name}. Retrying...");
-                continue;
-            }
+
             m_patrolPath.Add(navmeshPoint.position);
         }
     }
@@ -119,11 +129,17 @@ public class Nun : NPC {
                 //Debug.Log("[Nun] Begin patrolling");
                 break;
             case State.Patrolling:
+                if (m_timeout > 0) {
+                    m_timeout -= Time.deltaTime;
+                    break;
+                }
                 if (NearDestination(m_interactionDistance)) {
                     m_currentControlPoint++;
                     m_currentControlPoint %= m_patrolPath.Count;
+                    // probably should be a min-max
+                    m_timeout = UnityEngine.Random.Range(0, m_patrolIdleDuration);
                     SetDestination(m_patrolPath[m_currentControlPoint]);
-                    //Debug.Log("[Nun] Reached patrol point");
+                    Debug.Log("[Nun] Reached patrol point == " + m_currentControlPoint);
                 }
 
                 m_viewCone.SetActive(true);
@@ -131,12 +147,8 @@ public class Nun : NPC {
                     //Debug.Log("[Nun] viewcone detected krampy");
                     m_timeout = m_shockTimeout;
                     //Change in multi
-
                     SeeKrampus();
-
-
                 }
-
 
                 SetVelocity(GetPathDirection() * m_baseMovementSpeed);
                 SetFacingDirection(GetPathDirection());
@@ -159,7 +171,6 @@ public class Nun : NPC {
                     }
                     SetVelocity(Vector3.zero);
                     SetFacingDirection(Vector3.zero);
-
                 } else {
                     SetVelocity(GetPathDirection() * m_runSpeed);
                     SetFacingDirection(GetPathDirection());
@@ -171,9 +182,6 @@ public class Nun : NPC {
                 SetVelocity(Vector3.zero);
                 m_timeout -= Time.deltaTime;
                 SetFacingToPoint(Game.MainGameInfo.Krampus.transform.position);
-
-
-
                 if (m_timeout < 0) SwitchState(State.ChasingKrampus);
                 break;
             case State.Listening:
@@ -191,7 +199,7 @@ public class Nun : NPC {
                 SetVelocity(GetPathDirection() * m_runSpeed);
 
 
-                m_rageMeter += UnityEngine.Random.Range(m_randomRagePerSeconds.x,m_randomRagePerSeconds.y) * Time.deltaTime;
+                m_rageMeter += UnityEngine.Random.Range(m_randomRagePerSeconds.x, m_randomRagePerSeconds.y) * Time.deltaTime;
                 //Debug.Log("Rage:" + m_rageMeter);
 
                 if (m_rageMeter >= 100) {
@@ -266,6 +274,7 @@ public class Nun : NPC {
         }
         if (Game.MainGameInfo.Krampus.Kontroller.CurrentState == KrampusController.State.Dash) return;
         onAttack?.Invoke(CurrentState);
+
         SwitchState(State.Idle);
         Game.MainGameInfo.Krampus.Kontroller.KrampTermination(Ending.LoseNun);
 
@@ -284,24 +293,22 @@ public class Nun : NPC {
     }
 
 
-
     public void Shoot() {
         m_rageMeter = 0;
-        Vector3 direction = (Game.MainGameInfo.Krampus.transform.position.NoY() - transform.position.NoY()).normalized;
-        Vector3 pos = transform.position + (2 * direction) + new Vector3(0, 1, 0);
-        Quaternion rot = Quaternion.LookRotation(direction);
-        NunMissle nunMissle = Instantiate(m_MisslePref, pos, Quaternion.identity);
+        var direction = (Game.MainGameInfo.Krampus.transform.position.NoY() - transform.position.NoY()).normalized;
+        var pos = transform.position + (2 * direction) + new Vector3(0, 1, 0);
+        var rot = Quaternion.LookRotation(direction);
+        var nunMissle = Instantiate(m_misslePref, pos, Quaternion.identity);
         nunMissle.SetTarget(Game.MainGameInfo.Krampus.transform, direction);
     }
 
-
+    // TODO: move to viewcone script logic
     private bool HasLineOfSight(float range = 100f) {
-
         Physics.Raycast(transform.position, Game.MainGameInfo.Krampus.transform.position - transform.position, out var hit, range, m_visionMask);
         if (hit.collider.transform == Game.MainGameInfo.Krampus.transform) {
             return true;
         } else {
             return false;
         }
-     }
+    }
 }

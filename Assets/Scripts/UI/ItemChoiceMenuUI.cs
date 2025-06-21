@@ -13,7 +13,7 @@ public class ItemChoiceMenuUI : MonoBehaviour {
     }
 
     public void SetItems() {
-        var items = Game.MainGameInfo.ItemPool.RandomItemFor(m_itemCards.Length, Game.MainGameInfo.Krampus.Stats);
+        var items = Game.MainGameInfo.ItemPool.RandomItemForKrampus(m_itemCards.Length, Game.MainGameInfo.Krampus.Stats);
         m_itemsDisplayed = new Item[m_itemCards.Length];
         for (int i = 0; i < m_itemCards.Length; i++) {
             var a = items[i];
@@ -31,7 +31,7 @@ public class ItemChoiceMenuUI : MonoBehaviour {
 
         Debug.Log("Got item: " + m_itemsDisplayed[pos].ItemName);
 
-        
+
     }
 
 

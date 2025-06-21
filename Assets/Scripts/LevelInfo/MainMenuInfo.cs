@@ -9,8 +9,9 @@ public class MainMenuInfo : LevelInfo {
     public new enum State {
         Default,
         Transitioning,
+        GameModes,
+        Settings,
         Credits,
-        Settings
     }
 
     public State CurrentState { get; private set; } = State.Transitioning;
@@ -18,9 +19,6 @@ public class MainMenuInfo : LevelInfo {
     public UnityAction<MainMenuInfo.State, MainMenuInfo.State> onStateChanged;
     [SerializeField] private CinemachineVirtualCamera[] m_cameras;
     [SerializeField] private CanvasGroup[] m_canvases;
-
-    [SerializeField] private LevelSet m_tutorialSet;
-    [SerializeField] private LevelSet m_hardMode;
 
     private MotionHandle[] m_motions;
 
@@ -31,17 +29,23 @@ public class MainMenuInfo : LevelInfo {
     }
 
     private void Ready() {
-        m_motions = new MotionHandle[m_canvases.Length];
-        foreach (var c in m_canvases) c.alpha = 0;
-        SetState(State.Default);
-        //Debug.Log("Set state default!");
-    }
+		if (Game.BootFromMainGame) {
+			Game.BootFromMainGame = false;
+			Game.PogMan.StartNewGame(PogMan.Difficulty.Normal);
+			return;
+		}
+		m_motions = new MotionHandle[m_canvases.Length];
+		foreach (var c in m_canvases) c.alpha = 0;
+		SetState(State.Default);
+		//Debug.Log("Set state default!");
+	}
 
     private void Unready() {
-        //Debug.Log("Kill motions");
+		//Debug.Log("Kill motions");
+		if (m_motions == null) return;
         for (int i = 0; i < m_motions.Length; i++) {
-            m_motions[i].TryCancel();
-        }
+			m_motions[i].TryCancel();
+		}
     }
 
     public void SetState(State state) {
@@ -51,11 +55,11 @@ public class MainMenuInfo : LevelInfo {
         UpdateGroups();
     }
 
-    public void LoadGameScene() {
+    public void LoadGameScene(PogMan.Difficulty difficulty) {
         IEnumerator Internal() {
             SetState(State.Transitioning);
             yield return new WaitForSecondsRealtime(1.2f);
-            Game.LoadState(Game.State.MainGame);
+            Game.PogMan.StartNewGame(difficulty);
         }
 
         StartCoroutine(Internal());
@@ -71,15 +75,11 @@ public class MainMenuInfo : LevelInfo {
     }
 
     public void TutorialLevel() {
-
-        Game.PogMan.SetLevelSet(m_tutorialSet);
-        LoadGameScene();
+        LoadGameScene(PogMan.Difficulty.Normal);
      }
-     
-    public void NotTutorialLevel() {
 
-        Game.PogMan.SetLevelSet(m_hardMode);
-        LoadGameScene();
+    public void NotTutorialLevel() {
+        LoadGameScene(PogMan.Difficulty.Hard);
      }
 
     // bad code ahead!

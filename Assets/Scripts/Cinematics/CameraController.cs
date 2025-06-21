@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour {
 	public Camera Rendering => m_renderingCamera;
 	public CinemachineImpulseSource DefaultShake => m_defaultImpulse;
 	private Krampus m_krampus;
+	[SerializeField] private Camera m_uiCamera;
 	[SerializeField] private CinemachineVirtualCamera m_camera;
 	[SerializeField] private Camera m_renderingCamera;
 	[SerializeField] private CinemachineImpulseSource m_defaultImpulse;
@@ -48,6 +49,7 @@ public class CameraController : MonoBehaviour {
 	}
 
 	private void OnDestroy() {
+		if (!Game.MainGameInfo) return;
 		Game.MainGameInfo.Krampus.KrampusEvents.onTongueLengthChanged.RemoveListener(ChangeOrto);
 	}
 
@@ -61,6 +63,8 @@ public class CameraController : MonoBehaviour {
 
 		transform.position = Vector3.Lerp(transform.position, m_krampus.transform.position + ComputeOffset(), m_cameraSpeed * Time.deltaTime);
 		m_camera.m_Lens.FieldOfView = ComputeOrtoSize();
+		m_uiCamera.fieldOfView = ComputeOrtoSize();
+
 	}
 
 	private Vector3 ComputeOffset() {

@@ -15,7 +15,7 @@ public enum TutorialPage {
 	DontAttackNice = 8,
 	AvoidNuns = 16,
 	InteractAndStun = 32,
-	WindupAndStinger = 64,
+	WindupAndDash = 64,
 	ItemsAndLockIn = 128
 }
 [Serializable]
@@ -49,10 +49,6 @@ public class TutorialHandler : MonoBehaviour {
 
 	[SerializeField] private int m_uiMoveInCounter = 3;
 
-	private void OnValidate() {
-		m_tutorialPagesDict.Validate();
-	}
-
 	private void PrepareTutorials(TutorialPage pages) {
 		m_tutorialPages = new List<Transform>();
 		foreach (TutorialPage page in Enum.GetValues(typeof(TutorialPage))) {
@@ -77,7 +73,6 @@ public class TutorialHandler : MonoBehaviour {
 	}
 
 	private void OnTutorialTrigger(TutorialPage pages) {
-		if (!Game.SetMan.GetValue<bool>("Show Tutorial")) return;
 		if (pages == 0) return;
 		gameObject.SetActive(true);
 		PrepareTutorials(pages);

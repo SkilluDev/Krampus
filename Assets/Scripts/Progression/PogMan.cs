@@ -5,12 +5,40 @@ using NaughtyAttributes;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.Android;
+using Random = UnityEngine.Random;
+
 
 public class PogMan : MonoBehaviour {
+
+	public enum Difficulty {
+		Normal,
+		Tutorial,
+		Hard,
+		OnlyNuns
+	}
+
+	private Difficulty m_currentDifficulty;
+	public Difficulty CurrentDifficulty => m_currentDifficulty;
+
+	private Difficulty m_difficultyAfterTutorial;
+
+
+	[Serializable]
+	public class LevelSetForDifficulty : ValueConnectedToEnum<Difficulty> {
+		[SerializeField] private LevelSet m_levelSet;
+		public LevelSet LevelSet => m_levelSet;
+	}
+
+	[SerializeField] private SerializedEnumDictionary<Difficulty, LevelSetForDifficulty> m_levelSets;
+
 
 	[SerializeField] private LevelSet m_levelSet;
 
 	[SerializeField] private int m_currentLevel = 0;
+
+	private bool m_isTutorial = false;
+
+	public bool IsTutorial => m_isTutorial;
 
 	public int LevelCount => m_levelSet.LevelStats.Count;
 	public int CurrentLevel => m_currentLevel;
@@ -23,6 +51,11 @@ public class PogMan : MonoBehaviour {
 
 	[ShowNativeProperty] public float TotalRunTime { get => m_timer; }
 
+	private void Ready() {
+		if (Game.BootFromMainGame) {
+			Game.LoadState(Game.State.MainMenu);
+		}
+	}
 	private void FixedUpdate() {
 		if (Game.Balling) m_timer += Time.fixedDeltaTime;
 	}
@@ -30,11 +63,11 @@ public class PogMan : MonoBehaviour {
 	public LevelStats GetCurrentLevelStats() {
 		return m_levelSet.LevelStats[m_currentLevel];
 	}
+	public int GetMaxLevel() {
+		return m_levelSet.LevelStats.Count + 1;
+	}
 
 	private bool m_clearItemsOnLoad = false;
-
-
-
 	private LevelModifier m_nextLevelModifer;
 	public LevelModifier NextLevelModifier => m_nextLevelModifer;
 
@@ -66,6 +99,7 @@ public class PogMan : MonoBehaviour {
 		else items = m_krampusItems;
 		m_krampusItems = null;
 	}
+	
 
 	public void SetNextLevelModifier(LevelModifier lm) {
 		m_nextLevelModifer = lm;
@@ -75,11 +109,18 @@ public class PogMan : MonoBehaviour {
 		m_canGoToNextLevel = false;
 		if (IsThereNextLevel) {
 			m_currentLevel += 1;
+			SetNextSeed();
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
-			Game.MainGameInfo.SetState(MainGameInfo.State.Game);
 			Game.LoadState(Game.State.MainGame);
 		} else {
-			GoBackToMenu();
+			if (IsTutorial) {
+				m_isTutorial = false;
+				Game.SetMan.SetValue<bool>("Show Tutorial", false);
+				StartNewGame(m_difficultyAfterTutorial);
+			} else {
+				//TODO add a game completed screen
+				GoBackToMenu();
+			}
 		}
 	}
 
@@ -91,10 +132,12 @@ public class PogMan : MonoBehaviour {
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
 		}
 
-		Game.MainGameInfo.SetState(MainGameInfo.State.Game);
-		Game.PogMan.ResetProgress();
-		Game.LoadState(Game.State.MainGame);
+		StartNewGame(CurrentDifficulty);
 
+	}
+
+	public void ReloadCurrentLevel() {
+		Game.LoadState(Game.State.MainGame);
 	}
 
 	public void GoBackToMenu() {
@@ -108,7 +151,43 @@ public class PogMan : MonoBehaviour {
 		m_canGoToNextLevel = true;
 	}
 
-	public void SetLevelSet(LevelSet set) {
-		m_levelSet = set;
-	 }
+	public void SetLevelSet(Difficulty difficulty) {
+		m_levelSet = m_levelSets[difficulty].LevelSet;
+		m_currentDifficulty = difficulty;
+	}
+
+	public void SetSeed() {
+		switch (Game.RoomGenInfo.Regenerate) {
+			case RoomGenerationType.First:
+				Game.RoomGenInfo.SetInitialSeed();
+				break;
+			case RoomGenerationType.New:
+				Game.RoomGenInfo.SetNewSeed();
+				break;
+			case RoomGenerationType.Old:
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
+		}
+
+		SetNextSeed();
+	}
+
+	public void SetNextSeed() {
+		Random.InitState(Game.RoomGenInfo.Seed + CurrentLevel);
+	}
+
+	public void StartNewGame(Difficulty difficulty) {
+		if (Game.SetMan.GetValue<bool>("Show Tutorial")) {
+			m_isTutorial = true;
+			m_difficultyAfterTutorial = difficulty;
+			SetLevelSet(Difficulty.Tutorial);
+		} else {
+			m_isTutorial = false;
+			SetLevelSet(difficulty);
+		}
+		ResetProgress();
+		SetSeed();
+		Game.LoadState(Game.State.MainGame);
+	}
 }

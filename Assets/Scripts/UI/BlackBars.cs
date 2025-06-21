@@ -6,12 +6,33 @@ using LitMotion.Extensions;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BlackBars : MonoBehaviour {
     [SerializeField] private float m_duration;
 
     [SerializeField] private RectTransform m_top, m_bottom;
-    [SerializeField] private TMP_Text m_textTop, m_textBottom, m_textSideTop, m_textTimerTop;
+    [SerializeField] private TMP_Text m_textTop, m_textBottom, m_resultText, m_textTimerTop;
+
+
+
+    [Header("======[Map]=====")]
+    [BoxGroup("Map")][SerializeField] private RectTransform m_mapContainer;
+    [BoxGroup("Map")][SerializeField] private Image m_mapButtonPref;
+
+    [BoxGroup("Map")][SerializeField] private Sprite m_doneLevelSprtie;
+    [BoxGroup("Map")][SerializeField] private Sprite m_futureLevelSprtie;
+    [BoxGroup("Map")][SerializeField] private Sprite m_failedLevelSprtie;
+
+
+//============================================================================
+
+    [BoxGroup("Animation")][SerializeField] private RectTransform m_resultContainer;
+    [BoxGroup("Animation")][SerializeField] private Vector3 m_popScale;
+
+    [BoxGroup("Animation")][SerializeField] private float m_popTimer;
+    [BoxGroup("Animation")][SerializeField] private float m_shakeIntensity;
+    [BoxGroup("Animation")][SerializeField] private float m_shakeDuration;
     private float m_yDistanceTop, m_yDistanceBottom;
 
     private void Awake() {
@@ -47,15 +68,49 @@ public class BlackBars : MonoBehaviour {
         m_textBottom.SetText(text);
     }
 
-	public void SetTopBarSideText(string text) {
-        m_textSideTop.SetText(text);
+    public void SetTopBarSideText(string text) {
+        m_resultText.SetText(text);
     }
 
-	public void SetTopTimerText(string text) {
+    public void AnimateResultText(bool hasWon ) {
+        GenerateMap(hasWon);
+    }
+
+
+    public void SetTopTimerText(string text) {
         m_textTimerTop.SetText(text);
     }
 
     public void SetTopBarText(string text) {
-		m_textTop.SetText(text);
-	}
+        m_textTop.SetText(text);
+    }
+
+
+    public void GenerateMap(bool hasWon) {
+
+        int currentLevel = Game.PogMan.CurrentLevel+1;
+        int maxLevel = Game.PogMan.GetMaxLevel();
+        for (int i = 1; i < currentLevel; i++) {
+
+            Image b = Instantiate(m_mapButtonPref);
+            b.transform.SetParent(m_mapContainer, false);
+            b.sprite = m_doneLevelSprtie;
+
+
+        }
+
+         Image cc = Instantiate(m_mapButtonPref);
+            cc.transform.SetParent(m_mapContainer, false);
+       cc.sprite = hasWon ? m_doneLevelSprtie : m_failedLevelSprtie;
+
+        for (int j = currentLevel + 1; j < maxLevel; j++) {
+            Image b = Instantiate(m_mapButtonPref);
+            b.transform.SetParent(m_mapContainer, false);
+            b.sprite = m_futureLevelSprtie;
+
+        }
+
+
+    }
+
 }

@@ -1,49 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Game/Items/EvolvingDanger", fileName = "EvolvingDanger")]
+[ItemState(typeof(EvolvingDanger.State))]
 public class EvolvingDanger : Item {
-
-    private int m_level;
-	public override void RegisterEvents(KrampusEvents events) {
-        events.onWindUpChanged.AddListener(BuffKrampus);
-        m_level = 0;
-
+    public class State {
+        public int level;
     }
+
+    public override void RegisterEvents(KrampusEvents events) {
+        events.onWindUpChanged.AddListener(BuffKrampus);
+    }
+
     public override void UnregisterEvents(KrampusEvents events) {
         events.onWindUpChanged.RemoveListener(BuffKrampus);
-        m_level = 0;
-
     }
 
+	private void BuffKrampus(Krampus krampus, float windup) {
+		Debug.Log($"EvolvingDanger: windup = {windup}");
+		if (windup < 100) {
+			return;
+		}
 
-    private void BuffKrampus(Krampus krampus, float windup) {
-        if (windup >= 100) {
-
-            m_level++;
-            switch (m_level) {
-                case 1:
-                    RegisterEffect(krampus, 0);
-                    break;
-
-                case 2:
-                    RegisterEffect(krampus, 1);
-                    break;
-                case 3:
-                    RegisterEffect(krampus, 2);
-                    break;
-                default:
-                    return;
-            }
-            krampus.Kontroller.SpendWindUpPoints(100);
-
-        }
-         
-
+		var state = krampus.Stats.GetItemState<State>(this);
+		switch (state.level) {
+			case 0:
+				RegisterEffect(krampus, 0);
+				break;
+			case 1:
+				RegisterEffect(krampus, 1);
+				break;
+			case 2:
+				RegisterEffect(krampus, 2);
+				break;
+			default:
+				return;
+		}
+		krampus.Kontroller.SpendWindUpPoints(100);
+		state.level++;
     }
-
-	private void DebuffKrampus(Krampus krampus) {
-		UnregisterAllEffects(krampus);
-	}
 }

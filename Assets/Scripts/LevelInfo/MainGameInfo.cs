@@ -116,22 +116,6 @@ public class MainGameInfo : LevelInfo {
 	private IEnumerator Start() {
 		yield return new WaitUntil(() => Game.RoomGenInfo != null);
 
-		switch (Game.RoomGenInfo.Regenerate) {
-			case RoomGenerationType.First:
-				Game.RoomGenInfo.SetInitialSeed();
-				break;
-			case RoomGenerationType.New:
-				Game.RoomGenInfo.SetNewSeed();
-				break;
-			case RoomGenerationType.Old:
-				break;
-			default:
-				throw new ArgumentOutOfRangeException();
-		}
-
-		Random.InitState(Game.RoomGenInfo.Seed);
-		Game.MainGameInfo.UI.SetSeed(Game.RoomGenInfo.Seed);
-
 		CurrentState = State.Intro;
 		NiceChildType = Types[0];
 		NaughtyChildType = Types[1];
@@ -139,7 +123,7 @@ public class MainGameInfo : LevelInfo {
 	}
 
 	private void Ready() {
-		if (m_useLevelModifer) {
+		if (m_useLevelModifer && Game.PogMan.NextLevelModifier != null) {
 			Game.PogMan.NextLevelModifier.UpdateLevel();
 		}
 	}
@@ -211,25 +195,59 @@ public class MainGameInfo : LevelInfo {
 	}
 
 	public void ProcessEndGame(Ending ending) {
+		if (Game.PogMan.IsTutorial) {
+			ProcessTutorialEnd(ending);
+			return;
+		}
 		switch (ending) {
 			case Ending.Win:
 				Game.MainGameInfo.SetState(State.Won);
 				m_outro.PlayOutro();
+				Game.MusicMan.StopMusic();
 				StartCoroutine(AllowNextLevelAfterSeconds(0.5f));
 				break;
 			case Ending.LoseNun:
+				Game.MusicMan.StopMusic();
 				Game.MainGameInfo.SetState(State.Over);
 				break;
 			case Ending.LoseTime:
+				Game.MusicMan.StopMusic();
 				Game.MainGameInfo.SetState(State.Over);
 				break;
 		}
-		Game.MusicMan.StopMusic();
 		StartCoroutine(UI.ProcessEnding(ending));
+	}
+
+	private void ProcessTutorialEnd(Ending ending) {
+		switch (ending) {
+			case Ending.Win:
+				Game.MainGameInfo.SetState(State.Won);
+				m_outro.PlayOutro();
+				StartCoroutine(GoToNextLevelAfterSeconds(3f));
+				break;
+			case Ending.LoseNun:
+				Game.MainGameInfo.SetState(State.Over);
+				StartCoroutine(ReloadLevelAfterSeconds(2f));
+				break;
+			case Ending.LoseTime:
+				Game.MainGameInfo.SetState(State.Over);
+				StartCoroutine(ReloadLevelAfterSeconds(2f));
+				break;
+		}
 	}
 
 	private IEnumerator AllowNextLevelAfterSeconds(float time) {
 		yield return new WaitForSeconds(time);
 		Game.PogMan.AllowNextLevel();
+	}
+
+	private IEnumerator GoToNextLevelAfterSeconds(float time) {
+		yield return new WaitForSeconds(time);
+		Game.PogMan.LoadNextLevel();
+	}
+
+	private IEnumerator ReloadLevelAfterSeconds(float time) {
+		yield return new WaitForSeconds(time);
+		Game.PogMan.ReloadCurrentLevel();
 	}
 }

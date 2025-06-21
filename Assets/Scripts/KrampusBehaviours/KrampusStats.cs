@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class KrampusStats : KrampusBehaviour {
-
-	public enum Stat {
-		Speed,
-		TongueRange,
-		WindUpGain,
+    public enum Stat {
+        Speed,
+        TongueRange,
+        WindUpGain,
     }
 
     public enum StatMode {
@@ -17,7 +17,7 @@ public class KrampusStats : KrampusBehaviour {
         AddRaw
     }
     [Serializable]
-    public class RawStat : ValueConnectedToEnum<Stat>{
+    public class RawStat : ValueConnectedToEnum<Stat> {
         [SerializeField] private float m_value;
         public float Value => m_value;
 
@@ -26,7 +26,7 @@ public class KrampusStats : KrampusBehaviour {
 
     }
 
-	[SerializeField] private SerializedEnumDictionary<Stat, RawStat> m_rawStatDict;
+    [SerializeField] private SerializedEnumDictionary<Stat, RawStat> m_rawStatDict;
 
     private Dictionary<Stat, List<Effect>> m_effects = new Dictionary<Stat, List<Effect>>();
 
@@ -35,28 +35,30 @@ public class KrampusStats : KrampusBehaviour {
     public bool hasMov;
 
 
+    private Dictionary<Item, object> m_itemStates = new Dictionary<Item, object>();
+
     [SerializeField] private List<Item> m_items = new List<Item>();
     public IReadOnlyList<Item> Items => m_items;
     private List<Effect> m_effectsToClear = new List<Effect>();
 
     public void Update() {
-		//Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
-		//Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
+        //Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
+        //Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
 
-		foreach (var stat in m_effects) {
-			foreach (var effect in stat.Value) {
-				if (effect.EffectType == Effect.Type.Temporary) {
-					effect.UpdateTimer(Time.deltaTime);
-				}
-				if (effect.IsExpired) {
-					m_effectsToClear.Add(effect);
-				}
-			}
-		}
-		//Debug.Log("Ma speed buff:" + hasMov);
+        foreach (var stat in m_effects) {
+            foreach (var effect in stat.Value) {
+                if (effect.EffectType == Effect.Type.Temporary) {
+                    effect.UpdateTimer(Time.deltaTime);
+                }
+                if (effect.IsExpired) {
+                    m_effectsToClear.Add(effect);
+                }
+            }
+        }
+        //Debug.Log("Ma speed buff:" + hasMov);
 
-		ClearEffectsToClear();
-	}
+        ClearEffectsToClear();
+    }
 
     private void ClearEffectsToClear() {
         foreach (var effect in m_effectsToClear) {
@@ -78,7 +80,7 @@ public class KrampusStats : KrampusBehaviour {
     }
     private void Start() {
         LoadItems();
-		foreach (var rs in m_rawStatDict.Values) {
+        foreach (var rs in m_rawStatDict.Values) {
             m_effects.Add(rs.Key, new List<Effect>());
             m_calculatedMultipliers.Add(rs.Key, 1f);
         }
@@ -116,7 +118,6 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     private void OnValidate() {
-		m_rawStatDict.Validate();
         RecalculateStats();
     }
 
@@ -151,8 +152,11 @@ public class KrampusStats : KrampusBehaviour {
         item.ItemAdded(Kramp);
         if (!m_items.Contains(item)) {
             item.RegisterEvents(Kramp.KrampusEvents);
+            var data = item.GetType().GetCustomAttribute<ItemStateAttribute>();
+            if (data != null) m_itemStates.Add(item, Activator.CreateInstance(data.DataType));
         }
         m_items.Add(item);
+
     }
 
     public void RemoveItem(Item item) {
@@ -163,9 +167,16 @@ public class KrampusStats : KrampusBehaviour {
 
         m_items.Remove(item);
         item.ItemRemoved(Kramp);
-        if (!m_items.Contains(item)) item.UnregisterEvents(Kramp.KrampusEvents);
+        if (!m_items.Contains(item)) {
+            if (m_itemStates.ContainsKey(item)) m_itemStates.Remove(item);
+            item.UnregisterEvents(Kramp.KrampusEvents);
+        }
     }
 
+    public T GetItemState<T>(Item item) {
+        if (m_itemStates.ContainsKey(item)) return (T)m_itemStates[item];
+        else throw new NullReferenceException();
+    }
 
     public bool HasItem(Item item) {
         return m_items.Contains(item);
@@ -193,5 +204,5 @@ public class KrampusStats : KrampusBehaviour {
             if (i.HasTag(tag)) { return true; }
         }
         return false;
-     }
+    }
 }

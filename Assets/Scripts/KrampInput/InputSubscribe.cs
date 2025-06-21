@@ -30,6 +30,9 @@ public class InputSubscribe : MonoBehaviour {
 	public static bool Sneaking => Raw.Player.Crouch.IsPressed();
 
 	public static bool Special=>Raw.Player.Special.IsPressed();
+	private static bool m_shouldCursorBeVisible = true;
+
+	public static bool ShouldCursorBeVisible {get => m_shouldCursorBeVisible; set => m_shouldCursorBeVisible = value;}
 	public static Method InputMethod { get; private set; }
 
 	[SerializeField] private Method m_method;
@@ -49,6 +52,11 @@ public class InputSubscribe : MonoBehaviour {
 		InputMethod = method;
 		onChanged.Invoke();
 		Init(method.ToString());
+		if(method == Method.PC) {
+			ShouldCursorBeVisible = true;
+		} else {
+			ShouldCursorBeVisible = false;
+		}
 	}
 
 	[RuntimeInitializeOnLoadMethod]

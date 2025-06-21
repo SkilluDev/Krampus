@@ -10,72 +10,76 @@ using UnityEngine.Events;
 using UnityEngine.VFX;
 
 public class Child : NPC, IEdible, INoiseReactor {
-    public float RunSpeed => m_runSpeed;
-    [ShowNativeProperty] public State CurrentState { get; private set; }
-    public Vector3 InteractionPoint => m_pinTarget.transform.position;
-    public UnityAction<Child.State, Child.State> onStateChanged;
+	public float RunSpeed => m_runSpeed;
+	[ShowNativeProperty] public State CurrentState { get; private set; }
 
-    [SerializeField] private ChildAnimator m_animator;
-    [BoxGroup("Behaviour")][SerializeField] private ViewCone m_viewCone;
-    [BoxGroup("Behaviour")][SerializeField] private float m_stoppingDistance = 2;
-    [BoxGroup("Behaviour")][SerializeField] private float m_stunDuration = 0.4f;
-    [BoxGroup("Behaviour")][SerializeField] private float m_reportingDuration = 0.4f;
-    [BoxGroup("Behaviour")][SerializeField] private Transform m_pinTarget;
-    [SerializeField] private float m_runSpeed = 8;
+	private State m_lastStateBeforeKilling;
+	public State StateBeforeDeath => m_lastStateBeforeKilling;
+	public Vector3 InteractionPoint => m_pinTarget.transform.position;
+	public UnityAction<Child.State, Child.State> onStateChanged;
 
-    private Nun m_selectedNun;
+	[SerializeField] private ChildAnimator m_animator;
+	[BoxGroup("Behaviour")][SerializeField] private ViewCone m_viewCone;
+	[BoxGroup("Behaviour")][SerializeField] private float m_stoppingDistance = 2;
+	[BoxGroup("Behaviour")][SerializeField] private float m_stunDuration = 0.4f;
+	[BoxGroup("Behaviour")][SerializeField] private float m_reportingDuration = 0.4f;
+	[BoxGroup("Behaviour")][SerializeField] private Transform m_pinTarget;
+	[SerializeField] private float m_runSpeed = 8;
+
+	private Nun m_selectedNun;
 
 	private Vector3 m_selectedPosition;
 
 	private bool m_hasPositionTarget = false;
-    private Room m_selectedRoom;
-    private Room m_lastKrampusSpotted;
+	private Room m_selectedRoom;
+	private Room m_lastKrampusSpotted;
 
-    private float m_timeout = 0;
+	private float m_timeout = 0;
 
-    private ChildType m_type;
-    private Transform m_modelTransform;
-    public bool IsNaughty => Type != Game.MainGameInfo.NiceChildType;
-
-
+	private ChildType m_type;
+	private Transform m_modelTransform;
+	public bool IsNaughty => Type != Game.MainGameInfo.NiceChildType;
 
 
-    public ChildType Type => m_type;
-
-    public enum State {
-        Idle, // go to a random place
-        Stunned, // do nothing.
-        InitialPanic, // go to the nearest nun
-        Panic, // go to the nearest nun
-        Reporting, // talking to another
-        Alerted, // go interact with stuff
-        Dead,
-        Consumed
-    }
-
-    public int Priority => IsNaughty ? 0 : -10;
 
 
-    /* public void Start() {
+	public ChildType Type => m_type;
+
+	public enum State {
+		Idle, // go to a random place
+		Shock,
+		Stunned,// do nothing.
+		InitialPanic, // go to the nearest nun
+		Panic, // go to the nearest nun
+		Reporting, // talking to another
+		Alerted, // go interact with stuff
+		Dead,
+		Consumed
+	}
+
+	public int Priority => IsNaughty ? 0 : -10;
+
+
+	/* public void Start() {
         SetChildType(Game.MainGameInfo.Types.UnityRandomElement());
     } */
 
-    private void Ready() {
-        Game.MainGameInfo.RegisterChild(this);
+	private void Ready() {
+		Game.MainGameInfo.RegisterChild(this);
 
-        m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.transform;
-        m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
-    }
+		m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.transform;
+		m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
+	}
 
-    private void Unready() {
-        Game.MainGameInfo.UnregisterChild(this);
-    }
+	private void Unready() {
+		Game.MainGameInfo.UnregisterChild(this);
+	}
 
 
 
-    public override void OverridePathCosts() {
-        NavMesh.SetAreaCost(NavMesh.GetAreaFromName("Kramped"), 99f);
-    }
+	public override void OverridePathCosts() {
+		NavMesh.SetAreaCost(NavMesh.GetAreaFromName("Kramped"), 99f);
+	}
 
 	private void SelectPositionInRoomAwayFromKrampy() {
 		if (m_hasPositionTarget) return;
@@ -84,7 +88,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 		m_selectedPosition = m_selectedRoom.GetRandomPointOnFloor().OnNavMesh(5);
 		SetDestination(m_selectedPosition);
 		m_hasPositionTarget = true;
-    }
+	}
 
 	private void SelectRandomNun() {
 		m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun);
@@ -96,7 +100,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 		}
 	}
 
-    private void Update() {
+	private void Update() {
 		if (!CurrentRoom) return;
 
 		//Debug.Log("MOVING TO:" + m_selectedPosition);
@@ -124,7 +128,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 
 				if (m_viewCone.Detect()) {
 					m_timeout = m_stunDuration;
-					SwitchState(State.Stunned);
+					SwitchState(State.Shock);
 				}
 
 				if (m_timeout > 0) {
@@ -137,8 +141,20 @@ public class Child : NPC, IEdible, INoiseReactor {
 
 				m_viewCone.SetActive(true);
 				break;
-			case State.Stunned:
+			case State.Shock:
 				m_viewCone.SetActive(false);
+				m_timeout -= Time.deltaTime;
+				if (m_timeout <= 0) {
+					m_lastKrampusSpotted = CurrentRoom;
+					Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+					SelectPositionInRoomAwayFromKrampy();
+					SwitchState(State.InitialPanic);
+				}
+				break;
+			case State.Stunned:
+				Debug.Log("Chidl stun:" + m_timeout);
+				m_viewCone.SetActive(false);
+				SetVelocity(Vector3.zero);
 				m_timeout -= Time.deltaTime;
 				if (m_timeout <= 0) {
 					m_lastKrampusSpotted = CurrentRoom;
@@ -172,8 +188,8 @@ public class Child : NPC, IEdible, INoiseReactor {
 				break;
 			case State.Panic: // regular panic. just go to the nun and report
 				if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
-                    SelectRandomNun();
-                }
+					SelectRandomNun();
+				}
 				SetVelocity(GetPathDirection() * m_runSpeed);
 				SetFacingDirection(GetPathDirection());
 
@@ -212,7 +228,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 		SelectRandomNun();
 		SetDestination(m_selectedPosition);
 	}
-    public void Consume(Krampus krampus) {
+	public void Consume(Krampus krampus) {
 		Game.MainGameInfo.UnregisterChild(this);
 		Game.GlobalEvents.onChildEaten.Invoke(krampus, this);
 
@@ -226,30 +242,31 @@ public class Child : NPC, IEdible, INoiseReactor {
 		Destroy(gameObject);
 	}
 
-    public void Hit(Krampus krampus) {
-        SwitchState(State.Dead);
-    }
+	public void Hit(Krampus krampus) {
+		SwitchState(State.Dead);
+	}
 
-    private void SwitchState(State next) {
+	private void SwitchState(State next) {
 		//Debug.Log("SWITCHTO:" + next);
-        if (next == CurrentState) return;
-        onStateChanged?.Invoke(CurrentState, next);
-        CurrentState = next;
-    }
+		if (next == CurrentState) return;
+		onStateChanged?.Invoke(CurrentState, next);
+		CurrentState = next;
+	}
 
-    public void Prepare(Krampus krampus) {
-        //  Game.MainGameInfo.UnregisterChild(this);
-    }
+	public void Prepare(Krampus krampus) {
+		//  Game.MainGameInfo.UnregisterChild(this);
+		m_lastStateBeforeKilling = CurrentState;
+	}
 
-    public void ReelIn(Krampus krampus, Vector3 position, float progress) {
-        transform.position = position - transform.InverseTransformPoint(m_pinTarget.position);
-    }
+	public void ReelIn(Krampus krampus, Vector3 position, float progress) {
+		transform.position = position - transform.InverseTransformPoint(m_pinTarget.position);
+	}
 
 
-    public void SetChildType(ChildType type) {
-        m_type = type;
-        m_animator.SetChildType(type);
-    }
+	public void SetChildType(ChildType type) {
+		m_type = type;
+		m_animator.SetChildType(type);
+	}
 
 	public void Alert(RoomData roomData, Vector3 place, ICharacter actor) {
 		if (actor is not Krampus || CurrentState != State.Idle) return;
@@ -258,5 +275,11 @@ public class Child : NPC, IEdible, INoiseReactor {
 		m_timeout = m_stunDuration;
 		SetDestination(place);
 		SetFacingDirection(place);
+	}
+
+	public void Stun(float duration) {
+        Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
+        m_timeout = duration;
+        SwitchState(State.Stunned);
     }
 }

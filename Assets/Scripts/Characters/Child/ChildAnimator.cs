@@ -11,10 +11,12 @@ public class ChildAnimator : MonoBehaviour {
     [SerializeField] private SpriteRenderer m_shapeSprite;
     [BoxGroup("Particles")][SerializeField] private VisualEffect m_goreParticle;
     [BoxGroup("Particles")][SerializeField] private VisualEffect m_vanishParticle;
-    [BoxGroup("Animator Properties")][SerializeField][AnimatorParam(nameof(m_animator))] private int m_propertySpeed, m_propertyStun, m_propertyPanic, m_propertyReporting, m_propertyDeath;
+    [BoxGroup("Particles")][SerializeField] private VisualEffect m_stunEffect;
+    [BoxGroup("Animator Properties")][SerializeField][AnimatorParam(nameof(m_animator))] private int m_propertySpeed, m_propertyShock, m_propertyPanic, m_propertyReporting, m_propertyDeath,m_propertyStun;
     [BoxGroup("State Sprites")][SerializeField] private StatusSprite m_spriteRenderer;
     [BoxGroup("State Sprites")][SerializeField] private Sprite m_panicSprite;
     [BoxGroup("State Sprites")][SerializeField] private Sprite m_alertedSprite;
+    [BoxGroup("State Sprites")][SerializeField] private Sprite m_stunSprite;
     [BoxGroup("Sounds")][SerializeField] private float m_screamVolume = 0.6f;
     [BoxGroup("Sounds")][SerializeField] private AudioSource m_screamSource;
     [BoxGroup("Sounds")][SerializeField] private Sex m_soundShock;
@@ -28,7 +30,7 @@ public class ChildAnimator : MonoBehaviour {
 
     private void ChildStateChanged(Child.State previous, Child.State current) {
         switch ((previous, current)) {
-            case (_, Child.State.Stunned):
+            case (_, Child.State.Shock):
                 m_animator.SetTrigger(m_propertyStun);
                 m_spriteRenderer.SetSprite(m_panicSprite, 2);
                 m_soundShock.Play(transform.position);
@@ -59,6 +61,9 @@ public class ChildAnimator : MonoBehaviour {
                 break;
             case (_, Child.State.Reporting):
                 break;
+            case (_,Child.State.Stunned):
+                m_spriteRenderer.SetSprite(m_stunSprite, 2);
+                break;
             case (_, Child.State.Alerted):
                 m_spriteRenderer.SetSprite(m_alertedSprite);
                 break;
@@ -73,6 +78,7 @@ public class ChildAnimator : MonoBehaviour {
         m_animator.SetBool(m_propertyPanic, m_child.CurrentState is Child.State.Panic or Child.State.InitialPanic);
         m_animator.SetBool(m_propertyReporting, m_child.CurrentState == Child.State.Reporting);
         m_animator.SetFloat(m_propertySpeed, m_child.Velocity / (m_child.CurrentState == Child.State.Panic ? m_child.RunSpeed : m_child.BaseMovementSpeed));
+        m_animator.SetBool(m_propertyStun, m_child.CurrentState == Child.State.Stunned);
     }
 
     public void SetChildType(ChildType type) {

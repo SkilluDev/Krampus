@@ -18,12 +18,18 @@ public class Enraged : Item {
         events.onWindUpChanged.RemoveListener(BuffKrampus);
     }
 
-    private void BuffKrampus(Krampus krampus, float windUp) {
-        if (windUp >= m_windUpTreshold && !m_isActive) {
-			RegisterAllEffects(krampus);
+	private void BuffKrampus(Krampus krampus, float windUp) {
+		bool previouslyActive = m_isActive;
+		if (windUp >= m_windUpTreshold) {
 			m_isActive = true;
-        } else if(m_isActive) {
-            UnregisterAllEffects(krampus);
+		} else {
+			m_isActive = false;
+		}
+
+		if (!previouslyActive && m_isActive) {
+			RegisterAllEffects(krampus);
+		} else if(previouslyActive && !m_isActive){
+			UnregisterAllEffects(krampus);
 		}
     }
 }
