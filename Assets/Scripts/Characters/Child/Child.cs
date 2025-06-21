@@ -12,6 +12,9 @@ using UnityEngine.VFX;
 public class Child : NPC, IEdible, INoiseReactor {
 	public float RunSpeed => m_runSpeed;
 	[ShowNativeProperty] public State CurrentState { get; private set; }
+
+	private State m_lastStateBeforeKilling;
+	public State stateBeforeDeath => m_lastStateBeforeKilling;
 	public Vector3 InteractionPoint => m_pinTarget.transform.position;
 	public UnityAction<Child.State, Child.State> onStateChanged;
 
@@ -252,6 +255,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 
 	public void Prepare(Krampus krampus) {
 		//  Game.MainGameInfo.UnregisterChild(this);
+		m_lastStateBeforeKilling = CurrentState;
 	}
 
 	public void ReelIn(Krampus krampus, Vector3 position, float progress) {
