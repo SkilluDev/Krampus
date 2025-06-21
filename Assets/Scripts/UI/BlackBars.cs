@@ -19,7 +19,7 @@ public class BlackBars : MonoBehaviour {
     [Header("======[Map]=====")]
     [BoxGroup("Map")][SerializeField] private RectTransform m_mapContainer;
     [BoxGroup("Map")][SerializeField] private Image m_mapButtonPref;
-    [BoxGroup("Map")][SerializeField] private Sprite m_currentLevelSprite;
+
     [BoxGroup("Map")][SerializeField] private Sprite m_doneLevelSprtie;
     [BoxGroup("Map")][SerializeField] private Sprite m_futureLevelSprtie;
 
@@ -109,22 +109,22 @@ public class BlackBars : MonoBehaviour {
 
     public void GenerateMap() {
 
-        int currentLevel = Game.PogMan.CurrentLevel;
+        int currentLevel = Game.PogMan.CurrentLevel+1;
         int maxLevel = Game.PogMan.GetMaxLevel();
         for (int i = 1; i <= currentLevel; i++) {
 
             Image b = Instantiate(m_mapButtonPref);
             b.transform.SetParent(m_mapContainer, false);
-            b.GetComponentInChildren<Image>().sprite = m_doneLevelSprtie;
-            b.enabled = false;
+            b.sprite = m_doneLevelSprtie;
+            
 
         }
 
-        for (int j = currentLevel + 1; j <= maxLevel; j++) {
+        for (int j = currentLevel + 1; j < maxLevel; j++) {
             Image b = Instantiate(m_mapButtonPref);
             b.transform.SetParent(m_mapContainer, false);
-            b.GetComponentInChildren<Image>().sprite = m_doneLevelSprtie;
-            b.enabled = false;
+            b.sprite = m_futureLevelSprtie;
+          
         }
 
 
