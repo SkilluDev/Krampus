@@ -28,7 +28,7 @@ public class Box : MonoBehaviour, IThrowable {
     [SerializeField] private float m_throwForce;
 
     public Vector3 InteractionPoint => m_pinTarget.transform.position;
-    public int Priority => -5;
+    public int Priority => 3;
 
     public void Consume(Krampus krampus) => throw new System.NotImplementedException();
 

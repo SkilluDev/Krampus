@@ -39,7 +39,7 @@ public class Door : Passage, IInteractable {
 
     public Vector3 InteractionPoint => m_hitRight ? m_flap1.position : m_flap2.position;
 
-    public int Priority => 3;
+    public int Priority => 2;
 
     private void Start() {
         m_animator.SetBool(m_openProperty, false);
