@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7128170082260527261}
   - component: {fileID: 3256405518006959303}
-  - component: {fileID: 1353515447041600186}
+  - component: {fileID: 2429861019278974875}
   - component: {fileID: 5396443881940809038}
-  - component: {fileID: 3372964007136882045}
+  - component: {fileID: 8869476700068098308}
+  - component: {fileID: 6815668124356609978}
   m_Layer: 12
   m_Name: NunMissle
   m_TagString: Untagged
@@ -45,8 +46,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 895726705256682235}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &1353515447041600186
-BoxCollider:
+--- !u!135 &2429861019278974875
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -64,7 +65,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.6, y: 0.6, z: 0.6}
+  m_Radius: 0.30215186
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5396443881940809038
 Rigidbody:
@@ -88,12 +89,108 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!114 &3372964007136882045
+--- !u!82 &8869476700068098308
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895726705256682235}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a163f1dbf67d17444a8a06fa0d83d8d2, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1.44
+  MinDistance: 20
+  MaxDistance: 60
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.942
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &6815668124356609978
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,21 +199,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 895726705256682235}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30e54cfc4058a2c4a842f5f6cac25907, type: 3}
+  m_Script: {fileID: 11500000, guid: 13843d8d9cb5257a08217012b2274033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_target: {fileID: 0}
-  m_speed: 35
-  m_rotationSpeed: 50
   m_rigidbody: {fileID: 5396443881940809038}
-  m_visuals: {fileID: 1135254705566141787}
-  m_missleMesh: {fileID: 8421699229679618917}
-  slowEffectIcon: {fileID: 21300000, guid: 9fea61d88ee827d4cb2cd86ad3489274, type: 3}
-  m_missleShoot: {fileID: 11400000, guid: 85a3bafcb9fb41b4886176864fbfb89c, type: 2}
-  m_missleHit: {fileID: 11400000, guid: e4650e24810bac144afe5c31108c5a3d, type: 2}
-  m_missleFly: {fileID: 5780527565827924879}
-  m_missleFlyVolume: 0.6
-  m_missleFlyDeathFalloffMultiplier: 2
+  m_audioSource: {fileID: 8869476700068098308}
+  m_speed: 14
+  m_turningSpeed: 15
+  m_sexShoot: {fileID: 0}
+  m_sexHit: {fileID: 0}
+  m_sexMiss: {fileID: 0}
+  m_efHit: {fileID: 0}
+  m_efMiss: {fileID: 0}
+  m_destroyedBy:
+    serializedVersion: 2
+    m_Bits: 64
+  m_targetGroup: {fileID: 0}
 --- !u!1 &954296606886006214
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,6 +244,7 @@ Transform:
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2628693564250942455}
   - {fileID: 8551594353548292821}
   - {fileID: 729523776895982468}
   - {fileID: 6475354791961012122}
@@ -291,7 +390,7 @@ GameObject:
   - component: {fileID: 729523776895982468}
   - component: {fileID: 4402522541997460264}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Light Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -389,6 +488,24 @@ TrailRenderer:
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      - serializedVersion: 3
+        time: 0.55895656
+        value: 0.9479142
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -2.926042
+        outSlope: -2.926042
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.21390095
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -446,7 +563,7 @@ GameObject:
   - component: {fileID: 4391660651266414091}
   - component: {fileID: 6319694053242310288}
   m_Layer: 12
-  m_Name: Plane (1)
+  m_Name: Dark Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -460,12 +577,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7055650342639671549}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.034, y: 0, z: 0.11176484}
-  m_LocalScale: {x: 1.053, y: 1.053, z: 1.053}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: -0.055882428, z: -0.023799933}
+  m_LocalScale: {x: 0.73709995, y: 0.73709995, z: 0.5264999}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8551594353548292821}
+  m_Father: {fileID: 1135254705566141787}
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 180}
 --- !u!33 &4391660651266414091
 MeshFilter:
@@ -531,7 +648,7 @@ GameObject:
   - component: {fileID: 5902111110308114622}
   - component: {fileID: 1155602572015535967}
   m_Layer: 12
-  m_Name: Plane
+  m_Name: Light Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -547,10 +664,9 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.17}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.5}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2628693564250942455}
+  m_Children: []
   m_Father: {fileID: 1135254705566141787}
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 180}
 --- !u!33 &1277309307661106301
@@ -657,7 +773,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -699,7 +815,7 @@ GameObject:
   - component: {fileID: 6475354791961012122}
   - component: {fileID: 384805974178204478}
   m_Layer: 0
-  m_Name: Dark
+  m_Name: Dark Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -796,6 +912,15 @@ TrailRenderer:
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -2.6858099
+        outSlope: -2.6858099
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.09673273
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2

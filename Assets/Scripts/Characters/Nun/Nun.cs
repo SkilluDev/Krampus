@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Cinemachine;
 using KrampUtils;
 using NaughtyAttributes;
 using Roomgen;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -24,39 +20,28 @@ public class Nun : NPC {
     }
 
     public float RunSpeed => m_runSpeed;
-
     public UnityAction<Nun.State, Nun.State> onStateChanged;
     public UnityAction<Nun.State> onAttack;
-
     public UnityAction<Nun.State> onFire;
     [SerializeField] private float m_interactionDistance = 8;
     [BoxGroup("Detection")][SerializeField] private float m_detectionRange = 4;
     public State CurrentState { get; private set; }
-    [BoxGroup("Detection")][SerializeField] private LayerMask m_visionMask;
 
-    [BoxGroup("Movement")][SerializeField] private float m_runSpeed = 8;
 
+    [SerializeField] private LayerMask m_visionMask;
+    [SerializeField] private float m_runSpeed = 8;
     [SerializeField] private float m_shockTimeout = 0.2f;
-
-    [BoxGroup("Detection")][SerializeField] private ViewCone m_viewCone;
-    [BoxGroup("Detection")][SerializeField] private float m_detectionTime = 0f;
-    private float m_currentDetectionTime = 0f;
+    [SerializeField] private ViewCone m_viewCone;
     private List<Vector3> m_patrolPath;
     private int m_currentControlPoint = 0;
     private Transform m_modelTransform;
     [SerializeField] private float m_krampusDetectTime = 1f;
     [SerializeField] private float m_patrolIdleDuration = 2f;
-
     [SerializeField] private Tag m_dontPatrolTag;
-
-
-    [BoxGroup("Attack")][SerializeField] private float m_castingTime = 1.03f;
-    [BoxGroup("Attack")][SerializeField] private Vector2 m_randomRagePerSeconds;
-    [BoxGroup("Attack")][SerializeField] private NunMissle m_misslePref;
+    [SerializeField] private float m_castingTime = 1.03f;
+    [SerializeField] private Vector2 m_randomRagePerSeconds;
+    [SerializeField] private Projectile m_nunProjectile;
     private float m_rageMeter;
-
-
-
     private Room m_reportedKrampusRoom;
     private float m_timeout;
 
@@ -146,16 +131,11 @@ public class Nun : NPC {
                 }
 
                 m_viewCone.SetActive(true);
-				if (m_viewCone.Detect()) {
-					//Debug.Log("[Nun] viewcone detected krampy");
-					m_currentDetectionTime += Time.deltaTime;
-					if (m_currentDetectionTime < m_detectionTime) return;
-					m_timeout = m_shockTimeout;
-					//Change in multi
-					SeeKrampus();
-				} else {
-					m_currentDetectionTime = 0f;
-				}
+                if (m_viewCone.Detect()) {
+                    m_timeout = m_shockTimeout;
+                    //Change in multi
+                    SeeKrampus();
+                }
 
                 SetVelocity(GetPathDirection() * m_baseMovementSpeed);
                 SetFacingDirection(GetPathDirection());
@@ -224,7 +204,7 @@ public class Nun : NPC {
                 SetFacingToPoint(Game.MainGameInfo.Krampus.transform.position);
                 m_timeout -= Time.deltaTime;
                 if (m_timeout < 0) {
-                    Shoot();
+                    Shoot(Game.MainGameInfo.Krampus.transform);
                     SwitchState(State.ChasingKrampus);
                 }
                 break;
@@ -253,7 +233,6 @@ public class Nun : NPC {
 
     private void SwitchState(State previous) {
         if (previous == CurrentState) return;
-        m_currentDetectionTime = 0f;
         onStateChanged?.Invoke(CurrentState, previous);
         CurrentState = previous;
         //Debug.Log($"[Nun] Switch state to {CurrentState}");
@@ -301,13 +280,11 @@ public class Nun : NPC {
     }
 
 
-    public void Shoot() {
+    public void Shoot(Transform target) {
         m_rageMeter = 0;
-        var direction = (Game.MainGameInfo.Krampus.transform.position.NoY() - transform.position.NoY()).normalized;
+        var direction = (target.position.NoY() - transform.position.NoY()).normalized;
         var pos = transform.position + (2 * direction) + new Vector3(0, 1, 0);
-        var rot = Quaternion.LookRotation(direction);
-        var nunMissle = Instantiate(m_misslePref, pos, Quaternion.identity);
-        nunMissle.SetTarget(Game.MainGameInfo.Krampus.transform, direction);
+        Projectile.Shoot(m_nunProjectile, pos, direction, target);
     }
 
     // TODO: move to viewcone script logic
