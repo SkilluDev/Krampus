@@ -54,6 +54,7 @@ public class Item : ScriptableObject {
 		foreach (var e in m_effectsInEditor) {
 			m_effects.Add(e.ToEffect(ItemName, ItemIcon));
 		}
+		Game.MainGameInfo.UI.EffectBar.RegisterIcon(this);
 	}
 	/// <summary>
 	/// Called when this item gets removed from a Krampus
@@ -62,14 +63,20 @@ public class Item : ScriptableObject {
 		m_effects.Clear();
 	}
 
+
+
+
 	public virtual void RegisterAllEffects(Krampus krampus) {
-		ResetItem();
+		//ResetItem();
 		foreach (var effect in m_effects) {
 			krampus.Stats.RegisterEffect(effect);
 		}
+		krampus.KrampusEvents.onItemActivated.Invoke(krampus, this);
+
 	}
 	public virtual void RegisterEffect(Krampus krampus, int i) {
 		krampus.Stats.RegisterEffect(m_effects[i]);
+		krampus.KrampusEvents.onItemActivated.Invoke(krampus, this);
 	}
 
 	public virtual void UnregisterAllEffects(Krampus krampus) {

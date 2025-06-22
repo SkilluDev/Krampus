@@ -80,8 +80,9 @@ public class NewUIManager : MonoBehaviour {
 
 
 
-    [BoxGroup("Effect Bar")][SerializeField] private EffectIcon m_effectIconPref;
-    [BoxGroup("Effect Bar")][SerializeField] private RectTransform m_effectBar;
+    [BoxGroup("Effect Bar")][SerializeField] private EffectBar m_effectBar;
+    public EffectBar EffectBar => m_effectBar;
+    
 
 
 
@@ -151,29 +152,9 @@ public class NewUIManager : MonoBehaviour {
         m_blackBars.SetBottomBarText(m_bottomBarTutorialKeys);
     }
 
-    public void DisplayEffect(Krampus krampus, Effect effect) {
-        EffectIcon effectIcon = Instantiate(m_effectIconPref);
-        effectIcon.transform.SetParent(m_effectBar, false);
-        if (effect.EffectType == Effect.Type.Permanent) {
-            effectIcon.SetIcon(effect.Id, effect.ItemIcon, "test");
-        } else {
-            effectIcon.SetIcon(effect.Id, effect.ItemIcon, effect.Timer, "test2");
-        }
-        //Debug.Log("SHOWDISPLAY" + effect.Id + effect.Timer);
-    }
+    
 
-    public void RemoveEffect(Krampus krampus, Effect effect) {
-
-        for (int i = 0; i < m_effectBar.childCount; i++) {
-            var effectIcon = m_effectBar.GetChild(i).GetComponent<EffectIcon>();
-            if (effectIcon.EffectId == effect.Id) {
-                Destroy(effectIcon.gameObject);
-                break;
-            }
-        }
-
-        //Debug.Log("HIDEDISPLAY" + effect.Id);
-    }
+   
 
 
     private void Update() {
@@ -199,8 +180,8 @@ public class NewUIManager : MonoBehaviour {
 
     private void Ready() {
         Game.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
-        Game.MainGameInfo.Krampus.KrampusEvents.onEffectRegistered.AddListener(DisplayEffect);
-        Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
+        //Game.MainGameInfo.Krampus.KrampusEvents.onEffectRegistered.AddListener(m_effectBar.RegisterIcon);
+        //Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
         Game.GlobalEvents.onLevelStateChanged.AddListener(OnLevelStateChanged);
 
 		SetSeed(Game.RoomGenInfo.Seed);
