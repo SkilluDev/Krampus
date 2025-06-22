@@ -61,7 +61,7 @@ public class Box : MonoBehaviour, IThrowable {
     }
 
     public void Throw(Vector3 vector3, Krampus krampus) {
-
+        gameObject.layer = LayerMask.NameToLayer("Projectile");
         transform.rotation = Quaternion.identity;
         m_allModel.rotation = Quaternion.LookRotation(vector3);
         m_specialEffect.SetActive(true);
@@ -75,7 +75,7 @@ public class Box : MonoBehaviour, IThrowable {
     }
 
 
-	private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other) {
 
         if ((m_stunMask & (1 << other.gameObject.layer)) != 0) {
 
@@ -89,7 +89,7 @@ public class Box : MonoBehaviour, IThrowable {
             var h = Instantiate(m_hitEffect, transform.position, Quaternion.identity);
             var h2 = Instantiate(m_hitSmokeEffect, transform.position, Quaternion.identity);
             h.Play();
-			h2.Play();
+            h2.Play();
             Destroy(gameObject);
 
 
@@ -100,7 +100,7 @@ public class Box : MonoBehaviour, IThrowable {
             var h = Instantiate(m_hitEffect, transform.position, Quaternion.identity);
             var h2 = Instantiate(m_hitSmokeEffect, transform.position, Quaternion.identity);
             h.Play();
-			h2.Play();
+            h2.Play();
             Destroy(gameObject);
         }
 
@@ -108,5 +108,5 @@ public class Box : MonoBehaviour, IThrowable {
 
     public bool canCatch() {
         return !m_inMove;
-     }
+    }
 }
