@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4487823660097123339}
   - component: {fileID: 3090604021418490226}
   - component: {fileID: 1716567652912826674}
+  - component: {fileID: 4325901937035658295}
+  - component: {fileID: 5905077245480782605}
   m_Layer: 5
   m_Name: MapButton
   m_TagString: Untagged
@@ -75,3 +77,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4325901937035658295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4570869504696736236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d9027064108144a8387503a0a9a627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_frontSprite: {fileID: 0}
+  m_backSprite: {fileID: 0}
+  m_image: {fileID: 1716567652912826674}
+  m_flipDuration: 1
+  m_delay: 0
+  m_scaleBounceFactor: 1.5
+--- !u!114 &5905077245480782605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4570869504696736236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 100
+  m_PreferredHeight: -1
+  m_FlexibleWidth: 0
+  m_FlexibleHeight: 0
+  m_LayoutPriority: 1

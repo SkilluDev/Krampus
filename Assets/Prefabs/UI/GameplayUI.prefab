@@ -901,7 +901,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1049591064742570653}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3.4847522, y: 3.4847522, z: 3.4847522}
   m_ConstrainProportionsScale: 1
@@ -2653,12 +2653,14 @@ MonoBehaviour:
   m_resultText: {fileID: 518270155251652157}
   m_textTimerTop: {fileID: 4559801716681634105}
   m_mapContainer: {fileID: 8500196577170098597}
-  m_mapButtonPref: {fileID: 1716567652912826674, guid: d928a1cc84a86b141a75fb646d1f3f55,
+  m_mapButtonPref: {fileID: 4325901937035658295, guid: d928a1cc84a86b141a75fb646d1f3f55,
     type: 3}
-  m_doneLevelSprtie: {fileID: 21300000, guid: 399a60fb89fa07548b577ba5c8cfb861, type: 3}
-  m_futureLevelSprtie: {fileID: 21300000, guid: e01795d4611232d4fac9a3bb29c45491,
+  m_doneLevelSprite: {fileID: 21300000, guid: 024a344ce8ddb9747b1680a3f0f69f68, type: 3}
+  m_currentLevelSprite: {fileID: 21300000, guid: 55186456edba9964a8a84fd68f87eddb,
     type: 3}
-  m_failedLevelSprtie: {fileID: 21300000, guid: f92fc4508a240c34bb092e4055be52b1,
+  m_futureLevelSprite: {fileID: 21300000, guid: ea3f8e2720dae054b875502ebddf1407,
+    type: 3}
+  m_failedLevelSprite: {fileID: 21300000, guid: 6178850cfd37235448d735cc4027fa3d,
     type: 3}
   m_resultContainer: {fileID: 2659053720648666284}
   m_popScale: {x: 2, y: 2, z: 2}
@@ -7909,7 +7911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.007843138}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7943,10 +7945,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 10
+  m_ChildAlignment: 4
+  m_Spacing: 30
   m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
+  m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0

@@ -18,11 +18,12 @@ public class BlackBars : MonoBehaviour {
 
     [Header("======[Map]=====")]
     [BoxGroup("Map")][SerializeField] private RectTransform m_mapContainer;
-    [BoxGroup("Map")][SerializeField] private Image m_mapButtonPref;
+    [BoxGroup("Map")][SerializeField] private TwoSidedImage m_mapButtonPref;
 
-    [BoxGroup("Map")][SerializeField] private Sprite m_doneLevelSprtie;
-    [BoxGroup("Map")][SerializeField] private Sprite m_futureLevelSprtie;
-    [BoxGroup("Map")][SerializeField] private Sprite m_failedLevelSprtie;
+    [BoxGroup("Map")][SerializeField] private Sprite m_doneLevelSprite;
+    [BoxGroup("Map")][SerializeField] private Sprite m_currentLevelSprite;
+    [BoxGroup("Map")][SerializeField] private Sprite m_futureLevelSprite;
+    [BoxGroup("Map")][SerializeField] private Sprite m_failedLevelSprite;
 
 
 //============================================================================
@@ -86,31 +87,61 @@ public class BlackBars : MonoBehaviour {
     }
 
 
-    public void GenerateMap(bool hasWon) {
+	public void GenerateMap(bool hasWon) {
 
-        int currentLevel = Game.PogMan.CurrentLevel+1;
-        int maxLevel = Game.PogMan.GetMaxLevel();
-        for (int i = 1; i < currentLevel; i++) {
+		int currentLevel = Game.PogMan.CurrentLevel;
+		int maxLevel = Game.PogMan.GetMaxLevel();
+		int levelIndex = 0;
 
-            Image b = Instantiate(m_mapButtonPref);
-            b.transform.SetParent(m_mapContainer, false);
-            b.sprite = m_doneLevelSprtie;
+		Queue<TwoSidedImage> images = new Queue<TwoSidedImage>();
+
+		for (; levelIndex < currentLevel; levelIndex++) {
+			TwoSidedImage beaten = Instantiate(m_mapButtonPref);
+			beaten.transform.SetParent(m_mapContainer, false);
+			beaten.FrontSprite = m_doneLevelSprite;
+			beaten.BackSprite = m_doneLevelSprite;
+			beaten.SetToFrontSprite();
+			beaten.Delay = 0f;
+			beaten.FlipDuration = 0.35f;
+			images.Enqueue(beaten);
+		}
+
+		TwoSidedImage current = Instantiate(m_mapButtonPref);
+		current.transform.SetParent(m_mapContainer, false);
+		current.FrontSprite = m_currentLevelSprite;
+		current.BackSprite = hasWon ? m_doneLevelSprite : m_failedLevelSprite;
+		current.SetToFrontSprite();
+		current.Delay = 1f;
+		current.FlipDuration = 1f;
+		images.Enqueue(current);
 
 
-        }
+		levelIndex++;
 
-         Image cc = Instantiate(m_mapButtonPref);
-            cc.transform.SetParent(m_mapContainer, false);
-       cc.sprite = hasWon ? m_doneLevelSprtie : m_failedLevelSprtie;
+		if (levelIndex >= maxLevel) return; //TODO Big win?
+		if (hasWon) {
+			TwoSidedImage next = Instantiate(m_mapButtonPref);
+			next.transform.SetParent(m_mapContainer, false);
+			next.FrontSprite = m_futureLevelSprite;
+			next.BackSprite = m_currentLevelSprite;
+			next.SetToFrontSprite();
+			next.Delay = 0f;
+			next.FlipDuration = 1f;
+			images.Enqueue(next);
+			levelIndex++;
+		}
 
-        for (int j = currentLevel + 1; j < maxLevel; j++) {
-            Image b = Instantiate(m_mapButtonPref);
-            b.transform.SetParent(m_mapContainer, false);
-            b.sprite = m_futureLevelSprtie;
+		for (; levelIndex < maxLevel; levelIndex++) {
+			TwoSidedImage future = Instantiate(m_mapButtonPref);
+			future.transform.SetParent(m_mapContainer, false);
+			future.FrontSprite = m_futureLevelSprite;
+			future.BackSprite = m_futureLevelSprite;
+			future.Delay = 0f;
+			future.FlipDuration = 0.35f;
+			images.Enqueue(future);
+		}
 
-        }
-
-
+		TwoSidedImage.FlipImages(images);
     }
 
 }

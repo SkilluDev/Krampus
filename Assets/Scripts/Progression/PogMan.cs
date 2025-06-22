@@ -34,7 +34,9 @@ public class PogMan : MonoBehaviour {
 
 	[SerializeField] private LevelSet m_levelSet;
 
-	[SerializeField] private int m_currentLevel = 0;
+	private int m_currentLevel = 0;
+
+	[SerializeField] private int m_startingLevel = 0;
 
 	private bool m_isTutorial = false;
 
@@ -64,7 +66,7 @@ public class PogMan : MonoBehaviour {
 		return m_levelSet.LevelStats[m_currentLevel];
 	}
 	public int GetMaxLevel() {
-		return m_levelSet.LevelStats.Count + 1;
+		return m_levelSet.LevelStats.Count;
 	}
 
 	private bool m_clearItemsOnLoad = false;
@@ -76,7 +78,7 @@ public class PogMan : MonoBehaviour {
 	public bool CanGoToNextLevel => m_canGoToNextLevel;
 
 	public void ResetProgress() {
-		m_currentLevel = 0;
+		m_currentLevel = m_startingLevel;
 		m_krampusItems = null;
 		m_clearItemsOnLoad = true;
 		m_timer = 0;
@@ -99,7 +101,7 @@ public class PogMan : MonoBehaviour {
 		else items = m_krampusItems;
 		m_krampusItems = null;
 	}
-	
+
 
 	public void SetNextLevelModifier(LevelModifier lm) {
 		m_nextLevelModifer = lm;
