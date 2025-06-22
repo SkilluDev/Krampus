@@ -17,13 +17,26 @@ public class EffectBar : MonoBehaviour {
         m_effectIcons.Add(item, effectIcon);
     }
 
+
+    public void ActivateItem(Krampus krampus, Item item) {
+        switch (item.EffectiveType) {
+            case ItemEffectiveType.Temporary:
+                ActivateIcon(item, item.GetDuration());
+                break;
+            case ItemEffectiveType.Switch:
+                ActivateIcon(item);
+                break;
+        }
+         
+     }
     public void ActivateIcon(Item item, float duration) {
         m_effectIcons[item].Activate(duration);
     }
     public void ActivateIcon(Item item) {
-
+        Debug.Log("Aktywowano item:" + item.ItemName);
+        m_effectIcons[item].Activate();
     }
-    public void DesactivateIcon(Item item) {
-        
+    public void DesactivateIcon(Krampus krampus,Item item) {
+        m_effectIcons[item].Desactivate();
      }
 }

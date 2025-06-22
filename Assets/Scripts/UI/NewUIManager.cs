@@ -180,8 +180,8 @@ public class NewUIManager : MonoBehaviour {
 
     private void Ready() {
         Game.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
-        //Game.MainGameInfo.Krampus.KrampusEvents.onEffectRegistered.AddListener(m_effectBar.RegisterIcon);
-        //Game.MainGameInfo.Krampus.KrampusEvents.onEffectUnregistered.AddListener(RemoveEffect);
+        Game.MainGameInfo.Krampus.KrampusEvents.onItemActivated.AddListener(m_effectBar.ActivateItem);
+        Game.MainGameInfo.Krampus.KrampusEvents.onItemDesactivated.AddListener(m_effectBar.DesactivateIcon);
         Game.GlobalEvents.onLevelStateChanged.AddListener(OnLevelStateChanged);
 
 		SetSeed(Game.RoomGenInfo.Seed);

@@ -20,8 +20,10 @@ public class EffectIcon : MonoBehaviour {
 
     [SerializeField] private TextMeshProUGUI m_stackText;
 
-   private MotionHandle m_motionHandle;
+    private MotionHandle m_motionHandle;
+    private MotionHandle m_currentBounce;
 
+    private Vector3 oldScale = Vector3.one;
 
 
 
@@ -31,10 +33,27 @@ public class EffectIcon : MonoBehaviour {
         m_effectName = name;
         m_effectId = id;
         m_fillImage.fillAmount = 0;
+        oldScale = m_icon.rectTransform.localScale;
     }
     public void Activate(float duration) {
         m_motionHandle.TryCancel();
-        m_motionHandle = LMotion.Create(0, 1.0f, duration).WithOnComplete(() => Destroy(gameObject)).BindToFillAmount(m_fillImage);
+        m_motionHandle = LMotion.Create(1f, 0, duration).BindToFillAmount(m_fillImage);
+
+        m_currentBounce.TryCancel();
+         m_currentBounce = LMotion.Create(oldScale, oldScale * 2f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+                () => LMotion.Create(oldScale *2f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_icon.rectTransform)
+            ).BindToLocalScale(m_icon.rectTransform);
+    }
+    public void Activate() {
+        m_fillImage.fillAmount = 1;
+
+         m_currentBounce.TryCancel();
+         m_currentBounce = LMotion.Create(oldScale, oldScale * 2f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+                () => LMotion.Create(oldScale * 2f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_icon.rectTransform)
+            ).BindToLocalScale(m_icon.rectTransform);
+    }
+    public void Desactivate() {
+        m_fillImage.fillAmount = 0;
      }
    
     

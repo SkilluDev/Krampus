@@ -8,11 +8,23 @@ public enum ItemTag {
 	LockIn = 1,
 	NextTag = 2,
 }
+[Flags]
+[Serializable]
+public enum ItemEffectiveType {
+	Temporary, //last for set duration
+	Switch, //can be switch on and off
+	Stackable, // can be stacked
+
+	Paff,
+	
+}
+
 
 [CreateAssetMenu(menuName = "Game/Items/Item", fileName = "Item")]
 public class Item : ScriptableObject {
 	[SerializeField] protected string m_itemName = "Item Name";
 	public string ItemName => m_itemName;
+
 
 	[SerializeField] private Sprite m_itemIcon;
 	public Sprite ItemIcon => m_itemIcon;
@@ -23,6 +35,9 @@ public class Item : ScriptableObject {
 
 	[SerializeField] private List<EffectInEditor> m_effectsInEditor = new List<EffectInEditor>();
 	[SerializeField] private ItemTag m_itemTags;
+
+	[SerializeField] private ItemEffectiveType m_itemEffectiveType;
+	public ItemEffectiveType EffectiveType => m_itemEffectiveType;
 
 	protected List<Effect> m_effects = new List<Effect>();
 
@@ -70,12 +85,14 @@ public class Item : ScriptableObject {
 		//ResetItem();
 		foreach (var effect in m_effects) {
 			krampus.Stats.RegisterEffect(effect);
+			
 		}
 		krampus.KrampusEvents.onItemActivated.Invoke(krampus, this);
 
 	}
 	public virtual void RegisterEffect(Krampus krampus, int i) {
 		krampus.Stats.RegisterEffect(m_effects[i]);
+		
 		krampus.KrampusEvents.onItemActivated.Invoke(krampus, this);
 	}
 
@@ -83,6 +100,7 @@ public class Item : ScriptableObject {
 		foreach (var effect in m_effects) {
 			krampus.Stats.UnregisterEffect(effect);
 		}
+		krampus.KrampusEvents.onItemDesactivated.Invoke(krampus, this);
 	}
 
 	public void ResetItem() {
@@ -92,5 +110,13 @@ public class Item : ScriptableObject {
 
 	public bool HasTag(ItemTag tag) {
 		return m_itemTags.HasFlag(tag);
+	}
+
+	public virtual float GetDuration() {
+		return m_effects.Count > 0 ? m_effects[0].Duration:0;
+	}
+
+	public virtual float GetStackAmount() {
+		return 0;
 	 }
 }
