@@ -38,13 +38,13 @@ public abstract class Projectile : MonoBehaviour {
 
     protected virtual void Miss(Collider other) {
         m_sexMiss.Play(transform.position);
-        Instantiate(m_efMiss, transform.position, transform.rotation);
+        if (m_efMiss != null) Instantiate(m_efMiss, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 
     protected virtual void Hit(Collider other) {
         m_sexHit.Play(transform.position);
-        Instantiate(m_efHit, transform.position, transform.rotation);
+        if (m_efHit != null) Instantiate(m_efHit, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 
