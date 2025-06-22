@@ -41,7 +41,7 @@ public class Door : Passage, IInteractable {
     public Vector3 InteractionPoint => m_hitRight ? m_flap1.position : m_flap2.position;
 
     [BoxGroup("Priority")][SerializeField] private static int m_basePriority = 2;
-    public int Priority => m_basePriority;
+    public int Priority => m_charactersInDoor.Any(w => w is Nun) ? 20 : m_basePriority;
 
     private void Start() {
         m_animator.SetBool(m_openProperty, false);
