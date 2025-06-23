@@ -33,8 +33,8 @@ public class EffectBar : MonoBehaviour {
                 ActivateIconPuff(item);
                 break;
         }
-         
-     }
+
+    }
     public void ActivateIcon(Item item, float duration) {
         m_effectIcons[item].Activate(duration);
     }
@@ -46,11 +46,17 @@ public class EffectBar : MonoBehaviour {
         Debug.Log("Aktywowano item:" + item.ItemName);
         m_effectIcons[item].Activate(stacks);
     }
-     public void ActivateIconPuff(Item item) {
+    public void ActivateIconPuff(Item item) {
         Debug.Log("Aktywowano item:" + item.ItemName);
         m_effectIcons[item].ActivatePuff();
     }
     public void DesactivateIcon(Krampus krampus, Item item) {
-        m_effectIcons[item].Desactivate();
+       
+            m_effectIcons[item].Desactivate();
+                
+         
+        
     }
+    
+   
 }
