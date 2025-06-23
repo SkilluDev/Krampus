@@ -78,8 +78,8 @@ public class PogMan : MonoBehaviour {
 	public bool CanGoToNextLevel => m_canGoToNextLevel;
 
 	public void ResetProgress() {
-		
-		
+
+
 		m_currentLevel = m_startingLevel;
 		//			m_krampusItems.Clear();
 		m_krampusItems = null;
@@ -91,7 +91,6 @@ public class PogMan : MonoBehaviour {
 	// those essentially move the list in and out without copying it and making sure no reference lives too long.
 	public void Store(ref List<Item> items) {
 		m_krampusItems = items;
-		items = null;
 	}
 
 	public void Unpack(ref List<Item> items) {
@@ -198,5 +197,5 @@ public class PogMan : MonoBehaviour {
 	}
 
 
-	
+
 }

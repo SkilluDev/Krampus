@@ -101,11 +101,10 @@ public class KrampusStats : KrampusBehaviour {
         }
     }
 	private void StoreItems() {
+		Game.PogMan.Store(ref m_items);
 		foreach (var item in m_items) {
             RemoveItem(item);
         }
-		Game.PogMan.Store(ref m_items);
-
     }
 
     public void RegisterEffect(Effect effect) {
