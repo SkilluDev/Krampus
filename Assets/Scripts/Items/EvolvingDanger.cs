@@ -17,7 +17,7 @@ public class EvolvingDanger : Item {
 
 	private void BuffKrampus(Krampus krampus, float windup) {
 		Debug.Log($"EvolvingDanger: windup = {windup}");
-		if (windup < 20) {
+		if (windup < 100) {
 			return;
 		}
 
@@ -36,7 +36,7 @@ public class EvolvingDanger : Item {
 			default:
 				return;
 		}
-		krampus.Kontroller.SpendWindUpPoints(10);
+		krampus.Kontroller.SpendWindUpPoints(100);
 		
 		
 	}
