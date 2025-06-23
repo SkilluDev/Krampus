@@ -20,6 +20,8 @@ public class Child : NPC, IEdible, INoiseReactor {
 
 	[SerializeField] private ChildAnimator m_animator;
 	[BoxGroup("Behaviour")][SerializeField] private ViewCone m_viewCone;
+	[BoxGroup("Behaviour")][SerializeField] private float m_detectionTime = 0f;
+	private float m_currentDetectionTime;
 	[BoxGroup("Behaviour")][SerializeField] private float m_stoppingDistance = 2;
 	[BoxGroup("Behaviour")][SerializeField] private float m_stunDuration = 0.4f;
 	[BoxGroup("Behaviour")][SerializeField] private float m_reportingDuration = 0.4f;
@@ -57,7 +59,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 		Consumed
 	}
 
-	public int Priority => IsNaughty ? 0 : -10;
+	public int Priority => IsNaughty ? 5 : -10;
 
 
 	/* public void Start() {
@@ -127,8 +129,12 @@ public class Child : NPC, IEdible, INoiseReactor {
 				}
 
 				if (m_viewCone.Detect()) {
+					m_currentDetectionTime += Time.deltaTime;
+					if (m_currentDetectionTime < m_detectionTime) return;
 					m_timeout = m_stunDuration;
 					SwitchState(State.Shock);
+				} else {
+					m_currentDetectionTime = 0f;
 				}
 
 				if (m_timeout > 0) {
@@ -249,6 +255,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 	private void SwitchState(State next) {
 		//Debug.Log("SWITCHTO:" + next);
 		if (next == CurrentState) return;
+		m_currentDetectionTime = 0f;
 		onStateChanged?.Invoke(CurrentState, next);
 		CurrentState = next;
 	}
@@ -278,8 +285,8 @@ public class Child : NPC, IEdible, INoiseReactor {
 	}
 
 	public void Stun(float duration) {
-        Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
-        m_timeout = duration;
-        SwitchState(State.Stunned);
-    }
+		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
+		m_timeout = duration;
+		SwitchState(State.Stunned);
+	}
 }

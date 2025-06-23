@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using LitMotion;
+using LitMotion.Extensions;
 using UnityEngine;
 
 public class WorldSpaceUI : MonoBehaviour {
@@ -15,6 +17,12 @@ public class WorldSpaceUI : MonoBehaviour {
 	}
 
 	public void SetDashIcon(bool canDash) {
-		QuickActionUI.SetActive(canDash);
+		m_quickActionUI.SetActive(canDash);
+		if (canDash) {
+			var oldScale = m_quickActionUI.transform.localScale;
+			LMotion.Create(oldScale, oldScale * 1.5f, 0.25f).WithEase(Ease.OutElastic).WithOnComplete(
+               () => LMotion.Create(oldScale * 1.5f, oldScale, 0.25f).WithEase(Ease.OutBounce).BindToLocalScale(m_quickActionUI.transform)
+           ).BindToLocalScale(m_quickActionUI.transform);
+		}
 	}
 }

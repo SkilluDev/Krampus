@@ -42,7 +42,7 @@ public class KrampusController : KrampusBehaviour {
 	private float m_timeHoldingInput = 0f;
 	private float m_previousFrameVelocity = 0f;
 	private float m_dashTime;
-	[BoxGroup("Dash")][SerializeField] private float m_dashSpeed;
+	[BoxGroup("Dash")][SerializeField] private float m_dashSpeedMultiplier = 4f;
 	[BoxGroup("Dash")][SerializeField] private float m_dashCurveEvalSpeed;
 
 	[BoxGroup("Dash")][SerializeField] private AnimationCurve m_dashCurve = AnimationCurve.Linear(0, 0, 1, 1);
@@ -253,7 +253,7 @@ public class KrampusController : KrampusBehaviour {
 			//Debug.Log("Dash Time: " + m_dashTime);
 			Vector3 direction = m_dashTarget.GameObject.transform.position - transform.position;
 			float distance = direction.sqrMagnitude;
-			m_rigidbody.velocity = direction.normalized * m_dashCurve.Evaluate(m_dashTime) * m_dashSpeed;
+			m_rigidbody.velocity = direction.normalized * m_dashCurve.Evaluate(m_dashTime) * m_dashSpeedMultiplier * RunSpeed;
 
 			if (distance < 1) {
 				ChangeState(State.Run, StateChangeReason.Rapid);
