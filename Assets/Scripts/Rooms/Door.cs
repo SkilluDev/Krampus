@@ -8,19 +8,20 @@ using UnityEngine.VFX;
 public class Door : Passage, IInteractable {
     public bool IsOpen { get; private set; }
 
-    [SerializeField] private Animator m_animator;
-    [SerializeField] private Collider m_blocking;
-    [SerializeField] private Sex m_doorClose;
-    [SerializeField] private Sex m_doorOpen;
+    [BoxGroup("Animator")][SerializeField] private Animator m_animator;
+    [BoxGroup("Collider")][SerializeField] private Collider m_blocking;
+    [BoxGroup("Sound")][SerializeField] private Sex m_doorClose;
+    [BoxGroup("Sound")][SerializeField] private Sex m_doorOpen;
     [SerializeField] private float m_fastOpenObjectVelocity = 6f;
     [SerializeField] private float m_noiseDistance = 15f;
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_openProperty, m_openSuddenProperty, m_invertProperty;
     [SerializeField] private Transform m_flap1, m_flap2;
-    [SerializeField] private float m_stunDuration;
-    [SerializeField] private float m_stunLinger = 0.3f;
+    [BoxGroup("Stun")][SerializeField] private float m_stunDuration;
+    [BoxGroup("Stun")][SerializeField] private float m_stunLinger = 0.3f;
+    [BoxGroup("Box")][SerializeField] private float m_boxSpeedDamp = 2f;
 
 
-    [SerializeField] private VisualEffect m_doorBurst;
+    [BoxGroup("VFX")][SerializeField] private VisualEffect m_doorBurst;
 
     private float m_stunTime;
 
@@ -39,7 +40,8 @@ public class Door : Passage, IInteractable {
 
     public Vector3 InteractionPoint => m_hitRight ? m_flap1.position : m_flap2.position;
 
-    public int Priority => 2;
+    [BoxGroup("Priority")][SerializeField] private static int m_basePriority = 2;
+    public int Priority => m_charactersInDoor.Any(w => w is Nun) ? 20 : m_basePriority;
 
     private void Start() {
         m_animator.SetBool(m_openProperty, false);
@@ -82,9 +84,9 @@ public class Door : Passage, IInteractable {
             m_stunTime = m_stunLinger;
             //doorBurst.transform.localRotation = Quaternion.Euler(0, 90*(m_animator.GetBool(m_invertProperty)?1:-1), 0);
             m_doorBurst.Play();
-			foreach (var w in m_charactersInDoor) {
-				if (w is Nun n) n.Stun(m_stunDuration);
-				if (w is Child c) c.Stun(m_stunDuration);
+            foreach (var w in m_charactersInDoor) {
+                if (w is Nun n) n.Stun(m_stunDuration);
+                if (w is Child c) c.Stun(m_stunDuration);
             }
 
             Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
@@ -106,6 +108,7 @@ public class Door : Passage, IInteractable {
         m_charactersInDoor.Remove(character);
         if (m_charactersInDoor.Any()) return;
         if (character is Nun or Child) {
+
             if (character.VelocitySqr < m_fastOpenObjectVelocity * m_fastOpenObjectVelocity) {
                 Close(false, character);
             }
@@ -118,6 +121,7 @@ public class Door : Passage, IInteractable {
         if (character is Nun nun && nun.CurrentState == Nun.State.Stunned) {
             return;
         }
+
         Open(
             character.VelocitySqr > m_fastOpenObjectVelocity * m_fastOpenObjectVelocity,
             Vector3.Dot(transform.forward, transform.position - other.transform.position) > 0
@@ -125,6 +129,10 @@ public class Door : Passage, IInteractable {
     }
 
     private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Projectile") && !IsOpen) {
+            other.attachedRigidbody.velocity = other.attachedRigidbody.velocity / m_boxSpeedDamp;
+            Open(true, Vector3.Dot(transform.forward, transform.position - other.transform.position) > 0);
+        }
         if (!other.TryGetComponent<ICharacter>(out var character)) return;
         m_charactersInDoor.Add(character);
 

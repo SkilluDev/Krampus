@@ -15,11 +15,15 @@ public class ItemCard : MonoBehaviour {
 
 
 
-    public void SetInfo(Sprite icon, string title, string description) {
+    public void SetInfo(Sprite icon, string title, string description)
+    {
 
         m_itemIconImage.sprite = icon;
         m_titleText.text = title;
         m_descriptionText.text = description;
+
+
+        //m_button.animationTriggers.
 
        
     }

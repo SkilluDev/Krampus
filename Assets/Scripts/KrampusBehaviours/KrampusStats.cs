@@ -44,6 +44,8 @@ public class KrampusStats : KrampusBehaviour {
                 }
             }
         }
+        Debug.Log("Ma speed buff:" + GetFinalStat(Stat.Speed));
+
         ClearEffectsToClear();
     }
 
@@ -87,20 +89,22 @@ public class KrampusStats : KrampusBehaviour {
             AddItem(item);
         }
     }
-
     private void StoreItems() {
-        Game.PogMan.Store(ref m_items);
+        Game.PogMan.Store(m_items);
+        RemoveAllItems();
     }
 
     public void RegisterEffect(Effect effect) {
         Kramp.KrampusEvents.onEffectRegistered.Invoke(Kramp, effect);
         m_effects[effect.StatModifier.Stat].Add(effect);
+        Debug.Log("Dodano Efekt z timerem" + effect.Timer);
         RecalculateStats();
     }
 
     public void UnregisterEffect(Effect effect) {
         Kramp.KrampusEvents.onEffectUnregistered.Invoke(Kramp, effect);
         m_effects[effect.StatModifier.Stat].Remove(effect);
+        effect.ResetTimer();
         RecalculateStats();
     }
 
@@ -128,6 +132,7 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     public void AddItem(Item item) {
+
         item.ItemAdded(Kramp);
         if (!m_items.Contains(item)) {
             item.RegisterEvents(Kramp.KrampusEvents);
@@ -136,7 +141,12 @@ public class KrampusStats : KrampusBehaviour {
         }
         m_items.Add(item);
     }
-
+    public void RemoveAllItems() {
+        var itemsCopy = new List<Item>(m_items);
+        foreach (var item in itemsCopy) {
+            RemoveItem(item);
+        }
+    }
     public void RemoveItem(Item item) {
         if (!m_items.Contains(item)) {
             Debug.LogError("Attempted to remove an item {item} which the player did not have.");
@@ -144,7 +154,7 @@ public class KrampusStats : KrampusBehaviour {
         }
 
         m_items.Remove(item);
-        item.ItemRemoved(Kramp);
+        item.ItemRemoved();
         if (!m_items.Contains(item)) {
             if (m_itemStates.ContainsKey(item)) m_itemStates.Remove(item);
             item.UnregisterEvents(Kramp.KrampusEvents);
@@ -183,4 +193,5 @@ public class KrampusStats : KrampusBehaviour {
         }
         return false;
     }
+
 }

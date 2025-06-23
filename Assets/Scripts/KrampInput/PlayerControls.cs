@@ -451,6 +451,28 @@ namespace KrampInput
                 },
                 {
                     ""name"": """",
+                    ""id"": ""42c1d150-04bb-4078-8d83-efb1f8ff2a6b"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";PC"",
+                    ""action"": ""Advance"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e05a35c-4ade-437d-88e5-47dcbf5969ad"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";PC"",
+                    ""action"": ""Advance"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""ce5d77bd-2afb-4b3c-aaf7-a12c3a1325a8"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
