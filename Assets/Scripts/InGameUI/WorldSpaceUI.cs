@@ -20,8 +20,8 @@ public class WorldSpaceUI : MonoBehaviour {
 		m_quickActionUI.SetActive(canDash);
 		if (canDash) {
 			var oldScale = m_quickActionUI.transform.localScale;
-			LMotion.Create(oldScale, oldScale * 1.5f, 0.25f).WithEase(Ease.OutElastic).WithOnComplete(
-               () => LMotion.Create(oldScale * 1.5f, oldScale, 0.25f).WithEase(Ease.OutBounce).BindToLocalScale(m_quickActionUI.transform)
+			LMotion.Create(oldScale, oldScale * 1.35f, 0.25f).WithEase(Ease.InOutBack).WithOnComplete(
+               () => LMotion.Create(oldScale * 1.35f, oldScale, 0.25f).WithEase(Ease.OutBounce).BindToLocalScale(m_quickActionUI.transform)
            ).BindToLocalScale(m_quickActionUI.transform);
 		}
 	}
