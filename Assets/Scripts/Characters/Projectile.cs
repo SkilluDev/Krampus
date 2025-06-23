@@ -71,7 +71,6 @@ public class Projectile : MonoBehaviour {
     protected virtual void FixedUpdate() {
         if (!m_isActive) {
             m_rigidbody.velocity = Vector3.zero;
-            Debug.Log("stop!");
             return;
         }
 
