@@ -5,8 +5,9 @@ using UnityEngine;
 public class Box : MonoBehaviour, IEdible {
     [SerializeField] private ParticleSystem m_consumeParticles;
     [SerializeField] private Transform m_model;
+    [SerializeField] private Projectile m_projectile;
 
-    bool IEdible.CanBeConsumed => false;
+    IEdible.EdibleType IEdible.Type => IEdible.EdibleType.DelayedAiming;
 
     private bool ModelSet => m_model != null;
 
@@ -27,11 +28,8 @@ public class Box : MonoBehaviour, IEdible {
         }
     }
 
-    public void Consume(Krampus krampus) {
-        if (m_consumeParticles != null) {
-            var particleObject = Instantiate(m_consumeParticles, transform.position, Quaternion.identity);
-            particleObject.gameObject.SetActive(true);
-        }
+    public void Consume(Krampus krampus, Vector3 position, Quaternion rotation) {
+        Projectile.Shoot(m_projectile, position, rotation * Vector3.forward, null, krampus.GetComponent<Collider>());
         Destroy(gameObject);
     }
 

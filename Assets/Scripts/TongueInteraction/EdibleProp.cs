@@ -26,7 +26,7 @@ public class EdibleProp : MonoBehaviour, IEdible {
         }
     }
 
-    public void Consume(Krampus krampus) {
+    public void Consume(Krampus krampus, Vector3 position, Quaternion rotation) {
         if (m_consumeParticles != null) {
             var particleObject = Instantiate(m_consumeParticles, transform.position, Quaternion.identity);
             particleObject.gameObject.SetActive(true);
@@ -46,4 +46,6 @@ public class EdibleProp : MonoBehaviour, IEdible {
             m_model.localScale = m_initialScale * m_modelScale.Evaluate(progress);
         }
     }
+
+
 }

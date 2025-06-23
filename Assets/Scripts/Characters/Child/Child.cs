@@ -234,7 +234,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 		SelectRandomNun();
 		SetDestination(m_selectedPosition);
 	}
-	public void Consume(Krampus krampus) {
+	public void Consume(Krampus krampus, Vector3 position, Quaternion rotation) {
 		Game.MainGameInfo.UnregisterChild(this);
 		Game.GlobalEvents.onChildEaten.Invoke(krampus, this);
 
