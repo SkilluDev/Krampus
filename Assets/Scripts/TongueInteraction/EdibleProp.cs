@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
@@ -42,7 +40,7 @@ public class EdibleProp : MonoBehaviour, IEdible {
         foreach (var c in GetComponentsInChildren<Collider>()) c.enabled = false;
     }
     public void Prepare(Krampus krampus) { }
-    public void ReelIn(Krampus krampus, Vector3 position, float progress) {
+    public void ReelIn(Krampus krampus, Vector3 position, Quaternion rotation, float progress) {
         transform.position = position;
         if (ModelSet) {
             m_model.localScale = m_initialScale * m_modelScale.Evaluate(progress);

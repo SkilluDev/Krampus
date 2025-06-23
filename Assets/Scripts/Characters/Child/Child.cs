@@ -265,7 +265,7 @@ public class Child : NPC, IEdible, INoiseReactor {
 		m_lastStateBeforeKilling = CurrentState;
 	}
 
-	public void ReelIn(Krampus krampus, Vector3 position, float progress) {
+	public void ReelIn(Krampus krampus, Vector3 position, Quaternion rotation, float progress) {
 		transform.position = position - transform.InverseTransformPoint(m_pinTarget.position);
 	}
 

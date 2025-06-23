@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using KrampUtils;
 using NaughtyAttributes;
 using Roomgen;
@@ -61,7 +60,8 @@ public class KrampusTongue : KrampusBehaviour {
 		Full,
 		PreRetreat,
 		Retreating,
-		Eating
+		Eating,
+		Carrying
 	}
 
 	public State CurrentState { get; private set; }
@@ -154,10 +154,7 @@ public class KrampusTongue : KrampusBehaviour {
 					m_tongueAimIndicator.transform.localScale = new Vector3(100f, 100f, (100f / 7f) * TongueLength);
 
 					if (InputWantsShoot()) {
-
-
-						CurrentState = State.TargetFetch;
-						onStateChanged.Invoke(State.Windup, CurrentState);
+						SwitchState(State.TargetFetch);
 						m_tongueExtensionFactor = 0;
 						m_hitEdible = null;
 						m_hitInteractable = null;
@@ -169,8 +166,7 @@ public class KrampusTongue : KrampusBehaviour {
 				}
 
 				if (InputWantsCancelAiming()) {
-					CurrentState = State.Idle;
-					onStateChanged.Invoke(State.Windup, CurrentState);
+					SwitchState(State.Idle);
 					m_tongueTime = 0;
 				}
 
@@ -181,12 +177,6 @@ public class KrampusTongue : KrampusBehaviour {
 
 			case State.TargetFetch: // Actually calculate what gets caught
 									// Actually raycast from Krampus towards where the tongue is supposed to be shot.
-				/*if (m_inMouth != null) {
-					ThrowObject(m_tongueDirection);
-					CurrentState = State.Idle;
-					break;
-				}*/
-
 				var hitObjects = Physics.CapsuleCastAll(
 					new Vector3(m_tongueOrigin.position.x, Room.STANDARD_FLOOR_Y, m_tongueOrigin.position.z),
 					new Vector3(m_tongueOrigin.position.x, Room.STANDARD_CEILING_Y, m_tongueOrigin.position.z), m_tongueHitRadius,
@@ -196,7 +186,7 @@ public class KrampusTongue : KrampusBehaviour {
 				var interactables = hitObjects.Select(w => (hit: w, interactable: w.collider.GetComponentInParent<IInteractable>()))
 									.Where(w => w.interactable != null && w.interactable.CanInteract(Kramp))
 									.NullIfEmpty()?
-									.OrderBy(w => !(w.interactable is IEdible)) // IEdibles first
+									.OrderBy(w => w.interactable is not IEdible) // IEdibles first
 									.ThenByDescending(w => w.interactable.Priority) // Priority (highest first)
 									.ThenBy(w => Vector3.SqrMagnitude(m_tongueOrigin.position - w.hit.point)) // Distance (closest first)
 									.Where(w => !Physics.Linecast(m_tongueOrigin.position, w.hit.point, m_interactionBlockerMask) || w.hit.distance == 0)
@@ -214,29 +204,7 @@ public class KrampusTongue : KrampusBehaviour {
 						m_hitEdible = null;
 						m_hitInteractable = null;
 					}
-				} /*
-				if (m_hitInteractable is IThrowable throwable) {
-					m_hitThrowable = throwable;
-
-					if (!m_hitThrowable.canCatch()) {
-						m_hitThrowable = null;
-						m_hitInteractable = null;
-					} else {
-						m_hitThrowable.Prepare(Kramp);
-					}
-					try {
-
-
-					} catch (Exception e) {
-						LogException(e, m_hitEdible);
-						m_hitThrowable = null;
-						m_hitInteractable = null;
-
-					}
-				}*/
-
-
-
+				}
 				if (m_hitInteractable == null) {
 					if (Physics.Raycast(m_tongueOrigin.position, m_tongueDirection, out var hit, TongueLength, m_interactionBlockerMask)) {
 						m_tongueDestination = hit.point;
@@ -246,7 +214,6 @@ public class KrampusTongue : KrampusBehaviour {
 				} else {
 					m_tongueDestination = m_hitInteractable.InteractionPoint;
 				}
-
 
 				float tongueSqrMag = Vector3.SqrMagnitude(m_tongueDestination - m_tongueOrigin.position);
 
@@ -267,14 +234,6 @@ public class KrampusTongue : KrampusBehaviour {
 				float fullLength = (m_tongueDestination - m_tongueOrigin.position).sqrMagnitude;
 
 				m_midwayToungables = (tongueables?.Where(w => w.tongueable != m_hitTonguable)).EmptyIfNull().ToList();
-
-				// try {
-				//     Debug.Log("Interactables " + string.Join("; ", interactables.Select(w => w.GameObject.name)));
-				//     Debug.Log("All tongies " + string.Join("; ", tongueables.Select(w => w.tongueable.GameObject.name)));
-				//     Debug.Log("MW tongies " + string.Join("; ", m_midwayToungables.Select(w => w.component.GameObject.name)));
-				// } catch {
-				//     //ignore
-				// }
 				AdvanceState();
 				break;
 
@@ -322,7 +281,7 @@ public class KrampusTongue : KrampusBehaviour {
 			case State.PreRetreat: // Tongue still attached to the hit object
 				if (m_hitEdible != null) {
 					try {
-						m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, 0);
+						m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, transform.rotation, 0);
 					} catch (Exception e) {
 						LogException(e, m_hitTonguable);
 						m_hitEdible = null;
@@ -335,55 +294,33 @@ public class KrampusTongue : KrampusBehaviour {
 			case State.Retreating: // Tongue goes from the target to visual origin, potentially carrying an Edible
 				if (m_hitEdible != null) {
 					try {
-						m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
-
+						m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, transform.rotation, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
 					} catch (Exception e) {
 						LogException(e, m_hitTonguable);
 						m_hitEdible = null;
 						m_hitInteractable = null;
 					}
 				}
-				/*
-				if (m_hitThrowable != null) {
-					try {
-						m_hitThrowable.ReelIn(Kramp, GetTonguePositions().end, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
-
-					} catch (Exception e) {
-						LogException(e, m_hitTonguable);
-						m_hitThrowable = null;
-						m_hitThrowable = null;
-					}
-				}*/
 				m_tongueExtensionFactor = m_sequence.retreatCurve.Evaluate(1 - m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
 				AdvanceStateIfTime(nameof(Timings.retreat));
 				break;
 
-			case State.Eating: // Tongue is back at origin, if caught something - eat it
+			case State.Eating: // Tongue is back at origin, if caught something - eat it unless it is not edible
 				if (m_hitEdible != null) {
-					try {
-						Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
-						m_hitEdible.Consume(Kramp);
-
-
-					} catch (Exception e) {
-						LogException(e, m_hitEdible);
+					if (m_hitEdible.CanBeConsumed) {
+						try {
+							m_hitEdible.Consume(Kramp);
+						} catch (Exception e) {
+							LogException(e, m_hitEdible);
+						}
+						m_hitEdible = null;
+					} else {
+						SwitchState(State.Carrying);
 					}
 				}
-				/*
-				if (m_hitThrowable != null) {
-					try {
-						AddToMouth(m_hitThrowable);
-
-					} catch (Exception e) {
-						LogException(e, m_hitTonguable);
-
-					}
-				}*/
 				Kramp.Kontroller.LockOut();
 				Kramp.Kontroller.SetCanDash(false);
 				Kramp.Kontroller.SetDashTarget(null);
-				m_hitEdible = null;
-				//m_hitThrowable = null;
 				m_hitInteractable = null;
 				m_hitTonguable = null;
 
@@ -396,7 +333,6 @@ public class KrampusTongue : KrampusBehaviour {
 		m_tongueRenderer.SetPosition(1, GetTonguePositions().end);
 
 		m_tongueTime += Time.deltaTime;
-
 	}
 
 	/// <summary>
@@ -406,6 +342,13 @@ public class KrampusTongue : KrampusBehaviour {
 		var previous = CurrentState;
 		if (CurrentState == State.Eating) CurrentState = State.Idle;
 		else CurrentState++;
+		onStateChanged?.Invoke(previous, CurrentState);
+	}
+
+	private void SwitchState(State state) {
+		var previous = CurrentState;
+		if (state == previous) return;
+		CurrentState = state;
 		onStateChanged?.Invoke(previous, CurrentState);
 	}
 
@@ -446,27 +389,7 @@ public class KrampusTongue : KrampusBehaviour {
 	}
 
 	private (Vector3 begin, Vector3 end) GetTonguePositions() {
-		if (CurrentState == State.Idle) return (Vector3.one * -10_000_000, Vector3.one * -10_000_000);
+		if (CurrentState == State.Idle) return (m_tongueVisualOrigin.position, m_tongueVisualOrigin.position);
 		return (m_tongueVisualOrigin.position, Vector3.Lerp(m_tongueVisualOrigin.position, m_tongueDestination, m_tongueExtensionFactor));
 	}
-
-
-	/*
-		private void AddToMouth(IThrowable throwable) {
-
-			throwable.GameObject.transform.position = m_inMouthOrigin.position;
-			throwable.GameObject.transform.SetParent(m_inMouthOrigin, true);
-			throwable.Hold();
-			m_inMouth = throwable;
-
-		}
-		private void ThrowObject(Vector3 direction) {
-			if (m_inMouth == null) return;
-
-			m_inMouth.GameObject.transform.SetParent(null);
-			m_inMouth.Throw(direction, Kramp);
-			m_inMouth = null;
-
-		}*/
-
 }
