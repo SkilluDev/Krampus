@@ -23,7 +23,7 @@ public class ItemCard : MonoBehaviour {
         m_descriptionText.text = description;
 
 
-        //m_button.
+        //m_button.animationTriggers.
 
        
     }
