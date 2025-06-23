@@ -118,7 +118,7 @@ public class Item : ScriptableObject {
 		return m_effects.Count > 0 ? m_effects[0].Duration:0;
 	}
 
-	public virtual float GetStackAmount() {
+	public virtual int GetStackAmount(Krampus krampus) {
 		return 0;
 	 }
 }

@@ -27,7 +27,7 @@ public class EffectBar : MonoBehaviour {
                 ActivateIcon(item);
                 break;
             case ItemEffectiveType.Stackable:
-                ActivateIcon(item, item.GetStackAmount());
+                ActivateIcon(item, (int)item.GetStackAmount(krampus));
                 break;
             case ItemEffectiveType.Paff:
                 ActivateIconPuff(item);
@@ -41,6 +41,10 @@ public class EffectBar : MonoBehaviour {
     public void ActivateIcon(Item item) {
         Debug.Log("Aktywowano item:" + item.ItemName);
         m_effectIcons[item].Activate();
+    }
+    public void ActivateIcon(Item item, int stacks) {
+        Debug.Log("Aktywowano item:" + item.ItemName);
+        m_effectIcons[item].Activate(stacks);
     }
      public void ActivateIconPuff(Item item) {
         Debug.Log("Aktywowano item:" + item.ItemName);
