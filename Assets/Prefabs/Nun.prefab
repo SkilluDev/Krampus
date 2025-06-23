@@ -614,6 +614,7 @@ GameObject:
   - component: {fileID: 1750555886771424974}
   - component: {fileID: 7573631264413071648}
   - component: {fileID: 5091860593188860153}
+  - component: {fileID: 4565006885495021327}
   m_Layer: 8
   m_Name: Nun
   m_TagString: Untagged
@@ -715,13 +716,13 @@ MonoBehaviour:
   m_runSpeed: 10
   m_shockTimeout: 1
   m_viewCone: {fileID: 3797404609321764997}
-  m_detectionTime: 0.25
   m_krampusDetectTime: 0.5
   m_patrolIdleDuration: 2
   m_dontPatrolTag: {fileID: 11400000, guid: 060614bbc887e0c428d08703f37bbcd5, type: 2}
   m_castingTime: 0.8
   m_randomRagePerSeconds: {x: 25, y: 30}
-  m_nunProjectile: {fileID: 0}
+  m_nunProjectile: {fileID: 6815668124356609978, guid: 9991c85e86a04c447ae71be786cef3aa,
+    type: 3}
 --- !u!114 &1750555886771424974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -786,6 +787,21 @@ MonoBehaviour:
   m_normal: {fileID: 8505646638566380038}
   m_nunAnimator: {fileID: 7573631264413071648}
   m_nun: {fileID: 8045976204250328226}
+--- !u!114 &4565006885495021327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5834805556960546680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228569bddf6523d4ab9885c54b7a6c49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tags:
+  - {fileID: 11400000, guid: 5799f21e30db25d9a81a56f4949aca44, type: 2}
+  - {fileID: 11400000, guid: 524922fbff054cdd1844f6fc2e58dbbd, type: 2}
 --- !u!1 &6660255866142032586
 GameObject:
   m_ObjectHideFlags: 0
