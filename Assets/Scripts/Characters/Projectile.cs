@@ -36,11 +36,15 @@ public class Projectile : MonoBehaviour {
     protected bool m_isActive;
     protected Transform m_target;
 
-    public static T Shoot<T>(T projectile, Vector3 position, Vector3 direction, Transform target = null) where T : Projectile {
+    public static T Shoot<T>(T projectile, Vector3 position, Vector3 direction, Transform target = null, Collider sender = null) where T : Projectile {
         var obj = Instantiate(projectile.gameObject);
         obj.transform.SetPositionAndRotation(position, Quaternion.LookRotation(direction));
         var obpr = obj.GetComponent<T>();
         obpr.Shoot(target);
+
+        if (sender != null) {
+            Physics.IgnoreCollision(obpr.GetComponent<Collider>(), sender);
+        }
         return obpr;
     }
 
