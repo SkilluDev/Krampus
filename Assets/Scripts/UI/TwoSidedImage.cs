@@ -46,7 +46,7 @@ public class TwoSidedImage : MonoBehaviour {
 	[Button("Flip Image")]
 	public void FlipImage(Action onComplete = null) {
 		if(m_handle != null && m_handle.IsPlaying()) {
-			m_handle.Cancel()	;
+			m_handle.Cancel();
 		}
 		m_handle = LSequence.Create()
 		.Append(LMotion.Create(0,0,m_delay).RunWithoutBinding())
@@ -58,12 +58,55 @@ public class TwoSidedImage : MonoBehaviour {
 		.Run();
 	}
 
-	public static void FlipImages(Queue<TwoSidedImage> images) {
+	public static void FlipImagesSequential(Queue<TwoSidedImage> images, Action onLastComplete = null) {
 		if (images.Count() == 0) {
 			return;
 		}
-		images.Dequeue().FlipImage(()=>FlipImages(images));
+		if (images.Count() == 1) {
+			Debug.Log("LASTSEQ, NEXT Action"+onLastComplete);
+			images.Dequeue().FlipImage(onLastComplete);
+		} else {
+			images.Dequeue().FlipImage(()=>FlipImagesSequential(images, onLastComplete));
+		}
+	}
 
+	public static void FlipImagesSimultaneous(Queue<TwoSidedImage> images, float timer = 0f, Action onLastComplete = null) {
+		Debug.Log("333HM" + images.Count);
+		while (images.Count() > 0) {
+			Debug.Log("FLIPSIM");
+			var image = images.Dequeue();
+			image.Delay = timer;
+			if (images.Count() == 0) {
+				image.FlipImage(onLastComplete);
+			} else {
+				image.FlipImage();
+			}
+		}
+	}
+
+	public static void FlipImagesSpaced(Queue<TwoSidedImage> images, float timeToStart = 0f, float timeBetween = 0f, Action onLastComplete = null) {
+		if (images.Count() == 0) {
+			return;
+		}
+
+		if (images.Count() == 1) {
+			var image = images.Dequeue();
+			image.Delay = timeToStart;
+			images.Dequeue().FlipImage();
+			return;
+		}
+		images.ElementAt(0).Delay = timeToStart;
+		for (int i = 1; i < images.Count(); i++) {
+			images.ElementAt(i).Delay = timeToStart + (timeBetween * i);
+		}
+
+		while (images.Count() > 0) {
+			if (images.Count() == 1) {
+				images.Dequeue().FlipImage(onLastComplete);
+			} else {
+				images.Dequeue().FlipImage();
+			}
+		}
 	}
 
 	public void SwitchSprites() {
