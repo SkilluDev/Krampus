@@ -139,7 +139,7 @@ public class KrampusTongue : KrampusBehaviour {
 		switch (CurrentState) {
 			case State.Carrying:
 				if (m_hitEdible != null) {
-					m_hitEdible.ReelIn(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
+					m_hitEdible.AttachToTongue(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
 				}
 				goto case State.Idle;
 
@@ -157,7 +157,7 @@ public class KrampusTongue : KrampusBehaviour {
 
 			case State.Windup: // Pre-shoot phase. Wait for the windup
 				if (m_hitEdible != null) {
-					m_hitEdible.ReelIn(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
+					m_hitEdible.AttachToTongue(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
 				}
 
 				if (IsTime(nameof(Timings.windup))) {
@@ -185,7 +185,11 @@ public class KrampusTongue : KrampusBehaviour {
 				}
 
 				if (InputWantsCancelAiming()) {
-					SwitchState(State.Idle);
+					if (m_hitEdible != null) {
+						SwitchState(State.Carrying);
+					} else {
+						SwitchState(State.Idle);
+					}
 					m_tongueTime = 0;
 				}
 
@@ -315,7 +319,7 @@ public class KrampusTongue : KrampusBehaviour {
 			case State.PreRetreat: // Tongue still attached to the hit object
 				if (m_hitEdible != null) {
 					try {
-						m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, transform.rotation, 0);
+						m_hitEdible.AttachToTongue(Kramp, GetTonguePositions().end, transform.rotation, 0);
 					} catch (Exception e) {
 						LogException(e, m_hitTonguable);
 						m_hitEdible = null;
@@ -328,7 +332,7 @@ public class KrampusTongue : KrampusBehaviour {
 			case State.Retreating: // Tongue goes from the target to visual origin, potentially carrying an Edible
 				if (m_hitEdible != null) {
 					try {
-						m_hitEdible.ReelIn(Kramp, GetTonguePositions().end, transform.rotation, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
+						m_hitEdible.AttachToTongue(Kramp, GetTonguePositions().end, transform.rotation, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
 					} catch (Exception e) {
 						LogException(e, m_hitTonguable);
 						m_hitEdible = null;

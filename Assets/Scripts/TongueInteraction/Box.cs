@@ -39,8 +39,9 @@ public class Box : MonoBehaviour, IEdible {
         foreach (var c in GetComponentsInChildren<Collider>()) c.enabled = false;
     }
     public void Prepare(Krampus krampus) { }
-    public void ReelIn(Krampus krampus, Vector3 position, Quaternion rotation, float progress) {
+    public void AttachToTongue(Krampus krampus, Vector3 position, Quaternion rotation, float progress) {
         transform.position = position;
+        transform.rotation = rotation;
         if (ModelSet) {
             m_model.localScale = m_initialScale * m_modelScale.Evaluate(progress);
         }
