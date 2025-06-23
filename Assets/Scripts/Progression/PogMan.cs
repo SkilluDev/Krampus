@@ -78,7 +78,6 @@ public class PogMan : MonoBehaviour {
 	public bool CanGoToNextLevel => m_canGoToNextLevel;
 
 	public void ResetProgress() {
-
 		m_canGoToNextLevel = false;
 		m_currentLevel = m_startingLevel;
 		//			m_krampusItems.Clear();

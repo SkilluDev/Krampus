@@ -46,6 +46,8 @@ public class CameraController : MonoBehaviour {
 		Game.MainGameInfo.Krampus.KrampusEvents.onTongueLengthChanged.AddListener(ChangeOrto);
 		m_unzoomToZoomStartRatio = m_unzoomedOrtoSize / m_zoomedOrtoSize;
 		//Debug.Log("ratio" + m_unzoomToZoomStartRatio);
+
+		
 	}
 
 	private void OnDestroy() {
