@@ -143,12 +143,12 @@ public class BlackBars : MonoBehaviour {
 		Debug.Log("333 count:" + imageSeq3.Count);
 
 		TwoSidedImage.FlipImagesSpaced(
-			imageSeq1,2f,0.2f,
+			imageSeq1,1f,0.2f,
 			() =>TwoSidedImage.FlipImagesSequential(
 				imageSeq2,
 				() => {
 					if (imageSeq3.Count != 0 && hasWon)
-						TwoSidedImage.FlipImagesSimultaneous(imageSeq3, 0.5f);
+						TwoSidedImage.FlipImagesSimultaneous(imageSeq3, 0.1f);
 				}));
     }
 
