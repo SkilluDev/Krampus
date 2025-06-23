@@ -60,6 +60,9 @@ public class TwoSidedImage : MonoBehaviour {
 
 	public static void FlipImagesSequential(Queue<TwoSidedImage> images, Action onLastComplete = null) {
 		if (images.Count() == 0) {
+			if(onLastComplete != null) {
+				onLastComplete.Invoke();
+			}
 			return;
 		}
 		if (images.Count() == 1) {
@@ -71,9 +74,13 @@ public class TwoSidedImage : MonoBehaviour {
 	}
 
 	public static void FlipImagesSimultaneous(Queue<TwoSidedImage> images, float timer = 0f, Action onLastComplete = null) {
-		Debug.Log("333HM" + images.Count);
+		if (images.Count() == 0) {
+			if(onLastComplete != null) {
+				onLastComplete.Invoke();
+			}
+			return;
+		}
 		while (images.Count() > 0) {
-			Debug.Log("FLIPSIM");
 			var image = images.Dequeue();
 			image.Delay = timer;
 			if (images.Count() == 0) {
@@ -86,6 +93,9 @@ public class TwoSidedImage : MonoBehaviour {
 
 	public static void FlipImagesSpaced(Queue<TwoSidedImage> images, float timeToStart = 0f, float timeBetween = 0f, Action onLastComplete = null) {
 		if (images.Count() == 0) {
+			if(onLastComplete != null) {
+				onLastComplete.Invoke();
+			}
 			return;
 		}
 

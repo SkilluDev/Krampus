@@ -144,7 +144,7 @@ public class BlackBars : MonoBehaviour {
 			future.FlipDuration = 0.35f;
 			imageSeq3.Enqueue(future);
 		}
-
+		
 		TwoSidedImage.FlipImagesSpaced(
 			imageSeq1, 1f, 0.2f,
 			() => TwoSidedImage.FlipImagesSequential(
