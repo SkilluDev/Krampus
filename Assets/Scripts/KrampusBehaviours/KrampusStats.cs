@@ -101,7 +101,7 @@ public class KrampusStats : KrampusBehaviour {
         }
     }
 	private void StoreItems() {
-		Game.PogMan.Store(ref m_items);
+		Game.PogMan.Store(m_items);
 		foreach (var item in m_items) {
             RemoveItem(item);
         }
@@ -172,7 +172,7 @@ public class KrampusStats : KrampusBehaviour {
         }
 
         m_items.Remove(item);
-        item.ItemRemoved(Kramp);
+        item.ItemRemoved();
         if (!m_items.Contains(item)) {
             if (m_itemStates.ContainsKey(item)) m_itemStates.Remove(item);
             item.UnregisterEvents(Kramp.KrampusEvents);

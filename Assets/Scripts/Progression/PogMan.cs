@@ -89,8 +89,8 @@ public class PogMan : MonoBehaviour {
 	}
 
 	// those essentially move the list in and out without copying it and making sure no reference lives too long.
-	public void Store(ref List<Item> items) {
-		m_krampusItems = items;
+	public void Store(List<Item> items) {
+		m_krampusItems = new List<Item>(items);
 	}
 
 	public void Unpack(ref List<Item> items) {

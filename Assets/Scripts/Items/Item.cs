@@ -16,7 +16,7 @@ public enum ItemEffectiveType {
 	Stackable, // can be stacked
 
 	Paff,
-	
+
 }
 
 
@@ -53,7 +53,7 @@ public class Item : ScriptableObject {
 	/// Called when this Item's events should be unregistered
 	/// </summary>
 	public virtual void UnregisterEvents(KrampusEvents events) {
-		
+
 	}
 	/// <summary>
 	/// Called while evaluating modifiers
@@ -74,8 +74,7 @@ public class Item : ScriptableObject {
 	/// <summary>
 	/// Called when this item gets removed from a Krampus
 	/// </summary>
-	public  void ItemRemoved(Krampus krampus) {
-		UnregisterEvents(krampus.KrampusEvents);
+	public  void ItemRemoved() {
 		m_effects.Clear();
 	}
 
@@ -86,14 +85,14 @@ public class Item : ScriptableObject {
 		//ResetItem();
 		foreach (var effect in m_effects) {
 			krampus.Stats.RegisterEffect(effect);
-			
+
 		}
 		krampus.KrampusEvents.onItemActivated.Invoke(krampus, this);
 
 	}
 	public virtual void RegisterEffect(Krampus krampus, int i) {
 		krampus.Stats.RegisterEffect(m_effects[i]);
-		
+
 		krampus.KrampusEvents.onItemActivated.Invoke(krampus, this);
 	}
 
@@ -103,11 +102,11 @@ public class Item : ScriptableObject {
 		}
 		krampus.KrampusEvents.onItemDesactivated.Invoke(krampus, this);
 
-		
+
 	}
 
 	public void ResetItem() {
-		ItemRemoved(Game.MainGameInfo.Krampus);
+		ItemRemoved();
 		ItemAdded(Game.MainGameInfo.Krampus);
 	}
 
