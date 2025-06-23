@@ -8,7 +8,7 @@ public enum ItemTag {
 	LockIn = 1,
 	NextTag = 2,
 }
-[Flags]
+
 [Serializable]
 public enum ItemEffectiveType {
 	Temporary, //last for set duration

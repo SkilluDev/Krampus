@@ -60,6 +60,15 @@ public class EffectIcon : MonoBehaviour {
            ).BindToLocalScale(m_icon.rectTransform);
         m_stackText.text = stacks.ToString();
      }
+
+    public void ActivatePuff() {
+
+        m_currentBounce.TryCancel();
+        m_currentBounce = LMotion.Create(oldScale, oldScale * 2f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+               () => LMotion.Create(oldScale * 2f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_icon.rectTransform)
+           ).BindToLocalScale(m_icon.rectTransform);
+           
+     }
     public void Desactivate() {
         m_fillImage.fillAmount = 0;
     }
