@@ -49,15 +49,7 @@ public class KrampusTongue : KrampusBehaviour {
 	public IInteractable HitInteractable => m_hitInteractable;
 	private IInteractable m_hitInteractable;
 	private ITongueable m_hitTonguable;
-
-
-
 	private IEdible m_hitEdible;
-
-	private IThrowable m_hitThrowable;
-	private IThrowable m_inMouth;
-	public IThrowable InMouth => m_inMouth;
-
 
 	private List<(float dst, ITongueable component)> m_midwayToungables;
 
@@ -159,7 +151,7 @@ public class KrampusTongue : KrampusBehaviour {
 					m_tongueAimIndicator.gameObject.SetActive(true); // TODO: this should be done by the animator;
 					m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
 					//m_tongueAimIndicator.SetBlendShapeWeight(0, InputGetShootFactor() * 100f);
-					m_tongueAimIndicator.transform.localScale = new Vector3(100f,100f,(100f/7f)*TongueLength);
+					m_tongueAimIndicator.transform.localScale = new Vector3(100f, 100f, (100f / 7f) * TongueLength);
 
 					if (InputWantsShoot()) {
 
@@ -189,11 +181,11 @@ public class KrampusTongue : KrampusBehaviour {
 
 			case State.TargetFetch: // Actually calculate what gets caught
 									// Actually raycast from Krampus towards where the tongue is supposed to be shot.
-				if (m_inMouth != null) {
+				/*if (m_inMouth != null) {
 					ThrowObject(m_tongueDirection);
 					CurrentState = State.Idle;
 					break;
-				}
+				}*/
 
 				var hitObjects = Physics.CapsuleCastAll(
 					new Vector3(m_tongueOrigin.position.x, Room.STANDARD_FLOOR_Y, m_tongueOrigin.position.z),
@@ -222,7 +214,7 @@ public class KrampusTongue : KrampusBehaviour {
 						m_hitEdible = null;
 						m_hitInteractable = null;
 					}
-				}
+				} /*
 				if (m_hitInteractable is IThrowable throwable) {
 					m_hitThrowable = throwable;
 
@@ -231,7 +223,7 @@ public class KrampusTongue : KrampusBehaviour {
 						m_hitInteractable = null;
 					} else {
 						m_hitThrowable.Prepare(Kramp);
-					 }
+					}
 					try {
 
 
@@ -241,7 +233,7 @@ public class KrampusTongue : KrampusBehaviour {
 						m_hitInteractable = null;
 
 					}
-				}
+				}*/
 
 
 
@@ -351,6 +343,7 @@ public class KrampusTongue : KrampusBehaviour {
 						m_hitInteractable = null;
 					}
 				}
+				/*
 				if (m_hitThrowable != null) {
 					try {
 						m_hitThrowable.ReelIn(Kramp, GetTonguePositions().end, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
@@ -360,7 +353,7 @@ public class KrampusTongue : KrampusBehaviour {
 						m_hitThrowable = null;
 						m_hitThrowable = null;
 					}
-				}
+				}*/
 				m_tongueExtensionFactor = m_sequence.retreatCurve.Evaluate(1 - m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
 				AdvanceStateIfTime(nameof(Timings.retreat));
 				break;
@@ -376,6 +369,7 @@ public class KrampusTongue : KrampusBehaviour {
 						LogException(e, m_hitEdible);
 					}
 				}
+				/*
 				if (m_hitThrowable != null) {
 					try {
 						AddToMouth(m_hitThrowable);
@@ -384,12 +378,12 @@ public class KrampusTongue : KrampusBehaviour {
 						LogException(e, m_hitTonguable);
 
 					}
-				}
+				}*/
 				Kramp.Kontroller.LockOut();
 				Kramp.Kontroller.SetCanDash(false);
 				Kramp.Kontroller.SetDashTarget(null);
 				m_hitEdible = null;
-				m_hitThrowable = null;
+				//m_hitThrowable = null;
 				m_hitInteractable = null;
 				m_hitTonguable = null;
 
@@ -457,22 +451,22 @@ public class KrampusTongue : KrampusBehaviour {
 	}
 
 
+	/*
+		private void AddToMouth(IThrowable throwable) {
 
-	private void AddToMouth(IThrowable throwable) {
+			throwable.GameObject.transform.position = m_inMouthOrigin.position;
+			throwable.GameObject.transform.SetParent(m_inMouthOrigin, true);
+			throwable.Hold();
+			m_inMouth = throwable;
 
-		throwable.GameObject.transform.position = m_inMouthOrigin.position;
-		throwable.GameObject.transform.SetParent(m_inMouthOrigin, true);
-		throwable.Hold();
-		m_inMouth = throwable;
+		}
+		private void ThrowObject(Vector3 direction) {
+			if (m_inMouth == null) return;
 
-	}
-	private void ThrowObject(Vector3 direction) {
-		if (m_inMouth == null) return;
+			m_inMouth.GameObject.transform.SetParent(null);
+			m_inMouth.Throw(direction, Kramp);
+			m_inMouth = null;
 
-		m_inMouth.GameObject.transform.SetParent(null);
-		m_inMouth.Throw(direction, Kramp);
-		m_inMouth = null;
-
-	 }
+		}*/
 
 }

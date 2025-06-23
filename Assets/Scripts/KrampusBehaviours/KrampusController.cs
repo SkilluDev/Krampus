@@ -249,7 +249,7 @@ public class KrampusController : KrampusBehaviour {
 				ChangeState(State.Run, StateChangeReason.Rapid);
 				return;
 			}
-			m_dashTime += Time.fixedDeltaTime*m_dashCurveEvalSpeed;
+			m_dashTime += Time.fixedDeltaTime * m_dashCurveEvalSpeed;
 			//Debug.Log("Dash Time: " + m_dashTime);
 			Vector3 direction = m_dashTarget.GameObject.transform.position - transform.position;
 			float distance = direction.sqrMagnitude;
@@ -269,9 +269,10 @@ public class KrampusController : KrampusBehaviour {
 			m_rigidbody.velocity = skewedInput * SneakSpeed;
 		} else {
 			m_rigidbody.velocity = skewedInput * RunSpeed;
+			/*
 			if (Kramp.Tongue.InMouth != null) {
 				m_rigidbody.velocity *= m_weightedRunMultiplier;
-			}
+			}*/
 		}
 
 		if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength, m_avoidableObjects, QueryTriggerInteraction.Ignore)) {
@@ -301,7 +302,7 @@ public class KrampusController : KrampusBehaviour {
 
 		//Debug.Log("Windup bonus: " + WindUpBonus);
 
-		m_windUpPoints += value *  WindUpBonus;
+		m_windUpPoints += value * WindUpBonus;
 		if (m_windUpPoints > Game.MainGameInfo.MaxWindUpPoints) {
 			m_windUpPoints = Game.MainGameInfo.MaxWindUpPoints;
 		}
@@ -315,6 +316,7 @@ public class KrampusController : KrampusBehaviour {
 		Kramp.KrampusEvents.onWindUpChanged.Invoke(Kramp, m_windUpPoints);
 	}
 
+	// TODO: why is this public and not a single method with set dash target
 	public void SetCanDash(bool canDash) {
 		if (Game.PogMan.GetCurrentLevelStats().LockWindUpUse || WindUpPoints < WindUpDashCost) {
 			m_canDash = false;
@@ -330,7 +332,7 @@ public class KrampusController : KrampusBehaviour {
 
 	public void SetDashTarget(IInteractable interactable) {
 		m_dashTarget = interactable;
-		if(m_dashTarget == null)	return;
+		if (m_dashTarget == null) return;
 		Game.MainGameInfo.UI.WorldSpaceUI.SetDashIconPosition(m_dashTarget);
 	}
 }

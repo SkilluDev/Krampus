@@ -20,31 +20,20 @@ public class KrampusStats : KrampusBehaviour {
     public class RawStat : ValueConnectedToEnum<Stat> {
         [SerializeField] private float m_value;
         public float Value => m_value;
-
         [SerializeField] private StatMode m_statMode;
         public StatMode StatMode => m_statMode;
-
     }
-
     [SerializeField] private SerializedEnumDictionary<Stat, RawStat> m_rawStatDict;
-
     private Dictionary<Stat, List<Effect>> m_effects = new Dictionary<Stat, List<Effect>>();
-
     private Dictionary<Stat, float> m_calculatedMultipliers = new Dictionary<Stat, float>();
-
-    public bool hasMov;
-
-
     private Dictionary<Item, object> m_itemStates = new Dictionary<Item, object>();
 
     [SerializeField] private List<Item> m_items = new List<Item>();
     public IReadOnlyList<Item> Items => m_items;
     private List<Effect> m_effectsToClear = new List<Effect>();
 
-    public void Update() {
-        //Debug.Log($"[Speed] StatsTest: {GetFinalStat(Stat.Speed)}");
-        //Debug.Log($"[TongueRange] StatsTest: {GetFinalStat(Stat.TongueRange)}");
 
+    public void Update() {
         foreach (var stat in m_effects) {
             foreach (var effect in stat.Value) {
                 if (effect.EffectType == Effect.Type.Temporary) {
@@ -55,8 +44,6 @@ public class KrampusStats : KrampusBehaviour {
                 }
             }
         }
-        //Debug.Log("Ma speed buff:" + hasMov);
-
         ClearEffectsToClear();
     }
 
@@ -78,13 +65,13 @@ public class KrampusStats : KrampusBehaviour {
 
         ClearEffectsToClear();
     }
+
     private void Start() {
         LoadItems();
         foreach (var rs in m_rawStatDict.Values) {
             m_effects.Add(rs.Key, new List<Effect>());
             m_calculatedMultipliers.Add(rs.Key, 1f);
         }
-
     }
 
     private void OnDestroy() { // to be absolutely fair, i have no clue whether this will get correctly called; TODO:
@@ -100,6 +87,7 @@ public class KrampusStats : KrampusBehaviour {
             AddItem(item);
         }
     }
+
     private void StoreItems() {
         Game.PogMan.Store(ref m_items);
     }
@@ -109,7 +97,6 @@ public class KrampusStats : KrampusBehaviour {
         m_effects[effect.StatModifier.Stat].Add(effect);
         RecalculateStats();
     }
-
 
     public void UnregisterEffect(Effect effect) {
         Kramp.KrampusEvents.onEffectUnregistered.Invoke(Kramp, effect);
@@ -138,14 +125,6 @@ public class KrampusStats : KrampusBehaviour {
             }
             m_calculatedMultipliers[rs.Key] = totalMultiplier;
         }
-
-
-        if (m_calculatedMultipliers[Stat.Speed] > 1) {
-            hasMov = true;
-        } else {
-            hasMov = false;
-            Kramp.Animator.StopSmoke();
-        }
     }
 
     public void AddItem(Item item) {
@@ -156,7 +135,6 @@ public class KrampusStats : KrampusBehaviour {
             if (data != null) m_itemStates.Add(item, Activator.CreateInstance(data.DataType));
         }
         m_items.Add(item);
-
     }
 
     public void RemoveItem(Item item) {
