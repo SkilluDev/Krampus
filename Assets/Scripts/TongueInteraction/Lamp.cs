@@ -7,7 +7,7 @@ public class Lamp : MonoBehaviour, IInteractable {
     [SerializeField] private bool m_enabledByDefault = true;
     public Vector3 InteractionPoint => m_switch != null ? m_switch.position : transform.position;
 
-    public int Priority => -15;
+    public int Priority => 0;
 
     private void Start() {
         if (!m_enabledByDefault) Toggle();

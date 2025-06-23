@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
 using KrampUtils;
-using NaughtyAttributes;
 using Roomgen;
 using Unity.Mathematics;
 using UnityEngine;
@@ -30,17 +29,15 @@ public class Nun : NPC {
 
     public UnityAction<Nun.State> onFire;
     [SerializeField] private float m_interactionDistance = 8;
-    [BoxGroup("Detection")][SerializeField] private float m_detectionRange = 4;
+    [SerializeField] private float m_detectionRange = 4;
     public State CurrentState { get; private set; }
-    [BoxGroup("Detection")][SerializeField] private LayerMask m_visionMask;
+    [SerializeField] private LayerMask m_visionMask;
 
-    [BoxGroup("Movement")][SerializeField] private float m_runSpeed = 8;
+    [SerializeField] private float m_runSpeed = 8;
 
     [SerializeField] private float m_shockTimeout = 0.2f;
 
-    [BoxGroup("Detection")][SerializeField] private ViewCone m_viewCone;
-    [BoxGroup("Detection")][SerializeField] private float m_detectionTime = 0f;
-    private float m_currentDetectionTime = 0f;
+    [SerializeField] private ViewCone m_viewCone;
     private List<Vector3> m_patrolPath;
     private int m_currentControlPoint = 0;
     private Transform m_modelTransform;
@@ -50,9 +47,9 @@ public class Nun : NPC {
     [SerializeField] private Tag m_dontPatrolTag;
 
 
-    [BoxGroup("Attack")][SerializeField] private float m_castingTime = 1.03f;
-    [BoxGroup("Attack")][SerializeField] private Vector2 m_randomRagePerSeconds;
-    [BoxGroup("Attack")][SerializeField] private NunMissle m_misslePref;
+    [SerializeField] private float m_castingTime = 1.03f;
+    [SerializeField] private Vector2 m_randomRagePerSeconds;
+    [SerializeField] private NunMissle m_misslePref;
     private float m_rageMeter;
 
 
@@ -146,16 +143,12 @@ public class Nun : NPC {
                 }
 
                 m_viewCone.SetActive(true);
-				if (m_viewCone.Detect()) {
-					//Debug.Log("[Nun] viewcone detected krampy");
-					m_currentDetectionTime += Time.deltaTime;
-					if (m_currentDetectionTime < m_detectionTime) return;
-					m_timeout = m_shockTimeout;
-					//Change in multi
-					SeeKrampus();
-				} else {
-					m_currentDetectionTime = 0f;
-				}
+                if (m_viewCone.Detect()) {
+                    //Debug.Log("[Nun] viewcone detected krampy");
+                    m_timeout = m_shockTimeout;
+                    //Change in multi
+                    SeeKrampus();
+                }
 
                 SetVelocity(GetPathDirection() * m_baseMovementSpeed);
                 SetFacingDirection(GetPathDirection());
@@ -253,13 +246,12 @@ public class Nun : NPC {
 
     private void SwitchState(State previous) {
         if (previous == CurrentState) return;
-        m_currentDetectionTime = 0f;
         onStateChanged?.Invoke(CurrentState, previous);
         CurrentState = previous;
         //Debug.Log($"[Nun] Switch state to {CurrentState}");
     }
 
-    public void ActivateTheBitch(Child who, float timeout, Room room) { //Maciek2D doesn't support this message
+    public void ActivateTheBitch(Child who, float timeout, Room room) {
         foreach (var w in Game.MainGameInfo.RoomGenerator.Rooms) {
             Game.MainGameInfo.GetRoomData(w).MarkKramped(false);
         }

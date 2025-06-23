@@ -14,9 +14,7 @@ public class DashSpeed : Item {
     }
 
     private void BuffKrampus(Krampus krampus) {
-        RegisterAllEffects(krampus);
+		RegisterAllEffects(krampus);
     }
-
-	
 
 }

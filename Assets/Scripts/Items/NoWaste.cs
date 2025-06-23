@@ -16,7 +16,6 @@ public class NoWaste : Item {
     }
 
     private void GainWindUp(Krampus krampus, Child child) {
-          RegisterAllEffects(krampus);
         krampus.Kontroller.AddWindUpPoints(m_windUpGained);
     }
 }

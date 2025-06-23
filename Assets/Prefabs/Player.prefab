@@ -42,10 +42,10 @@ VisualEffect:
   m_GameObject: {fileID: 1158693063482575189}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: 62efc2db2a988694b800b30429e5d9c4, type: 3}
-  m_InitialEventName: 
-  m_InitialEventNameOverriden: 1
+  m_InitialEventName: OnPlay
+  m_InitialEventNameOverriden: 0
   m_StartSeed: 0
-  m_ResetSeedOnPlay: 0
+  m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1
   m_ResourceVersion: 1
   m_PropertySheet:
@@ -243,7 +243,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rigidbody: {fileID: 7069810453768087152}
-  m_weightedRunMultiplier: 0.9
   m_sneakSpeed: 5
   m_assistValue: 45
   m_assistCheckLength: 1
@@ -281,43 +280,34 @@ MonoBehaviour:
   m_deltaIdleThreshold: 120
   m_startRunSpeed: 2
   m_getUpDuration: 1
-  m_dashSpeedMultiplier: 5
-  m_dashCurveEvalSpeed: 2
+  m_dashSpeed: 30
+  m_dashCurveEvalSpeed: 0
   m_dashCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1.9981623
-      outSlope: 1.9981623
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.019712271
+      outWeight: 0
     - serializedVersion: 3
-      time: 0.2
+      time: 0.20031738
       value: 1
-      inSlope: 0.24988583
-      outSlope: 0.27169612
-      tangentMode: 1
-      weightedMode: 3
-      inWeight: 0.75960994
-      outWeight: 0.21876061
-    - serializedVersion: 3
-      time: 1
-      value: 0.2
-      inSlope: -0.004272682
-      outSlope: -0.004272682
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
-      weightedMode: 1
-      inWeight: 0.90980864
+      weightedMode: 0
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_windUpDashCost: 0
-  m_lockInThreshold: 1.5
+  m_windUpStingCost: 0
+  m_lockInThreshold: 0
   m_lockInVis: {fileID: 0}
 --- !u!114 &6024168017209539665
 MonoBehaviour:
@@ -419,7 +409,7 @@ MonoBehaviour:
   onKrampusFoundByNun:
     m_PersistentCalls:
       m_Calls: []
-  onDashUsed:
+  onStingerUsed:
     m_PersistentCalls:
       m_Calls: []
   onLockIn:
@@ -449,14 +439,14 @@ MonoBehaviour:
   m_rawStatDict:
     m_values:
     - m_key: 0
-      m_value: 10
-      m_statMode: 1
+      m_value: 0
+      m_statMode: 0
     - m_key: 1
-      m_value: 12
-      m_statMode: 1
+      m_value: 0
+      m_statMode: 0
     - m_key: 2
-      m_value: 1
-      m_statMode: 1
+      m_value: 0
+      m_statMode: 0
   hasMov: 0
   m_items: []
 --- !u!1 &4670869950198197567
@@ -519,6 +509,7 @@ MonoBehaviour:
   m_tongueHitRadius: 0.6
   m_inputMinimumDrag: 0.5
   m_inputMinimumMouseDistance: 2
+  m_inputMaximumMouseDistance: 8
   m_inputDragSmoothing: 10
   m_inputMousePlaneY: 0
   m_sequence:
@@ -786,7 +777,7 @@ GameObject:
   - component: {fileID: 4656687647894955059}
   - component: {fileID: 8858575344988926467}
   m_Layer: 10
-  m_Name: LockInCircle
+  m_Name: LookInCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -849,7 +840,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 4a0703132eb92e74086421e553f73c31, type: 3}
-  m_Color: {r: 0.28778648, g: 1, b: 0, a: 0.8}
+  m_Color: {r: 0.28778648, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -885,7 +876,7 @@ Transform:
   m_GameObject: {fileID: 8581132400196403524}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.051, z: 0}
   m_LocalScale: {x: 0.14, y: 0.14, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -931,9 +922,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 4a0703132eb92e74086421e553f73c31, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.2}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.28235295}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1224,7 +1215,7 @@ PrefabInstance:
     - target: {fileID: -3887185075125053422, guid: fa0b515765d09191da10a33555caabd5,
         type: 3}
       propertyPath: m_BlendShapeWeights.Array.data[0]
-      value: 150
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: fa0b515765d09191da10a33555caabd5,
         type: 3}

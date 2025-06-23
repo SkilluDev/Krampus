@@ -34,9 +34,7 @@ public class PogMan : MonoBehaviour {
 
 	[SerializeField] private LevelSet m_levelSet;
 
-	private int m_currentLevel = 0;
-
-	[SerializeField] private int m_startingLevel = 0;
+	[SerializeField] private int m_currentLevel = 0;
 
 	private bool m_isTutorial = false;
 
@@ -46,7 +44,7 @@ public class PogMan : MonoBehaviour {
 	public int CurrentLevel => m_currentLevel;
 
 	public bool IsThereNextLevel => m_currentLevel < m_levelSet.LevelStats.Count - 1;
-	public List<Item> m_krampusItems;
+	private List<Item> m_krampusItems;
 	public IReadOnlyList<Item> KrampusItems => m_krampusItems;
 
 	private float m_timer;
@@ -66,7 +64,7 @@ public class PogMan : MonoBehaviour {
 		return m_levelSet.LevelStats[m_currentLevel];
 	}
 	public int GetMaxLevel() {
-		return m_levelSet.LevelStats.Count;
+		return m_levelSet.LevelStats.Count + 1;
 	}
 
 	private bool m_clearItemsOnLoad = false;
@@ -78,18 +76,16 @@ public class PogMan : MonoBehaviour {
 	public bool CanGoToNextLevel => m_canGoToNextLevel;
 
 	public void ResetProgress() {
-		m_canGoToNextLevel = false;
-		m_currentLevel = m_startingLevel;
-		//			m_krampusItems.Clear();
+		m_currentLevel = 0;
 		m_krampusItems = null;
 		m_clearItemsOnLoad = true;
 		m_timer = 0;
-
 	}
 
 	// those essentially move the list in and out without copying it and making sure no reference lives too long.
-	public void Store(List<Item> items) {
-		m_krampusItems = new List<Item>(items);
+	public void Store(ref List<Item> items) {
+		m_krampusItems = items;
+		items = null;
 	}
 
 	public void Unpack(ref List<Item> items) {
@@ -103,7 +99,7 @@ public class PogMan : MonoBehaviour {
 		else items = m_krampusItems;
 		m_krampusItems = null;
 	}
-
+	
 
 	public void SetNextLevelModifier(LevelModifier lm) {
 		m_nextLevelModifer = lm;
@@ -194,7 +190,4 @@ public class PogMan : MonoBehaviour {
 		SetSeed();
 		Game.LoadState(Game.State.MainGame);
 	}
-
-
-
 }

@@ -113,12 +113,6 @@ public class MainGameInfo : LevelInfo {
 		//Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
 	}
 
-	[NaughtyAttributes.Button("Press To Lose")]
-	public void DebugLoseButton() {
-		ProcessEndGame(Ending.LoseNun);
-		//Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
-	}
-
 	private IEnumerator Start() {
 		yield return new WaitUntil(() => Game.RoomGenInfo != null);
 
@@ -215,13 +209,10 @@ public class MainGameInfo : LevelInfo {
 			case Ending.LoseNun:
 				Game.MusicMan.StopMusic();
 				Game.MainGameInfo.SetState(State.Over);
-				StartCoroutine(AllowNextLevelAfterSeconds(3f));
 				break;
 			case Ending.LoseTime:
 				Game.MusicMan.StopMusic();
 				Game.MainGameInfo.SetState(State.Over);
-				StartCoroutine(AllowNextLevelAfterSeconds(3f));
-
 				break;
 		}
 		StartCoroutine(UI.ProcessEnding(ending));

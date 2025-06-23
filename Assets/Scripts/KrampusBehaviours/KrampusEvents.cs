@@ -19,8 +19,4 @@ public class KrampusEvents : KrampusBehaviour {
 	public UnityEvent<Krampus, Effect> onEffectUnregistered;
 
 
-	public UnityEvent<Krampus, Item> onItemActivated;
-	public UnityEvent<Krampus, Item> onItemDesactivated;
-
-
 }
