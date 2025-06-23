@@ -60,8 +60,9 @@ public class KrampusTongue : KrampusBehaviour {
 		Full,
 		PreRetreat,
 		Retreating,
-		Eating,
-		Carrying
+		Done,
+		Carrying,
+		Consume
 	}
 
 	public State CurrentState { get; private set; }
@@ -137,17 +138,28 @@ public class KrampusTongue : KrampusBehaviour {
 
 		switch (CurrentState) {
 			case State.Carrying:
-				m_hitEdible.ReelIn(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
-				print("carrying");
+				if (m_hitEdible != null) {
+					m_hitEdible.ReelIn(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
+				}
 				goto case State.Idle;
 
 			case State.Idle:
 				m_tongueTime = 0;
 				m_tongueAimIndicator.gameObject.SetActive(false);
-				if (InputWantsStartAiming()) SwitchState(State.Windup);
+				if (InputWantsStartAiming()) {
+					if (m_hitEdible != null && m_hitEdible.Type == IEdible.EdibleType.DelayedSimple) {
+						SwitchState(State.Consume);
+					} else {
+						SwitchState(State.Windup);
+					}
+				}
 				break;
 
 			case State.Windup: // Pre-shoot phase. Wait for the windup
+				if (m_hitEdible != null) {
+					m_hitEdible.ReelIn(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
+				}
+
 				if (IsTime(nameof(Timings.windup))) {
 					m_tongueTime = m_sequence.End(nameof(Timings.windup));
 
@@ -157,14 +169,18 @@ public class KrampusTongue : KrampusBehaviour {
 					m_tongueAimIndicator.transform.localScale = new Vector3(100f, 100f, (100f / 7f) * TongueLength);
 
 					if (InputWantsShoot()) {
-						SwitchState(State.TargetFetch);
-						m_tongueExtensionFactor = 0;
-						m_hitEdible = null;
-						m_hitInteractable = null;
-						m_hitTonguable = null;
-						m_midwayToungables = null;
-						m_tongueAimIndicator.gameObject.SetActive(false);
-						break;
+						if (m_hitEdible != null) {
+							SwitchState(State.Consume);
+						} else {
+							SwitchState(State.TargetFetch);
+							m_tongueExtensionFactor = 0;
+							m_hitEdible = null;
+							m_hitInteractable = null;
+							m_hitTonguable = null;
+							m_midwayToungables = null;
+							m_tongueAimIndicator.gameObject.SetActive(false);
+							break;
+						}
 					}
 				}
 
@@ -176,6 +192,21 @@ public class KrampusTongue : KrampusBehaviour {
 				m_tongueDirection = InputTongueDirection();
 				m_tongueDirection.y = 0;
 				m_tongueDirection.Normalize();
+				break;
+
+			case State.Consume:
+				try {
+					m_hitEdible.Consume(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation);
+				} catch (Exception e) {
+					LogException(e, m_hitEdible);
+				}
+				m_tongueTime = 0;
+				m_hitEdible = null;
+				m_hitInteractable = null;
+				m_hitTonguable = null;
+				m_midwayToungables = null;
+				m_tongueAimIndicator.gameObject.SetActive(false);
+				SwitchState(State.Idle);
 				break;
 
 			case State.TargetFetch: // Actually calculate what gets caught
@@ -308,30 +339,25 @@ public class KrampusTongue : KrampusBehaviour {
 				AdvanceStateIfTime(nameof(Timings.retreat));
 				break;
 
-			case State.Eating: // Tongue is back at origin, if caught something - eat it unless it is not edible
+			case State.Done: // Tongue is back at origin, if caught something - eat it unless it is not edible
 				if (m_hitEdible != null) {
-					if (m_hitEdible.CanBeConsumed) {
-						try {
-							m_hitEdible.Consume(Kramp);
-						} catch (Exception e) {
-							LogException(e, m_hitEdible);
-						}
-						m_hitEdible = null;
-
-						AdvanceState();
-						m_tongueTime = 0;
+					if (m_hitEdible.Type == IEdible.EdibleType.Instant) {
+						SwitchState(State.Consume);
 					} else {
 						SwitchState(State.Carrying);
 					}
 				} else {
-					AdvanceState();
 					m_tongueTime = 0;
+					m_hitEdible = null;
+					m_hitInteractable = null;
+					m_hitTonguable = null;
+					m_midwayToungables = null;
+					m_tongueAimIndicator.gameObject.SetActive(false);
+					SwitchState(State.Idle);
 				}
 				Kramp.Kontroller.LockOut();
 				Kramp.Kontroller.SetCanDash(false);
 				Kramp.Kontroller.SetDashTarget(null);
-				m_hitInteractable = null;
-				m_hitTonguable = null;
 				break;
 		}
 
@@ -346,7 +372,7 @@ public class KrampusTongue : KrampusBehaviour {
 	/// </summary>
 	private void AdvanceState() {
 		var previous = CurrentState;
-		if (CurrentState == State.Eating) CurrentState = State.Idle;
+		if (CurrentState == State.Done) CurrentState = State.Idle;
 		else CurrentState++;
 		onStateChanged?.Invoke(previous, CurrentState);
 	}

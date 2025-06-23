@@ -92,7 +92,7 @@ public class KrampusAnimator : KrampusBehaviour {
                     m_animator.SetBool(m_tongueShouldEatProperty, Kramp.Tongue.HitInteractable is IEdible);
                 }
                 break;
-            case (_, KrampusTongue.State.Eating):
+            case (_, KrampusTongue.State.Done):
                 if (Kramp.Kontroller.CurrentState == KrampusController.State.Walk || Kramp.Kontroller.CurrentState == KrampusController.State.Idle) {
 
                     LockInAnimation();
