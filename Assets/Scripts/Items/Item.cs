@@ -53,7 +53,7 @@ public class Item : ScriptableObject {
 	/// Called when this Item's events should be unregistered
 	/// </summary>
 	public virtual void UnregisterEvents(KrampusEvents events) {
-
+		
 	}
 	/// <summary>
 	/// Called while evaluating modifiers
@@ -74,7 +74,8 @@ public class Item : ScriptableObject {
 	/// <summary>
 	/// Called when this item gets removed from a Krampus
 	/// </summary>
-	public virtual void ItemRemoved(Krampus krampus) {
+	public  void ItemRemoved(Krampus krampus) {
+		UnregisterEvents(krampus.KrampusEvents);
 		m_effects.Clear();
 	}
 
@@ -101,6 +102,8 @@ public class Item : ScriptableObject {
 			krampus.Stats.UnregisterEffect(effect);
 		}
 		krampus.KrampusEvents.onItemDesactivated.Invoke(krampus, this);
+
+		
 	}
 
 	public void ResetItem() {
