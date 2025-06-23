@@ -40,22 +40,32 @@ public class EffectIcon : MonoBehaviour {
         m_motionHandle = LMotion.Create(1f, 0, duration).BindToFillAmount(m_fillImage);
 
         m_currentBounce.TryCancel();
-         m_currentBounce = LMotion.Create(oldScale, oldScale * 2f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
-                () => LMotion.Create(oldScale *2f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_icon.rectTransform)
-            ).BindToLocalScale(m_icon.rectTransform);
+        m_currentBounce = LMotion.Create(oldScale, oldScale * 2f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+               () => LMotion.Create(oldScale * 2f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_icon.rectTransform)
+           ).BindToLocalScale(m_icon.rectTransform);
     }
     public void Activate() {
         m_fillImage.fillAmount = 1;
 
-         m_currentBounce.TryCancel();
-         m_currentBounce = LMotion.Create(oldScale, oldScale * 2f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
-                () => LMotion.Create(oldScale * 2f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_icon.rectTransform)
-            ).BindToLocalScale(m_icon.rectTransform);
+        m_currentBounce.TryCancel();
+        m_currentBounce = LMotion.Create(oldScale, oldScale * 2f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+               () => LMotion.Create(oldScale * 2f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_icon.rectTransform)
+           ).BindToLocalScale(m_icon.rectTransform);
     }
+
+    public void Activate(int stacks) {
+         m_currentBounce.TryCancel();
+        m_currentBounce = LMotion.Create(oldScale, oldScale * 2f, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
+               () => LMotion.Create(oldScale * 2f, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(m_icon.rectTransform)
+           ).BindToLocalScale(m_icon.rectTransform);
+        m_stackText.text = stacks.ToString();
+     }
     public void Desactivate() {
         m_fillImage.fillAmount = 0;
-     }
+    }
    
+   
+
     
 
 }

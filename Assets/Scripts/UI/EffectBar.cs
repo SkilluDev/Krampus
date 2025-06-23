@@ -26,6 +26,9 @@ public class EffectBar : MonoBehaviour {
             case ItemEffectiveType.Switch:
                 ActivateIcon(item);
                 break;
+            case ItemEffectiveType.Stackable:
+                ActivateIcon(item, item.GetStackAmount());
+                break;
         }
          
      }
