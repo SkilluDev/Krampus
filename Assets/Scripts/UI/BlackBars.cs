@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
 using KrampUtils;
 using LitMotion;
 using LitMotion.Extensions;
@@ -93,7 +94,9 @@ public class BlackBars : MonoBehaviour {
 		int maxLevel = Game.PogMan.GetMaxLevel();
 		int levelIndex = 0;
 
-		Queue<TwoSidedImage> images = new Queue<TwoSidedImage>();
+		Queue<TwoSidedImage> imageSeq1 = new Queue<TwoSidedImage>();
+		Queue<TwoSidedImage> imageSeq2 = new Queue<TwoSidedImage>();
+		Queue<TwoSidedImage> imageSeq3 = new Queue<TwoSidedImage>();
 
 		for (; levelIndex < currentLevel; levelIndex++) {
 			TwoSidedImage beaten = Instantiate(m_mapButtonPref);
@@ -101,9 +104,8 @@ public class BlackBars : MonoBehaviour {
 			beaten.FrontSprite = m_doneLevelSprite;
 			beaten.BackSprite = m_doneLevelSprite;
 			beaten.SetToFrontSprite();
-			beaten.Delay = 0f;
-			beaten.FlipDuration = 0.35f;
-			images.Enqueue(beaten);
+			beaten.FlipDuration = 0.5f;
+			imageSeq1.Enqueue(beaten);
 		}
 
 		TwoSidedImage current = Instantiate(m_mapButtonPref);
@@ -111,9 +113,8 @@ public class BlackBars : MonoBehaviour {
 		current.FrontSprite = m_currentLevelSprite;
 		current.BackSprite = hasWon ? m_doneLevelSprite : m_failedLevelSprite;
 		current.SetToFrontSprite();
-		current.Delay = 1f;
 		current.FlipDuration = 1f;
-		images.Enqueue(current);
+		imageSeq2.Enqueue(current);
 
 
 		levelIndex++;
@@ -125,9 +126,8 @@ public class BlackBars : MonoBehaviour {
 			next.FrontSprite = m_futureLevelSprite;
 			next.BackSprite = m_currentLevelSprite;
 			next.SetToFrontSprite();
-			next.Delay = 0f;
 			next.FlipDuration = 1f;
-			images.Enqueue(next);
+			imageSeq2.Enqueue(next);
 			levelIndex++;
 		}
 
@@ -136,12 +136,20 @@ public class BlackBars : MonoBehaviour {
 			future.transform.SetParent(m_mapContainer, false);
 			future.FrontSprite = m_futureLevelSprite;
 			future.BackSprite = m_futureLevelSprite;
-			future.Delay = 0f;
 			future.FlipDuration = 0.35f;
-			images.Enqueue(future);
+			imageSeq3.Enqueue(future);
 		}
 
-		TwoSidedImage.FlipImages(images);
+		Debug.Log("333 count:" + imageSeq3.Count);
+
+		TwoSidedImage.FlipImagesSpaced(
+			imageSeq1,2f,0.2f,
+			() =>TwoSidedImage.FlipImagesSequential(
+				imageSeq2,
+				() => {
+					if (imageSeq3.Count != 0 && hasWon)
+						TwoSidedImage.FlipImagesSimultaneous(imageSeq3, 0.5f);
+				}));
     }
 
 }
