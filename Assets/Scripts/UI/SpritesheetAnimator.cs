@@ -44,7 +44,7 @@ public class SpriteSheetAnimator : MonoBehaviour {
     }
 
     private void Update() {
-        m_frameTimer += Time.deltaTime;
+        m_frameTimer += Time.unscaledDeltaTime;
         if (m_frameTimer > 1 / m_fps) {
             m_image.sprite = m_spriteSheet[(++m_counter) % m_spriteSheet.Length];
             m_frameTimer = 0;
