@@ -48,7 +48,7 @@ public class KrampusTongue : KrampusBehaviour {
 	public IInteractable HitInteractable => m_hitInteractable;
 	private IInteractable m_hitInteractable;
 	private ITongueable m_hitTonguable;
-	private IEdible m_hitEdible;
+	private IKrampable m_hitKrampable;
 
 	private List<(float dst, ITongueable component)> m_midwayToungables;
 
@@ -138,8 +138,8 @@ public class KrampusTongue : KrampusBehaviour {
 
 		switch (CurrentState) {
 			case State.Carrying:
-				if (m_hitEdible != null) {
-					m_hitEdible.AttachToTongue(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
+				if (m_hitKrampable != null) {
+					m_hitKrampable.AttachToTongue(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
 				}
 				goto case State.Idle;
 
@@ -147,7 +147,7 @@ public class KrampusTongue : KrampusBehaviour {
 				m_tongueTime = 0;
 				m_tongueAimIndicator.gameObject.SetActive(false);
 				if (InputWantsStartAiming()) {
-					if (m_hitEdible != null && m_hitEdible.Type == IEdible.EdibleType.DelayedSimple) {
+					if (m_hitKrampable != null && m_hitKrampable.Type == IKrampable.krampableType.DelayedSimple) {
 						SwitchState(State.Consume);
 					} else {
 						SwitchState(State.Windup);
@@ -156,8 +156,8 @@ public class KrampusTongue : KrampusBehaviour {
 				break;
 
 			case State.Windup: // Pre-shoot phase. Wait for the windup
-				if (m_hitEdible != null) {
-					m_hitEdible.AttachToTongue(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
+				if (m_hitKrampable != null) {
+					m_hitKrampable.AttachToTongue(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
 				}
 
 				if (IsTime(nameof(Timings.windup))) {
@@ -169,12 +169,12 @@ public class KrampusTongue : KrampusBehaviour {
 					m_tongueAimIndicator.transform.localScale = new Vector3(100f, 100f, (100f / 7f) * TongueLength);
 
 					if (InputWantsShoot()) {
-						if (m_hitEdible != null) {
+						if (m_hitKrampable != null) {
 							SwitchState(State.Consume);
 						} else {
 							SwitchState(State.TargetFetch);
 							m_tongueExtensionFactor = 0;
-							m_hitEdible = null;
+							m_hitKrampable = null;
 							m_hitInteractable = null;
 							m_hitTonguable = null;
 							m_midwayToungables = null;
@@ -185,7 +185,7 @@ public class KrampusTongue : KrampusBehaviour {
 				}
 
 				if (InputWantsCancelAiming()) {
-					if (m_hitEdible != null) {
+					if (m_hitKrampable != null) {
 						SwitchState(State.Carrying);
 					} else {
 						SwitchState(State.Idle);
@@ -200,12 +200,12 @@ public class KrampusTongue : KrampusBehaviour {
 
 			case State.Consume:
 				try {
-					m_hitEdible.Consume(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation);
+					m_hitKrampable.Consume(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation);
 				} catch (Exception e) {
-					LogException(e, m_hitEdible);
+					LogException(e, m_hitKrampable);
 				}
 				m_tongueTime = 0;
-				m_hitEdible = null;
+				m_hitKrampable = null;
 				m_hitInteractable = null;
 				m_hitTonguable = null;
 				m_midwayToungables = null;
@@ -224,7 +224,7 @@ public class KrampusTongue : KrampusBehaviour {
 				var interactables = hitObjects.Select(w => (hit: w, interactable: w.collider.GetComponentInParent<IInteractable>()))
 									.Where(w => w.interactable != null && w.interactable.CanInteract(Kramp))
 									.NullIfEmpty()?
-									.OrderBy(w => w.interactable is not IEdible) // IEdibles first
+									.OrderBy(w => w.interactable is not IKrampable) // IKrampables first
 									.ThenByDescending(w => w.interactable.Priority) // Priority (highest first)
 									.ThenBy(w => Vector3.SqrMagnitude(m_tongueOrigin.position - w.hit.point)) // Distance (closest first)
 									.Where(w => !Physics.Linecast(m_tongueOrigin.position, w.hit.point, m_interactionBlockerMask) || w.hit.distance == 0)
@@ -233,13 +233,13 @@ public class KrampusTongue : KrampusBehaviour {
 
 				m_hitInteractable = interactables?.FirstOrDefault();
 
-				if (m_hitInteractable is IEdible edible) {
-					m_hitEdible = edible;
+				if (m_hitInteractable is IKrampable krampable) {
+					m_hitKrampable = krampable;
 					try {
-						m_hitEdible.Prepare(Kramp);
+						m_hitKrampable.Prepare(Kramp);
 					} catch (Exception e) {
-						LogException(e, m_hitEdible);
-						m_hitEdible = null;
+						LogException(e, m_hitKrampable);
+						m_hitKrampable = null;
 						m_hitInteractable = null;
 					}
 				}
@@ -301,7 +301,7 @@ public class KrampusTongue : KrampusBehaviour {
 					} catch (Exception e) {
 						LogException(e, m_hitInteractable);
 						m_hitInteractable = null;
-						m_hitEdible = null;
+						m_hitKrampable = null;
 					}
 					m_tongueDestination = m_hitInteractable.InteractionPoint;
 				}
@@ -317,25 +317,25 @@ public class KrampusTongue : KrampusBehaviour {
 				break;
 
 			case State.PreRetreat: // Tongue still attached to the hit object
-				if (m_hitEdible != null) {
+				if (m_hitKrampable != null) {
 					try {
-						m_hitEdible.AttachToTongue(Kramp, GetTonguePositions().end, transform.rotation, 0);
+						m_hitKrampable.AttachToTongue(Kramp, GetTonguePositions().end, transform.rotation, 0);
 					} catch (Exception e) {
 						LogException(e, m_hitTonguable);
-						m_hitEdible = null;
+						m_hitKrampable = null;
 						m_hitInteractable = null;
 					}
 				}
 				AdvanceStateIfTime(nameof(Timings.preRetreat));
 				break;
 
-			case State.Retreating: // Tongue goes from the target to visual origin, potentially carrying an Edible
-				if (m_hitEdible != null) {
+			case State.Retreating: // Tongue goes from the target to visual origin, potentially carrying an krampable
+				if (m_hitKrampable != null) {
 					try {
-						m_hitEdible.AttachToTongue(Kramp, GetTonguePositions().end, transform.rotation, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
+						m_hitKrampable.AttachToTongue(Kramp, GetTonguePositions().end, transform.rotation, m_sequence.InverseLerp(nameof(Timings.retreat), m_tongueTime));
 					} catch (Exception e) {
 						LogException(e, m_hitTonguable);
-						m_hitEdible = null;
+						m_hitKrampable = null;
 						m_hitInteractable = null;
 					}
 				}
@@ -343,16 +343,16 @@ public class KrampusTongue : KrampusBehaviour {
 				AdvanceStateIfTime(nameof(Timings.retreat));
 				break;
 
-			case State.Done: // Tongue is back at origin, if caught something - eat it unless it is not edible
-				if (m_hitEdible != null) {
-					if (m_hitEdible.Type == IEdible.EdibleType.Instant) {
+			case State.Done: // Tongue is back at origin, if caught something - eat it unless it is not krampable
+				if (m_hitKrampable != null) {
+					if (m_hitKrampable.Type == IKrampable.krampableType.Instant) {
 						SwitchState(State.Consume);
 					} else {
 						SwitchState(State.Carrying);
 					}
 				} else {
 					m_tongueTime = 0;
-					m_hitEdible = null;
+					m_hitKrampable = null;
 					m_hitInteractable = null;
 					m_hitTonguable = null;
 					m_midwayToungables = null;
@@ -406,8 +406,8 @@ public class KrampusTongue : KrampusBehaviour {
 
 	private void LogException(Exception e, object context) {
 		switch (context) {
-			case IEdible edible:
-				Debug.LogError($"Interaction error caught on Edible: {e.GetType().Name}\n{e}", edible.GameObject);
+			case IKrampable krampable:
+				Debug.LogError($"Interaction error caught on krampable: {e.GetType().Name}\n{e}", krampable.GameObject);
 				break;
 			case IInteractable interactable:
 				Debug.LogError($"Interaction error caught on Interactable: {e.GetType().Name}\n{e}", interactable.GameObject);

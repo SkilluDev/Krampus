@@ -2,12 +2,12 @@ using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 
-public class Box : MonoBehaviour, IEdible {
+public class Box : MonoBehaviour, IKrampable {
     [SerializeField] private ParticleSystem m_consumeParticles;
     [SerializeField] private Transform m_model;
     [SerializeField] private Projectile m_projectile;
 
-    IEdible.EdibleType IEdible.Type => IEdible.EdibleType.DelayedAiming;
+    IKrampable.krampableType IKrampable.Type => IKrampable.krampableType.DelayedAiming;
 
     private bool ModelSet => m_model != null;
 

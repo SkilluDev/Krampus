@@ -40,7 +40,7 @@ public class KrampusAnimator : KrampusBehaviour {
 
     private void Update() {
         if (Kramp.Kontroller.CurrentState is not (KrampusController.State.Intro or KrampusController.State.GetUp)) {
-            if (Kramp.Kontroller.CurrentState != KrampusController.State.Idle && Kramp.Tongue.CurrentState == KrampusTongue.State.Idle) {
+            if (Kramp.Kontroller.CurrentState != KrampusController.State.Idle && Kramp.Tongue.CurrentState is KrampusTongue.State.Idle or KrampusTongue.State.Carrying) {
                 SetTargetView(Kramp.Kontroller.VelocityVector);
             } else if (Kramp.Tongue.CurrentState == KrampusTongue.State.Windup) {
                 SetTargetView(Kramp.Tongue.TongueDirection);
@@ -89,7 +89,7 @@ public class KrampusAnimator : KrampusBehaviour {
             case (KrampusTongue.State.PreRetreat, KrampusTongue.State.Retreating):
                 if (Kramp.Tongue.HitInteractable != null) {
                     m_catchSoundBite.Play(transform.position, 1);
-                    m_animator.SetBool(m_tongueShouldEatProperty, Kramp.Tongue.HitInteractable is IEdible);
+                    m_animator.SetBool(m_tongueShouldEatProperty, Kramp.Tongue.HitInteractable is IKrampable);
                 }
                 break;
             case (_, KrampusTongue.State.Done):

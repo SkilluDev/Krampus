@@ -2,7 +2,7 @@ using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 
-public class EdibleProp : MonoBehaviour, IEdible {
+public class EdibleProp : MonoBehaviour, IKrampable {
     [SerializeField] private ParticleSystem m_consumeParticles;
     [SerializeField] private Transform m_model;
 

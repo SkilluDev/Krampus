@@ -9,7 +9,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.VFX;
 
-public class Child : NPC, IEdible, INoiseReactor {
+public class Child : NPC, IKrampable, INoiseReactor {
 	public float RunSpeed => m_runSpeed;
 	[ShowNativeProperty] public State CurrentState { get; private set; }
 
