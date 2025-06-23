@@ -136,15 +136,18 @@ public class KrampusTongue : KrampusBehaviour {
 		m_previousTongueLength = TongueLength;
 
 		switch (CurrentState) {
+			case State.Carrying:
+				m_hitEdible.ReelIn(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
+				print("carrying");
+				goto case State.Idle;
+
 			case State.Idle:
 				m_tongueTime = 0;
 				m_tongueAimIndicator.gameObject.SetActive(false);
-
-				if (InputWantsStartAiming()) AdvanceState();
+				if (InputWantsStartAiming()) SwitchState(State.Windup);
 				break;
 
 			case State.Windup: // Pre-shoot phase. Wait for the windup
-
 				if (IsTime(nameof(Timings.windup))) {
 					m_tongueTime = m_sequence.End(nameof(Timings.windup));
 
@@ -314,18 +317,21 @@ public class KrampusTongue : KrampusBehaviour {
 							LogException(e, m_hitEdible);
 						}
 						m_hitEdible = null;
+
+						AdvanceState();
+						m_tongueTime = 0;
 					} else {
 						SwitchState(State.Carrying);
 					}
+				} else {
+					AdvanceState();
+					m_tongueTime = 0;
 				}
 				Kramp.Kontroller.LockOut();
 				Kramp.Kontroller.SetCanDash(false);
 				Kramp.Kontroller.SetDashTarget(null);
 				m_hitInteractable = null;
 				m_hitTonguable = null;
-
-				AdvanceState();
-				m_tongueTime = 0;
 				break;
 		}
 
