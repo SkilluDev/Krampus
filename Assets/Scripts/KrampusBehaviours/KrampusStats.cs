@@ -102,9 +102,7 @@ public class KrampusStats : KrampusBehaviour {
     }
 	private void StoreItems() {
 		Game.PogMan.Store(m_items);
-		foreach (var item in m_items) {
-            RemoveItem(item);
-        }
+		RemoveAllItems();
     }
 
     public void RegisterEffect(Effect effect) {
@@ -164,7 +162,12 @@ public class KrampusStats : KrampusBehaviour {
         m_items.Add(item);
 
     }
-
+	public void RemoveAllItems() {
+		var itemsCopy = new List<Item>(m_items);
+		foreach (var item in itemsCopy) {
+			RemoveItem(item);
+		}
+	}
     public void RemoveItem(Item item) {
         if (!m_items.Contains(item)) {
             Debug.LogError("Attempted to remove an item {item} which the player did not have.");
