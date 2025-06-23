@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48f408d6630ecf9489019e1be798dc8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_uiCamera: {fileID: 0}
   m_camera: {fileID: 5578729642912264791}
   m_renderingCamera: {fileID: 0}
   m_defaultImpulse: {fileID: 648425443355057622}
@@ -120,7 +121,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   m_baseOffset: {x: -23.55, y: 37, z: 23.3}
-  m_lookAheadStrength: 5
+  m_lookAheadStrength: 3
   m_zoomedOrtoSize: 20
   m_unzoomedOrtoSize: 25
   m_cameraSpeed: 3
@@ -128,6 +129,7 @@ MonoBehaviour:
   m_zoomBuffer: 0.2
   m_unzoomSpeed: 5
   m_aimZoomSpeed: 1.75
+  m_ortoChangeSpeed: 5
 --- !u!114 &5578729642912264791
 MonoBehaviour:
   m_ObjectHideFlags: 0
