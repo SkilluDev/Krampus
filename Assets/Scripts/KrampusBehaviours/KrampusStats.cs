@@ -100,8 +100,12 @@ public class KrampusStats : KrampusBehaviour {
             AddItem(item);
         }
     }
-    private void StoreItems() {
-        Game.PogMan.Store(ref m_items);
+	private void StoreItems() {
+		foreach (var item in m_items) {
+            RemoveItem(item);
+        }
+		Game.PogMan.Store(ref m_items);
+
     }
 
     public void RegisterEffect(Effect effect) {
@@ -151,7 +155,7 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     public void AddItem(Item item) {
-       
+
         item.ItemAdded(Kramp);
         if (!m_items.Contains(item)) {
             item.RegisterEvents(Kramp.KrampusEvents);
@@ -209,4 +213,4 @@ public class KrampusStats : KrampusBehaviour {
         return false;
     }
 
-}   
+}
