@@ -10,17 +10,29 @@ public class CanNunsCook : MonoBehaviour {
 
 	[SerializeField] private Nun m_nun;
 
-	private void Ready() {
-		CookCheck();
 
-		Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
-	}
 
 	private void CookCheck() {
 		if (Game.SetMan.GetValue<bool>("Walter White")) {
 			Cook();
 		} else {
 			Uncook();
+		}
+	}
+
+	private void Ready() {
+		CookCheck();
+
+		Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
+	}
+
+	private void Unready() {
+		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
+	}
+
+	private void OnSetManChange(string key) {
+		if (key == "Walter White") {
+			CookCheck();
 		}
 	}
 
@@ -41,14 +53,5 @@ public class CanNunsCook : MonoBehaviour {
 		m_nun.SetModel();
 		m_nunAnimator.GetType().GetField("m_animator", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(m_nunAnimator, m_normal);
 		m_nunAnimator.GetType().GetField("m_modelTransform", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(m_nunAnimator, m_normal.transform);
-	}
-	private void Unready() {
-		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
-	}
-
-	private void OnSetManChange(string key) {
-		if (key == "Walter White") {
-			CookCheck();
-		}
 	}
 }
