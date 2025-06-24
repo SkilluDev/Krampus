@@ -36,9 +36,10 @@ namespace Settings {
             }
         }
 
-        public void SetValue<T>(string key, T value) {
-            if (m_settingDictionary[key].setting is not ValueSetting<T>) throw new Exception();
-            m_values[key] = value;
+		public void SetValue<T>(string key, T value) {
+			if (m_settingDictionary[key].setting is not ValueSetting<T>) throw new Exception();
+			m_values[key] = value;
+			Game.GlobalEvents.onSetManChange.Invoke(key);
         }
 
         public T GetValue<T>(string key) {
