@@ -200,7 +200,7 @@ public class KrampusTongue : KrampusBehaviour {
 
 			case State.Consume:
 				try {
-					m_hitKrampable.Consume(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation);
+					m_hitKrampable.Consume(Kramp, m_tongueVisualOrigin.position, Quaternion.LookRotation(m_tongueDirection));
 				} catch (Exception e) {
 					LogException(e, m_hitKrampable);
 				}
