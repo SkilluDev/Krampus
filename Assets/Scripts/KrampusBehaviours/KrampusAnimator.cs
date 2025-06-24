@@ -29,6 +29,8 @@ public class KrampusAnimator : KrampusBehaviour {
     private float m_minimalVelocity;
     private Quaternion m_rotationTarget;
 
+    [SerializeField] private KrampusIndicator m_krampusIndicator;
+
     private bool HasLockInItem => Kramp.Stats.HasItemWithTag(ItemTag.LockIn);
 
     private void Start() {
@@ -36,6 +38,9 @@ public class KrampusAnimator : KrampusBehaviour {
         Kramp.Kontroller.onStateChanged += MovementStateChanged;
         m_lockInCircle.gameObject.SetActive(false);
         SetEnableModel(false);
+
+
+        Kramp.KrampusEvents.onEffectRegistered.AddListener(EffectAnimation);
     }
 
     private void Update() {
@@ -181,4 +186,12 @@ public class KrampusAnimator : KrampusBehaviour {
         m_lockInAnimation_2.TryCancel();
         m_inLockInAnimation = false;
     }
+
+    void EffectAnimation(Krampus krampus, Effect effect) {
+        if (effect.StatModifier.Stat == KrampusStats.Stat.Speed && effect.StatModifier.Modifier < 0)
+        {
+            m_krampusIndicator.PlayAniamtion(effect.Duration);
+         }
+     }
+
 }

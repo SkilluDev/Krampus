@@ -34,6 +34,8 @@ public class Krampus : KrampusBehaviour, IInteractor, ICharacter {
     [SerializeField] private KrampusEvents m_krampusEvents;
     public KrampusEvents KrampusEvents => m_krampusEvents;
 
+    
+
 
 
     public Vector3 VelocityVector => Kontroller.VelocityVector;
