@@ -10,7 +10,7 @@ public class CanNunsCook : MonoBehaviour {
 	[SerializeField] private Nun m_nun;
 
     private void Ready() {
-		if (Game.SetMan.GetValue<bool>("walter white")) {
+		if (Game.SetMan.GetValue<bool>("Walter White")) {
 			m_cylinder.gameObject.SetActive(true);
 			m_cylinder.gameObject.transform.SetAsFirstSibling();
 			m_nun.SetModel();

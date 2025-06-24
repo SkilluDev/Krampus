@@ -5,7 +5,7 @@ public class SettingsRenderer : MonoBehaviour {
     private void Start() {
         float currentY = 0;
         foreach (var setting in Game.SetMan.Settings) {
-            var settingRoot = setting.CreateInstance(Game.SetMan, transform);
+            var settingRoot = setting.CreateInstance(Game.SetMan, m_rt.transform);
             var settingRt = settingRoot.GetComponent<RectTransform>();
             settingRt.anchoredPosition = new Vector2(0, -currentY);
             currentY += settingRt.rect.height;
