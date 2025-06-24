@@ -7,6 +7,8 @@ using UnityEngine;
 public class PauseButtons : MonoBehaviour {
 
 	private bool m_settingsOpen = false;
+	[SerializeField] private RectTransform m_inventory;
+	[SerializeField] private RectTransform m_inventoryContainer;
 
 	[SerializeField] private CanvasGroup m_settings;
 
@@ -34,4 +36,13 @@ public class PauseButtons : MonoBehaviour {
 			KrampMotions.HideAlpha(m_settings, 0.5f, unscaledTime: true);
 		}
 	}
+	
+	public void ShowHideInventory() {
+		
+		m_inventory.gameObject.SetActive(!m_inventory.gameObject.activeSelf);
+		
+		foreach (Transform child in m_inventoryContainer) {
+			child.gameObject.GetComponent<InventoryCard>().Hide();
+		}
+	 }
 }
