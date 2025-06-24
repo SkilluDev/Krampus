@@ -22,6 +22,8 @@ public class MusicMan : MonoBehaviour {
 	private MotionHandle m_motionHandle1;
 	private MotionHandle m_motionHandle2;
 	public void Ready() {
+		Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
+		UpdateMixer();
 		switch (Game.CurrentState) {
 			case Game.State.MainGame:
 				if (m_motionHandle1.IsActive()) m_motionHandle1.Cancel();
@@ -37,13 +39,19 @@ public class MusicMan : MonoBehaviour {
 		}
 	}
 
+	private void Unready() {
+		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
+	}
+
+	private void OnSetManChange(string key) {
+		if (key == "Music Volume" || key == "SFX Volume") {
+			UpdateMixer();
+		}
+	}
+
 	public void StopMusic() {
 		m_motionHandle1 = LMotion.Create(m_gameMusicLayer1.volume, 0, m_fadeOutTime).WithOnComplete(m_gameMusicLayer1.Stop).BindToVolume(m_gameMusicLayer1);
 		m_motionHandle2 = LMotion.Create(m_gameMusicLayer2.volume, 0, m_fadeOutTime).WithOnComplete(m_gameMusicLayer2.Stop).BindToVolume(m_gameMusicLayer2);
-	}
-
-	private void Update() {
-		UpdateMixer();
 	}
 
 	public void UpdateMixer() {
