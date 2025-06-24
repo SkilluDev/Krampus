@@ -48,18 +48,31 @@ public class Nun : NPC {
     private void Ready() {
         Game.MainGameInfo.RegisterNun(this);
 
-        m_runSpeed = (float)Game.SetMan.GetValue<long>("Nun Speed");
+		SpeedChange();
+
+		Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
 
         CreatePatrolPath();
         m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.transform;
         m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
     }
 
+	private void OnSetManChange(string key) {
+		if (key == "Nun Speed") {
+			SpeedChange();
+		}
+	}
+
+	private void SpeedChange() {
+		m_runSpeed = (float)Game.SetMan.GetValue<long>("Nun Speed");
+	}
+
     public void SetModel() {
-        m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
-    }
+		m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
+	}
 
     private void Unready() {
+		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
         Game.MainGameInfo.UnregisterNun(this);
     }
 
