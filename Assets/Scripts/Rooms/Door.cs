@@ -65,11 +65,9 @@ public class Door : Passage, IInteractable {
             foreach (var w in m_charactersInDoor) {
                 if (ShouldFlip(w.GameObject.transform.position) == ShouldFlip(position)) return;
 
-                if (actor.GameObject.tag == "Player") {
-                    if (w is Nun n) n.Stun(m_stunDuration);
-                    if (w is Child c) c.Stun(m_stunDuration);
-                }// TODO: extract a Stunnable or make Npc stunnable
-                }
+                if (w is Nun n) n.Stun(m_stunDuration);
+                if (w is Child c) c.Stun(m_stunDuration); // TODO: extract a Stunnable or make Npc stunnable
+            }
         } else {
             m_doorOpen.Play(transform.position, 0.4f);
         }
@@ -83,11 +81,8 @@ public class Door : Passage, IInteractable {
         if (swiftly) {
             m_doorBurst.Play();
             foreach (var w in m_charactersInDoor) {
-
-                if (actor.GameObject.tag == "Player") {
-                    if (w is Nun n) n.Stun(m_stunDuration);
-                    if (w is Child c) c.Stun(m_stunDuration);
-                }
+                if (w is Nun n) n.Stun(m_stunDuration);
+                if (w is Child c) c.Stun(m_stunDuration);
             }
 
             Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
