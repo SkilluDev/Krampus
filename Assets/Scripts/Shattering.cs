@@ -35,6 +35,7 @@ public class Shattering : MonoBehaviour {
         for (int i = 0; i < m_shardRbs.Length; i++) {
             var rb = m_shardRbs[i];
             rb.transform.localScale = m_scales[i] * m_curve.Evaluate(m_remainingLifetime / m_lifetime);
+            if (m_curve.Evaluate(m_remainingLifetime / m_lifetime) < 0.1f) rb.isKinematic = true;
         }
     }
 }

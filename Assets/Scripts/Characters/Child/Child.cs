@@ -158,7 +158,6 @@ public class Child : NPC, IKrampable, INoiseReactor {
 				}
 				break;
 			case State.Stunned:
-				Debug.Log("Chidl stun:" + m_timeout);
 				m_viewCone.SetActive(false);
 				SetVelocity(Vector3.zero);
 				m_timeout -= Time.deltaTime;
