@@ -44,8 +44,6 @@ public class KrampusStats : KrampusBehaviour {
                 }
             }
         }
-        Debug.Log("Ma speed buff:" + GetFinalStat(Stat.Speed));
-
         ClearEffectsToClear();
     }
 

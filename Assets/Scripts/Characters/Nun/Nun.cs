@@ -125,9 +125,8 @@ public class Nun : NPC {
                     m_currentControlPoint++;
                     m_currentControlPoint %= m_patrolPath.Count;
                     // probably should be a min-max
-                    m_timeout = UnityEngine.Random.Range(0, m_patrolIdleDuration);
+                    m_timeout = Random.Range(0, m_patrolIdleDuration);
                     SetDestination(m_patrolPath[m_currentControlPoint]);
-                    Debug.Log("[Nun] Reached patrol point == " + m_currentControlPoint);
                 }
 
                 m_viewCone.SetActive(true);

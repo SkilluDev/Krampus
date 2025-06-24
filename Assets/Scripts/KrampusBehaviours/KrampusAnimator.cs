@@ -63,7 +63,6 @@ public class KrampusAnimator : KrampusBehaviour {
     }
 
     public void TongueStateChanged(KrampusTongue.State previous, KrampusTongue.State current) {
-        if (previous != current) Debug.Log("Tongue moment:" + previous + " -> " + current);
         switch ((previous, current)) {
             case (KrampusTongue.State.Idle, KrampusTongue.State.Windup):
                 m_animator.SetBool(m_tongueReadyProperty, true);
@@ -174,7 +173,7 @@ public class KrampusAnimator : KrampusBehaviour {
 
         m_lockInAnimation_2 = LMotion.Create(0, 1, 0.25f).WithOnComplete(() => m_lockInCircle.gameObject.SetActive(true)).Bind(null);
         m_lockInAnimation = LMotion.Create(0.4f, 0.14f, Kramp.Kontroller.LockInThreshold).WithOnComplete(() => LMotion.Create(0.14f, 0.16f, 0.1f).WithOnComplete(() => LMotion.Create(0.16f, 0.14f, 0.1f).
-        Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3))).Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3))).Bind(x => m_lockInCircle.localScale= new Vector3(x, x, 3));
+        Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3))).Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3))).Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3));
         m_inLockInAnimation = true;
 
     }
@@ -190,10 +189,9 @@ public class KrampusAnimator : KrampusBehaviour {
     }
 
     void EffectAnimation(Krampus krampus, Effect effect) {
-        if (effect.StatModifier.Stat == KrampusStats.Stat.Speed && effect.StatModifier.Modifier < 0)
-        {
+        if (effect.StatModifier.Stat == KrampusStats.Stat.Speed && effect.StatModifier.Modifier < 0) {
             m_krampusIndicator.PlayAniamtion(effect.Duration);
-         }
-     }
+        }
+    }
 
 }
