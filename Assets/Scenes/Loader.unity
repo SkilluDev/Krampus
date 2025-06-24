@@ -167,10 +167,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_settings:
-  - setting: {fileID: 5415522017811518503, guid: f887e235ff0f18992b46cdb3b4a5617d,
-      type: 3}
-    m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
-      mscorlib],[System.Object, mscorlib]], mscorlib","name":"Walter White"}'
   - setting: {fileID: 7421526671820469417, guid: 09e74dcb4ef09575aaa9479350c2d29e,
       type: 3}
     m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
@@ -200,6 +196,10 @@ MonoBehaviour:
       type: 3}
     m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
       mscorlib],[System.Object, mscorlib]], mscorlib","name":"SFX Volume","defaultValue":100}'
+  - setting: {fileID: 5415522017811518503, guid: f887e235ff0f18992b46cdb3b4a5617d,
+      type: 3}
+    m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
+      mscorlib],[System.Object, mscorlib]], mscorlib","name":"Walter White"}'
   m_json: 
 --- !u!1 &133268090
 GameObject:
@@ -3664,10 +3664,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 631795403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 0}
+  m_SizeDelta: {x: 100, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1833699561
 MonoBehaviour:
