@@ -75,8 +75,8 @@ public class NumericDisplay : MonoBehaviour {
                 () => LMotion.Create(m_popUpSize, oldScale, 0.2f).WithEase(Ease.OutBounce).BindToLocalScale(digit)
             ).BindToLocalScale(digit);
             LMotion.Create(m_color, Color.red, 0.2f).WithEase(Ease.OutElastic).WithOnComplete(
-                () => LMotion.Create(Color.red, m_color, 0.2f).WithEase(Ease.OutBounce).BindToColor(img)
-            ).BindToColor(img);
+                () => LMotion.Create(Color.red, m_color, 0.2f).WithEase(Ease.OutBounce).BindToColor(img).AddTo(this)
+            ).BindToColor(img).AddTo(this);
         }
     }
 }

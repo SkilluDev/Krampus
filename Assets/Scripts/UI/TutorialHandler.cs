@@ -83,7 +83,7 @@ public class TutorialHandler : MonoBehaviour {
 			Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
 
 		}
-		if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && gameObject.activeSelf) {
+		if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && Game.MainGameInfo.CurrentState == MainGameInfo.State.WaitingToStart) {
 			MoveBack(m_tutorialCounter++ % m_tutorialPages.Count);
 			//if (--m_uiMoveInCounter == 0) Game.MainGameInfo.UI.UIElementsEntryAnimation();
 		}

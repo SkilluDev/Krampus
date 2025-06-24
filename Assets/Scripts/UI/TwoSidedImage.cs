@@ -55,7 +55,7 @@ public class TwoSidedImage : MonoBehaviour {
 		.Append(LMotion.Create(m_image.transform.localRotation * Quaternion.Euler(new Vector3(0f, 90f, 0f)), m_image.transform.localRotation * Quaternion.Euler(new Vector3(0f, 180f, 0f)), m_flipDuration / 2).WithEase(Ease.OutCubic).WithImmediateBind(false).BindToRotation(m_image.transform))
 		.Join(LMotion.Create(m_image.transform.localScale * m_scaleBounceFactor, m_image.transform.localScale, m_flipDuration / 2).WithEase(Ease.OutCubic).WithImmediateBind(false).Bind(x => m_image.transform.localScale = x))
 		.Append(LMotion.Create(0f, 0f, 0.01f).WithOnComplete(onComplete).RunWithoutBinding()) //for some reason 0 didn't trigger complete
-		.Run();
+		.Run().AddTo(this);
 	}
 
 	public static void FlipImagesSequential(Queue<TwoSidedImage> images, Action onLastComplete = null) {

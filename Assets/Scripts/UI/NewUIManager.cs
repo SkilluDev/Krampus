@@ -134,8 +134,8 @@ public class NewUIManager : MonoBehaviour {
 		}
 
 		LMotion.Create(m_timerDisplay.Color, destinationColor, 0.1f).WithEase(Ease.InOutCubic).WithOnComplete(
-			() => LMotion.Create(destinationColor, m_originalTimerColor, 1.2f).WithEase(Ease.InOutCubic).Bind(m_timerDisplay.SetColor)
-				).Bind(m_timerDisplay.SetColor);
+			() => LMotion.Create(destinationColor, m_originalTimerColor, 1.2f).WithEase(Ease.InOutCubic).Bind(m_timerDisplay.SetColor).AddTo(this)
+				).Bind(m_timerDisplay.SetColor).AddTo(this);
 
 	}
 
@@ -221,14 +221,14 @@ public class NewUIManager : MonoBehaviour {
 		m_currentFillHandle.TryCancel();
 		float oldValue = m_fillBar.fillAmount;
 		m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 0.95f, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
-								 Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar);
+								 Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar).AddTo(this);
 	}
 
 	public void ChangeWindUpValue(float value, float time = 1f) {
 		m_currentWindUpFillHandle.TryCancel();
 		float oldValue = m_windUpFiller.fillAmount;
 		m_currentWindUpFillHandle = LMotion.Create(oldValue, math.remap(0f, 1f, 0.07f, 0.41f, value / Game.MainGameInfo.MaxWindUpPoints), time)
-		.WithDelay(0.4f).BindToFillAmount(m_windUpFiller);
+		.WithDelay(0.4f).BindToFillAmount(m_windUpFiller).AddTo(this);
 	}
 	public void HideBlackBars() {
 		m_blackBars.Hide();
