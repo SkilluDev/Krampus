@@ -75,10 +75,12 @@ public class MainMenuInfo : LevelInfo {
     }
 
     public void TutorialLevel() {
+		if(CurrentState == State.Transitioning ) return;
         LoadGameScene(PogMan.Difficulty.Normal);
      }
 
     public void NotTutorialLevel() {
+		if(CurrentState == State.Transitioning ) return;
         LoadGameScene(PogMan.Difficulty.Hard);
      }
 
