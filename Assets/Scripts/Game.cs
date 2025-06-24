@@ -17,32 +17,29 @@ public class Game : MonoBehaviour {
             SceneManager.LoadScene((int)State.MainMenu);
         }
 
-		if (CurrentState == State.MainGame) {
-			m_bootFromMainGame = true;
-		}
+        if (CurrentState == State.MainGame) {
+            BootFromMainGame = true;
+        }
         PrepareCurrentState();
 
     }
-	public static bool Exists => m_instance != null;
+    public static bool Exists => m_instance != null;
 
-	public static Game Instance {
-		get {
-			if (m_instance == null) {
-				Debug.LogError("Game instance is null! Did you forget to add the Game component to a GameObject?");
-			}
-			return m_instance;
-		}
-	}
-	private static bool m_bootFromMainGame = false;
-	public static bool BootFromMainGame {
-		get => m_bootFromMainGame;
-		set => m_bootFromMainGame = value;}
+    public static Game Instance {
+        get {
+            if (m_instance == null) {
+                Debug.LogError("Game instance is null! Did you forget to add the Game component to a GameObject?");
+            }
+            return m_instance;
+        }
+    }
+    public static bool BootFromMainGame { get; set; }
     public static RoomGenInfo RoomGenInfo {
-		get {
-			if (m_instance.m_roomGenInfo == null) Debug.LogError("RoomGenInfo was not assigned in " + m_instance.gameObject.name);
-			return m_instance.m_roomGenInfo;
-		}
-	}
+        get {
+            if (m_instance.m_roomGenInfo == null) Debug.LogError("RoomGenInfo was not assigned in " + m_instance.gameObject.name);
+            return m_instance.m_roomGenInfo;
+        }
+    }
     [SerializeField] private RoomGenInfo m_roomGenInfo;
 
     public enum State {
@@ -76,7 +73,7 @@ public class Game : MonoBehaviour {
 
 
     [SerializeField] private PogMan m_pogMan;
-public static PogMan PogMan {
+    public static PogMan PogMan {
         get {
             if (m_instance.m_pogMan == null) Debug.LogError("MusicMan was not assigned in " + m_instance.gameObject.name);
             return m_instance.m_pogMan;
@@ -103,24 +100,24 @@ public static PogMan PogMan {
 
     private static Game m_instance;
 
-	public static GlobalEvents GlobalEvents {
+    public static GlobalEvents GlobalEvents {
         get {
             if (m_instance.m_globalEvents == null) Debug.LogError("GlobalEvents was not assigned in " + m_instance.gameObject.name);
             return m_instance.m_globalEvents;
         }
     }
-	[SerializeField] private GlobalEvents m_globalEvents;
+    [SerializeField] private GlobalEvents m_globalEvents;
 
     private static void PrepareCurrentState() {
-		SourceState = CurrentState;
-		DestinationState = CurrentState;
-		CurrentState = State.Loading;
-		RequireFullReload = false;
-		SceneManager.LoadScene(LOADER_SCENE, LoadSceneMode.Additive);
-	}
+        SourceState = CurrentState;
+        DestinationState = CurrentState;
+        CurrentState = State.Loading;
+        RequireFullReload = false;
+        SceneManager.LoadScene(LOADER_SCENE, LoadSceneMode.Additive);
+    }
 
     public static void LoadState(State state) {
-		Debug.Log("LOADING" + state);
+        Debug.Log("LOADING " + state);
         SourceState = CurrentState;
         DestinationState = state;
         CurrentState = State.Loading;
@@ -130,11 +127,11 @@ public static PogMan PogMan {
     }
 
     public static void FinishedLoading() {
-		if (CurrentState != State.Loading) return;
-		CurrentState = DestinationState;
-		DestinationState = State.Loading;
-		SourceState = State.Loading;
-	}
+        if (CurrentState != State.Loading) return;
+        CurrentState = DestinationState;
+        DestinationState = State.Loading;
+        SourceState = State.Loading;
+    }
 
     private void Awake() {
         if (Game.m_instance != null) {
