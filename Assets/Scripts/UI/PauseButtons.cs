@@ -1,8 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using LitMotion;
+using LitMotion.Adapters;
 using UnityEngine;
 
 public class PauseButtons : MonoBehaviour {
+
+	private bool m_settingsOpen = false;
+
+	[SerializeField] private CanvasGroup m_settings;
+
 	public void GoBackToMenu() {
 		Game.PogMan.GoBackToMenu();
 	}
@@ -16,7 +23,15 @@ public class PauseButtons : MonoBehaviour {
 	}
 
 	public void GoBackToGame() {
-		Debug.Log("Going back to game");
 		InputHandler.SwitchPause();
+	}
+
+	public void ToggleSettings() {
+		m_settingsOpen = !m_settingsOpen;
+		if (m_settingsOpen) {
+			KrampMotions.ShowAlpha(m_settings, 0.5f, unscaledTime: true);
+		} else {
+			KrampMotions.HideAlpha(m_settings, 0.5f, unscaledTime: true);
+		}
 	}
 }

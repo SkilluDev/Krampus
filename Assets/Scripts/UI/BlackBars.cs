@@ -144,7 +144,7 @@ public class BlackBars : MonoBehaviour {
 			future.FlipDuration = 0.35f;
 			imageSeq3.Enqueue(future);
 		}
-		
+
 		TwoSidedImage.FlipImagesSpaced(
 			imageSeq1, 1f, 0.2f,
 			() => TwoSidedImage.FlipImagesSequential(
@@ -160,9 +160,9 @@ public class BlackBars : MonoBehaviour {
 		if (show) {
 			ShowBottomBarText(true);
 			Debug.Log("SHOW");
-			KrampMotions.ShowHideAlpha(m_bindings, m_map, 2f);
+			KrampMotions.ShowHideAlpha(m_bindings, m_map, 2f, Ease.InOutExpo);
 		} else {
-			KrampMotions.ShowHideAlpha(m_map, m_bindings, 2f);
+			KrampMotions.ShowHideAlpha(m_map, m_bindings, 2f, Ease.InOutExpo);
 		}
 
 		m_showBindings = show;
