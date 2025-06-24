@@ -25,15 +25,15 @@ public class LowTime : MonoBehaviour {
         m_jawMovementMultiplier = new Vector2(m_initialJawHeights.x / m_lowTime, m_initialJawHeights.y / m_lowTime);
     }
     private void Update() {
-        float currentTime = Game.MainGameInfo.Timer.GameTime;
         if (Game.Balling) {
+        	float currentTime = Game.MainGameInfo.Timer.GameTime;
             if (currentTime > m_lowTime) {
-                m_wantedTopPos = m_initialTopVector;
-                m_wantedBottomPos = m_initialBottomVector;
-            } else {
-                m_wantedTopPos = new Vector2(m_initialTopVector.x, currentTime * m_jawMovementMultiplier.x);
-                m_wantedBottomPos = new Vector2(m_initialBottomVector.x, currentTime * m_jawMovementMultiplier.y);
-            }
+				m_wantedTopPos = m_initialTopVector;
+				m_wantedBottomPos = m_initialBottomVector;
+			} else {
+				m_wantedTopPos = new Vector2(m_initialTopVector.x, currentTime * m_jawMovementMultiplier.x);
+				m_wantedBottomPos = new Vector2(m_initialBottomVector.x, currentTime * m_jawMovementMultiplier.y);
+			}
         }
     }
     private void FixedUpdate() {

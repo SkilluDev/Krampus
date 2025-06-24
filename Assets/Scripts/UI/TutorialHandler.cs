@@ -69,13 +69,14 @@ public class TutorialHandler : MonoBehaviour {
 	}
 
 	private void OnTutorialTrigger(TutorialPage pages) {
+		Debug.Log($"Tutorial triggered with pages: {pages}");
 		if (pages == 0) return;
 		gameObject.SetActive(true);
 		PrepareTutorials(pages);
 	}
 	private void Update() {
 		//LMB to go forward RMB to skip
-		if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame() && gameObject.activeSelf) {
+		if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame() && Game.MainGameInfo.CurrentState == MainGameInfo.State.WaitingToStart) {
 			Debug.Log("Should quit tutorial now");
 			if (m_handle.IsActive()) m_handle.Cancel();
 			gameObject.SetActive(false);
