@@ -5,6 +5,7 @@ public interface ICharacter {
     public Vector3 VelocityVector { get; }
     public float Velocity { get; }
     public float VelocitySqr { get; }
+    public GameObject GameObject => ((MonoBehaviour)this).gameObject;
 }
 
 public class Character : MonoBehaviour {

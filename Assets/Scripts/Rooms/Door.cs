@@ -45,10 +45,15 @@ public class Door : Passage, IInteractable {
         Close(true);
     }
 
-    public void Open(bool swiftly, bool flip, ICharacter actor = null) {
+    private bool ShouldFlip(Vector3 position) {
+        return Vector3.Dot(transform.forward, transform.position - position) > 0;
+    }
+
+    public void Open(bool swiftly, Vector3 position, ICharacter actor = null) {
         if (IsOpen || !Game.Balling) return;
+
         m_animator.SetBool(m_openSuddenProperty, swiftly);
-        m_animator.SetBool(m_invertProperty, flip);
+        m_animator.SetBool(m_invertProperty, ShouldFlip(position));
         m_animator.SetBool(m_openProperty, true);
         m_blocking.enabled = false;
 
@@ -58,8 +63,10 @@ public class Door : Passage, IInteractable {
             m_doorOpen.Play(transform.position, 1f);
 
             foreach (var w in m_charactersInDoor) {
+                if (ShouldFlip(w.GameObject.transform.position) == ShouldFlip(position)) return;
+
                 if (w is Nun n) n.Stun(m_stunDuration);
-                if (w is Child c) c.Stun(m_stunDuration);
+                if (w is Child c) c.Stun(m_stunDuration); // TODO: extract a Stunnable or make Npc stunnable
             }
         } else {
             m_doorOpen.Play(transform.position, 0.4f);
@@ -112,7 +119,7 @@ public class Door : Passage, IInteractable {
 
         Open(
             character.VelocitySqr > m_fastOpenObjectVelocity * m_fastOpenObjectVelocity,
-            Vector3.Dot(transform.forward, transform.position - other.transform.position) > 0
+            other.transform.position
         );
     }
 
@@ -122,7 +129,7 @@ public class Door : Passage, IInteractable {
 
         Open(
             character.VelocitySqr > m_fastOpenObjectVelocity * m_fastOpenObjectVelocity,
-            Vector3.Dot(transform.forward, transform.position - other.transform.position) > 0,
+            other.transform.position,
             character
         );
     }

@@ -38,7 +38,9 @@ public class Box : MonoBehaviour, IKrampable {
         foreach (var c in GetComponentsInChildren<Rigidbody>()) c.isKinematic = true;
         foreach (var c in GetComponentsInChildren<Collider>()) c.enabled = false;
     }
+
     public void Prepare(Krampus krampus) { }
+
     public void AttachToTongue(Krampus krampus, Vector3 position, Quaternion rotation, float progress) {
         transform.position = position;
         transform.rotation = rotation;
