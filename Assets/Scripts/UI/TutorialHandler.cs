@@ -68,10 +68,6 @@ public class TutorialHandler : MonoBehaviour {
 		Game.GlobalEvents.onTutorialTrigger.AddListener(OnTutorialTrigger);
 	}
 
-	private void OnDisable() {
-		m_naughtyChildIcon.sprite = Game.MainGameInfo.NaughtyChildType.uiIcon;
-	}
-
 	private void OnTutorialTrigger(TutorialPage pages) {
 		if (pages == 0) return;
 		gameObject.SetActive(true);
