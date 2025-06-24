@@ -47,8 +47,8 @@ public class MusicMan : MonoBehaviour {
 	}
 
 	public void UpdateMixer() {
-		m_mixer.SetFloat("MusicVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("Music volume"),m_maxMusicVol));
-		m_mixer.SetFloat("SFXVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("SFX volume"),m_maxSFXVol));
+		m_mixer.SetFloat("MusicVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("Music Volume"),m_maxMusicVol));
+		m_mixer.SetFloat("SFXVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("SFX Volume"),m_maxSFXVol));
 	}
 
 	private float ProcessFloatVolume(float volume, float max = 0f) {

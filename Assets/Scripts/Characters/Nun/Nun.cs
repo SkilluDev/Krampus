@@ -48,7 +48,7 @@ public class Nun : NPC {
     private void Ready() {
         Game.MainGameInfo.RegisterNun(this);
 
-        m_runSpeed = (float)Game.SetMan.GetValue<long>("Nun run speed");
+        m_runSpeed = (float)Game.SetMan.GetValue<long>("Nun Speed");
 
         CreatePatrolPath();
         m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.transform;
