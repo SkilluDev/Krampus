@@ -51,11 +51,12 @@ public class Door : Passage, IInteractable {
 
     public void Open(bool swiftly, Vector3 position, ICharacter actor = null) {
         if (IsOpen || !Game.Balling) return;
+        IsOpen = true;
+        m_blocking.enabled = false;
 
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_invertProperty, ShouldFlip(position));
         m_animator.SetBool(m_openProperty, true);
-        m_blocking.enabled = false;
 
         if (swiftly) {
             Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
@@ -70,12 +71,12 @@ public class Door : Passage, IInteractable {
         } else {
             m_doorOpen.Play(transform.position, 0.4f);
         }
-
-        IsOpen = true;
     }
 
     public void Close(bool swiftly, ICharacter actor = null) {
         if (!IsOpen || !Game.Balling) return;
+        IsOpen = false;
+        m_blocking.enabled = true;
 
         if (swiftly) {
             m_doorBurst.Play();
@@ -93,8 +94,6 @@ public class Door : Passage, IInteractable {
 
         m_animator.SetBool(m_openSuddenProperty, swiftly);
         m_animator.SetBool(m_openProperty, false);
-        m_blocking.enabled = true;
-        IsOpen = false;
     }
 
     private void OnTriggerExit(Collider other) {
