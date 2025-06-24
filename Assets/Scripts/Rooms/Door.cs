@@ -63,8 +63,7 @@ public class Door : Passage, IInteractable {
             m_doorOpen.Play(transform.position, 1f);
 
             foreach (var w in m_charactersInDoor) {
-                if (ShouldFlip(w.GameObject.transform.position) == ShouldFlip(position)) return;
-
+                if (ShouldFlip(w.GameObject.transform.position) == ShouldFlip(position)) continue;
                 if (w is Nun n) n.Stun(m_stunDuration);
                 if (w is Child c) c.Stun(m_stunDuration); // TODO: extract a Stunnable or make Npc stunnable
             }
