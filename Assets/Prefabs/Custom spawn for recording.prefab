@@ -599,7 +599,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5314356688480990050}
-  - component: {fileID: 1508572986766891519}
   - component: {fileID: 5435054079543767183}
   - component: {fileID: 5368340734881523642}
   m_Layer: 3
@@ -625,21 +624,6 @@ Transform:
   - {fileID: 2259804025398634799}
   m_Father: {fileID: 8298333392938884628}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1508572986766891519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 395869082900581338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76dc1b847dd6537868b10079e3e1a18b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_model: {fileID: 2259804025398634799}
-  m_strength: 0.1
-  m_duration: 1
 --- !u!114 &5435054079543767183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -802,7 +786,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 472304898940533991}
-  - component: {fileID: 1497495278793335892}
   m_Layer: 0
   m_Name: Stool (1)
   m_TagString: Untagged
@@ -826,21 +809,6 @@ Transform:
   - {fileID: 3867194626352669792}
   m_Father: {fileID: 8298333392938884628}
   m_LocalEulerAnglesHint: {x: 0, y: 30.698, z: 0}
---- !u!114 &1497495278793335892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 464335324750260978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76dc1b847dd6537868b10079e3e1a18b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_model: {fileID: 3867194626352669792}
-  m_strength: 0.1
-  m_duration: 1
 --- !u!1 &498155718565767223
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,7 +1302,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4228951773331640991}
-  - component: {fileID: 6674738932207468494}
   m_Layer: 0
   m_Name: Stool
   m_TagString: Untagged
@@ -1358,21 +1325,6 @@ Transform:
   - {fileID: 8847084139448644863}
   m_Father: {fileID: 8298333392938884628}
   m_LocalEulerAnglesHint: {x: 0, y: -16.265, z: 0}
---- !u!114 &6674738932207468494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 838045830225089073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76dc1b847dd6537868b10079e3e1a18b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_model: {fileID: 8847084139448644863}
-  m_strength: 0.1
-  m_duration: 1
 --- !u!1 &873915226231579269
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,7 +1368,6 @@ GameObject:
   - component: {fileID: 439631585192804262}
   - component: {fileID: 2722541079741376432}
   - component: {fileID: 3576024157926741723}
-  - component: {fileID: 1124710556614244654}
   m_Layer: 3
   m_Name: Lamp (2)
   m_TagString: Untagged
@@ -1478,21 +1429,6 @@ CapsuleCollider:
   m_Height: 5.08
   m_Direction: 1
   m_Center: {x: 0, y: 1.92, z: 0}
---- !u!114 &1124710556614244654
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881379541034031644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76dc1b847dd6537868b10079e3e1a18b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_model: {fileID: 0}
-  m_strength: 0.1
-  m_duration: 1
 --- !u!1 &904292441468913680
 GameObject:
   m_ObjectHideFlags: 0
@@ -7075,7 +7011,6 @@ GameObject:
   - component: {fileID: 6552438495085497008}
   - component: {fileID: 7111937254748656307}
   - component: {fileID: 822567045098978441}
-  - component: {fileID: 8664460068179960248}
   m_Layer: 3
   m_Name: Lamp
   m_TagString: Untagged
@@ -7139,21 +7074,6 @@ CapsuleCollider:
   m_Height: 5.08
   m_Direction: 1
   m_Center: {x: 0, y: 1.92, z: 0}
---- !u!114 &8664460068179960248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4184151307893711945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76dc1b847dd6537868b10079e3e1a18b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_model: {fileID: 4861125085356017643}
-  m_strength: 0.1
-  m_duration: 1
 --- !u!1 &4264124748581302738
 GameObject:
   m_ObjectHideFlags: 0
@@ -7787,7 +7707,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 0}
   m_room: {fileID: 519111852247182088}
-  m_gizmoColor: {r: 0.3, g: 0.40000007, b: 0.6, a: 0.7}
+  m_gizmoColor: {r: 0.3, g: 0.6, b: 0.3, a: 0.7}
 --- !u!1 &4560426267762570708
 GameObject:
   m_ObjectHideFlags: 0
@@ -8170,7 +8090,6 @@ GameObject:
   - component: {fileID: 5358423776440992203}
   - component: {fileID: 8320206777709870058}
   - component: {fileID: 5679260366947979966}
-  - component: {fileID: 9160914341403431403}
   m_Layer: 3
   m_Name: Lamp
   m_TagString: Untagged
@@ -8234,21 +8153,6 @@ CapsuleCollider:
   m_Height: 5.08
   m_Direction: 1
   m_Center: {x: 0, y: 1.92, z: 0}
---- !u!114 &9160914341403431403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4885520950846567635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76dc1b847dd6537868b10079e3e1a18b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_model: {fileID: 3124576649603779672}
-  m_strength: 0.1
-  m_duration: 1
 --- !u!1 &4935290582804500357
 GameObject:
   m_ObjectHideFlags: 0
@@ -18554,7 +18458,6 @@ GameObject:
   - component: {fileID: 3255337187829270123}
   - component: {fileID: 2308363547784231860}
   - component: {fileID: 6446513344980288864}
-  - component: {fileID: 581394557521654760}
   m_Layer: 3
   m_Name: Lamp (1)
   m_TagString: Untagged
@@ -18616,21 +18519,6 @@ CapsuleCollider:
   m_Height: 5.08
   m_Direction: 1
   m_Center: {x: 0, y: 1.92, z: 0}
---- !u!114 &581394557521654760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7611414289703880337}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76dc1b847dd6537868b10079e3e1a18b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_model: {fileID: 0}
-  m_strength: 0.1
-  m_duration: 1
 --- !u!1 &7625019610091417896
 GameObject:
   m_ObjectHideFlags: 0
@@ -18915,7 +18803,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 0}
   m_room: {fileID: 519111852247182088}
-  m_gizmoColor: {r: 0.6, g: 0.12, b: 0.36, a: 0.7}
+  m_gizmoColor: {r: 0.6, g: 0.42000005, b: 0.060000017, a: 0.7}
 --- !u!1 &7665027622795605356
 GameObject:
   m_ObjectHideFlags: 0
@@ -19062,7 +18950,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 932231578978703504}
-  - component: {fileID: 8027454113799179898}
   m_Layer: 0
   m_Name: Chair
   m_TagString: Untagged
@@ -19086,21 +18973,6 @@ Transform:
   - {fileID: 7577967867307349665}
   m_Father: {fileID: 519858674680450737}
   m_LocalEulerAnglesHint: {x: 0, y: -23.637, z: 0}
---- !u!114 &8027454113799179898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7688357876597425495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76dc1b847dd6537868b10079e3e1a18b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_model: {fileID: 7577967867307349665}
-  m_strength: 0.1
-  m_duration: 1
 --- !u!1 &7726081529662882897
 GameObject:
   m_ObjectHideFlags: 0
@@ -20000,7 +19872,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 0}
   m_room: {fileID: 519111852247182088}
-  m_gizmoColor: {r: 0.18, g: 0.6, b: 0.6, a: 0.7}
+  m_gizmoColor: {r: 0.5100001, g: 0.060000017, b: 0.6, a: 0.7}
 --- !u!1 &8209411270361998499
 GameObject:
   m_ObjectHideFlags: 0
