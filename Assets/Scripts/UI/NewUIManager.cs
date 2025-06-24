@@ -292,8 +292,8 @@ public class NewUIManager : MonoBehaviour {
 		foreach (var i in items) {
 
 			InventoryCard ic = Instantiate(m_inventoryCardPref);
-			ic.SetInfo(i.ItemIcon);
-			ic.transform.SetParent(m_inventoryContainer);
+			ic.SetInfo(i);
+			ic.transform.SetParent(m_inventoryContainer,false	);
 		}
 	}
 }

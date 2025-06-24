@@ -1,13 +1,43 @@
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using TMPro;
 
-public class InventoryCard : MonoBehaviour {
+public class InventoryCard : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler {
 
 
     //2
     [SerializeField] private Image m_itemIcon;
 
-    public void SetInfo(Sprite itemIcon) {
-        m_itemIcon.sprite = itemIcon;
+    [SerializeField] private GameObject m_descBox;
+    [SerializeField] private RectTransform m_descBackground;
+    [SerializeField] private TextMeshProUGUI m_titleText;
+    [SerializeField] private TextMeshProUGUI m_descriptionText;
+
+    [SerializeField] private float m_baseHeight;
+
+
+    private void Start() {
+        m_descBox.SetActive(false);
+
+
+    }
+	public void OnPointerEnter(PointerEventData eventData) {
+        m_descBox.SetActive(true);
+    }
+
+	public void OnPointerExit(PointerEventData eventData) {
+        m_descBox.SetActive(false);
+     }
+
+    public void SetInfo(Item item) {
+        m_itemIcon.sprite = item.ItemIcon;
+        m_titleText.text = item.ItemName;
+        m_descriptionText.text = item.Description;
+
+        m_descriptionText.ForceMeshUpdate();
+        float height = m_descriptionText.preferredHeight;
+
+        m_descBackground.sizeDelta = new Vector2(m_descBackground.sizeDelta.x, m_baseHeight + height);
     }
 }
