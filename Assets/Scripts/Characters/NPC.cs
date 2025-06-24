@@ -59,7 +59,7 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
 
         OverridePathCosts();
         if (!NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, m_currentPath)) {
-            Debug.LogError($"[NPC] {name} Could not form path");
+			if(Game.Balling) Debug.LogError($"[NPC] {name} Could not form path");
             return false;
         }
         CurrentDestination = destination;
