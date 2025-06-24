@@ -126,6 +126,16 @@ public class KrampusTongue : KrampusBehaviour {
 	private void Ready() {
 		m_previousTongueLength = TongueLength;
 	}
+
+	private void Start() {
+		Kramp.Kontroller.onStateChanged += MovementStateChanged;
+	}
+
+	private void MovementStateChanged(KrampusController.State previous, KrampusController.State next, KrampusController.StateChangeReason reason) {
+		if (next is KrampusController.State.Dead && m_hitKrampable != null)
+			m_hitKrampable.Consume(Kramp, transform.position, transform.rotation);
+	}
+
 	private void Update() {
 		if (!Game.Balling) {
 			m_tongueAimIndicator.gameObject.SetActive(false);

@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour {
     [SerializeField] protected float m_speed = 14;
     [SerializeField] protected float m_turningSpeed = 15;
     [SerializeField] protected LayerMask m_destroyedBy;
-    [SerializeField] protected Tag m_targetGroup;
+    [SerializeField] protected Tag[] m_targetGroups;
 
     [BoxGroup("Components")][SerializeField] protected Rigidbody m_rigidbody;
     [BoxGroup("Components")][SerializeField] protected AudioSource m_audioSource;
@@ -98,7 +98,7 @@ public class Projectile : MonoBehaviour {
             Miss(other);
         }
 
-        if (other.gameObject.HasTag(m_targetGroup)) {
+        if (other.gameObject.HasAnyTag(m_targetGroups)) {
             Hit(other);
         }
     }
