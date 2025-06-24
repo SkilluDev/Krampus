@@ -21,7 +21,7 @@ public class NewUIManager : MonoBehaviour {
 	[SerializeField] private GameObject m_pauseScreen;
 
 
-	
+
 	[BoxGroup("Inventory")][SerializeField] private RectTransform m_inventoryContainer;
 	[BoxGroup("Inventory")][SerializeField] private InventoryCard m_inventoryCardPref;
 
@@ -244,9 +244,9 @@ public class NewUIManager : MonoBehaviour {
 		if (m_uiOn) return;
 		m_uiBlockLeft.gameObject.SetActive(true);
 		float lx = m_uiBlockLeft.anchoredPosition.x;
-		LMotion.Create(-200, lx, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition = new Vector2(x, m_uiBlockLeft.anchoredPosition.y));
+		LMotion.Create(-200, lx, 0.375f).Bind(x => m_uiBlockLeft.anchoredPosition = new Vector2(x, m_uiBlockLeft.anchoredPosition.y)).AddTo(this);
 		m_uiBlockRight.gameObject.SetActive(true);
-		LMotion.Create(300, -50, 0.375f).Bind(x => m_uiBlockRight.anchoredPosition = new Vector2(x, m_uiBlockRight.anchoredPosition.y));
+		LMotion.Create(300, -50, 0.375f).Bind(x => m_uiBlockRight.anchoredPosition = new Vector2(x, m_uiBlockRight.anchoredPosition.y)).AddTo(this);
 		m_uiOn = true;
 	}
 
@@ -299,5 +299,5 @@ public class NewUIManager : MonoBehaviour {
 		}
 	}
 
-	
+
 }
