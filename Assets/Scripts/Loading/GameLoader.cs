@@ -28,7 +28,7 @@ public class GameLoader : MonoBehaviour {
         BroadcastAll(unloadedScene, "Unready");
         Time.timeScale = 0;
 
-        BeginStatus("Waiting");
+        BeginStatus("Loading");
         yield return Delay();
         SceneManager.SetActiveScene(gameObject.scene);
 
@@ -50,7 +50,7 @@ public class GameLoader : MonoBehaviour {
         SceneManager.SetActiveScene(loadedScene);
         yield return UpdateLoadables(loadedScene);
 
-        BeginStatus("Waiting");
+        BeginStatus("Loading");
         yield return Delay();
 
         BeginStatus("Finishing Scene");
@@ -98,13 +98,13 @@ public class GameLoader : MonoBehaviour {
     }
 
     private IEnumerator SoftLoadingProcedure() {
-        BeginStatus("Waiting");
+        BeginStatus("Loading");
         Time.timeScale = 0;
         var loadedScene = SceneManager.GetSceneByBuildIndex((int)Game.DestinationState);
         SceneManager.SetActiveScene(loadedScene);
         yield return UpdateLoadables(loadedScene);
 
-        BeginStatus("Waiting");
+        BeginStatus("Loading");
         yield return Delay();
 
         BeginStatus("Finishing Scene");
