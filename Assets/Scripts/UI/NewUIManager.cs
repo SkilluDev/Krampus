@@ -20,6 +20,8 @@ public class NewUIManager : MonoBehaviour {
 	[SerializeField] private TextMeshProUGUI m_currentSeed;
 	[SerializeField] private GameObject m_pauseScreen;
 
+
+	
 	[BoxGroup("Inventory")][SerializeField] private RectTransform m_inventoryContainer;
 	[BoxGroup("Inventory")][SerializeField] private InventoryCard m_inventoryCardPref;
 
@@ -293,7 +295,9 @@ public class NewUIManager : MonoBehaviour {
 
 			InventoryCard ic = Instantiate(m_inventoryCardPref);
 			ic.SetInfo(i);
-			ic.transform.SetParent(m_inventoryContainer,false	);
+			ic.transform.SetParent(m_inventoryContainer, false);
 		}
 	}
+
+	
 }

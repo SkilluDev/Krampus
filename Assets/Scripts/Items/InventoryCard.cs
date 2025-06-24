@@ -2,6 +2,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using LitMotion;
 
 public class InventoryCard : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler {
 
@@ -16,18 +17,33 @@ public class InventoryCard : MonoBehaviour, IPointerExitHandler, IPointerEnterHa
 
     [SerializeField] private float m_baseHeight;
 
+    [SerializeField] private Animator m_animator;
+
+
+
+
+ 
 
     private void Start() {
         m_descBox.SetActive(false);
 
 
     }
-	public void OnPointerEnter(PointerEventData eventData) {
+    public void OnPointerEnter(PointerEventData eventData) {
         m_descBox.SetActive(true);
+        m_animator.SetTrigger("Highlighted");
+     
+        
     }
 
-	public void OnPointerExit(PointerEventData eventData) {
-        m_descBox.SetActive(false);
+    public void OnPointerExit(PointerEventData eventData) {
+        Hide();
+     }
+
+
+    public void Hide() {
+         m_descBox.SetActive(false);
+        m_animator.SetTrigger("Normal");
      }
 
     public void SetInfo(Item item) {
