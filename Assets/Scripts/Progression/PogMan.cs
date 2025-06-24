@@ -135,9 +135,7 @@ public class PogMan : MonoBehaviour {
 		} else {
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
 		}
-
-		StartNewGame(CurrentDifficulty);
-
+		StartNewGame(m_difficultyAfterTutorial);
 	}
 
 	public void ReloadCurrentLevel() {

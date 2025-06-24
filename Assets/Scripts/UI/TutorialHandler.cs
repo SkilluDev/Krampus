@@ -71,6 +71,7 @@ public class TutorialHandler : MonoBehaviour {
 	private void OnTutorialTrigger(TutorialPage pages) {
 		Debug.Log($"Tutorial triggered with pages: {pages}");
 		if (pages == 0) return;
+		m_naughtyChildIcon.sprite = Game.MainGameInfo.NaughtyChildType.uiIcon;
 		gameObject.SetActive(true);
 		PrepareTutorials(pages);
 	}
