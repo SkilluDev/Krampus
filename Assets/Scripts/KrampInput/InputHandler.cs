@@ -51,7 +51,7 @@ public class InputHandler : MonoBehaviour
 
 	}
 
-    private void SwitchPause() {
+    public static void SwitchPause() {
         if (!Game.MainGameInfo.Ended) {
             if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Paused) {
                 Game.MainGameInfo.SetState(MainGameInfo.State.Game);
