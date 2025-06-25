@@ -14,13 +14,10 @@ public class NunMissile : Projectile {
         if (other.gameObject.HasTag(m_doorTag)) {
             if (!other.gameObject.GetComponent<Door>().IsOpen) {
                 base.Miss(other);
-             }
-           
-
-           
+            }
         } else
             base.Miss(other);
-    }
+    	}
 
 
 }
