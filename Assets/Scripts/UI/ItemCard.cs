@@ -6,25 +6,32 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemCard : MonoBehaviour {
-    [SerializeField] private Image m_itemIconImage;
+	[SerializeField] private Image m_itemIconImage;
 
-    [SerializeField] private TextMeshProUGUI m_titleText;
-    [SerializeField] private TextMeshProUGUI m_descriptionText;
+	[SerializeField] private TextMeshProUGUI m_titleText;
+	[SerializeField] private TextMeshProUGUI m_descriptionText;
 
-    [SerializeField] private Button m_button;
-
-
-
-    public void SetInfo(Sprite icon, string title, string description)
-    {
-
-        m_itemIconImage.sprite = icon;
-        m_titleText.text = title;
-        m_descriptionText.text = description;
+	[SerializeField] private Button m_button;
 
 
-        //m_button.animationTriggers.
 
-       
-    }
+	public void SetInfo(Sprite icon, string title, string description) {
+
+		m_itemIconImage.sprite = icon;
+		m_titleText.text = title;
+		m_descriptionText.text = description;
+
+
+		//m_button.animationTriggers.
+
+
+	}
+
+	public void TurnOff() {
+		m_itemIconImage.sprite = null;
+		m_itemIconImage.color = new Color(0, 0, 0, 0);
+		m_titleText.text = "";
+		m_descriptionText.text = "";
+		m_button.interactable = false;
+	}
 }
