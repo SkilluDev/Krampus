@@ -93,7 +93,7 @@ public class MainMenuInfo : LevelInfo {
             if (i >= m_canvases.Length) continue;
             if (m_motions[i].IsActive()) m_motions[i].Cancel();
             if (i == (int)CurrentState) m_canvases[i].gameObject.SetActive(true);
-            m_motions[i] = LMotion.Create(m_canvases[i].alpha, ij == (int)CurrentState ? 1f : 0f, 1f)
+            m_motions[i] = LMotion.Create(m_canvases[i].alpha, ij == (int)CurrentState ? 1f : 0f, 0.5f)
                             .WithOnComplete(() => m_canvases[ij].gameObject.SetActive(ij == (int)CurrentState))
                             .BindToAlpha(m_canvases[ij]);
         }
