@@ -15,8 +15,10 @@ public class InputHandler : MonoBehaviour
 
 		if (Game.MainGameInfo.Lost || Game.MainGameInfo.CurrentState == MainGameInfo.State.Paused) {//if the game is over, or paused, you can
 
-			if ((InputSubscribe.Raw.UI.Pause.triggered || InputSubscribe.Raw.UI.Advance.triggered )&& Game.PogMan.CanGoToNextLevel) { //go to next level with space
-				Game.MainGameInfo.UI.BlackBars.ShowBindings(true);
+			if ((InputSubscribe.Raw.UI.Pause.triggered || InputSubscribe.Raw.UI.Advance.triggered )&& Game.PogMan.CanGoToNextLevel) {
+				//go to next level with space
+				Game.MainGameInfo.UI.BlackBars.HideMap();
+				Game.MainGameInfo.UI.BlackBars.ShowBottomBarButtonPanel(true);
 			}
 
 			if (InputSubscribe.Raw.UI.MenuReturn.triggered) { //go back to menu with M

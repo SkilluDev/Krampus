@@ -263,7 +263,7 @@ public class NewUIManager : MonoBehaviour {
 			m_blackBars.AnimateResultText(true);
 		} else {
 			m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-			m_blackBars.ShowBottomBarText(false);
+			m_blackBars.ShowBottomBarButtonPanel(false);
 
 			m_blackBars.AnimateResultText(false);
 		}
@@ -298,6 +298,19 @@ public class NewUIManager : MonoBehaviour {
 			ic.transform.SetParent(m_inventoryContainer, false);
 		}
 	}
+
+
+	public void GoBackToMenu() {
+		Game.PogMan.GoBackToMenu();
+	}
+
+	public void NewSeed() {
+		Game.PogMan.LoadFirstLevel(true);
+	}
+
+	public void SameSeed() {
+		Game.PogMan.LoadFirstLevel(false);
+	 }
 
 
 }
