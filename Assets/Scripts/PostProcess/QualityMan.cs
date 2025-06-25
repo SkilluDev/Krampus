@@ -4,13 +4,13 @@ using UnityEngine;
 public class QualityManager : MonoBehaviour {
 	private int m_lastSettingValue = -999;
 
-	private void Ready() {
+	private void OnEnable() {
 		QualityChange();
 
 		Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
 	}
 
-	private void Unready() {
+	private void OnDisable() {
 		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
 	}
 
@@ -23,12 +23,8 @@ public class QualityManager : MonoBehaviour {
 	private void QualityChange() {
 		int value = (int)Game.SetMan.GetValue<long>("Quality");
 		if (value == m_lastSettingValue) return;
-
-		QualitySettings.SetQualityLevel(value);
+		QualitySettings.SetQualityLevel(value, true);
 		m_lastSettingValue = value;
-
-
-		Debug.Log("[Quality] Switch quality: " + value);
 	}
 }
 
