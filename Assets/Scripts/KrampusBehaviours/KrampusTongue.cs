@@ -50,6 +50,8 @@ public class KrampusTongue : KrampusBehaviour {
 	private ITongueable m_hitTonguable;
 	private IKrampable m_hitKrampable;
 
+	public bool HoldsThrowable => m_hitKrampable != null && m_hitKrampable.Type == IKrampable.krampableType.DelayedAiming;
+
 	private List<(float dst, ITongueable component)> m_midwayToungables;
 
 	public enum State {
