@@ -170,7 +170,7 @@ MonoBehaviour:
   - setting: {fileID: 7421526671820469417, guid: 09e74dcb4ef09575aaa9479350c2d29e,
       type: 3}
     m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
-      mscorlib],[System.Object, mscorlib]], mscorlib","name":"Custom Seed","defaultValue":-1}'
+      mscorlib],[System.Object, mscorlib]], mscorlib","name":"Seed Override","defaultValue":-1}'
   - setting: {fileID: 4971484281591837886, guid: 3da37353e1c2ece528181e65646b7359,
       type: 3}
     m_parameterList: '{"$type":"System.Collections.Generic.Dictionary`2[[System.String,
@@ -1211,7 +1211,7 @@ MonoBehaviour:
       m_levelSet: {fileID: 11400000, guid: e32be2185deec83478ed8f2dda47a2af, type: 2}
   m_levelSet: {fileID: 11400000, guid: 311b779373fd01746879ff6ba1f436e4, type: 2}
   m_startingLevel: 0
-  m_krampusItems: []
+  krampusItems: []
 --- !u!4 &544388242
 Transform:
   m_ObjectHideFlags: 0
@@ -3235,6 +3235,9 @@ MonoBehaviour:
   onTutorialTrigger:
     m_PersistentCalls:
       m_Calls: []
+  onSetManChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1571651735
 GameObject:
   m_ObjectHideFlags: 0
@@ -3664,10 +3667,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 631795403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 40}
+  m_SizeDelta: {x: 100, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1833699561
 MonoBehaviour:

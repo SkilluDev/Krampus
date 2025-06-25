@@ -46,8 +46,8 @@ public class PogMan : MonoBehaviour {
 	public int CurrentLevel => m_currentLevel;
 
 	public bool IsThereNextLevel => m_currentLevel < m_levelSet.LevelStats.Count - 1;
-	public List<Item> m_krampusItems;
-	public IReadOnlyList<Item> KrampusItems => m_krampusItems;
+	public List<Item> krampusItems;
+	public IReadOnlyList<Item> KrampusItems => krampusItems;
 
 	private float m_timer;
 
@@ -56,7 +56,12 @@ public class PogMan : MonoBehaviour {
 	private void Ready() {
 		if (Game.BootFromMainGame) {
 			Game.LoadState(Game.State.MainMenu);
+		} else {
+			Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
 		}
+	}
+	private void Unready() {
+		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
 	}
 	private void FixedUpdate() {
 		if (Game.Balling) m_timer += Time.fixedDeltaTime;
@@ -81,7 +86,7 @@ public class PogMan : MonoBehaviour {
 		m_canGoToNextLevel = false;
 		m_currentLevel = m_startingLevel;
 		//			m_krampusItems.Clear();
-		m_krampusItems = null;
+		krampusItems = null;
 		m_clearItemsOnLoad = true;
 		m_timer = 0;
 
@@ -89,7 +94,7 @@ public class PogMan : MonoBehaviour {
 
 	// those essentially move the list in and out without copying it and making sure no reference lives too long.
 	public void Store(List<Item> items) {
-		m_krampusItems = new List<Item>(items);
+		krampusItems = new List<Item>(items);
 	}
 
 	public void Unpack(ref List<Item> items) {
@@ -99,9 +104,9 @@ public class PogMan : MonoBehaviour {
 			return;
 		}
 
-		if (m_krampusItems == null) items = new List<Item>();
-		else items = m_krampusItems;
-		m_krampusItems = null;
+		if (krampusItems == null) items = new List<Item>();
+		else items = krampusItems;
+		krampusItems = null;
 	}
 
 
@@ -164,7 +169,7 @@ public class PogMan : MonoBehaviour {
 				Game.RoomGenInfo.SetInitialSeed();
 				break;
 			case RoomGenerationType.New:
-				Game.RoomGenInfo.SetNewSeed();
+				Game.RoomGenInfo.SetInitialSeed();
 				break;
 			case RoomGenerationType.Old:
 				break;
@@ -193,6 +198,12 @@ public class PogMan : MonoBehaviour {
 		Game.LoadState(Game.State.MainGame);
 	}
 
+
+	private void OnSetManChange(string key) {
+		if (key == "Seed Override") {
+			Game.RoomGenInfo.SetInitialSeed();
+		}
+	}
 
 
 }
