@@ -20,7 +20,7 @@ public class KrampusAnimator : KrampusBehaviour {
     [BoxGroup("Sounds")][SerializeField] private Sex m_crackSoundBite;
     [BoxGroup("Sounds")][SerializeField] private Sex m_deathSoundBite;
 
-    [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathProperty, m_wakeupProperty;
+    [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathProperty, m_wakeupProperty, m_shootProperty;
 
     [BoxGroup("Lock in")][SerializeField] private GameObject m_lockInMarker;
     [BoxGroup("Lock in")][SerializeField] private SpriteRenderer m_lockInCircle;
@@ -66,13 +66,17 @@ public class KrampusAnimator : KrampusBehaviour {
 
     public void TongueStateChanged(KrampusTongue.State previous, KrampusTongue.State current) {
         switch ((previous, current)) {
-            case (KrampusTongue.State.Idle, KrampusTongue.State.Windup):
+            case (_, KrampusTongue.State.Windup):
                 m_animator.SetBool(m_tongueReadyProperty, true);
                 m_animator.SetBool(m_tongueShouldEatProperty, false);
                 m_windupSoundBite.Play(transform.position, 1);
                 break;
             case (KrampusTongue.State.Windup, KrampusTongue.State.Idle):
                 m_animator.SetBool(m_tongueReadyProperty, false);
+                break;
+
+            case (_, KrampusTongue.State.Consume):
+                     m_animator.SetTrigger(m_shootProperty);
                 break;
             case (KrampusTongue.State.Windup, KrampusTongue.State.TargetFetch):
                 m_animator.SetTrigger(m_tongueOutProperty);
