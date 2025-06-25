@@ -151,7 +151,7 @@ public class KrampusTongue : KrampusBehaviour {
 		switch (CurrentState) {
 			case State.Carrying:
 				if (m_hitKrampable != null) {
-					m_hitKrampable.AttachToTongue(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
+					m_hitKrampable.AttachToTongue(Kramp, m_inMouthOrigin.position, m_inMouthOrigin.rotation, 1);
 				}
 				goto case State.Idle;
 
@@ -169,7 +169,7 @@ public class KrampusTongue : KrampusBehaviour {
 
 			case State.Windup: // Pre-shoot phase. Wait for the windup
 				if (m_hitKrampable != null) {
-					m_hitKrampable.AttachToTongue(Kramp, m_tongueVisualOrigin.position, m_tongueVisualOrigin.rotation, 1);
+					m_hitKrampable.AttachToTongue(Kramp, m_inMouthOrigin.position, m_inMouthOrigin.rotation, 1);
 				}
 
 				if (IsTime(nameof(Timings.windup))) {
