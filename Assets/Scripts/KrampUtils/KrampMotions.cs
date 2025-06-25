@@ -10,11 +10,11 @@ public class KrampMotions {
 
 	public static void ShowAlpha(CanvasGroup toShow, float duration, Ease ease = Ease.Linear, bool unscaledTime = false) {
 		toShow.gameObject.SetActive(true);
-		LMotion.Create(0f, 1f, duration).WithEase(ease).WithScheduler(unscaledTime?MotionScheduler.UpdateIgnoreTimeScale:MotionScheduler.Update).BindToAlpha(toShow);
+		LMotion.Create(0f, 1f, duration).WithEase(ease).WithScheduler(unscaledTime?MotionScheduler.UpdateIgnoreTimeScale:MotionScheduler.Update).BindToAlpha(toShow).AddTo(toShow);
 	}
 
 	public static void HideAlpha(CanvasGroup toHide, float duration, Ease ease = Ease.Linear, bool unscaledTime = false) {
-		LMotion.Create(1f, 0f, duration).WithEase(ease).WithScheduler(unscaledTime?MotionScheduler.UpdateIgnoreTimeScale:MotionScheduler.Update).WithOnComplete(()=>toHide.gameObject.SetActive(false)).BindToAlpha(toHide);
+		LMotion.Create(1f, 0f, duration).WithEase(ease).WithScheduler(unscaledTime?MotionScheduler.UpdateIgnoreTimeScale:MotionScheduler.Update).WithOnComplete(()=>toHide.gameObject.SetActive(false)).BindToAlpha(toHide).AddTo(toHide);
 	}
 
 }
