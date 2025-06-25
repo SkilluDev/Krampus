@@ -76,8 +76,12 @@ public class KrampusAnimator : KrampusBehaviour {
                 break;
 
             case (_, KrampusTongue.State.Consume):
-                     m_animator.SetTrigger(m_shootProperty);
-                      m_animator.SetBool(m_tongueReadyProperty, false);
+                if (Kramp.Tongue.HoldsThrowable) {
+                    m_animator.SetTrigger(m_shootProperty);
+                    
+                }
+                 m_animator.SetBool(m_tongueReadyProperty, false);
+                     
                 break;
             case (KrampusTongue.State.Windup, KrampusTongue.State.TargetFetch):
                 m_animator.SetTrigger(m_tongueOutProperty);
@@ -108,6 +112,8 @@ public class KrampusAnimator : KrampusBehaviour {
                 if (Kramp.Kontroller.CurrentState == KrampusController.State.Walk || Kramp.Kontroller.CurrentState == KrampusController.State.Idle) {
 
                     LockInAnimation();
+                    m_animator.ResetTrigger(m_shootProperty);
+                   
                 }
                 break;
         }
