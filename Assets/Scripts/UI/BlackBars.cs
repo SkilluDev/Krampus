@@ -45,7 +45,8 @@ public class BlackBars : MonoBehaviour {
 	[BoxGroup("Animation")][SerializeField] private float m_shakeDuration;
 	private float m_yDistanceTop, m_yDistanceBottom;
 	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexBeatenFlip;
-	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexLastFlip;
+	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexWonFlip;
+	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexLostFlip;
 	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexFutureFlip;
 
 	private void Awake() {
@@ -126,8 +127,8 @@ public class BlackBars : MonoBehaviour {
 		current.BackSprite = hasWon ? m_doneLevelSprite : m_failedLevelSprite;
 		current.SetToFrontSprite();
 		current.FlipDuration = 1f;
+		current.FlipSound = (hasWon ? m_sexWonFlip : m_sexLostFlip, 1);
 		currentLevelAndNextSeq.Enqueue(current);
-
 
 		levelIndex++;
 
@@ -138,8 +139,7 @@ public class BlackBars : MonoBehaviour {
 			next.FrontSprite = m_futureLevelSprite;
 			next.BackSprite = m_currentLevelSprite;
 			next.SetToFrontSprite();
-			next.FlipDuration = 1.3f;
-			next.FlipSound = (m_sexLastFlip, 1);
+			next.FlipDuration = 1f;
 			currentLevelAndNextSeq.Enqueue(next);
 			levelIndex++;
 		}

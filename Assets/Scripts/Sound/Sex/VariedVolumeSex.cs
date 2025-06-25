@@ -14,6 +14,7 @@ namespace Sound {
 
         public Clip[] clips;
         public bool remapVolume = false;
+        public bool forceFullVolume = false;
 
         internal override void PlayInternal(Vector3 location, AudioMixerGroup group, float volume = 1) {
             if (clips.Length == 0) {
@@ -22,7 +23,9 @@ namespace Sound {
             }
 
             var selected = clips.FirstOrDefault(clip => clip.volume.x <= volume && clip.volume.y >= volume);
-            selected.clip.PlayInternal(location, group, remapVolume ? Mathf.InverseLerp(selected.volume.x, selected.volume.y, volume) : volume);
+            float vol = forceFullVolume ? 1 :
+                remapVolume ? Mathf.InverseLerp(selected.volume.x, selected.volume.y, volume) : volume;
+            selected.clip.PlayInternal(location, group, vol);
         }
     }
 }
