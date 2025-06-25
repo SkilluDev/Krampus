@@ -41,7 +41,7 @@ AudioSource:
   m_GameObject: {fileID: 100935787424001882}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -5974276736950158806, guid: ebed9cc6463044422a611f4748adc568,
+  OutputAudioMixerGroup: {fileID: -4091816029381964029, guid: ebed9cc6463044422a611f4748adc568,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 094271aad960e2335952444261e1f699, type: 3}
   m_PlayOnAwake: 1
@@ -53,10 +53,10 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 175
   DopplerLevel: 2.4
-  MinDistance: 10
-  MaxDistance: 50
+  MinDistance: 40
+  MaxDistance: 75
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -697,12 +697,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  _SortingLayer: 0
-  _SortingLayerID: 0
-  _SortingOrder: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 6525325704702165634}
   m_maskType: 0
+  _SortingLayer: 0
+  _SortingLayerID: 0
+  _SortingOrder: 0
 --- !u!114 &9165429964022334219
 MonoBehaviour:
   m_ObjectHideFlags: 0
