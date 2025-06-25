@@ -14,7 +14,9 @@ public class OutroScript : MonoBehaviour {
 	[SerializeField] private Transform jawTarget;
 	bool isPlaying = false;
 
-
+	private void Ready() {
+		m_tongue.enabled = false;
+	}
 	private void Update() {
 		if (!isPlaying) return;
 		m_tongue.SetPosition(0, jawOrigin.position);
@@ -23,6 +25,8 @@ public class OutroScript : MonoBehaviour {
 
 	[Button("WIN")]
 	public void PlayOutro() {
+		m_tongue.enabled = true;
+
 		m_director.Play();
 		transform.position = Game.MainGameInfo.Krampus.transform.position;
 		Game.MainGameInfo.Krampus.Animator.SetEnableModel(false);
