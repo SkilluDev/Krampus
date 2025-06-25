@@ -14,7 +14,7 @@ public class BlackBars : MonoBehaviour {
 	[SerializeField] private float m_duration;
 
 	[SerializeField] private RectTransform m_top, m_bottom;
-	[SerializeField] private TMP_Text m_textTop, m_resultText, m_textTimerTop;
+	[SerializeField] private TMP_Text m_textTop, m_textBottom, m_resultText, m_textTimerTop;
 
 	[SerializeField] private GameObject m_buttonPanel;
 
@@ -47,7 +47,6 @@ public class BlackBars : MonoBehaviour {
 	private void Awake() {
 		m_yDistanceTop = m_top.sizeDelta.y;
 		m_yDistanceBottom = m_bottom.sizeDelta.y;
-		ShowBottomBarButtonPanel(false);
 	}
 
 
@@ -75,7 +74,7 @@ public class BlackBars : MonoBehaviour {
 	}
 
 	public void SetBottomBarText(string text) {
-		//m_textBottom.SetText(text);
+		m_textBottom.SetText(text);
 	}
 
 	public void SetTopBarSideText(string text) {
@@ -160,12 +159,20 @@ public class BlackBars : MonoBehaviour {
 
 
 
-	public void HideMap() {
-		m_mapContainer.gameObject.SetActive(false);
-	 }
-	public void ShowBottomBarButtonPanel(bool show) {
-		
-		m_buttonPanel.SetActive(show);
+	public void ShowBindings(bool show) {
+		if (m_showBindings == show) return;
+		if (show) {
+			ShowBottomBarText(true);
+			Debug.Log("SHOW");
+			KrampMotions.ShowHideAlpha(m_bindings, m_map, 2f, Ease.InOutExpo);
+		} else {
+			KrampMotions.ShowHideAlpha(m_map, m_bindings, 2f, Ease.InOutExpo);
+		}
+
 		m_showBindings = show;
+	}
+
+	public void ShowBottomBarText(bool show) {
+		m_textBottom.gameObject.SetActive(show);
 	}
 }
