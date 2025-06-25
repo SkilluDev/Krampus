@@ -6,6 +6,7 @@ using KrampUtils;
 using LitMotion;
 using LitMotion.Extensions;
 using NaughtyAttributes;
+using Sound;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,6 +44,9 @@ public class BlackBars : MonoBehaviour {
 	[BoxGroup("Animation")][SerializeField] private float m_shakeIntensity;
 	[BoxGroup("Animation")][SerializeField] private float m_shakeDuration;
 	private float m_yDistanceTop, m_yDistanceBottom;
+	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexBeatenFlip;
+	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexLastFlip;
+	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexFutureFlip;
 
 	private void Awake() {
 		m_yDistanceTop = m_top.sizeDelta.y;
@@ -101,59 +105,62 @@ public class BlackBars : MonoBehaviour {
 		int maxLevel = Game.PogMan.GetMaxLevel();
 		int levelIndex = 0;
 
-		Queue<TwoSidedImage> imageSeq1 = new Queue<TwoSidedImage>();
-		Queue<TwoSidedImage> imageSeq2 = new Queue<TwoSidedImage>();
-		Queue<TwoSidedImage> imageSeq3 = new Queue<TwoSidedImage>();
+		var alreadyProgressedSeq = new Queue<TwoSidedImage>();
+		var currentLevelAndNextSeq = new Queue<TwoSidedImage>();
+		var otherLevelsSeq = new Queue<TwoSidedImage>();
 
 		for (; levelIndex < currentLevel; levelIndex++) {
-			TwoSidedImage beaten = Instantiate(m_mapButtonPref);
+			var beaten = Instantiate(m_mapButtonPref);
 			beaten.transform.SetParent(m_mapContainer, false);
 			beaten.FrontSprite = m_doneLevelSprite;
 			beaten.BackSprite = m_doneLevelSprite;
 			beaten.SetToFrontSprite();
 			beaten.FlipDuration = 0.5f;
-			imageSeq1.Enqueue(beaten);
+			beaten.FlipSound = (m_sexBeatenFlip, (float)levelIndex / currentLevel);
+			alreadyProgressedSeq.Enqueue(beaten);
 		}
 
-		TwoSidedImage current = Instantiate(m_mapButtonPref);
+		var current = Instantiate(m_mapButtonPref);
 		current.transform.SetParent(m_mapContainer, false);
 		current.FrontSprite = m_currentLevelSprite;
 		current.BackSprite = hasWon ? m_doneLevelSprite : m_failedLevelSprite;
 		current.SetToFrontSprite();
 		current.FlipDuration = 1f;
-		imageSeq2.Enqueue(current);
+		currentLevelAndNextSeq.Enqueue(current);
 
 
 		levelIndex++;
 
 		if (levelIndex >= maxLevel) return; //TODO Big win?
 		if (hasWon) {
-			TwoSidedImage next = Instantiate(m_mapButtonPref);
+			var next = Instantiate(m_mapButtonPref);
 			next.transform.SetParent(m_mapContainer, false);
 			next.FrontSprite = m_futureLevelSprite;
 			next.BackSprite = m_currentLevelSprite;
 			next.SetToFrontSprite();
-			next.FlipDuration = 1f;
-			imageSeq2.Enqueue(next);
+			next.FlipDuration = 1.3f;
+			next.FlipSound = (m_sexLastFlip, 1);
+			currentLevelAndNextSeq.Enqueue(next);
 			levelIndex++;
 		}
 
 		for (; levelIndex < maxLevel; levelIndex++) {
-			TwoSidedImage future = Instantiate(m_mapButtonPref);
+			var future = Instantiate(m_mapButtonPref);
 			future.transform.SetParent(m_mapContainer, false);
 			future.FrontSprite = m_futureLevelSprite;
 			future.BackSprite = m_futureLevelSprite;
 			future.FlipDuration = 0.35f;
-			imageSeq3.Enqueue(future);
+			future.FlipSound = (m_sexFutureFlip, 1);
+			otherLevelsSeq.Enqueue(future);
 		}
 
 		TwoSidedImage.FlipImagesSpaced(
-			imageSeq1, 1f, 0.2f,
+			alreadyProgressedSeq, 1f, 0.2f,
 			() => TwoSidedImage.FlipImagesSequential(
-				imageSeq2,
+				currentLevelAndNextSeq,
 				() => {
-					if (imageSeq3.Count != 0 && hasWon)
-						TwoSidedImage.FlipImagesSimultaneous(imageSeq3, 0.1f);
+					if (otherLevelsSeq.Count != 0 && hasWon)
+						TwoSidedImage.FlipImagesSimultaneous(otherLevelsSeq, 0.1f);
 				}));
 	}
 

@@ -6,29 +6,28 @@ using System.Runtime.CompilerServices;
 using LitMotion;
 using LitMotion.Extensions;
 using NaughtyAttributes;
+using Sound;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TwoSidedImage : MonoBehaviour {
 	[SerializeField] private Sprite m_frontSprite;
-
 	public Sprite FrontSprite { get => m_frontSprite; set => m_frontSprite = value; }
 
 	[SerializeField] private Sprite m_backSprite;
-
 	public Sprite BackSprite { get => m_backSprite; set => m_backSprite = value; }
 
 	[SerializeField] private Image m_image;
-
 	private bool m_isFlipped = false;
 
 	[SerializeField] private float m_flipDuration = 1f;
 	public float FlipDuration { get => m_flipDuration; set => m_flipDuration = value; }
 
 	[SerializeField] private float m_delay = 0f;
-
 	public float Delay { get => m_delay; set => m_delay = value; }
+
+	public (Sex sound, float vol) FlipSound { get; set; }
 
 	[SerializeField] private float m_scaleBounceFactor = 1.5f;
 
@@ -56,6 +55,7 @@ public class TwoSidedImage : MonoBehaviour {
 		.Join(LMotion.Create(m_image.transform.localScale * m_scaleBounceFactor, m_image.transform.localScale, m_flipDuration / 2).WithEase(Ease.OutCubic).WithImmediateBind(false).Bind(x => m_image.transform.localScale = x))
 		.Append(LMotion.Create(0f, 0f, 0.01f).WithOnComplete(onComplete).RunWithoutBinding()) //for some reason 0 didn't trigger complete
 		.Run().AddTo(this);
+		FlipSound.sound.Play(transform.position, FlipSound.vol);
 	}
 
 	public static void FlipImagesSequential(Queue<TwoSidedImage> images, Action onLastComplete = null) {
