@@ -23,7 +23,7 @@ public class KrampusAnimator : KrampusBehaviour {
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathProperty, m_wakeupProperty;
 
     [SerializeField] private GameObject m_lockInMarker;
-    [SerializeField] private Transform m_lockInCircle;
+    [SerializeField] private SpriteRenderer m_lockInCircle;
     private bool m_inLockInAnimation = false;
     private MotionHandle m_lockInAnimation;
     private MotionHandle m_lockInAnimation_2;
@@ -171,9 +171,8 @@ public class KrampusAnimator : KrampusBehaviour {
         if (!HasLockInItem) return;
         if (m_inLockInAnimation) { Debug.Log("Siema zatrzymalem ci lockIn"); return; }
 
-        m_lockInAnimation_2 = LMotion.Create(0, 1, 0.25f).WithOnComplete(() => m_lockInCircle.gameObject.SetActive(true)).Bind(null);
-        m_lockInAnimation = LMotion.Create(0.4f, 0.14f, Kramp.Kontroller.LockInThreshold).WithOnComplete(() => LMotion.Create(0.14f, 0.16f, 0.1f).WithOnComplete(() => LMotion.Create(0.16f, 0.14f, 0.1f).
-        Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3))).Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3))).Bind(x => m_lockInCircle.localScale = new Vector3(x, x, 3));
+        m_lockInAnimation_2 = LMotion.Create(0, 1, 0.25f).WithOnComplete(() => { m_lockInCircle.gameObject.SetActive(true); m_lockInCircle.color = new Vector4(m_lockInCircle.color.r, m_lockInCircle.color.g, m_lockInCircle.color.b, 0.25f); }).RunWithoutBinding();
+        m_lockInAnimation = LMotion.Create(0.4f, 0.14f, Kramp.Kontroller.LockInThreshold).WithEase(Ease.InOutBack).WithOnComplete(() => m_lockInCircle.color = new Vector4(m_lockInCircle.color.r, m_lockInCircle.color.g, m_lockInCircle.color.b, 0.9f)).Bind(x => m_lockInCircle.transform.localScale = new Vector3(x, x, 3)).AddTo(m_lockInCircle);
         m_inLockInAnimation = true;
 
     }

@@ -402,6 +402,9 @@ MonoBehaviour:
   onTutorialTrigger:
     m_PersistentCalls:
       m_Calls: []
+  onSetManChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &358014044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,7 +441,7 @@ MonoBehaviour:
       m_levelSet: {fileID: 0}
   m_levelSet: {fileID: 0}
   m_startingLevel: 0
-  m_krampusItems: []
+  krampusItems: []
 --- !u!1 &423022856
 GameObject:
   m_ObjectHideFlags: 0
@@ -908,6 +911,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68c7178303dad644cb81c2066025ebd8, type: 3}
+--- !u!212 &1639075386 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8858575344988926467, guid: 1370af54edd30564086e0f4717044a13,
+    type: 3}
+  m_PrefabInstance: {fileID: 1891054759}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1665495149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1112,6 +1121,11 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 1991711019}
+    - target: {fileID: 6024168017209539665, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_lockInCircle
+      value: 
+      objectReference: {fileID: 1639075386}
     - target: {fileID: 8745913504507751508, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
       propertyPath: m_LocalPosition.x
