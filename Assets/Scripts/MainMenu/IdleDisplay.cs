@@ -19,7 +19,7 @@ public class IdleDisplay : MonoBehaviour {
     private float m_timer = 0;
 
     private bool m_playing;
-    
+
     private IDisposable m_listener;
 
     private MotionHandle m_motionHandle;
@@ -33,7 +33,7 @@ public class IdleDisplay : MonoBehaviour {
 
     private void OnDisable() {
         m_listener.Dispose();
-		
+
 	}
 
 	private void OnButtonPressed(InputControl control) {
@@ -41,6 +41,7 @@ public class IdleDisplay : MonoBehaviour {
         m_playing = false;
         m_videoPlayer.Stop();
         m_videoPlayer.gameObject.SetActive(false);
+		m_canvasGroup.alpha = 0;
         m_motionHandle.TryCancel();
     }
 
