@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using LitMotion;
-using LitMotion.Extensions;
 using NaughtyAttributes;
 using Unity.Mathematics;
 using UnityEngine;
@@ -30,14 +26,9 @@ public class PostProcessHandler : MonoBehaviour {
 
     [SerializeField] private float m_vignetteFlashDuration;
     [SerializeField] private float m_vignetteFlashIntensity;
-    //[SerializeField] private float m_aberrationFlashDuration;
-    //[SerializeField] private float m_aberrationFlashIntensity;
 
     private float m_originalMinVignetteIntensity;
     private float m_originalMaxVignetteIntensity;
-
-    //private float m_originalMinAberrationIntensity;
-    //private float m_originalMaxAberrationIntensity;
 
     private float m_distanceToClosest;
 
@@ -46,19 +37,32 @@ public class PostProcessHandler : MonoBehaviour {
         m_vol.profile.TryGet(out m_aberration);
         m_vol.profile.TryGet(out m_blur);
 
-        bool b  = Game.SetMan.GetValue<bool>("Motion Blur");
-        m_blur.active = b;
+		SetBlur();
+		Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
 
         m_vignette.color.Override(m_originalVignetteColor);
 
         m_originalMaxVignetteIntensity = m_maxVignetteIntensity;
         m_originalMinVignetteIntensity = m_minVignetteIntensity;
 
-        //m_originalMaxAberrationIntensity = m_maxAberrationIntensity;
-        //m_originalMinAberrationIntensity = m_minAberrationIntensity;
-
         Game.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
     }
+
+	private void Unready() {
+		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
+	}
+
+	private void SetBlur() {
+		bool b = Game.SetMan.GetValue<bool>("Motion Blur");
+		m_blur.active = b;
+	}
+
+
+	private void OnSetManChange(string key) {
+		if (key == "Motion Blur") {
+			SetBlur();
+		}
+	}
 
     [Button]
     private void EatNiceChild(){
