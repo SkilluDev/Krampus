@@ -263,7 +263,7 @@ public class NewUIManager : MonoBehaviour {
 			m_blackBars.AnimateResultText(true);
 		} else {
 			m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-			m_blackBars.ShowBottomBarButtonPanel(false);
+			m_blackBars.ShowBottomBarText(false);
 
 			m_blackBars.AnimateResultText(false);
 		}
