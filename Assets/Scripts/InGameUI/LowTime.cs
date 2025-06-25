@@ -18,15 +18,18 @@ public class LowTime : MonoBehaviour {
     private Vector2 m_wantedTopPos;
     private Vector2 m_wantedBottomPos;
 
-    private void Awake() {
-        m_initialTopVector = m_topKramp.anchoredPosition;
-        m_initialBottomVector = m_bottomKramp.anchoredPosition;
-        m_initialJawHeights = new Vector2(m_initialTopVector.y, m_initialBottomVector.y);
-        m_jawMovementMultiplier = new Vector2(m_initialJawHeights.x / m_lowTime, m_initialJawHeights.y / m_lowTime);
+	private void Awake() {
+		m_initialTopVector = m_topKramp.anchoredPosition;
+		m_initialBottomVector = m_bottomKramp.anchoredPosition;
+		m_initialJawHeights = new Vector2(m_initialTopVector.y, m_initialBottomVector.y);
+		m_jawMovementMultiplier = new Vector2(m_initialJawHeights.x / m_lowTime, m_initialJawHeights.y / m_lowTime);
+		m_wantedTopPos = m_initialTopVector;
+		m_wantedBottomPos = m_initialBottomVector;
     }
     private void Update() {
         if (Game.Balling) {
         	float currentTime = Game.MainGameInfo.Timer.GameTime;
+			Debug.Log($"Current Time: {currentTime}, Low Time: {m_lowTime}");
             if (currentTime > m_lowTime) {
 				m_wantedTopPos = m_initialTopVector;
 				m_wantedBottomPos = m_initialBottomVector;
@@ -39,6 +42,7 @@ public class LowTime : MonoBehaviour {
     private void FixedUpdate() {
         if (Game.Balling) {
             if (m_topKramp.anchoredPosition != m_wantedTopPos || m_bottomKramp.anchoredPosition != m_wantedBottomPos) {
+				Debug.Log($"Top Position: {m_topKramp.anchoredPosition}, Wanted Top Position: {m_wantedTopPos}");
                 float desiredSpeed = m_jawSpeed * (m_wantedTopPos.y < m_initialTopVector.y ? 1 : m_upwardMultiplier);
                 m_topKramp.anchoredPosition = Vector2.Lerp(m_topKramp.anchoredPosition, m_wantedTopPos, desiredSpeed);
                 m_bottomKramp.anchoredPosition = Vector2.Lerp(m_bottomKramp.anchoredPosition, m_wantedBottomPos, desiredSpeed);
