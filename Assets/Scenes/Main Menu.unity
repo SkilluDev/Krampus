@@ -3329,9 +3329,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.7843138, g: 0.34509805, b: 0.34509805, a: 1}
+    m_PressedColor: {r: 0.7843138, g: 0.22352943, b: 0.22352943, a: 1}
+    m_SelectedColor: {r: 0.7843138, g: 0.34509805, b: 0.34509805, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -5553,9 +5553,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.7843138, g: 0.34509805, b: 0.34509805, a: 1}
+    m_PressedColor: {r: 0.7843138, g: 0.22352943, b: 0.22352943, a: 1}
+    m_SelectedColor: {r: 0.7843138, g: 0.34509805, b: 0.34509805, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -5749,7 +5749,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -6963,6 +6963,51 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1738407359}
     m_Modifications:
+    - target: {fileID: 294438481909465728, guid: 7fdd53c5b090c1443a48cd1aac15c977,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 0.22352943
+      objectReference: {fileID: 0}
+    - target: {fileID: 294438481909465728, guid: 7fdd53c5b090c1443a48cd1aac15c977,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: 0.22352943
+      objectReference: {fileID: 0}
+    - target: {fileID: 294438481909465728, guid: 7fdd53c5b090c1443a48cd1aac15c977,
+        type: 3}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0.7843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 294438481909465728, guid: 7fdd53c5b090c1443a48cd1aac15c977,
+        type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0.34509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 294438481909465728, guid: 7fdd53c5b090c1443a48cd1aac15c977,
+        type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.34509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 294438481909465728, guid: 7fdd53c5b090c1443a48cd1aac15c977,
+        type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 0.7843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 294438481909465728, guid: 7fdd53c5b090c1443a48cd1aac15c977,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.34509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 294438481909465728, guid: 7fdd53c5b090c1443a48cd1aac15c977,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.34509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 294438481909465728, guid: 7fdd53c5b090c1443a48cd1aac15c977,
+        type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0.7843138
+      objectReference: {fileID: 0}
     - target: {fileID: 294438481909465728, guid: 7fdd53c5b090c1443a48cd1aac15c977,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
