@@ -13,9 +13,10 @@ public class StatusSprite : MonoBehaviour {
     }
 
     public void SetSprite(Sprite sprite, int which = 1) {
+		if (m_рендерер == null) return;
         if (sprite == m_настоящий) {
-            return;
-        }
+			return;
+		}
         m_настоящий = sprite;
         m_рендерер.sprite = m_настоящий;
         m_аниматор.SetTrigger(m_стартПарам);

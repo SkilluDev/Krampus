@@ -17,7 +17,7 @@ public class KrampusIndicator : MonoBehaviour {
     }
 
     private void Update() {
-        if(m_IsVisible) 
+        if(m_IsVisible)
         transform.forward = Game.MainGameInfo.Krampus.Kamera.transform.forward;
     }
 
@@ -27,7 +27,7 @@ public class KrampusIndicator : MonoBehaviour {
         Show();
 
         m_motionHandle.TryCancel();
-        m_motionHandle = LMotion.Create(0, 0.9f, duration).WithOnComplete(() => Hide()).Bind(x => m_timerIcon.material.SetFloat("_FillRate",x));
+        m_motionHandle = LMotion.Create(0, 0.9f, duration).WithOnComplete(() => Hide()).Bind(x => m_timerIcon.material.SetFloat("_FillRate",x)).AddTo(m_timerIcon);
 
 
 

@@ -215,12 +215,12 @@ public class MainGameInfo : LevelInfo {
 			case Ending.LoseNun:
 				Game.MusicMan.StopMusic();
 				Game.MainGameInfo.SetState(State.Over);
-				StartCoroutine(AllowNextLevelAfterSeconds(3f));
+				StartCoroutine(AllowNextLevelAfterSeconds(1f));
 				break;
 			case Ending.LoseTime:
 				Game.MusicMan.StopMusic();
 				Game.MainGameInfo.SetState(State.Over);
-				StartCoroutine(AllowNextLevelAfterSeconds(3f));
+				StartCoroutine(AllowNextLevelAfterSeconds(1f));
 
 				break;
 		}
