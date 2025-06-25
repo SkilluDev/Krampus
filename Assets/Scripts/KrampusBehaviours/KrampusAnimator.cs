@@ -22,8 +22,10 @@ public class KrampusAnimator : KrampusBehaviour {
 
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathProperty, m_wakeupProperty;
 
-    [SerializeField] private GameObject m_lockInMarker;
-    [SerializeField] private SpriteRenderer m_lockInCircle;
+    [BoxGroup("Lock in")][SerializeField] private GameObject m_lockInMarker;
+    [BoxGroup("Lock in")][SerializeField] private SpriteRenderer m_lockInCircle;
+	[BoxGroup("Sounds")][SerializeField] private Color m_unreadylockInCircleColor = new Color(255f, 0f, 0f, 0.5f);
+	[BoxGroup("Sounds")][SerializeField] private Color m_readylockInCircleColor = new Color(73f, 255f, 0f, 0.9f);
     private bool m_inLockInAnimation = false;
     private MotionHandle m_lockInAnimation;
     private MotionHandle m_lockInAnimation_2;
@@ -171,8 +173,8 @@ public class KrampusAnimator : KrampusBehaviour {
         if (!HasLockInItem) return;
         if (m_inLockInAnimation) { Debug.Log("Siema zatrzymalem ci lockIn"); return; }
 
-        m_lockInAnimation_2 = LMotion.Create(0, 1, 0.25f).WithOnComplete(() => { m_lockInCircle.gameObject.SetActive(true); m_lockInCircle.color = new Vector4(m_lockInCircle.color.r, m_lockInCircle.color.g, m_lockInCircle.color.b, 0.25f); }).RunWithoutBinding();
-        m_lockInAnimation = LMotion.Create(0.4f, 0.14f, Kramp.Kontroller.LockInThreshold).WithEase(Ease.InOutBack).WithOnComplete(() => m_lockInCircle.color = new Vector4(m_lockInCircle.color.r, m_lockInCircle.color.g, m_lockInCircle.color.b, 0.9f)).Bind(x => m_lockInCircle.transform.localScale = new Vector3(x, x, 3)).AddTo(m_lockInCircle);
+        m_lockInAnimation_2 = LMotion.Create(0, 1, 0.25f).WithOnComplete(() => { m_lockInCircle.gameObject.SetActive(true); m_lockInCircle.color = m_unreadylockInCircleColor; }).RunWithoutBinding();
+        m_lockInAnimation = LMotion.Create(0.4f, 0.14f, Kramp.Kontroller.LockInThreshold).WithEase(Ease.InOutBack).WithOnComplete(() => m_lockInCircle.color = m_readylockInCircleColor).Bind(x => m_lockInCircle.transform.localScale = new Vector3(x, x, 3)).AddTo(m_lockInCircle);
         m_inLockInAnimation = true;
 
     }

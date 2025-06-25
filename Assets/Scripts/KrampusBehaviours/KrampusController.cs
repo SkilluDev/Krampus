@@ -63,9 +63,6 @@ public class KrampusController : KrampusBehaviour {
 
 	[BoxGroup("Lock In")][SerializeField] private float m_lockInThreshold;
 	public float LockInThreshold => m_lockInThreshold;
-	private MotionHandle m_lockInMotion;
-	[BoxGroup("Lock In")][SerializeField] private SpriteRenderer m_lockInVis;
-
 
 
 	//Wind-up
