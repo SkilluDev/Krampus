@@ -4,6 +4,7 @@ using LitMotion;
 using LitMotion.Extensions;
 using UnityEngine.Events;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class MainMenuInfo : LevelInfo {
     public new enum State {
@@ -28,7 +29,7 @@ public class MainMenuInfo : LevelInfo {
         }
     }
 
-    private void Ready() {
+	private void Ready() {
 		if (Game.BootFromMainGame) {
 			Game.BootFromMainGame = false;
 			Game.PogMan.StartNewGame(PogMan.Difficulty.Normal);
@@ -37,6 +38,7 @@ public class MainMenuInfo : LevelInfo {
 		m_motions = new MotionHandle[m_canvases.Length];
 		foreach (var c in m_canvases) c.alpha = 0;
 		SetState(State.Default);
+		EventSystem.current.SetSelectedGameObject(null);
 		//Debug.Log("Set state default!");
 	}
 
