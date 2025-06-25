@@ -162,7 +162,7 @@ public class BlackBars : MonoBehaviour {
 	public void ShowBindings(bool show) {
 		if (m_showBindings == show) return;
 		if (show) {
-			ShowBottomBarText(true);
+			ShowBottomBarText(false);
 			Debug.Log("SHOW");
 			KrampMotions.ShowHideAlpha(m_bindings, m_map, 2f, Ease.InOutExpo);
 		} else {
