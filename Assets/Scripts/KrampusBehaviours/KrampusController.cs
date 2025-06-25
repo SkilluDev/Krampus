@@ -116,18 +116,6 @@ public class KrampusController : KrampusBehaviour {
 			m_windUpGainLock -= Time.deltaTime;
 		}
 
-		if (CurrentState == State.Walk || CurrentState == State.Idle) {
-			if (!IsLockedIn) {
-
-				m_lockInTimer += Time.deltaTime;
-				if (m_lockInTimer > m_lockInThreshold) {
-					LockIn();
-				}
-			}
-		} else {
-			LockOut();
-		}
-
 		if (CurrentState is State.Dead or State.Dash) return;
 
 		float acceleration = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;
@@ -173,6 +161,19 @@ public class KrampusController : KrampusBehaviour {
 			} else {
 				state = State.Run;
 			}
+		}
+
+
+		if (state == State.Walk || state == State.Idle) {
+			if (!IsLockedIn) {
+
+				m_lockInTimer += Time.deltaTime;
+				if (m_lockInTimer > m_lockInThreshold) {
+					LockIn();
+				}
+			}
+		} else {
+			LockOut();
 		}
 
 		ChangeState(state, reason);

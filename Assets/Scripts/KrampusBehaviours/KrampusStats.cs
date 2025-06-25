@@ -185,11 +185,21 @@ public class KrampusStats : KrampusBehaviour {
         return finalStat;
     }
 
+	public float GetRawStat(Stat stat) {
+		if (!m_rawStatDict.ContainsKey(stat)) Debug.LogError($"Stat {stat} not found in raw stats dictionary.");
+		return m_rawStatDict[stat].Value;
+	}
+
+	public bool IsBiggerThanRaw(Stat stat) {
+		if (!m_rawStatDict.ContainsKey(stat)) Debug.LogError($"Stat {stat} not found in raw stats dictionary.");
+		return GetFinalStat(stat) > GetRawStat(stat);
+	}
+
     public bool HasItemWithTag(ItemTag tag) {
-        foreach (var i in m_items) {
-            if (i.HasTag(tag)) { return true; }
-        }
-        return false;
-    }
+		foreach (var i in m_items) {
+			if (i.HasTag(tag)) { return true; }
+		}
+		return false;
+	}
 
 }

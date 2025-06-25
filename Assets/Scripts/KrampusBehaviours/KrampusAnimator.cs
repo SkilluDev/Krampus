@@ -57,11 +57,10 @@ public class KrampusAnimator : KrampusBehaviour {
         m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, m_rotationTarget, Time.deltaTime * m_rotationSmoothing);
         m_runningEffect.SetFloat("Rotation", m_modelTransform.rotation.eulerAngles.y);
 
+		if (!Kramp.Stats.IsBiggerThanRaw(KrampusStats.Stat.Speed)) {
+			m_runningEffect.Stop();
+		}
         m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, Kramp.Kontroller.Velocity / Kramp.Kontroller.RunSpeed), 0.2f, Time.deltaTime);
-
-        if (Kramp.Stats.GetFinalStat(KrampusStats.Stat.Speed) > Kramp.Kontroller.RunSpeed) {
-            m_runningEffect.Play();
-        }
     }
 
     public void TongueStateChanged(KrampusTongue.State previous, KrampusTongue.State current) {
@@ -78,10 +77,10 @@ public class KrampusAnimator : KrampusBehaviour {
             case (_, KrampusTongue.State.Consume):
                 if (Kramp.Tongue.HoldsThrowable) {
                     m_animator.SetTrigger(m_shootProperty);
-                    
+
                 }
                  m_animator.SetBool(m_tongueReadyProperty, false);
-                     
+
                 break;
             case (KrampusTongue.State.Windup, KrampusTongue.State.TargetFetch):
                 m_animator.SetTrigger(m_tongueOutProperty);
@@ -113,7 +112,7 @@ public class KrampusAnimator : KrampusBehaviour {
 
                     LockInAnimation();
                     m_animator.ResetTrigger(m_shootProperty);
-                   
+
                 }
                 break;
         }
@@ -137,7 +136,7 @@ public class KrampusAnimator : KrampusBehaviour {
                 break;
             case (_, KrampusController.State.Run):
                 LockOutAnimation();
-                if (Kramp.Stats.GetFinalStat(KrampusStats.Stat.Speed) > Kramp.Kontroller.RunSpeed) {
+                if (Kramp.Stats.IsBiggerThanRaw(KrampusStats.Stat.Speed)) {
                     m_runningEffect.Play();
                 }
                 m_minimalVelocity = 1f;
@@ -200,7 +199,7 @@ public class KrampusAnimator : KrampusBehaviour {
         m_inLockInAnimation = false;
     }
 
-    void EffectAnimation(Krampus krampus, Effect effect) {
+	private void EffectAnimation(Krampus krampus, Effect effect) {
         if (effect.StatModifier.Stat == KrampusStats.Stat.Speed && effect.StatModifier.Modifier < 0) {
             m_krampusIndicator.PlayAniamtion(effect.Duration);
         }
