@@ -1,11 +1,13 @@
 using System.Linq;
 using NaughtyAttributes;
+using Sound;
 using UnityEngine;
 
 public class Box : MonoBehaviour, IKrampable {
     [SerializeField] private ParticleSystem m_consumeParticles;
     [SerializeField] private Transform m_model;
     [SerializeField] private Projectile m_projectile;
+    [SerializeField] private Sex m_sexPickup;
 
     IKrampable.krampableType IKrampable.Type => IKrampable.krampableType.DelayedAiming;
 
@@ -39,7 +41,9 @@ public class Box : MonoBehaviour, IKrampable {
         foreach (var c in GetComponentsInChildren<Collider>()) c.enabled = false;
     }
 
-    public void Prepare(Krampus krampus) { }
+    public void Prepare(Krampus krampus) {
+        m_sexPickup.Play(transform.position, 1);
+    }
 
     public void AttachToTongue(Krampus krampus, Vector3 position, Quaternion rotation, float progress) {
         transform.position = position;
