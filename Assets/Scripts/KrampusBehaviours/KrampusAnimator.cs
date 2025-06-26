@@ -19,13 +19,15 @@ public class KrampusAnimator : KrampusBehaviour {
     [BoxGroup("Sounds")][SerializeField] private Sex m_windupSoundBite;
     [BoxGroup("Sounds")][SerializeField] private Sex m_crackSoundBite;
     [BoxGroup("Sounds")][SerializeField] private Sex m_deathSoundBite;
+    [BoxGroup("Sounds")][SerializeField] private Sex m_dashSound;
+
 
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathProperty, m_wakeupProperty, m_shootProperty;
 
     [BoxGroup("Lock in")][SerializeField] private GameObject m_lockInMarker;
     [BoxGroup("Lock in")][SerializeField] private SpriteRenderer m_lockInCircle;
-	[BoxGroup("Sounds")][SerializeField] private Color m_unreadylockInCircleColor = new Color(255f, 0f, 0f, 0.5f);
-	[BoxGroup("Sounds")][SerializeField] private Color m_readylockInCircleColor = new Color(73f, 255f, 0f, 0.9f);
+    [BoxGroup("Sounds")][SerializeField] private Color m_unreadylockInCircleColor = new Color(255f, 0f, 0f, 0.5f);
+    [BoxGroup("Sounds")][SerializeField] private Color m_readylockInCircleColor = new Color(73f, 255f, 0f, 0.9f);
     private bool m_inLockInAnimation = false;
     private MotionHandle m_lockInAnimation;
     private MotionHandle m_lockInAnimation_2;
@@ -57,9 +59,9 @@ public class KrampusAnimator : KrampusBehaviour {
         m_modelTransform.rotation = Quaternion.Slerp(m_modelTransform.rotation, m_rotationTarget, Time.deltaTime * m_rotationSmoothing);
         m_runningEffect.SetFloat("Rotation", m_modelTransform.rotation.eulerAngles.y);
 
-		if (!Kramp.Stats.IsBiggerThanRaw(KrampusStats.Stat.Speed)) {
-			m_runningEffect.Stop();
-		}
+        if (!Kramp.Stats.IsBiggerThanRaw(KrampusStats.Stat.Speed)) {
+            m_runningEffect.Stop();
+        }
         m_animator.SetFloat(m_speedProperty, Mathf.Max(m_minimalVelocity, Kramp.Kontroller.Velocity / Kramp.Kontroller.RunSpeed), 0.2f, Time.deltaTime);
     }
 
@@ -79,7 +81,7 @@ public class KrampusAnimator : KrampusBehaviour {
                     m_animator.SetTrigger(m_shootProperty);
 
                 }
-                 m_animator.SetBool(m_tongueReadyProperty, false);
+                m_animator.SetBool(m_tongueReadyProperty, false);
 
                 break;
             case (KrampusTongue.State.Windup, KrampusTongue.State.TargetFetch):
@@ -153,6 +155,7 @@ public class KrampusAnimator : KrampusBehaviour {
                 m_minimalVelocity = 0f;
                 break;
             case (_, KrampusController.State.Dash):
+                m_dashSound.Play(transform.position, 1);
                 LockOutAnimation();
                 break;
             case (_, KrampusController.State.Dead):
@@ -199,7 +202,7 @@ public class KrampusAnimator : KrampusBehaviour {
         m_inLockInAnimation = false;
     }
 
-	private void EffectAnimation(Krampus krampus, Effect effect) {
+    private void EffectAnimation(Krampus krampus, Effect effect) {
         if (effect.StatModifier.Stat == KrampusStats.Stat.Speed && effect.StatModifier.Modifier < 0) {
             m_krampusIndicator.PlayAniamtion(effect.Duration);
         }
