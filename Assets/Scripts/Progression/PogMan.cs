@@ -191,6 +191,7 @@ public class PogMan : MonoBehaviour {
 			SetLevelSet(Difficulty.Tutorial);
 		} else {
 			m_isTutorial = false;
+			m_difficultyAfterTutorial = difficulty;
 			SetLevelSet(difficulty);
 		}
 		ResetProgress();
