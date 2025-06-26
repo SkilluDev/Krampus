@@ -442,4 +442,8 @@ public class KrampusTongue : KrampusBehaviour {
 		if (CurrentState == State.Idle) return (m_tongueVisualOrigin.position, m_tongueVisualOrigin.position);
 		return (m_tongueVisualOrigin.position, Vector3.Lerp(m_tongueVisualOrigin.position, m_tongueDestination, m_tongueExtensionFactor));
 	}
+
+	public void SetTongueLineRenderer(bool b) {
+		m_tongueRenderer.enabled = b;
+	}
 }

@@ -175,6 +175,7 @@ public class KrampusAnimator : KrampusBehaviour {
 
     public void SetEnableModel(bool b) {
         m_modelTransform.gameObject.SetActive(b);
+		Kramp.Tongue.SetTongueLineRenderer(b);
         m_lockInMarker.SetActive(b);
     }
 
