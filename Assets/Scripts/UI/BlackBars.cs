@@ -130,8 +130,8 @@ public class BlackBars : MonoBehaviour {
 		currentLevelAndNextSeq.Enqueue(current);
 
 		levelIndex++;
-
-		if (levelIndex < maxLevel) { //TODO Big win?
+		bool hasNext = levelIndex < maxLevel;
+		if (hasNext) {
 			if (hasWon) {
 				var next = Instantiate(m_mapButtonPref);
 				next.transform.SetParent(m_mapContainer, false);
@@ -166,7 +166,7 @@ public class BlackBars : MonoBehaviour {
 			() => TwoSidedImage.FlipImagesSequential(
 				currentLevelAndNextSeq,
 				() => {
-					if (levelIndex < maxLevel && hasWon)
+					if (hasNext && hasWon)
 						TwoSidedImage.FlipImagesSimultaneous(otherLevelsSeq, 0.1f);
 					else if (hasWon) {
 						foreach (var image in otherLevelsSeq) {

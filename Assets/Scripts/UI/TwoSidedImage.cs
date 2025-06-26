@@ -97,13 +97,6 @@ public class TwoSidedImage : MonoBehaviour {
 			}
 			return;
 		}
-
-		if (images.Count() == 1) {
-			var image = images.Dequeue();
-			image.Delay = timeToStart;
-			image.FlipImage();
-			return;
-		}
 		images.ElementAt(0).Delay = timeToStart;
 		for (int i = 1; i < images.Count(); i++) {
 			images.ElementAt(i).Delay = timeToStart + (timeBetween * i);
