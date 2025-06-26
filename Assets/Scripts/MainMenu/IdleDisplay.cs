@@ -24,9 +24,11 @@ public class IdleDisplay : MonoBehaviour {
 
     private MotionHandle m_motionHandle;
     [SerializeField] private float m_fadeInTime = 20f;
-    private void Awake() {
 
-        if (File.Exists(Application.dataPath+"\\idle.mp4")) m_videoPlayer.url = Application.dataPath+"\\idle.mp4";
+    private static readonly string VIDEO_PATH = Application.dataPath + "/idle.webm";
+
+    private void Awake() {
+        if (File.Exists(VIDEO_PATH)) m_videoPlayer.url = VIDEO_PATH;
         m_listener = InputSystem.onAnyButtonPress.Call(OnButtonPressed);
         m_videoPlayer.gameObject.SetActive(false);
     }
@@ -34,14 +36,14 @@ public class IdleDisplay : MonoBehaviour {
     private void OnDisable() {
         m_listener.Dispose();
 
-	}
+    }
 
-	private void OnButtonPressed(InputControl control) {
+    private void OnButtonPressed(InputControl control) {
         m_timer = 0;
         m_playing = false;
         m_videoPlayer.Stop();
         m_videoPlayer.gameObject.SetActive(false);
-		m_canvasGroup.alpha = 0;
+        m_canvasGroup.alpha = 0;
         m_motionHandle.TryCancel();
     }
 
