@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using LitMotion;
 using LitMotion.Extensions;
+using Sound;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,6 +39,7 @@ public class TutorialHandler : MonoBehaviour {
 	[SerializeField] private float m_slideLength;
 	[SerializeField] private RectTransform m_keybindPrompt;
 	[SerializeField] private GameObject m_tutorialHolder;
+	[SerializeField] private Sex m_sexSwitchPage;
 
 	[SerializeField] private Image m_naughtyChildIcon;
 
@@ -103,7 +105,7 @@ public class TutorialHandler : MonoBehaviour {
 		var oldRotation = page.rotation;
 		var lSequence = LSequence.Create();
 
-
+		m_sexSwitchPage.Play(transform.position, 1);
 
 
 		lSequence.Append(LMotion.Create(page.localRotation, page.localRotation * Quaternion.Euler(new Vector3(0, 0, m_rotateAngle)), m_transitionLength).WithEase(Ease.InOutCubic)
