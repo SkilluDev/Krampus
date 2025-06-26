@@ -255,11 +255,7 @@ public class NewUIManager : MonoBehaviour {
 		m_blackBars.SetTopBarText("");
 		m_blackBars.SetTopTimerText(m_topTimerBarText);
 		if (ending.IsWin()) {
-			if (Game.PogMan.IsThereNextLevel) {
-				m_blackBars.SetBottomBarText(m_bottomBarWinKeys);
-			} else {
-				m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
-			}
+			m_blackBars.SetBottomBarText("");
 			m_blackBars.AnimateResultText(true);
 		} else {
 			m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);

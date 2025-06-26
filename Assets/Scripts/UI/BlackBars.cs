@@ -101,7 +101,6 @@ public class BlackBars : MonoBehaviour {
 
 
 	public void GenerateMap(bool hasWon) {
-
 		int currentLevel = Game.PogMan.CurrentLevel;
 		int maxLevel = Game.PogMan.GetMaxLevel();
 		int levelIndex = 0;
@@ -132,26 +131,34 @@ public class BlackBars : MonoBehaviour {
 
 		levelIndex++;
 
-		if (levelIndex >= maxLevel) return; //TODO Big win?
-		if (hasWon) {
-			var next = Instantiate(m_mapButtonPref);
-			next.transform.SetParent(m_mapContainer, false);
-			next.FrontSprite = m_futureLevelSprite;
-			next.BackSprite = m_currentLevelSprite;
-			next.SetToFrontSprite();
-			next.FlipDuration = 1f;
-			currentLevelAndNextSeq.Enqueue(next);
-			levelIndex++;
-		}
+		if (levelIndex < maxLevel) { //TODO Big win?
+			if (hasWon) {
+				var next = Instantiate(m_mapButtonPref);
+				next.transform.SetParent(m_mapContainer, false);
+				next.FrontSprite = m_futureLevelSprite;
+				next.BackSprite = m_currentLevelSprite;
+				next.SetToFrontSprite();
+				next.FlipDuration = 1f;
+				currentLevelAndNextSeq.Enqueue(next);
+				levelIndex++;
+			}
 
-		for (; levelIndex < maxLevel; levelIndex++) {
-			var future = Instantiate(m_mapButtonPref);
-			future.transform.SetParent(m_mapContainer, false);
-			future.FrontSprite = m_futureLevelSprite;
-			future.BackSprite = m_futureLevelSprite;
-			future.FlipDuration = 0.35f;
-			future.FlipSound = (m_sexFutureFlip, 1);
-			otherLevelsSeq.Enqueue(future);
+			for (; levelIndex < maxLevel; levelIndex++) {
+				var future = Instantiate(m_mapButtonPref);
+				future.transform.SetParent(m_mapContainer, false);
+				future.FrontSprite = m_futureLevelSprite;
+				future.BackSprite = m_futureLevelSprite;
+				future.FlipDuration = 0.35f;
+				future.FlipSound = (m_sexFutureFlip, 1);
+				otherLevelsSeq.Enqueue(future);
+			}
+		} else {
+			foreach (var image in alreadyProgressedSeq) {
+				otherLevelsSeq.Enqueue(image);
+			}
+			foreach (var image in currentLevelAndNextSeq) {
+				otherLevelsSeq.Enqueue(image);
+			}
 		}
 
 		TwoSidedImage.FlipImagesSpaced(
@@ -159,8 +166,17 @@ public class BlackBars : MonoBehaviour {
 			() => TwoSidedImage.FlipImagesSequential(
 				currentLevelAndNextSeq,
 				() => {
-					if (otherLevelsSeq.Count != 0 && hasWon)
+					if (levelIndex < maxLevel && hasWon)
 						TwoSidedImage.FlipImagesSimultaneous(otherLevelsSeq, 0.1f);
+					else if (hasWon) {
+						foreach (var image in otherLevelsSeq) {
+							image.FrontSprite = m_doneLevelSprite;
+							image.BackSprite = m_doneLevelSprite;
+							image.SetToFrontSprite();
+							image.FlipDuration = 0.5f;
+						}
+						TwoSidedImage.FlipImagesSimultaneous(otherLevelsSeq, 0.1f);
+					}
 				}));
 	}
 
