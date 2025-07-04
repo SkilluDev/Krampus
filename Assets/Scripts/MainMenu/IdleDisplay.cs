@@ -25,7 +25,7 @@ public class IdleDisplay : MonoBehaviour {
     private MotionHandle m_motionHandle;
     [SerializeField] private float m_fadeInTime = 20f;
 
-    private static readonly string VIDEO_PATH = Application.dataPath + "/idle.webm";
+    private static readonly string VIDEO_PATH = Application.dataPath + "/idle.mp4";
 
     private void Awake() {
         if (File.Exists(VIDEO_PATH)) m_videoPlayer.url = VIDEO_PATH;
