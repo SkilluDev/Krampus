@@ -11,7 +11,7 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
     public Vector3 CurrentDestination { get; protected set; }
     public IInteractor.Type InteractorType => IInteractor.Type.NPC;
     public float BaseMovementSpeed => m_baseMovementSpeed;
-    public Vector3 VelocityVector => m_rigidbody.velocity;
+    public Vector3 VelocityVector => m_rigidbody.linearVelocity;
     public float Velocity => VelocityVector.magnitude;
     public float VelocitySqr => VelocityVector.sqrMagnitude;
     public Room CurrentRoom { get; set; }
@@ -68,8 +68,8 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
     }
 
     protected void SetVelocity(Vector3 velocity) {
-        m_rigidbody.velocity = velocity;
-        if (!Game.Balling) m_rigidbody.velocity = Vector3.zero;
+        m_rigidbody.linearVelocity = velocity;
+        if (!Game.Balling) m_rigidbody.linearVelocity = Vector3.zero;
     }
 
     protected Vector3 GetPathDirection() {

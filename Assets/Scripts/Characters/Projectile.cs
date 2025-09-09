@@ -74,11 +74,11 @@ public class Projectile : MonoBehaviour {
 
     protected virtual void FixedUpdate() {
         if (!m_isActive) {
-            m_rigidbody.velocity = Vector3.zero;
+            m_rigidbody.linearVelocity = Vector3.zero;
             return;
         }
 
-        m_rigidbody.velocity = transform.forward * m_speed;
+        m_rigidbody.linearVelocity = transform.forward * m_speed;
 
         if (m_target != null) {
             var directionToTarget = (m_target.position - transform.position).normalized;

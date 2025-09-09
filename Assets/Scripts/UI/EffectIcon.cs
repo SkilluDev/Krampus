@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using LitMotion;
 using TMPro;
-using TMPro.Examples;
+// using TMPro.Examples;
 using UnityEngine;
 using UnityEngine.UI;
 using LitMotion.Extensions;

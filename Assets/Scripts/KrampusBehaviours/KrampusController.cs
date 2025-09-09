@@ -11,7 +11,7 @@ using static KrampusStats;
 
 public class KrampusController : KrampusBehaviour {
 	[ShowNativeProperty] public State CurrentState { get; private set; }
-	public Vector3 VelocityVector => m_rigidbody.velocity;
+	public Vector3 VelocityVector => m_rigidbody.linearVelocity;
 	public float RunSpeed => Kramp.Stats.GetFinalStat(Stat.Speed);
 	public float Velocity => VelocityVector.magnitude;
 	public float VelocitySqr => VelocityVector.sqrMagnitude;
@@ -98,7 +98,7 @@ public class KrampusController : KrampusBehaviour {
 
 
 		if (!Game.Balling) {
-			m_rigidbody.velocity = Vector3.zero;
+			m_rigidbody.linearVelocity = Vector3.zero;
 			return;
 		}
 		if (CurrentState == State.Intro) {
@@ -118,7 +118,7 @@ public class KrampusController : KrampusBehaviour {
 
 		if (CurrentState is State.Dead or State.Dash) return;
 
-		float acceleration = m_previousFrameVelocity - m_rigidbody.velocity.sqrMagnitude;
+		float acceleration = m_previousFrameVelocity - m_rigidbody.linearVelocity.sqrMagnitude;
 
 		var inputs = InputSubscribe.Movement;
 		float adjustedTime = Time.deltaTime / m_accelerationTime;
@@ -143,7 +143,7 @@ public class KrampusController : KrampusBehaviour {
 		var reason = StateChangeReason.Normal;
 
 		//if slow and no input
-		if (inputs.sqrMagnitude == 0 && m_rigidbody.velocity.sqrMagnitude <= m_veloIdleThreshold) {
+		if (inputs.sqrMagnitude == 0 && m_rigidbody.linearVelocity.sqrMagnitude <= m_veloIdleThreshold) {
 			if (m_timeHoldingInput >= m_timeIdleThreshold) { //if was accelarating for some time
 				reason = StateChangeReason.Rapid;
 			}
@@ -153,7 +153,7 @@ public class KrampusController : KrampusBehaviour {
 			reason = StateChangeReason.Rapid;
 			state = State.Idle;
 
-		} else if (CurrentState == State.Idle && m_rigidbody.velocity.sqrMagnitude <= m_startRunSpeed) { //if was already idle with no velocity
+		} else if (CurrentState == State.Idle && m_rigidbody.linearVelocity.sqrMagnitude <= m_startRunSpeed) { //if was already idle with no velocity
 			state = State.Idle;
 		} else {
 			if (InputSubscribe.Sneaking || Kramp.Tongue.CurrentState is not (KrampusTongue.State.Idle or KrampusTongue.State.Carrying)) {
@@ -183,7 +183,7 @@ public class KrampusController : KrampusBehaviour {
 			m_timeHoldingInput += Time.deltaTime;
 		}
 		if (CurrentState == State.Idle) m_timeHoldingInput = 0f;
-		m_previousFrameVelocity = m_rigidbody.velocity.sqrMagnitude;
+		m_previousFrameVelocity = m_rigidbody.linearVelocity.sqrMagnitude;
 
 		if (CanDash && InputSubscribe.Special) {
 			Dash();
@@ -225,7 +225,7 @@ public class KrampusController : KrampusBehaviour {
 		if (!Game.Balling) return;
 		ChangeState(State.Dead, StateChangeReason.Rapid);
 		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
-		m_rigidbody.velocity = Vector3.zero;
+		m_rigidbody.linearVelocity = Vector3.zero;
 		m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 		Game.MainGameInfo.ProcessEndGame(ending);
 	}
@@ -251,7 +251,7 @@ public class KrampusController : KrampusBehaviour {
 			//Debug.Log("Dash Time: " + m_dashTime);
 			Vector3 direction = m_dashTarget.GameObject.transform.position - transform.position;
 			float distance = direction.sqrMagnitude;
-			m_rigidbody.velocity = direction.normalized * m_dashCurve.Evaluate(m_dashTime) * m_dashSpeedMultiplier * RunSpeed;
+			m_rigidbody.linearVelocity = direction.normalized * m_dashCurve.Evaluate(m_dashTime) * m_dashSpeedMultiplier * RunSpeed;
 
 			if (distance < 1) {
 				ChangeState(State.Run, StateChangeReason.Rapid);
@@ -264,9 +264,9 @@ public class KrampusController : KrampusBehaviour {
 		var skewedInput = Kramp.Kamera.Matrix.MultiplyPoint3x4(computedVelocity);
 
 		if (CurrentState != State.Run) {
-			m_rigidbody.velocity = skewedInput * SneakSpeed;
+			m_rigidbody.linearVelocity = skewedInput * SneakSpeed;
 		} else {
-			m_rigidbody.velocity = skewedInput * RunSpeed;
+			m_rigidbody.linearVelocity = skewedInput * RunSpeed;
 			/*
 			if (Kramp.Tongue.InMouth != null) {
 				m_rigidbody.velocity *= m_weightedRunMultiplier;
@@ -276,9 +276,9 @@ public class KrampusController : KrampusBehaviour {
 		if (Physics.Raycast(transform.position, VelocityVector, out var hit, m_assistCheckLength, m_avoidableObjects, QueryTriggerInteraction.Ignore)) {
 			if (m_avoidableObjects == (m_avoidableObjects | 1 << hit.transform.gameObject.layer)) {
 				if (!Physics.Raycast(transform.position, Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
-					m_rigidbody.velocity = Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector);
+					m_rigidbody.linearVelocity = Quaternion.Euler(0, -m_assistValue, 0) * (VelocityVector);
 				} else if (!Physics.Raycast(transform.position, Quaternion.Euler(0, m_assistValue, 0) * (VelocityVector), m_assistCheckLength)) {
-					m_rigidbody.velocity = Quaternion.Euler(0, m_assistValue, 0) * (VelocityVector);
+					m_rigidbody.linearVelocity = Quaternion.Euler(0, m_assistValue, 0) * (VelocityVector);
 				}
 			}
 		}
