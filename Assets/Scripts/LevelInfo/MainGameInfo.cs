@@ -198,6 +198,8 @@ public class MainGameInfo : LevelInfo {
 			Krampus.Kontroller.KrampTermination(Ending.LoseTime);
 			return;
 		}
+
+		Debug.Log(CurrentState);
 	}
 
 	public void ProcessEndGame(Ending ending) {

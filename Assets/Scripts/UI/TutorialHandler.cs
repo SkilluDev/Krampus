@@ -83,7 +83,7 @@ public class TutorialHandler : MonoBehaviour {
 			Debug.Log("Should quit tutorial now");
 			if (m_handle.IsActive()) m_handle.Cancel();
 			gameObject.SetActive(false);
-			Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
+			//Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
 
 		}
 		if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && Game.MainGameInfo.CurrentState == MainGameInfo.State.WaitingToStart) {

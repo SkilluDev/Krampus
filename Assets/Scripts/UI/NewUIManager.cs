@@ -166,8 +166,9 @@ public class NewUIManager : MonoBehaviour {
 		} else {
 			m_timerDisplay.gameObject.SetActive(true);
 		}
+		//========
 		if (Game.MainGameInfo.CurrentState == MainGameInfo.State.ItemChoosing) {
-			DisplayItemChoiceMenu();
+		//	DisplayItemChoiceMenu();
 		}
 
 		//cursor
@@ -209,7 +210,8 @@ public class NewUIManager : MonoBehaviour {
 		if (next == MainGameInfo.State.WaitingToStart) {
 			if (Game.PogMan.GetCurrentLevelStats().Tutorials == 0) {
 				//Debug.Log("ZERO");
-				Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
+				//Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
+				Game.MainGameInfo.SetState(MainGameInfo.State.Game);
 			} else {
 				Game.GlobalEvents.onTutorialTrigger.Invoke(Game.PogMan.GetCurrentLevelStats().Tutorials);
 			}
