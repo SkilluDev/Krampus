@@ -19,7 +19,6 @@ public class DayNightCycle : MonoBehaviour
 	private void Start()
     {
 		m_currentPhase = CyclePhase.Night;
-		Debug.Log("Starting at Night");
     }
 
 	private void Update()
@@ -50,7 +49,6 @@ public class DayNightCycle : MonoBehaviour
 		CyclePhase oldPhase = m_currentPhase;
 		m_currentPhase = newPhase;
 		onCyclePhaseChanged.Invoke(oldPhase, newPhase);
-		Debug.Log("Changed phase from " + oldPhase.ToString() + " to " + newPhase.ToString());
     }
 
 	private void NextPhase() {

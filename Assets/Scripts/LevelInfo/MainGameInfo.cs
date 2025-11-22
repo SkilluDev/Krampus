@@ -189,7 +189,6 @@ public class MainGameInfo : LevelInfo {
 
 
 	private void Update() {
-		//Debug.Log(CurrentState + "CURRENT");
 		if (!Game.MainGameInfo.NaughtyChildren.Any() && Game.Balling) {
 			Game.MainGameInfo.ProcessEndGame(Ending.Win);
 		}

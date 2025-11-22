@@ -39,24 +39,21 @@ public class EffectBar : MonoBehaviour {
         m_effectIcons[item].Activate(duration);
     }
     public void ActivateIcon(Item item) {
-        Debug.Log("Aktywowano item:" + item.ItemName);
         m_effectIcons[item].Activate();
     }
     public void ActivateIcon(Item item, int stacks) {
-        Debug.Log("Aktywowano item:" + item.ItemName);
         m_effectIcons[item].Activate(stacks);
     }
     public void ActivateIconPuff(Item item) {
-        Debug.Log("Aktywowano item:" + item.ItemName);
         m_effectIcons[item].ActivatePuff();
     }
     public void DesactivateIcon(Krampus krampus, Item item) {
-       
+
             m_effectIcons[item].Desactivate();
-                
-         
-        
+
+
+
     }
-    
-   
+
+
 }

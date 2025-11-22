@@ -42,7 +42,6 @@ public class ItemChoiceMenuUI : MonoBehaviour {
 
         gameObject.SetActive(false);
 
-        Debug.Log("Got item: " + m_itemsDisplayed[pos].ItemName);
 
 
     }

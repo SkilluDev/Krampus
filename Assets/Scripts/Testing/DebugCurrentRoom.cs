@@ -12,7 +12,6 @@ namespace KrampTests {
 
             var room = Game.MainGameInfo.RoomGenerator.GetRoomAt(transform.position);
             if (room != m_room) {
-                if (m_log) Debug.Log($"{name} changed Room {m_room} -> {room}");
                 m_room = room;
             }
         }

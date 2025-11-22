@@ -61,7 +61,6 @@ public class SerializedEnumDictionary<TKey, TValue>: ISerializationCallbackRecei
 			}
 		}
 		foreach (var v in toRemove) {
-			//Debug.Log("TOREMOVE" + v.Key);
 			m_values.Remove(v);
 		}
 		toRemove.Clear();

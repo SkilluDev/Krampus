@@ -41,7 +41,6 @@ public class LowTime : MonoBehaviour {
     private void FixedUpdate() {
         if (Game.Balling) {
             if (m_topKramp.anchoredPosition != m_wantedTopPos || m_bottomKramp.anchoredPosition != m_wantedBottomPos) {
-				Debug.Log($"Top Position: {m_topKramp.anchoredPosition}, Wanted Top Position: {m_wantedTopPos}");
                 float desiredSpeed = m_jawSpeed * (m_wantedTopPos.y < m_initialTopVector.y ? 1 : m_upwardMultiplier);
                 m_topKramp.anchoredPosition = Vector2.Lerp(m_topKramp.anchoredPosition, m_wantedTopPos, desiredSpeed);
                 m_bottomKramp.anchoredPosition = Vector2.Lerp(m_bottomKramp.anchoredPosition, m_wantedBottomPos, desiredSpeed);

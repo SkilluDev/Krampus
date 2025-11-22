@@ -26,7 +26,7 @@ public class EffectIcon : MonoBehaviour {
     private Vector3 oldScale = Vector3.one;
     private int m_stackableTemporaryEffects = 0;
 
-    
+
 
 
 
@@ -86,7 +86,6 @@ public class EffectIcon : MonoBehaviour {
     public void DesactivateTemp() {
 
         m_stackableTemporaryEffects--;
-        Debug.Log("Ojej: " + m_stackableTemporaryEffects);
         ChangeStackableText(m_stackableTemporaryEffects);
     }
 
@@ -97,9 +96,9 @@ public class EffectIcon : MonoBehaviour {
         }
         m_stackText.text = value.ToString();
      }
-   
-   
 
-    
+
+
+
 
 }

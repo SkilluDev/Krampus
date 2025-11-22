@@ -12,7 +12,6 @@ public class Deadline : LevelModifier {
 
 
         Game.MainGameInfo.Timer.SetGameTime(30);
-        //Debug.Log("Siema: czas reduced");
     }
 
 }

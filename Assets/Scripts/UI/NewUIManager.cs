@@ -197,7 +197,6 @@ public class NewUIManager : MonoBehaviour {
 	}
 
 	private void OnLevelStateChanged(MainGameInfo.State previous, MainGameInfo.State next) {
-		//Debug.Log("PREVIOUS:" + previous + "NEXT:" + next);
 		if (next == MainGameInfo.State.Game &&
 			(previous == MainGameInfo.State.ItemChoosing ||
 			 previous == MainGameInfo.State.Intro ||
@@ -208,7 +207,6 @@ public class NewUIManager : MonoBehaviour {
 
 		if (next == MainGameInfo.State.WaitingToStart) {
 			if (Game.PogMan.GetCurrentLevelStats().Tutorials == 0) {
-				//Debug.Log("ZERO");
 				Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
 			} else {
 				Game.GlobalEvents.onTutorialTrigger.Invoke(Game.PogMan.GetCurrentLevelStats().Tutorials);

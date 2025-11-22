@@ -105,13 +105,10 @@ public class Child : NPC, IKrampable, INoiseReactor {
 	private void Update() {
 		if (!CurrentRoom) return;
 
-		//Debug.Log("MOVING TO:" + m_selectedPosition);
 
 		void SelectNewWanderLocation() {
 			if (NavMesh.SamplePosition(MoreMath.RandomInBounds(CurrentRoom.GetBounds()), out var hit, 10, NavMesh.AllAreas)) {
 				SetDestination(hit.position);
-			} else {
-				//Debug.Log("ever considered ending your life");
 			}
 		}
 
@@ -252,7 +249,6 @@ public class Child : NPC, IKrampable, INoiseReactor {
 	}
 
 	private void SwitchState(State next) {
-		//Debug.Log("SWITCHTO:" + next);
 		if (next == CurrentState) return;
 		m_currentDetectionTime = 0f;
 		onStateChanged?.Invoke(CurrentState, next);
@@ -276,7 +272,6 @@ public class Child : NPC, IKrampable, INoiseReactor {
 
 	public void Alert(RoomData roomData, Vector3 place, ICharacter actor) {
 		if (actor is not Krampus || CurrentState != State.Idle) return;
-		//Debug.Log("[Child] Child alerted");
 		//SwitchState(State.Stunned);
 		m_timeout = m_stunDuration;
 		SetDestination(place);

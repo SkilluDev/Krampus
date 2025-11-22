@@ -39,11 +39,9 @@ public class MainMenuInfo : LevelInfo {
 		foreach (var c in m_canvases) c.alpha = 0;
 		SetState(State.Default);
 		EventSystem.current.SetSelectedGameObject(null);
-		//Debug.Log("Set state default!");
 	}
 
     private void Unready() {
-		//Debug.Log("Kill motions");
 		if (m_motions == null) return;
         for (int i = 0; i < m_motions.Length; i++) {
 			m_motions[i].TryCancel();

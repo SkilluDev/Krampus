@@ -42,7 +42,6 @@ public class DifficultyProgression : MonoBehaviour
 	public DifficultyTransition GetNextTransition() {
 		DifficultyTransition transition = m_transitionSequence[m_currentTransitionIndex];
 		m_currentTransitionIndex = (m_currentTransitionIndex + 1) % m_transitionSequence.Count;
-		Debug.Log("Next Difficulty Transition: " + transition.ToString());
         return transition;
     }
 
@@ -75,6 +74,5 @@ public class DifficultyProgression : MonoBehaviour
 	[NaughtyAttributes.Button]
 	private void NextDifficulty() {
 		TransitionToNextDifficulty();
-		Debug.Log("New Difficulty - Target Count: " + m_targetCount + ", Time: " + m_time + ", Speed: " + m_speed + ", Difficulty: " + CurrentDifficulty);
 	}
 }

@@ -79,8 +79,6 @@ public class Nun : NPC {
     private void SelectNewWanderLocation() {
         if (NavMesh.SamplePosition(Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement().GetMidPoint(), out var hit, 10, NavMesh.AllAreas)) {
             SetDestination(hit.position);
-        } else {
-            Debug.Log("ever considered ending your life");
         }
     }
 

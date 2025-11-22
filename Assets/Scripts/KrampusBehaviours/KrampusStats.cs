@@ -95,7 +95,6 @@ public class KrampusStats : KrampusBehaviour {
     public void RegisterEffect(Effect effect) {
         Kramp.KrampusEvents.onEffectRegistered.Invoke(Kramp, effect);
         m_effects[effect.StatModifier.Stat].Add(effect);
-        Debug.Log("Dodano Efekt z timerem" + effect.Timer);
         RecalculateStats();
     }
 

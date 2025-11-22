@@ -54,7 +54,6 @@ public class SpriteSheetAnimator : MonoBehaviour {
 
         m_colorTimer += Time.deltaTime/2;
         if (m_colorTimer > 1 / m_fps) {
-            //Debug.Log("dlugosc" + m_colors.Length);
             m_image.color = m_colors[(m_colorCounter++) % m_colors.Length];
             m_colorTimer = 0;
         }
