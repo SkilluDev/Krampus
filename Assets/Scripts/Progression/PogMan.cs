@@ -34,6 +34,12 @@ public class PogMan : MonoBehaviour {
 
 	[SerializeField] private LevelSet m_levelSet;
 
+	[SerializeField] private bool m_arcadeMode = true;
+
+	[SerializeField] private DifficultyProgression m_arcadeDifficultyProgression;
+
+	public List<LevelStats> LevelStats => m_arcadeMode ? m_arcadeDifficultyProgression.LevelStats : m_levelSet.LevelStats;
+
 	private int m_currentLevel = 0;
 
 	[SerializeField] private int m_startingLevel = 0;
@@ -42,10 +48,10 @@ public class PogMan : MonoBehaviour {
 
 	public bool IsTutorial => m_isTutorial;
 
-	public int LevelCount => m_levelSet.LevelStats.Count;
+	public int LevelCount => LevelStats.Count;
 	public int CurrentLevel => m_currentLevel;
 
-	public bool IsThereNextLevel => m_currentLevel < m_levelSet.LevelStats.Count - 1;
+	public bool IsThereNextLevel => m_currentLevel < LevelStats.Count - 1;
 	public List<Item> krampusItems;
 	public IReadOnlyList<Item> KrampusItems => krampusItems;
 
@@ -68,10 +74,12 @@ public class PogMan : MonoBehaviour {
 	}
 
 	public LevelStats GetCurrentLevelStats() {
-		return m_levelSet.LevelStats[m_currentLevel];
+		if(m_arcadeMode && m_arcadeDifficultyProgression.LevelStats.Count == 0)
+			m_arcadeDifficultyProgression.Initialize();
+		return LevelStats[m_currentLevel];
 	}
 	public int GetMaxLevel() {
-		return m_levelSet.LevelStats.Count;
+		return LevelStats.Count;
 	}
 
 	private bool m_clearItemsOnLoad = false;
@@ -118,6 +126,7 @@ public class PogMan : MonoBehaviour {
 		m_canGoToNextLevel = false;
 		if (IsThereNextLevel) {
 			m_currentLevel += 1;
+			if(m_arcadeMode) (LevelStats[m_currentLevel] as LevelStatsWithSpeed).LogStats();
 			SetNextSeed();
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
 			Game.LoadState(Game.State.MainGame);

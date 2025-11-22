@@ -1182,6 +1182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 544388242}
   - component: {fileID: 544388241}
+  - component: {fileID: 544388243}
   m_Layer: 0
   m_Name: PogMan
   m_TagString: Untagged
@@ -1212,6 +1213,8 @@ MonoBehaviour:
     - m_key: 3
       m_levelSet: {fileID: 11400000, guid: e32be2185deec83478ed8f2dda47a2af, type: 2}
   m_levelSet: {fileID: 11400000, guid: 311b779373fd01746879ff6ba1f436e4, type: 2}
+  m_arcadeMode: 1
+  m_arcadeDifficultyProgression: {fileID: 544388243}
   m_startingLevel: 0
   krampusItems: []
 --- !u!4 &544388242
@@ -1229,6 +1232,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1553979833}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &544388243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544388240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b876098f93a72814ea724bc6ec15159c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DifficultyProgression
+  m_startingTargetCount: 1
+  m_startingTime: 60
+  m_startingSpeed: 12
+  m_difficultyMultiplier: 1.1
+  m_levelStats: []
 --- !u!1 &607951517
 GameObject:
   m_ObjectHideFlags: 0
@@ -3691,10 +3711,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 631795403}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 0}
+  m_SizeDelta: {x: 100, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1833699561
 MonoBehaviour:

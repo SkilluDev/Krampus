@@ -32,6 +32,67 @@ public class LevelStats {
 	[SerializeField] private bool m_lockWindUpUse = false;
 
 	public bool LockWindUpUse => m_lockWindUpUse;
+
+	public void Initialize(
+        int naughty,
+        int nice,
+        int nun,
+        int width,
+        int length,
+        bool canChoose,
+        float timer,
+        TutorialPage? tutorials,
+        bool lockWindUp)
+    {
+        m_naughtyCount = naughty;
+        m_niceCount = nice;
+        m_nunCount = nun;
+        m_gridWidth = width;
+        m_gridLength = length;
+        m_canChooseItems = canChoose;
+        m_timer = timer;
+        m_tutorials = tutorials ?? TutorialPage.None;
+        m_lockWindUpUse = lockWindUp;
+    }
+
+    public override string ToString() {
+        return $"Naughty: {NaughtyCount}, Nice: {NiceCount}, Nun: {NunCount}, Width: {GridWidth}, Length: {GridLength}, CanChooseItems: {CanChooseItems}, Timer: {Timer}, Tutorials: {Tutorials}, LockWindUpUse: {LockWindUpUse}";
+    }
+}
+
+public class LevelStatsWithSpeed : LevelStats {
+	[SerializeField] private float m_speed = 12f;
+	public float Speed => m_speed;
+
+	public void Initialize(
+		int naughty,
+		int nice,
+		int nun,
+		int width,
+		int length,
+		bool canChoose,
+		float timer,
+		TutorialPage? tutorials,
+		bool lockWindUp,
+		float speed)
+	{
+		base.Initialize(
+			naughty,
+			nice,
+			nun,
+			width,
+			length,
+			canChoose,
+			timer,
+			tutorials,
+			lockWindUp
+		);
+		m_speed = speed;
+	}
+
+	public void LogStats() {
+		Debug.Log("New Difficulty - Target Count: " + NaughtyCount + ", Time: " + Timer + ", Speed: " + Speed);
+    }
 }
 
 [CreateAssetMenu(menuName = "Game/LevelProgression/Stats", fileName = "LevelProgressionStats")]

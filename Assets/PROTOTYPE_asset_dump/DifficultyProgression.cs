@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,10 +34,43 @@ public class DifficultyProgression : MonoBehaviour
 
 	private int m_currentTransitionIndex = 0;
 
-	private void Start() {
+	[SerializeField] private List<LevelStats> m_levelStats = new List<LevelStats>();
+
+	public List<LevelStats> LevelStats => m_levelStats;
+
+	public void Initialize() {
 		m_targetCount = m_startingTargetCount;
 		m_time = m_startingTime;
 		m_speed = m_startingSpeed;
+		AddLevelsToLevelSet(100);
+	}
+
+	private void AddLevelsToLevelSet(int count) {
+        for (int i = 0; i < count; i++) {
+			AddNextLevelToLevelSet();
+			TransitionToNextDifficulty();
+		}
+
+    }
+
+	private void AddNextLevelToLevelSet() {
+        LevelStatsWithSpeed stats = new LevelStatsWithSpeed();
+
+    	stats.Initialize(
+			naughty: Mathf.RoundToInt(m_targetCount),
+			nice: Mathf.RoundToInt(m_targetCount/2),
+			nun: 4,
+			width: 7,
+			length: 7,
+			canChoose: false,
+			timer: m_time,
+			tutorials: null,
+			lockWindUp: false,
+			speed: m_speed
+		);
+        m_levelStats.Add(stats);
+
+		Debug.Log(m_levelStats.Count + " New Difficulty - Target count: " + m_targetCount + ", Time: " + m_time + ", Speed: " + m_speed + ", Difficulty: " + CurrentDifficulty);
 	}
 
 	public DifficultyTransition GetNextTransition() {
@@ -45,18 +79,19 @@ public class DifficultyProgression : MonoBehaviour
         return transition;
     }
 
+
 	public void TransitionToNextDifficulty() {
 		DifficultyTransition transition = GetNextTransition();
 		switch (transition) {
 			case DifficultyTransition.ATargetUp:
-				m_targetCount *= m_difficultyMultiplier;
+				m_targetCount += Mathf.Ceil((m_difficultyMultiplier-1)*m_targetCount);
 				break;
 			case DifficultyTransition.BTargetUpSpeedUp:
-				m_targetCount *= m_difficultyMultiplier;
+				m_targetCount += Mathf.Ceil((m_difficultyMultiplier-1)*m_targetCount);
 				m_speed *= m_difficultyMultiplier;
 				break;
 			case DifficultyTransition.CTargetUpTimeDown:
-				m_targetCount *= m_difficultyMultiplier;
+				m_targetCount += Mathf.Ceil((m_difficultyMultiplier-1)*m_targetCount);
 				m_time /= m_difficultyMultiplier;
 				break;
 			case DifficultyTransition.DTimeDown:
