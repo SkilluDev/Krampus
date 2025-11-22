@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 [Flags]
 public enum TutorialPage {
+	None = 0,
 	WalkAndRun = 1,
 	AttackNaughty = 2,
 	Timer = 4,
