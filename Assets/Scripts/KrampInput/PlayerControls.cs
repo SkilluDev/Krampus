@@ -150,12 +150,12 @@ namespace KrampInput
                 },
                 {
                     ""name"": ""Special"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""c2e4ce99-ee3a-4ac0-9ca6-6b6500c1acbd"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [

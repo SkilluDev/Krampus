@@ -27,6 +27,8 @@ public class KrampusTongue : KrampusBehaviour {
 	[BoxGroup("Controls")][SerializeField] private float m_inputDragSmoothing = 12f;
 	[BoxGroup("Controls")][SerializeField] private float m_inputMousePlaneY = 1f;
 
+	
+
 	[Serializable]
 	private class Timings : TimedSequence<Timings> {
 		[SeqDuration] public float windup = 0.4f;
@@ -125,6 +127,14 @@ public class KrampusTongue : KrampusBehaviour {
 			_ => InputSubscribe.Raw.Player.Shoot.WasPerformedThisFrame(),
 		};
 	}
+
+	private bool InputWantsEat() {
+        return InputSubscribe.InputMethod switch {
+            InputSubscribe.Method.PC => InputSubscribe.Raw.Player.Special.IsPressed(),
+			_ => !InputSubscribe.Raw.Player.Special.WasPerformedThisFrame(),
+        };
+    }
+
 	#endregion
 
 	private void Ready() {
@@ -169,6 +179,9 @@ public class KrampusTongue : KrampusBehaviour {
 						SwitchState(State.Windup);
 					}
 				}
+				if(InputWantsEat()) {
+                    Eat();
+                }
 				break;
 
 			case State.Windup: // Pre-shoot phase. Wait for the windup
@@ -214,7 +227,12 @@ public class KrampusTongue : KrampusBehaviour {
 
 			case State.Consume:
 				try {
+				if(m_hitInteractable != null){
+					if(m_hitKrampable.GameObject.GetComponent<Child>()) {
+					m_hitKrampable.GameObject.GetComponent<Child>().Stun(3);
+					}else
 					m_hitKrampable.Consume(Kramp, m_tongueVisualOrigin.position, Quaternion.LookRotation(m_tongueDirection));
+				}
 				} catch (Exception e) {
 					LogException(e, m_hitKrampable);
 				}
@@ -361,6 +379,10 @@ public class KrampusTongue : KrampusBehaviour {
 				if (m_hitKrampable != null) {
 					if (m_hitKrampable.Type == IKrampable.krampableType.Instant) {
 						SwitchState(State.Consume);
+						
+                            
+                        
+						
 					} else {
 						SwitchState(State.Carrying);
 					}
@@ -454,4 +476,33 @@ public class KrampusTongue : KrampusBehaviour {
 	public void SetTongueLineRenderer(bool b) {
 		m_tongueRenderer.enabled = b;
 	}
+
+	public void Eat() {
+
+		Debug.Log(TongueDirection);
+		float range= 2;
+		
+        Collider[] hitObjects = Physics.OverlapSphere(
+					Kramp.transform.position +  new Vector3(TongueDirection.x * range,0,  TongueDirection.z * range), range,
+					 m_interactionSearchMask
+				);
+				Debug.Log(hitObjects.Length);
+
+
+			SwitchState(State.Consume);
+
+	
+				foreach (Collider c in hitObjects) {
+					
+					Child child;
+					if (c.gameObject.TryGetComponent<Child>(out child)) {
+					child.Consume(Kramp, m_tongueVisualOrigin.position, Quaternion.LookRotation(m_tongueDirection));
+				}
+            
+        }	   
+								   
+
+
+		
+    }
 }
