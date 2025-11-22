@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 358014044}
   - component: {fileID: 358014045}
   - component: {fileID: 358014046}
+  - component: {fileID: 358014047}
   m_Layer: 0
   m_Name: '#INFO'
   m_TagString: Untagged
@@ -462,6 +463,22 @@ MonoBehaviour:
       m_Calls: []
   m_dayTime: 1
   m_nightTime: 1
+--- !u!114 &358014047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358014034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b876098f93a72814ea724bc6ec15159c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DifficultyProgression
+  m_startingTargetCount: 1
+  m_startingTime: 60
+  m_startingSpeed: 12
+  m_difficultyMultiplier: 1.1
 --- !u!1 &423022856
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,6 +1151,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_windUpDashCost
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1698299321934093973, guid: 1370af54edd30564086e0f4717044a13,
+        type: 3}
+      propertyPath: m_weightedRunMultiplier
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3083306166600181781, guid: 1370af54edd30564086e0f4717044a13,
         type: 3}
