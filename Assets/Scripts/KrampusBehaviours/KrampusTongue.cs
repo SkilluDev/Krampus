@@ -13,7 +13,7 @@ public class KrampusTongue : KrampusBehaviour {
 	[BoxGroup("Visual")][SerializeField] private LineRenderer m_tongueRenderer;
 	[BoxGroup("Visual")][SerializeField] private Transform m_tongueVisualOrigin;
 	[BoxGroup("Visual")][SerializeField] private Transform m_inMouthOrigin;
-	[BoxGroup("Visual")][SerializeField] private SkinnedMeshRenderer m_tongueAimIndicator;
+	[BoxGroup("Visual")][SerializeField] private Transform m_tongueAimIndicator;
 
 	[BoxGroup("Physics")][SerializeField] private LayerMask m_interactionSearchMask = int.MaxValue;
 	[BoxGroup("Physics")][SerializeField] private LayerMask m_interactionBlockerMask = int.MaxValue;
@@ -142,9 +142,11 @@ public class KrampusTongue : KrampusBehaviour {
 
 	private void Update() {
 		if (!Game.Balling) {
-			m_tongueAimIndicator.gameObject.SetActive(false);
+			m_tongueAimIndicator.gameObject.SetActive(true);
 			return;
 		}
+
+		RotateAim();	
 		if (TongueLength != m_previousTongueLength) {
 			Kramp.KrampusEvents.onTongueLengthChanged.Invoke(Kramp, TongueLength - m_previousTongueLength);
 		}
@@ -159,7 +161,7 @@ public class KrampusTongue : KrampusBehaviour {
 
 			case State.Idle:
 				m_tongueTime = 0;
-				m_tongueAimIndicator.gameObject.SetActive(false);
+				//m_tongueAimIndicator.gameObject.SetActive(false);
 				if (InputWantsStartAiming()) {
 					if (m_hitKrampable != null && m_hitKrampable.Type == IKrampable.krampableType.DelayedSimple) {
 						SwitchState(State.Consume);
@@ -178,9 +180,9 @@ public class KrampusTongue : KrampusBehaviour {
 					m_tongueTime = m_sequence.End(nameof(Timings.windup));
 
 					m_tongueAimIndicator.gameObject.SetActive(true); // TODO: this should be done by the animator;
-					m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
+					//m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
 					//m_tongueAimIndicator.SetBlendShapeWeight(0, InputGetShootFactor() * 100f);
-					m_tongueAimIndicator.transform.localScale = new Vector3(100f, 100f, (100f / 7f) * TongueLength);
+					//m_tongueAimIndicator.transform.localScale = new Vector3(100f, 100f, (100f / 7f) * TongueLength);
 
 					if (InputWantsShoot()) {
 						if (m_hitKrampable != null) {
@@ -192,7 +194,7 @@ public class KrampusTongue : KrampusBehaviour {
 							m_hitInteractable = null;
 							m_hitTonguable = null;
 							m_midwayToungables = null;
-							m_tongueAimIndicator.gameObject.SetActive(false);
+							//m_tongueAimIndicator.gameObject.SetActive(false);
 							break;
 						}
 					}
@@ -207,9 +209,7 @@ public class KrampusTongue : KrampusBehaviour {
 					m_tongueTime = 0;
 				}
 
-				m_tongueDirection = InputTongueDirection();
-				m_tongueDirection.y = 0;
-				m_tongueDirection.Normalize();
+				
 				break;
 
 			case State.Consume:
@@ -223,7 +223,7 @@ public class KrampusTongue : KrampusBehaviour {
 				m_hitInteractable = null;
 				m_hitTonguable = null;
 				m_midwayToungables = null;
-				m_tongueAimIndicator.gameObject.SetActive(false);
+				//	m_tongueAimIndicator.gameObject.SetActive(false);
 				SwitchState(State.Idle);
 				break;
 
@@ -370,7 +370,7 @@ public class KrampusTongue : KrampusBehaviour {
 					m_hitInteractable = null;
 					m_hitTonguable = null;
 					m_midwayToungables = null;
-					m_tongueAimIndicator.gameObject.SetActive(false);
+					//m_tongueAimIndicator.gameObject.SetActive(false);
 					SwitchState(State.Idle);
 				}
 				Kramp.Kontroller.LockOut();
@@ -417,6 +417,14 @@ public class KrampusTongue : KrampusBehaviour {
 	private bool IsTime(string nameof) {
 		return m_tongueTime >= m_sequence.End(nameof);
 	}
+
+	private void RotateAim() {
+		m_tongueDirection = InputTongueDirection();
+				m_tongueDirection.y = 0;
+				m_tongueDirection.Normalize();
+        m_tongueAimIndicator.transform.rotation = Quaternion.LookRotation(m_tongueDirection, Vector3.up);
+		
+    }
 
 	private void LogException(Exception e, object context) {
 		switch (context) {
