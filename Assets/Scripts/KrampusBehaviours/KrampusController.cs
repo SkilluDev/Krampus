@@ -156,7 +156,7 @@ public class KrampusController : KrampusBehaviour {
 		} else if (CurrentState == State.Idle && m_rigidbody.linearVelocity.sqrMagnitude <= m_startRunSpeed) { //if was already idle with no velocity
 			state = State.Idle;
 		} else {
-			if (InputSubscribe.Sneaking || Kramp.Tongue.CurrentState is not (KrampusTongue.State.Idle or KrampusTongue.State.Carrying)) {
+			if (InputSubscribe.Sneaking /* || Kramp.Tongue.CurrentState is not (KrampusTongue.State.Idle or KrampusTongue.State.Carrying) */) {
 				state = State.Walk;
 			} else {
 				state = State.Run;
