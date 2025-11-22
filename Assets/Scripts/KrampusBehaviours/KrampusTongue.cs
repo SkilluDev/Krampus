@@ -280,6 +280,7 @@ public class KrampusTongue : KrampusBehaviour {
 				// Determine the primary Tongueable - if we have already hit something, we give priority to the previously hit Interactable
 				if (m_hitInteractable == null || !m_hitInteractable.GameObject.TryGetComponent<ITongueable>(out m_hitTonguable)) {
 					m_hitTonguable = Physics.OverlapSphere(m_tongueDestination, m_tongueHitRadius).Select(w => w.GetComponent<ITongueable>()).FirstOrDefault();
+					DebugHelper.DrawSphere(m_tongueDestination, m_tongueHitRadius, Color.red, 5f);
 				}
 
 				// Find all Tonguables to update with the extending tongue. We want to not include the main hit one, as its 'Hit' will get called separately
