@@ -30,7 +30,7 @@ public class Door : Passage, IInteractable {
 	public bool CanInteract(IInteractor interactor) {
 		if (interactor.InteractorType != IInteractor.Type.Player) return false;
 		m_hitRight = Random.Range(0, 2) == 0;
-		return IsOpen;
+		return true;
 	}
 
 	public Vector3 InteractionPoint => m_hitRight ? m_flap1.position : m_flap2.position;
