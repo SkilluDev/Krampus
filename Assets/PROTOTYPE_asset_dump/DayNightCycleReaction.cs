@@ -9,14 +9,9 @@ public class DayNightCycleReaction : MonoBehaviour {
 	private DayNightCycle m_cycle;
 
 	private IDayNightCycleReactor[] m_reactors;
-
-
-	private void Awake() {
+	private void Start() {
 		m_reactors = GetComponents<IDayNightCycleReactor>();
 		m_cycle = Game.MainGameInfo.DayNightCycle;
-	}
-
-	private void Start() {
 		m_cycle.onCyclePhaseChanged.AddListener(OnCycleChange);
 	}
 
