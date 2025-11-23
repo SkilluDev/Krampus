@@ -146,6 +146,7 @@ public class NewUIManager : MonoBehaviour {
 	public void SwitchPauseMenu(bool activate) {
 		if (activate) m_pauseScreen.SetActive(true);
 		else m_pauseScreen.SetActive(false);
+		
 	}
 
 	private void Start() {

@@ -480,10 +480,10 @@ public class KrampusTongue : KrampusBehaviour {
 	public void Eat() {
 
 		Debug.Log(TongueDirection);
-		float range= 2;
+		float range= 3;
 		
         Collider[] hitObjects = Physics.OverlapSphere(
-					Kramp.transform.position +  new Vector3(TongueDirection.x * range,0,  TongueDirection.z * range), range,
+					Kramp.transform.position +  new Vector3(TongueDirection.x * range/2,0,  TongueDirection.z * range/2), range,
 					 m_interactionSearchMask
 				);
 				Debug.Log(hitObjects.Length);
