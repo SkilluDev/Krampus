@@ -60,8 +60,8 @@ public class DifficultyProgression : MonoBehaviour
 			naughty: m_targetCount,
 			nice: Mathf.RoundToInt(Mathf.Ceil(m_targetCount/2)),
 			nun: Mathf.RoundToInt(Mathf.Ceil(m_targetCount/3)),
-			width: Mathf.RoundToInt(Mathf.Max(3, Mathf.Round(Mathf.Sqrt(m_targetCount)))),
-			length: Mathf.RoundToInt(Mathf.Max(3, Mathf.Round(Mathf.Sqrt(m_targetCount)))),
+			width: Mathf.RoundToInt(Mathf.Max(3, Mathf.Round(Mathf.Sqrt(m_targetCount+7)))),
+			length: Mathf.RoundToInt(Mathf.Max(3, Mathf.Round(Mathf.Sqrt(m_targetCount+7)))),
 			canChoose: false,
 			timer: m_time,
 			tutorials: null,
@@ -70,7 +70,7 @@ public class DifficultyProgression : MonoBehaviour
 		);
         m_levelStats.Add(stats);
 
-		Debug.Log(m_levelStats.Count + " New Difficulty - Target count: " + m_targetCount + ", Time: " + m_time + ", Speed: " + m_speed + ", Difficulty: " + CurrentDifficulty);
+		Debug.Log(m_levelStats.Count + " New Difficulty - Size:"+Mathf.RoundToInt(Mathf.Max(3, Mathf.Round(Mathf.Sqrt(m_targetCount+7))))+" Target count: " + m_targetCount + ", Time: " + m_time + ", Speed: " + m_speed + ", Difficulty: " + CurrentDifficulty);
 	}
 
 	public DifficultyTransition GetNextTransition() {
