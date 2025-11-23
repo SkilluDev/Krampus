@@ -253,7 +253,7 @@ public class NewUIManager : MonoBehaviour {
 		m_blackBars.SetTopBarText("");
 		m_blackBars.SetTopTimerText(m_topTimerBarText);
 		if (ending.IsWin()) {
-			m_blackBars.SetBottomBarText("");
+			m_blackBars.SetBottomBarText(m_topSideBarWinText);
 			m_blackBars.AnimateResultText(true);
 		} else {
 			m_blackBars.SetBottomBarText(m_bottomBarLoseKeys);
