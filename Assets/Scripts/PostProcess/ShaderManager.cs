@@ -7,6 +7,12 @@ using UnityEngine.Rendering.Universal;
 
 public class ShaderManager : MonoBehaviour {
 	[SerializeField] private Material m_material;
+	[SerializeField] private Material m_outlineMaterial;
+
+	[SerializeField] public Volume m_nightVolumne;
+	
+	
+
 	[SerializeField] private float m_maxIntensity = 0.99f;
 
 	[SerializeField] private AnimationCurve m_shaderCurveIn;
@@ -93,4 +99,24 @@ public class ShaderManager : MonoBehaviour {
 		m_shaderOn = true;
 		m_material.SetFloat("_Intensity", 0);
 	}
+
+	public void SetDayNight(DayNightCycle.CyclePhase oldPhase, DayNightCycle.CyclePhase newCyclePhase) {
+		switch(newCyclePhase) {
+            case DayNightCycle.CyclePhase.Day:
+				m_outlineMaterial.SetInt("_IsDay",1);
+				m_nightVolumne.weight =  0;
+				m_uIPPVolume.weight =  1;
+
+			break;
+			case DayNightCycle.CyclePhase.Night:
+				m_outlineMaterial.SetInt("_IsDay",0);
+				m_nightVolumne.weight =  1;
+				m_uIPPVolume.weight =  0;
+			break;
+			default:
+
+			break;
+        }
+        
+    }
 }
