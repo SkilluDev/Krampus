@@ -265,7 +265,8 @@ public class Nun : NPC, IDayNightCycleReactor {
 
     private void OnCollisionEnter(Collision collision) {
         if (!Game.Balling) return;
-        //if (CurrentState != State.ChasingKrampus) return;
+        if (CurrentState == State.Stunned) return;
+
         if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
             return;
         }

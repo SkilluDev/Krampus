@@ -18,7 +18,7 @@ public class NunNightHitbox : MonoBehaviour, IDayNightCycleReactor
 
 	private void OnTriggerEnter(Collider other) {
         if (!Game.Balling) return;
-        //if (CurrentState != State.ChasingKrampus) return;
+        if (m_nun.CurrentState == Nun.State.Stunned) return;
         if (other.gameObject.layer != LayerMask.NameToLayer("Player")) {
             return;
         }
