@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
-public class Nun : NPC {
+public class Nun : NPC, IDayNightCycleReactor {
     public enum State {
         Idle,
         Patrolling, // Follow a pre-determined path. Use view cone to notice krampus
@@ -306,4 +306,15 @@ public class Nun : NPC {
             return false;
         }
     }
+
+
+	public void React(DayNightCycle.CyclePhase oldPhase, DayNightCycle.CyclePhase newPhase) {
+		if (newPhase == DayNightCycle.CyclePhase.Night) {
+			Debug.Log("[Nun] Night time - going idle");
+			m_viewCone.ToggleRange(false);
+        } else if (newPhase == DayNightCycle.CyclePhase.Day) {
+			Debug.Log("[Nun] Day time - going wild");
+			m_viewCone.ToggleRange(true);
+		}
+	}
 }

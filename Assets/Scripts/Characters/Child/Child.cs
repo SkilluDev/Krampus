@@ -9,7 +9,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.VFX;
 
-public class Child : NPC, IKrampable, INoiseReactor {
+public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 	public float RunSpeed => m_runSpeed;
 	[ShowNativeProperty] public State CurrentState { get; private set; }
 
@@ -283,4 +283,13 @@ public class Child : NPC, IKrampable, INoiseReactor {
 		m_timeout = duration;
 		SwitchState(State.Stunned);
 	}
-}
+
+	public void React(DayNightCycle.CyclePhase oldPhase, DayNightCycle.CyclePhase newPhase) {
+		if (newPhase == DayNightCycle.CyclePhase.Night) {
+			Debug.Log("[Child] Night time - going idle");
+			m_viewCone.ToggleRange(false);
+        } else if (newPhase == DayNightCycle.CyclePhase.Day) {
+			Debug.Log("[Child] Day time - going wild");
+			m_viewCone.ToggleRange(true);
+		}
+	}}

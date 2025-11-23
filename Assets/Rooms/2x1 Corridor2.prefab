@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7510600105704201446}
   - component: {fileID: 6601556398843444400}
   m_Layer: 0
-  m_Name: Door [(0, 0) EAST]
+  m_Name: 'Door [(0, 0) EAST]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54,7 +54,7 @@ MonoBehaviour:
   - {fileID: 5527697867110119582}
   - {fileID: 7013126604490731529}
   m_room: {fileID: 6128216017396198863}
-  m_gizmoColor: {r: 0.5000001, g: 0.3, b: 0.6, a: 0.7}
+  m_gizmoColor: {r: 0.31999987, g: 0.18, b: 0.6, a: 0.7}
 --- !u!1 &5032229474359432187
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,7 +66,7 @@ GameObject:
   - component: {fileID: 4024004184832784523}
   - component: {fileID: 2168405973846216588}
   m_Layer: 0
-  m_Name: Door [(0, 1) EAST]
+  m_Name: 'Door [(0, 1) EAST]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   - {fileID: 582948513401295981}
   - {fileID: 5960762493141441158}
   m_room: {fileID: 6128216017396198863}
-  m_gizmoColor: {r: 0.27999997, g: 0.6, b: 0.12, a: 0.7}
+  m_gizmoColor: {r: 0.53, g: 0.6, b: 0.18, a: 0.7}
 --- !u!1 &6254256482046366344
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,6 +278,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -299,6 +304,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -2247,17 +2253,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_light
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9027708860839939326}
     - target: {fileID: 6673574109492211657, guid: 888c2df302d8d0c4d9402c5ac025d235,
         type: 3}
       propertyPath: m_switch
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8553090453818496953}
     - target: {fileID: 6673574109492211657, guid: 888c2df302d8d0c4d9402c5ac025d235,
         type: 3}
       propertyPath: m_renderer
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 472194495930753509}
     - target: {fileID: 7905854987638172118, guid: 888c2df302d8d0c4d9402c5ac025d235,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2313,6 +2319,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 888c2df302d8d0c4d9402c5ac025d235, type: 3}
+--- !u!23 &472194495930753509 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6933201796630945763, guid: 888c2df302d8d0c4d9402c5ac025d235,
+    type: 3}
+  m_PrefabInstance: {fileID: 7402295082425089542}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &796293885557807056 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7905854987638172118, guid: 888c2df302d8d0c4d9402c5ac025d235,
@@ -2322,6 +2334,18 @@ Transform:
 --- !u!4 &1641208815041321610 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8105496985560573068, guid: 888c2df302d8d0c4d9402c5ac025d235,
+    type: 3}
+  m_PrefabInstance: {fileID: 7402295082425089542}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8553090453818496953 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1155334224383027647, guid: 888c2df302d8d0c4d9402c5ac025d235,
+    type: 3}
+  m_PrefabInstance: {fileID: 7402295082425089542}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &9027708860839939326 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 2013919683892458232, guid: 888c2df302d8d0c4d9402c5ac025d235,
     type: 3}
   m_PrefabInstance: {fileID: 7402295082425089542}
   m_PrefabAsset: {fileID: 0}

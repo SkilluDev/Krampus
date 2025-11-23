@@ -43,7 +43,11 @@ public class ViewCone : MonoBehaviour {
 		transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
 	}
 
+	private float m_oldRunRange;
+	private float m_oldSneakRange;
 	private void Awake() {
+		m_oldRunRange = runRange;
+		m_oldSneakRange = sneakRange;
 		m_range = runRange;
 		m_frameCounter = Random.Range(0, m_additionalRaycastDelta);
 		m_meshFilter.mesh = new Mesh();
@@ -98,5 +102,17 @@ public class ViewCone : MonoBehaviour {
         m_targetConePositions[1] = GetRaycastedPosition(-fov / 2f);
         m_targetConePositions[2] = GetRaycastedPosition(Mathf.Clamp(Vector3.SignedAngle(transform.forward, (trackedObject.transform.position - transform.position).NoY(), Vector3.up), -fov / 2f + 1f, fov / 2f - 1f));
         m_targetConePositions[3] = GetRaycastedPosition(fov / 2f);
+	}
+
+	public void ToggleRange(bool enabled) {
+		if(!enabled) {
+			m_oldRunRange = runRange;
+			m_oldSneakRange = sneakRange;
+			runRange = 0;
+			sneakRange = 0;
+        } else {
+			runRange = m_oldRunRange;
+			sneakRange = m_oldSneakRange;
+		}
 	}
 }

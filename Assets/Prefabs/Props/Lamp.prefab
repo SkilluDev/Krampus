@@ -41,9 +41,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3190167952058973744}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 11
   m_Type: 2
-  m_Shape: 0
   m_Color: {r: 1, g: 0.8403915, b: 0.504717, a: 1}
   m_Intensity: 40
   m_Range: 50
@@ -93,8 +92,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!114 &6123276409619374309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,17 +110,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
   m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &5377577093435377525
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,6 +139,7 @@ GameObject:
   - component: {fileID: 6673574109492211657}
   - component: {fileID: 8560804191062798914}
   - component: {fileID: 571314981055814717}
+  - component: {fileID: 8206707628778903692}
   m_Layer: 3
   m_Name: Lamp
   m_TagString: Untagged
@@ -169,6 +179,7 @@ MonoBehaviour:
   m_switch: {fileID: 1155334224383027647}
   m_light: {fileID: 2013919683892458232}
   m_renderer: {fileID: 6933201796630945763}
+  m_enabledByDefault: 1
 --- !u!136 &8560804191062798914
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -207,6 +218,18 @@ MonoBehaviour:
   m_model: {fileID: 8105496985560573068}
   m_strength: 0.1
   m_duration: 1
+--- !u!114 &8206707628778903692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5377577093435377525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a2165111466884fb215dd299ac556c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DayNightCycleReaction
 --- !u!1001 &8644162424798905191
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -26,6 +26,9 @@ public class MainGameInfo : LevelInfo {
 	public ShaderManager ShaderManager => m_shaderManager;
 	[SerializeField] private ShaderManager m_shaderManager;
 
+	public DayNightCycle DayNightCycle => m_dayNightCycle;
+	[SerializeField] private DayNightCycle m_dayNightCycle;
+
 
 	public IReadOnlyList<ChildType> Types => m_types;
 	[SerializeField] private ChildType[] m_types;

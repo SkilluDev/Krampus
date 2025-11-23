@@ -247,6 +247,7 @@ MonoBehaviour:
   m_roomGenerator: {fileID: 423022857}
   m_ui: {fileID: 648446536}
   m_shaderManager: {fileID: 358014039}
+  m_dayNightCycle: {fileID: 358014046}
   m_types:
   - {fileID: 11400000, guid: 63ab45d866ec5be42bcf362fbffafbec, type: 2}
   - {fileID: 11400000, guid: 14df7b7041904fa44b4c88b4d0089b9a, type: 2}
@@ -435,8 +436,8 @@ MonoBehaviour:
   onCyclePhaseChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_dayTime: 1
-  m_nightTime: 1
+  m_dayTime: 5
+  m_nightTime: 5
 --- !u!114 &358014047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,6 +454,7 @@ MonoBehaviour:
   m_startingTime: 60
   m_startingSpeed: 12
   m_difficultyMultiplier: 1.1
+  m_levelStats: []
 --- !u!1 &423022856
 GameObject:
   m_ObjectHideFlags: 0

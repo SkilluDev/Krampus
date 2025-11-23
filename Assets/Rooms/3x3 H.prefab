@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8124540802120452014}
   - component: {fileID: 6252849195376427554}
   m_Layer: 0
-  m_Name: Door [(2, 0) WEST]
+  m_Name: 'Door [(2, 0) WEST]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 8879183472418761374}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.6, g: 0.3, b: 0.45000002, a: 0.7}
+  m_gizmoColor: {r: 0.5, g: 0.6, b: 0.3, a: 0.7}
 --- !u!1 &1104707082228948711
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,6 +343,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -364,6 +369,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -401,7 +407,7 @@ GameObject:
   - component: {fileID: 7677492971718008463}
   - component: {fileID: 2455363523682323390}
   m_Layer: 0
-  m_Name: Door [(2, 2) EAST]
+  m_Name: 'Door [(2, 2) EAST]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -443,7 +449,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 7038394123778866572}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.4, g: 0.6, b: 0.3, a: 0.7}
+  m_gizmoColor: {r: 0.12, g: 0.6, b: 0.6, a: 0.7}
 --- !u!1 &2720585417817476167
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,7 +461,7 @@ GameObject:
   - component: {fileID: 3376361125875683940}
   - component: {fileID: 836888428810412247}
   m_Layer: 0
-  m_Name: Door [(0, 2) WEST]
+  m_Name: 'Door [(0, 2) WEST]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -498,7 +504,7 @@ MonoBehaviour:
   - {fileID: 1501592686459576800}
   - {fileID: 1514925149113822606}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.6, g: 0.18, b: 0.5300001, a: 0.7}
+  m_gizmoColor: {r: 0.6, g: 0.060000017, b: 0.060000017, a: 0.7}
 --- !u!1 &3048433365235481886
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,7 +516,7 @@ GameObject:
   - component: {fileID: 3154561353990421163}
   - component: {fileID: 2737081675756498724}
   m_Layer: 0
-  m_Name: Door [(2, 2) SOUTH]
+  m_Name: 'Door [(2, 2) SOUTH]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -552,7 +558,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 8606835993782941478}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.18, g: 0.6, b: 0.24999996, a: 0.7}
+  m_gizmoColor: {r: 0.3, g: 0.6, b: 0.50000006, a: 0.7}
 --- !u!1 &5394431012134547722
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,7 +570,7 @@ GameObject:
   - component: {fileID: 9200301591980983148}
   - component: {fileID: 6088688239993839381}
   m_Layer: 0
-  m_Name: Door [(0, 0) EAST]
+  m_Name: 'Door [(0, 0) EAST]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -607,7 +613,7 @@ MonoBehaviour:
   - {fileID: 5923564587722905218}
   - {fileID: 4498538574131550051}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.6, g: 0.6, b: 0.24, a: 0.7}
+  m_gizmoColor: {r: 0.3, g: 0.40000007, b: 0.6, a: 0.7}
 --- !u!1 &6446492674077829052
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,7 +625,7 @@ GameObject:
   - component: {fileID: 9184198991011268188}
   - component: {fileID: 7527359955646475146}
   m_Layer: 0
-  m_Name: Door [(0, 2) SOUTH]
+  m_Name: 'Door [(0, 2) SOUTH]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -663,7 +669,7 @@ MonoBehaviour:
   - {fileID: 6735519269694782185}
   - {fileID: 4916192946994137435}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.3, g: 0.6, b: 0.6, a: 0.7}
+  m_gizmoColor: {r: 0.060000017, g: 0.6, b: 0.6, a: 0.7}
 --- !u!1 &6765065885892623841
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,7 +681,7 @@ GameObject:
   - component: {fileID: 6308708200872515125}
   - component: {fileID: 5118409445335515760}
   m_Layer: 0
-  m_Name: Door [(2, 2) WEST]
+  m_Name: 'Door [(2, 2) WEST]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -717,7 +723,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 5763186703092759502}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.3, g: 0.6, b: 0.3, a: 0.7}
+  m_gizmoColor: {r: 0.36, g: 0.12, b: 0.6, a: 0.7}
 --- !u!1 &7170267134390876698
 GameObject:
   m_ObjectHideFlags: 0
@@ -729,7 +735,7 @@ GameObject:
   - component: {fileID: 3487185434820606999}
   - component: {fileID: 4050828730372113458}
   m_Layer: 0
-  m_Name: Door [(2, 0) EAST]
+  m_Name: 'Door [(2, 0) EAST]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -771,7 +777,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 504534767821522587}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.6, g: 0.48000002, b: 0.24, a: 0.7}
+  m_gizmoColor: {r: 0.060000017, g: 0.6, b: 0.060000017, a: 0.7}
 --- !u!1 &7170787671197485531
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,7 +789,7 @@ GameObject:
   - component: {fileID: 6000572686131968666}
   - component: {fileID: 3475594354396117419}
   m_Layer: 0
-  m_Name: Door [(0, 0) WEST]
+  m_Name: 'Door [(0, 0) WEST]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -828,7 +834,7 @@ MonoBehaviour:
   - {fileID: 1402170419410822469}
   - {fileID: 1956395215142226443}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.42000002, g: 0.6, b: 0.24, a: 0.7}
+  m_gizmoColor: {r: 0.6, g: 0.3, b: 0.5500001, a: 0.7}
 --- !u!1 &8693267329898354998
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,7 +846,7 @@ GameObject:
   - component: {fileID: 2953682428588247695}
   - component: {fileID: 2498897314053169300}
   m_Layer: 0
-  m_Name: Door [(0, 0) NORTH]
+  m_Name: 'Door [(0, 0) NORTH]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -883,7 +889,7 @@ MonoBehaviour:
   - {fileID: 1068019400555834826}
   - {fileID: 1510260963337626166}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.18, g: 0.6, b: 0.53, a: 0.7}
+  m_gizmoColor: {r: 0.36, g: 0.12, b: 0.6, a: 0.7}
 --- !u!1 &8951274156106562746
 GameObject:
   m_ObjectHideFlags: 0
@@ -895,7 +901,7 @@ GameObject:
   - component: {fileID: 3165579290146971557}
   - component: {fileID: 2271987911167307729}
   m_Layer: 0
-  m_Name: Door [(2, 0) NORTH]
+  m_Name: 'Door [(2, 0) NORTH]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -937,7 +943,7 @@ MonoBehaviour:
   m_disableList:
   - {fileID: 2944209349813293822}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.18, g: 0.6, b: 0.39000002, a: 0.7}
+  m_gizmoColor: {r: 0.6, g: 0.12, b: 0.20000015, a: 0.7}
 --- !u!1 &8974888792442755759
 GameObject:
   m_ObjectHideFlags: 0
@@ -949,7 +955,7 @@ GameObject:
   - component: {fileID: 3039866486396833273}
   - component: {fileID: 3745376112725647689}
   m_Layer: 0
-  m_Name: Door [(0, 2) EAST]
+  m_Name: 'Door [(0, 2) EAST]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -992,7 +998,7 @@ MonoBehaviour:
   - {fileID: 5512788709215471191}
   - {fileID: 8317447173934229719}
   m_room: {fileID: 8799238888543663283}
-  m_gizmoColor: {r: 0.6, g: 0.24, b: 0.5400001, a: 0.7}
+  m_gizmoColor: {r: 0.12, g: 0.19999993, b: 0.6, a: 0.7}
 --- !u!1001 &3944851167153134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1710,17 +1716,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_light
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1168383735958650658}
     - target: {fileID: 6673574109492211657, guid: 888c2df302d8d0c4d9402c5ac025d235,
         type: 3}
       propertyPath: m_switch
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2003149391267406949}
     - target: {fileID: 6673574109492211657, guid: 888c2df302d8d0c4d9402c5ac025d235,
         type: 3}
       propertyPath: m_renderer
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7778738921490518585}
     - target: {fileID: 7905854987638172118, guid: 888c2df302d8d0c4d9402c5ac025d235,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1776,9 +1782,27 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 888c2df302d8d0c4d9402c5ac025d235, type: 3}
+--- !u!108 &1168383735958650658 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 2013919683892458232, guid: 888c2df302d8d0c4d9402c5ac025d235,
+    type: 3}
+  m_PrefabInstance: {fileID: 847819779719499226}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2003149391267406949 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1155334224383027647, guid: 888c2df302d8d0c4d9402c5ac025d235,
+    type: 3}
+  m_PrefabInstance: {fileID: 847819779719499226}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7382299878649979916 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7905854987638172118, guid: 888c2df302d8d0c4d9402c5ac025d235,
+    type: 3}
+  m_PrefabInstance: {fileID: 847819779719499226}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7778738921490518585 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6933201796630945763, guid: 888c2df302d8d0c4d9402c5ac025d235,
     type: 3}
   m_PrefabInstance: {fileID: 847819779719499226}
   m_PrefabAsset: {fileID: 0}
