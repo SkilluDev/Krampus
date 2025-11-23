@@ -11,6 +11,8 @@ public class DifficultyProgression : MonoBehaviour
 	[SerializeField] private float m_difficultyMultiplier = 1.1f;
 	private int m_targetCount;
 	private float m_time;
+
+	//NOT USED ANYWHERE
 	private float m_speed;
 
 	public float CurrentDifficulty => m_targetCount/m_startingTargetCount / (m_time / m_startingTime / (1/(m_speed / m_startingSpeed)));
