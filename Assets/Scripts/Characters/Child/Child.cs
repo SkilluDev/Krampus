@@ -288,6 +288,7 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 		if (newPhase == DayNightCycle.CyclePhase.Night) {
 			Debug.Log("[Child] Night time - going idle");
 			m_viewCone.ToggleRange(false);
+			SwitchState(State.Idle);
         } else if (newPhase == DayNightCycle.CyclePhase.Day) {
 			Debug.Log("[Child] Day time - going wild");
 			m_viewCone.ToggleRange(true);

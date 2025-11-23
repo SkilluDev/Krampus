@@ -265,15 +265,12 @@ public class Nun : NPC, IDayNightCycleReactor {
 
     private void OnCollisionEnter(Collision collision) {
         if (!Game.Balling) return;
-        if (CurrentState != State.ChasingKrampus) return;
+        //if (CurrentState != State.ChasingKrampus) return;
         if (collision.gameObject.layer != LayerMask.NameToLayer("Player")) {
             return;
         }
         if (Game.MainGameInfo.Krampus.Kontroller.CurrentState == KrampusController.State.Dash) return;
-        onAttack?.Invoke(CurrentState);
-
-        SwitchState(State.Idle);
-        Game.MainGameInfo.Krampus.Kontroller.KrampTermination(Ending.LoseNun);
+        AttackKrampus();
 
     }
 
@@ -312,9 +309,19 @@ public class Nun : NPC, IDayNightCycleReactor {
 		if (newPhase == DayNightCycle.CyclePhase.Night) {
 			Debug.Log("[Nun] Night time - going idle");
 			m_viewCone.ToggleRange(false);
+			SwitchState(State.Idle);
         } else if (newPhase == DayNightCycle.CyclePhase.Day) {
 			Debug.Log("[Nun] Day time - going wild");
 			m_viewCone.ToggleRange(true);
 		}
 	}
+
+	internal void AttackKrampus() {
+        onAttack?.Invoke(CurrentState);
+
+        SwitchState(Nun.State.Idle);
+        Game.MainGameInfo.Krampus.Kontroller.KrampTermination(Ending.LoseNun);
+
+
+    }
 }

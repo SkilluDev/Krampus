@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,10 +17,17 @@ public class DayNightCycle : MonoBehaviour
 	[SerializeField] private float m_nightTime = 30;
 
 	private float m_timer;
-	private void Start()
+	private void Ready()
     {
-		m_currentPhase = CyclePhase.Night;
+		m_currentPhase = CyclePhase.Day;
+		Game.GlobalEvents.onLevelStateChanged.AddListener(WaitForGameStart);
     }
+
+	private void WaitForGameStart(MainGameInfo.State prev, MainGameInfo.State next) {
+		if (next == MainGameInfo.State.Game) {
+			ChangePhase(CyclePhase.Night);
+        }
+	}
 
 	private void Update()
     {
@@ -43,11 +51,13 @@ public class DayNightCycle : MonoBehaviour
     }
 
 	private void ChangePhase(CyclePhase newPhase) {
+		Debug.Log($"[DayNightCycle] Changing phase from {m_currentPhase} to {newPhase}");
 		if(newPhase == m_currentPhase) {
 			return;
 		}
 		CyclePhase oldPhase = m_currentPhase;
 		m_currentPhase = newPhase;
+		m_timer = 0;
 		onCyclePhaseChanged.Invoke(oldPhase, newPhase);
     }
 
