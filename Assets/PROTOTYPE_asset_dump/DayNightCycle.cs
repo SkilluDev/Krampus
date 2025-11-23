@@ -12,10 +12,13 @@ public class DayNightCycle : MonoBehaviour
 	public UnityEvent<CyclePhase, CyclePhase> onCyclePhaseChanged;
 
 	private CyclePhase m_currentPhase;
+	public CyclePhase CurrentPhase => m_currentPhase;
 
 	[SerializeField] private float m_dayTime = 30;
-	[SerializeField] private float m_nightTime = 30;
 
+	public float DayTime => m_dayTime;
+	[SerializeField] private float m_nightTime = 30;
+	public float NightTime => m_nightTime;
 	private float m_timer;
 	private void Ready()
     {
@@ -25,6 +28,7 @@ public class DayNightCycle : MonoBehaviour
 
 	private void WaitForGameStart(MainGameInfo.State prev, MainGameInfo.State next) {
 		if (next == MainGameInfo.State.Game) {
+			Debug.Log("[DayNightCycle] Game started, beginning cycle");
 			ChangePhase(CyclePhase.Night);
         }
 	}
