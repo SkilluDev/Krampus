@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class DifficultyProgression : MonoBehaviour
 {
-	[SerializeField] private float m_startingTargetCount = 1;
+	[SerializeField] private int m_startingTargetCount = 1;
 	[SerializeField] private float m_startingTime = 60;
 	[SerializeField] private float m_startingSpeed = 12;
 
 	[SerializeField] private float m_difficultyMultiplier = 1.1f;
-	private float m_targetCount;
+	private int m_targetCount;
 	private float m_time;
 	private float m_speed;
 
@@ -57,11 +57,11 @@ public class DifficultyProgression : MonoBehaviour
         LevelStatsWithSpeed stats = new LevelStatsWithSpeed();
 
     	stats.Initialize(
-			naughty: Mathf.RoundToInt(m_targetCount),
-			nice: Mathf.RoundToInt(m_targetCount/2),
-			nun: 4,
-			width: 7,
-			length: 7,
+			naughty: m_targetCount,
+			nice: Mathf.RoundToInt(Mathf.Ceil(m_targetCount/2)),
+			nun: Mathf.RoundToInt(Mathf.Ceil(m_targetCount/3)),
+			width: Mathf.RoundToInt(Mathf.Ceil(Mathf.Sqrt(m_targetCount)+2)),
+			length: Mathf.RoundToInt(Mathf.Ceil(Mathf.Sqrt(m_targetCount)+2)),
 			canChoose: false,
 			timer: m_time,
 			tutorials: null,
@@ -84,14 +84,14 @@ public class DifficultyProgression : MonoBehaviour
 		DifficultyTransition transition = GetNextTransition();
 		switch (transition) {
 			case DifficultyTransition.ATargetUp:
-				m_targetCount += Mathf.Ceil((m_difficultyMultiplier-1)*m_targetCount);
+				m_targetCount += (int)Mathf.Ceil((m_difficultyMultiplier-1)*m_targetCount);
 				break;
 			case DifficultyTransition.BTargetUpSpeedUp:
-				m_targetCount += Mathf.Ceil((m_difficultyMultiplier-1)*m_targetCount);
+				m_targetCount += (int)Mathf.Ceil((m_difficultyMultiplier-1)*m_targetCount);
 				m_speed *= m_difficultyMultiplier;
 				break;
 			case DifficultyTransition.CTargetUpTimeDown:
-				m_targetCount += Mathf.Ceil((m_difficultyMultiplier-1)*m_targetCount);
+				m_targetCount += (int)Mathf.Ceil((m_difficultyMultiplier-1)*m_targetCount);
 				m_time /= m_difficultyMultiplier;
 				break;
 			case DifficultyTransition.DTimeDown:
