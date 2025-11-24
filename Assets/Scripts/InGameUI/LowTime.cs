@@ -11,6 +11,7 @@ public class LowTime : MonoBehaviour {
     [BoxGroup("Time")][SerializeField] private float m_lowTime;
     [BoxGroup("Time")][SerializeField] private float m_jawSpeed;
     [BoxGroup("Time")][SerializeField] private float m_upwardMultiplier;
+    [BoxGroup("Rotation")][SerializeField] private float m_maxRotation;
     private Vector2 m_jawMovementMultiplier;
     private Vector2 m_initialJawHeights;
     private Vector2 m_initialTopVector;
@@ -44,6 +45,8 @@ public class LowTime : MonoBehaviour {
                 float desiredSpeed = m_jawSpeed * (m_wantedTopPos.y < m_initialTopVector.y ? 1 : m_upwardMultiplier);
                 m_topKramp.anchoredPosition = Vector2.Lerp(m_topKramp.anchoredPosition, m_wantedTopPos, desiredSpeed);
                 m_bottomKramp.anchoredPosition = Vector2.Lerp(m_bottomKramp.anchoredPosition, m_wantedBottomPos, desiredSpeed);
+                m_topKramp.rotation = Quaternion.Lerp(m_topKramp.rotation, Quaternion.Euler(0,0,Random.Range(-m_maxRotation,m_maxRotation)), 0.5f * Time.deltaTime);
+                m_bottomKramp.rotation = Quaternion.Lerp(m_bottomKramp.rotation, Quaternion.Euler(0,0,Random.Range(-m_maxRotation,m_maxRotation)), 0.5f * Time.deltaTime);
             }
 
         }
