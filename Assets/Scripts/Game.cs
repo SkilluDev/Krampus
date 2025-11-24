@@ -45,7 +45,9 @@ public class Game : MonoBehaviour {
     public enum State {
         MainMenu = 0,
         MainGame = 1,
-        Loading
+        Loading,
+
+        Lobby
     }
 
     private const int LOADER_SCENE = 2;
@@ -91,11 +93,16 @@ public class Game : MonoBehaviour {
     [SerializeField] private Settings.SetMan m_setMan;
 
     public static MainGameInfo MainGameInfo => (MainGameInfo)Info;
+
+    public static RoundInfo roundInfo => (RoundInfo) MainGameInfo;
     public static MainMenuInfo MainMenuInfo => (MainMenuInfo)Info;
 
-    public static bool Balling => CurrentState == State.MainGame && MainGameInfo.Ballin;
+    public static LobbyInfo Lobbyinfo => (LobbyInfo) MainGameInfo;
+
+    public static bool Balling =>  (CurrentState == State.MainGame || CurrentState == State.Lobby) && MainGameInfo.Ballin;
 
     public static bool IsLoading => CurrentState == State.Loading;
+    public static bool IsInLobby => CurrentState == State.Lobby;
     public static bool RequireFullReload { get; private set; }
 
     private static Game m_instance;

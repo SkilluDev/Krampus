@@ -67,7 +67,7 @@ public class PostProcessHandler : MonoBehaviour {
     [Button]
     private void EatNiceChild(){
         var child = new Child();
-        child.SetChildType(Game.MainGameInfo.NiceChildType);
+        child.SetChildType(Game.roundInfo.NiceChildType);
         OnChildEaten(Game.MainGameInfo.Krampus, child);
     }
 	private void OnChildEaten(Krampus krampus, Child child) {

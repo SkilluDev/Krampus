@@ -33,7 +33,7 @@ public class Timer : MonoBehaviour {
 	private void Update() {
 		if (!Game.Balling) return;
 		GameTime -= Time.deltaTime;
-		Game.MainGameInfo.timeFromStart += Time.deltaTime;
+		Game.roundInfo.timeFromStart += Time.deltaTime;
 
 		if (!IsLowTime) return;
 		int lastDigit = Mathf.FloorToInt(GameTime) % 10;

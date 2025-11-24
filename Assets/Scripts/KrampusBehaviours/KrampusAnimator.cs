@@ -35,14 +35,17 @@ public class KrampusAnimator : KrampusBehaviour {
     private Quaternion m_rotationTarget;
 
     [SerializeField] private KrampusIndicator m_krampusIndicator;
+    
 
     private bool HasLockInItem => Kramp.Stats.HasItemWithTag(ItemTag.LockIn);
 
     private void Start() {
         Kramp.Tongue.onStateChanged += TongueStateChanged;
         Kramp.Kontroller.onStateChanged += MovementStateChanged;
-        m_lockInCircle.gameObject.SetActive(false);
-        SetEnableModel(false);
+        if(Kramp.PlayIntroAnimation){
+            m_lockInCircle.gameObject.SetActive(false);
+            SetEnableModel(false);
+        }
 
 
         Kramp.KrampusEvents.onEffectRegistered.AddListener(EffectAnimation);

@@ -28,7 +28,7 @@ public class LowTime : MonoBehaviour {
     }
     private void Update() {
         if (Game.Balling) {
-        	float currentTime = Game.MainGameInfo.Timer.GameTime;
+        	float currentTime = Game.roundInfo.Timer.GameTime;
             if (currentTime > m_lowTime) {
 				m_wantedTopPos = m_initialTopVector;
 				m_wantedBottomPos = m_initialBottomVector;

@@ -18,15 +18,15 @@ public class Intro : MonoBehaviour {
     }
 
     private void Update() {
-        if (Game.Balling || Game.MainGameInfo.Ended) {
+        if (Game.Balling || Game.roundInfo.Ended) {
             Game.MainGameInfo.Krampus.Kamera.Rendering.GetComponent<CinemachineBrain>().ActiveBlend = null;
             Destroy(this);
             return;
         }
 
         if (!Game.IsLoading && InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame()) {
-	        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Intro) {
-		        Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
+	        if (Game.MainGameInfo.CurrentState == RoundInfo.State.Intro) {
+		        Game.MainGameInfo.SetState(RoundInfo.State.WaitingToStart);
 		        Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
 		        Game.MainGameInfo.UI.HideBlackBars();
 	        }
@@ -39,7 +39,7 @@ public class Intro : MonoBehaviour {
     }
 
     public void SetSecondPartOfIntro() {
-	    Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
+	    Game.MainGameInfo.SetState(RoundInfo.State.WaitingToStart);
 	    Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
 	    Game.MainGameInfo.UI.HideBlackBars();
 

@@ -34,6 +34,9 @@ public class Krampus : KrampusBehaviour, IInteractor, ICharacter {
     [SerializeField] private KrampusEvents m_krampusEvents;
     public KrampusEvents KrampusEvents => m_krampusEvents;
 
+    [SerializeField] private bool m_PlayIntroAniamtion = true;
+    public bool PlayIntroAnimation => m_PlayIntroAniamtion;
+
     
 
 

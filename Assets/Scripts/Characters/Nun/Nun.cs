@@ -46,7 +46,7 @@ public class Nun : NPC, IDayNightCycleReactor {
     private float m_timeout;
 
     private void Ready() {
-        Game.MainGameInfo.RegisterNun(this);
+        Game.roundInfo.RegisterNun(this);
 
 		SpeedChange();
 
@@ -73,11 +73,11 @@ public class Nun : NPC, IDayNightCycleReactor {
 
     private void Unready() {
 		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
-        Game.MainGameInfo.UnregisterNun(this);
+        Game.roundInfo.UnregisterNun(this);
     }
 
     private void SelectNewWanderLocation() {
-        if (NavMesh.SamplePosition(Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement().GetMidPoint(), out var hit, 10, NavMesh.AllAreas)) {
+        if (NavMesh.SamplePosition(Game.roundInfo.RoomGenerator.Rooms.UnityRandomElement().GetMidPoint(), out var hit, 10, NavMesh.AllAreas)) {
             SetDestination(hit.position);
         }
     }
@@ -91,11 +91,11 @@ public class Nun : NPC, IDayNightCycleReactor {
         m_patrolPath = new List<Vector3>();
         var alreadyPatrolled = new List<Room>();
         for (int i = 0; i < 5; i++) {
-            var room = Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement();
+            var room = Game.roundInfo.RoomGenerator.Rooms.UnityRandomElement();
 
             int retries = 0;
             while (retries < 6 && alreadyPatrolled.Contains(room)) {
-                room = Game.MainGameInfo.RoomGenerator.Rooms.UnityRandomElement();
+                room = Game.roundInfo.RoomGenerator.Rooms.UnityRandomElement();
                 retries++;
             }
 
@@ -152,7 +152,7 @@ public class Nun : NPC, IDayNightCycleReactor {
                 break;
             case State.LookingForKrampus:
                 m_viewCone.SetActive(false);
-                if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>() && HasLineOfSight()) {
+                if (Game.roundInfo.GetRoomData(CurrentRoom).Contains<Krampus>() && HasLineOfSight()) {
                     if (m_timeout > m_krampusDetectTime) {
                         //Debug.Log("[Nun] Alerted & detected krampy");
                         m_timeout = m_shockTimeout;
@@ -222,7 +222,7 @@ public class Nun : NPC, IDayNightCycleReactor {
                 m_timeout -= Time.deltaTime;
 
                 if (m_timeout < 0) {
-                    m_reportedKrampusRoom = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages
+                    m_reportedKrampusRoom = Game.roundInfo.GetRoomData(CurrentRoom).Passages
                                                 .OrderBy(w => Vector3.SqrMagnitude(w.transform.position - transform.position))
                                                 .First()
                                                 .Other(CurrentRoom);
@@ -249,10 +249,10 @@ public class Nun : NPC, IDayNightCycleReactor {
     }
 
     public void ActivateTheBitch(Child who, float timeout, Room room) { //Maciek2D doesn't support this message
-        foreach (var w in Game.MainGameInfo.RoomGenerator.Rooms) {
-            Game.MainGameInfo.GetRoomData(w).MarkKramped(false);
+        foreach (var w in Game.roundInfo.RoomGenerator.Rooms) {
+            Game.roundInfo.GetRoomData(w).MarkKramped(false);
         }
-        Game.MainGameInfo.GetRoomData(room).MarkKramped(true);
+        Game.roundInfo.GetRoomData(room).MarkKramped(true);
 
         m_reportedKrampusRoom = room;
 

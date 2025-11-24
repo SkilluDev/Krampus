@@ -10,7 +10,7 @@ public class LegPower : LevelModifier {
 
     public override void UpdateLevel() {
 
-        foreach (var n in Game.MainGameInfo.Nuns) {
+        foreach (var n in Game.roundInfo.Nuns) {
             n.SetRunSpeed(n.RunSpeed * (1 + m_bonusMovemenetSpeed));
 		 }
      }

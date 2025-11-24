@@ -93,14 +93,14 @@ public class NewUIManager : MonoBehaviour {
 	[Button]
 	private void EatNiceChild() {
 		var child = new Child();
-		child.SetChildType(Game.MainGameInfo.NiceChildType);
+		child.SetChildType(Game.roundInfo.NiceChildType);
 		OnChildEaten(Game.MainGameInfo.Krampus, child);
 	}
 
 	[Button]
 	private void EatNaughtyChild() {
 		var child = new Child();
-		child.SetChildType(Game.MainGameInfo.RandomNaughtyChildType);
+		child.SetChildType(Game.roundInfo.RandomNaughtyChildType);
 		OnChildEaten(Game.MainGameInfo.Krampus, child);
 	}
 
@@ -166,14 +166,14 @@ public class NewUIManager : MonoBehaviour {
 		} else {
 			m_timerDisplay.gameObject.SetActive(true);
 		}
-		if (Game.MainGameInfo.CurrentState == MainGameInfo.State.ItemChoosing) {
+		if (Game.MainGameInfo.CurrentState == RoundInfo.State.ItemChoosing) {
 			DisplayItemChoiceMenu();
 		}
 
 		//cursor
 
 
-		m_timerDisplay.Value = Game.MainGameInfo.Timer.GameTime;
+		m_timerDisplay.Value = Game.roundInfo.Timer.GameTime;
 	}
 
 	public void SetChildrenIcon(Sprite icon) {
@@ -196,18 +196,18 @@ public class NewUIManager : MonoBehaviour {
 		UpdateInventory();
 	}
 
-	private void OnLevelStateChanged(MainGameInfo.State previous, MainGameInfo.State next) {
-		if (next == MainGameInfo.State.Game &&
-			(previous == MainGameInfo.State.ItemChoosing ||
-			 previous == MainGameInfo.State.Intro ||
-			  previous == MainGameInfo.State.WaitingToStart)
+	private void OnLevelStateChanged(RoundInfo.State previous, RoundInfo.State next) {
+		if (next == RoundInfo.State.Game &&
+			(previous == RoundInfo.State.ItemChoosing ||
+			 previous == RoundInfo.State.Intro ||
+			  previous == RoundInfo.State.WaitingToStart)
 			) {
 			UIElementsEntryAnimation();
 		}
 
-		if (next == MainGameInfo.State.WaitingToStart) {
+		if (next == RoundInfo.State.WaitingToStart) {
 			if (Game.PogMan.GetCurrentLevelStats().Tutorials == 0) {
-				Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
+				Game.MainGameInfo.SetState(RoundInfo.State.ItemChoosing);
 			} else {
 				Game.GlobalEvents.onTutorialTrigger.Invoke(Game.PogMan.GetCurrentLevelStats().Tutorials);
 			}
@@ -218,8 +218,8 @@ public class NewUIManager : MonoBehaviour {
 	public void ChangeChildCounter() {
 		m_currentFillHandle.TryCancel();
 		float oldValue = m_fillBar.fillAmount;
-		m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 0.95f, (float)(Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count()) /
-								 Game.MainGameInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar).AddTo(this);
+		m_currentFillHandle = LMotion.Create(oldValue, math.remap(0, 1, m_startFill, 0.95f, (float)(Game.roundInfo.NaughtyChildrenCountOnStart - Game.roundInfo.NaughtyChildren.Count()) /
+								 Game.roundInfo.NaughtyChildrenCountOnStart), 2f).WithDelay(0.4f).WithEase(m_fillUpCurve).BindToFillAmount(m_fillBar).AddTo(this);
 	}
 
 	public void ChangeWindUpValue(float value, float time = 1f) {

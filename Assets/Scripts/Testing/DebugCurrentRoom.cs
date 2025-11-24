@@ -10,7 +10,7 @@ namespace KrampTests {
         private void Update() {
             if (Game.IsLoading) return;
 
-            var room = Game.MainGameInfo.RoomGenerator.GetRoomAt(transform.position);
+            var room = Game.roundInfo.RoomGenerator.GetRoomAt(transform.position);
             if (room != m_room) {
                 m_room = room;
             }

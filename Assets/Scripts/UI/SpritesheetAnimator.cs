@@ -31,10 +31,10 @@ public class SpriteSheetAnimator : MonoBehaviour {
 
         switch (m_colorChange) {
             case ColorChange.NiceChild:
-                m_colors = new Color[] { Game.MainGameInfo.NiceChildType.color };
+                m_colors = new Color[] { Game.roundInfo.NiceChildType.color };
                 break;
             case ColorChange.NaughtyChild:
-                m_colors = Game.MainGameInfo.NaughtyChildTypes.Select((c) => c.color).ToArray();
+                m_colors = Game.roundInfo.NaughtyChildTypes.Select((c) => c.color).ToArray();
                 break;
             case ColorChange.None:
                 return;

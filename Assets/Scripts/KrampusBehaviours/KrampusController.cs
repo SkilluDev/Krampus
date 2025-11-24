@@ -75,8 +75,13 @@ public class KrampusController : KrampusBehaviour {
 
 
 	private void Start() {
-		Game.MainGameInfo.UI.SetWindUpCostBar(m_windUpDashCost);
+		if(!Game.IsInLobby){
+			//Game.MainGameInfo.UI.SetWindUpCostBar(m_windUpDashCost);
+		}
 		Kramp.KrampusEvents.onNaughtyChildEaten.AddListener(OnNaughtyChildEaten);
+		if(!Kramp.PlayIntroAnimation) {
+            ChangeState(State.Idle, StateChangeReason.Normal);	
+        }
 	}
 
 	public enum State {
@@ -96,11 +101,12 @@ public class KrampusController : KrampusBehaviour {
 	// Based on @SkilluDev's inputs
 	private void Update() {
 
-
+		
 		if (!Game.Balling) {
 			m_rigidbody.linearVelocity = Vector3.zero;
 			return;
 		}
+		Debug.Log("Current State:"  + CurrentState);
 		if (CurrentState == State.Intro) {
 			m_timeout = m_getUpDuration;
 			ChangeState(State.GetUp, StateChangeReason.Normal);
@@ -227,7 +233,7 @@ public class KrampusController : KrampusBehaviour {
 		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
 		m_rigidbody.linearVelocity = Vector3.zero;
 		m_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-		Game.MainGameInfo.ProcessEndGame(ending);
+		Game.roundInfo.ProcessEndGame(ending);
 	}
 
 	private Vector3 ComputeVelocity() {

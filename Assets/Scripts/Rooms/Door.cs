@@ -61,8 +61,8 @@ public class Door : Passage, IInteractable {
 		m_animator.SetBool(m_openProperty, true);
 
 		if (swiftly) {
-			Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
-			Game.MainGameInfo.GetRoomData(B).MakeNoise(transform.position, m_noiseDistance, actor);
+			Game.roundInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
+			Game.roundInfo.GetRoomData(B).MakeNoise(transform.position, m_noiseDistance, actor);
 			m_doorOpen.Play(transform.position, 1f);
 
 			foreach (var w in m_charactersInDoor) {
@@ -83,8 +83,8 @@ public class Door : Passage, IInteractable {
 		if (swiftly) {
 			m_doorBurst.Play();
 			StunCharactersInDoor();
-			Game.MainGameInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
-			Game.MainGameInfo.GetRoomData(B).MakeNoise(transform.position, m_noiseDistance, actor);
+			Game.roundInfo.GetRoomData(A).MakeNoise(transform.position, m_noiseDistance, actor);
+			Game.roundInfo.GetRoomData(B).MakeNoise(transform.position, m_noiseDistance, actor);
 			m_doorClose.Play(transform.position, 1f);
 		} else {
 			m_doorClose.Play(transform.position, 0.4f);

@@ -18,7 +18,7 @@ public class ItemChoiceMenuUI : MonoBehaviour {
         var items = Game.MainGameInfo.ItemPool.RandomItemForKrampus(m_itemCards.Length, Game.MainGameInfo.Krampus.Stats);
 		if (items.Count() == 0) {
 			gameObject.SetActive(false);
-			Game.MainGameInfo.SetState(MainGameInfo.State.Game);
+			Game.MainGameInfo.SetState(RoundInfo.State.Game);
 			return;
 		}
         m_itemsDisplayed = new Item[m_itemCards.Length];
@@ -38,7 +38,7 @@ public class ItemChoiceMenuUI : MonoBehaviour {
     public void ChooseItem(int pos) {
         Game.MainGameInfo.Krampus.Stats.AddItem(m_itemsDisplayed[pos]);
         Game.MainGameInfo.UI.UpdateInventory();
-        Game.MainGameInfo.SetState(MainGameInfo.State.Game);
+        Game.MainGameInfo.SetState(RoundInfo.State.Game);
 
         gameObject.SetActive(false);
 

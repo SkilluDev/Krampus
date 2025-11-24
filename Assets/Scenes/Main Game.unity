@@ -215,7 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 358014036}
-  - component: {fileID: 358014035}
+  - component: {fileID: 358014048}
   - component: {fileID: 358014037}
   - component: {fileID: 358014038}
   - component: {fileID: 358014039}
@@ -231,34 +231,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &358014035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358014034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ff19c18395fd075897f45f468ea76a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_state: 1
-  m_roomGenerator: {fileID: 423022857}
-  m_ui: {fileID: 648446536}
-  m_shaderManager: {fileID: 358014039}
-  m_dayNightCycle: {fileID: 358014046}
-  m_types:
-  - {fileID: 11400000, guid: 63ab45d866ec5be42bcf362fbffafbec, type: 2}
-  - {fileID: 11400000, guid: 14df7b7041904fa44b4c88b4d0089b9a, type: 2}
-  m_krampus: {fileID: 1936252573}
-  m_windUpGainFromChildren: 20
-  m_maxWindUpPoints: 100
-  m_itemPool: {fileID: 11400000, guid: 185f01be8ca9fa74fbf42243248bda64, type: 2}
-  m_timer: {fileID: 358014040}
-  timeFromStart: 0
-  m_useLevelModifer: 1
-  m_outro: {fileID: 1940560123}
 --- !u!4 &358014036
 Transform:
   m_ObjectHideFlags: 0
@@ -469,6 +441,34 @@ MonoBehaviour:
   m_startingSpeed: 12
   m_difficultyMultiplier: 1.1
   m_levelStats: []
+--- !u!114 &358014048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358014034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35677c9cb09fcb04ebcb2d3bad8cf29e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoundInfo
+  m_state: 0
+  m_roomGenerator: {fileID: 423022857}
+  m_ui: {fileID: 648446536}
+  m_shaderManager: {fileID: 358014039}
+  m_dayNightCycle: {fileID: 358014046}
+  m_krampus: {fileID: 1936252573}
+  m_windUpGainFromChildren: 20
+  m_maxWindUpPoints: 100
+  m_itemPool: {fileID: 11400000, guid: 185f01be8ca9fa74fbf42243248bda64, type: 2}
+  m_types:
+  - {fileID: 11400000, guid: 63ab45d866ec5be42bcf362fbffafbec, type: 2}
+  - {fileID: 11400000, guid: 14df7b7041904fa44b4c88b4d0089b9a, type: 2}
+  m_timer: {fileID: 358014040}
+  timeFromStart: 0
+  m_useLevelModifer: 1
+  m_outro: {fileID: 1940560123}
 --- !u!1 &423022856
 GameObject:
   m_ObjectHideFlags: 0

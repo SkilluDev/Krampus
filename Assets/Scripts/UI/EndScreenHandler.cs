@@ -59,8 +59,8 @@ public class EndScreenHandler : MonoBehaviour {
 				m_wonDirector.gameObject.SetActive(true);
 				m_wonDirector.Play();
 
-				float time = Game.MainGameInfo.timeFromStart / 60;
-				float val = Game.MainGameInfo.Score / time;
+				float time = Game.roundInfo.timeFromStart / 60;
+				float val = Game.roundInfo.Score / time;
 				LMotion.Create(0, val, 2).WithEase(Ease.OutElastic).WithDelay(0.5f).Bind(m_childMeter.SetScore);
 				break;
 			case Ending.LoseNun:

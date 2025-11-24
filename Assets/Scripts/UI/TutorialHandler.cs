@@ -73,19 +73,19 @@ public class TutorialHandler : MonoBehaviour {
 
 	private void OnTutorialTrigger(TutorialPage pages) {
 		if (pages == 0) return;
-		m_naughtyChildIcon.sprite = Game.MainGameInfo.NaughtyChildType.uiIcon;
+		m_naughtyChildIcon.sprite = Game.roundInfo.NaughtyChildType.uiIcon;
 		gameObject.SetActive(true);
 		PrepareTutorials(pages);
 	}
 	private void Update() {
 		//LMB to go forward RMB to skip
-		if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame() && Game.MainGameInfo.CurrentState == MainGameInfo.State.WaitingToStart) {
+		if (InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame() && Game.MainGameInfo.CurrentState == RoundInfo.State.WaitingToStart) {
 			if (m_handle.IsActive()) m_handle.Cancel();
 			gameObject.SetActive(false);
-			Game.MainGameInfo.SetState(MainGameInfo.State.ItemChoosing);
+			Game.MainGameInfo.SetState(RoundInfo.State.ItemChoosing);
 
 		}
-		if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && Game.MainGameInfo.CurrentState == MainGameInfo.State.WaitingToStart) {
+		if (InputSubscribe.Raw.UI.Advance.WasPerformedThisFrame() && !m_isMoving && Game.MainGameInfo.CurrentState == RoundInfo.State.WaitingToStart) {
 			MoveBack(m_tutorialCounter++ % m_tutorialPages.Count);
 			//if (--m_uiMoveInCounter == 0) Game.MainGameInfo.UI.UIElementsEntryAnimation();
 		}

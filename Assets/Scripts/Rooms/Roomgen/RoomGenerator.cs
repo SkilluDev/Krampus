@@ -82,7 +82,7 @@ public class RoomGenerator : RoomGeneratorBase {
 			m_generationGrid = new Room[m_width, m_length];
 			m_placedRooms = new List<Room>();
 			for (int i = 0; i < m_width; i++) for (int j = 0; j < m_length; j++) m_doorGrid[i, j] = new DoorFlags();
-			Game.MainGameInfo.ClearRoomData();
+			Game.roundInfo.ClearRoomData();
 		}
 
 
@@ -189,7 +189,7 @@ public class RoomGenerator : RoomGeneratorBase {
 				}
 			}
 
-			Game.MainGameInfo.CreateRoomData(prefab);
+			Game.roundInfo.CreateRoomData(prefab);
 			m_placedRooms.Add(prefab);
 			return prefab;
 		}
@@ -262,8 +262,8 @@ public class RoomGenerator : RoomGeneratorBase {
 							Quaternion.Euler(0, 0, 0)
 						).GetComponent<Passage>();
 
-						Game.MainGameInfo.GetRoomData(m_generationGrid[i, j + 1]).AddPassage(psg);
-						Game.MainGameInfo.GetRoomData(m_generationGrid[i, j]).AddPassage(psg);
+						Game.roundInfo.GetRoomData(m_generationGrid[i, j + 1]).AddPassage(psg);
+						Game.roundInfo.GetRoomData(m_generationGrid[i, j]).AddPassage(psg);
 						psg.Initialize(m_generationGrid[i, j], m_generationGrid[i, j + 1], Passage.Direction.Vertical);
 					}
 					if (i != m_width - 1 && m_doorGrid[i, j].East && m_generationGrid[i, j] != m_generationGrid[i + 1, j] && m_generationGrid[i, j] != null) {
@@ -273,8 +273,8 @@ public class RoomGenerator : RoomGeneratorBase {
 							Quaternion.Euler(0, 90, 0)
 						).GetComponent<Passage>();
 
-						Game.MainGameInfo.GetRoomData(m_generationGrid[i, j]).AddPassage(psg);
-						Game.MainGameInfo.GetRoomData(m_generationGrid[i + 1, j]).AddPassage(psg);
+						Game.roundInfo.GetRoomData(m_generationGrid[i, j]).AddPassage(psg);
+						Game.roundInfo.GetRoomData(m_generationGrid[i + 1, j]).AddPassage(psg);
 						psg.Initialize(m_generationGrid[i, j], m_generationGrid[i + 1, j], Passage.Direction.Horizontal);
 					}
 				}

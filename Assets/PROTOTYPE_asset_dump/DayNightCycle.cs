@@ -16,6 +16,8 @@ public class DayNightCycle : MonoBehaviour
 
 	[SerializeField] private float m_dayTime = 30;
 
+	[SerializeField] private bool m_isAutomatic = true;
+
 	public float DayTime => m_dayTime;
 	[SerializeField] private float m_nightTime = 30;
 	public float NightTime => m_nightTime;
@@ -26,8 +28,8 @@ public class DayNightCycle : MonoBehaviour
 		Game.GlobalEvents.onLevelStateChanged.AddListener(WaitForGameStart);
     }
 
-	private void WaitForGameStart(MainGameInfo.State prev, MainGameInfo.State next) {
-		if (next == MainGameInfo.State.Game) {
+	private void WaitForGameStart(RoundInfo.State prev, RoundInfo.State next) {
+		if (next == RoundInfo.State.Game) {
 			Debug.Log("[DayNightCycle] Game started, beginning cycle");
 			ChangePhase(CyclePhase.Night);
         }
@@ -35,6 +37,7 @@ public class DayNightCycle : MonoBehaviour
 
 	private void Update()
     {
+		if(!m_isAutomatic) return;
 		m_timer += Time.deltaTime;
 		switch (m_currentPhase) {
 			case CyclePhase.Day:

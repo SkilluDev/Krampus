@@ -11,7 +11,7 @@ public class Deadline : LevelModifier {
     public override void UpdateLevel() {
 
 
-        Game.MainGameInfo.Timer.SetGameTime(30);
+        Game.roundInfo.Timer.SetGameTime(30);
     }
 
 }

@@ -72,8 +72,8 @@ public class ShaderManager : MonoBehaviour {
 
 	public void ProcessKill(Krampus krampus, Child child) {
 		if (!child.IsNaughty) return;
-		float ratio = (Game.MainGameInfo.NaughtyChildrenCountOnStart - Game.MainGameInfo.NaughtyChildren.Count() + 1f) /
-					  Game.MainGameInfo.NaughtyChildrenCountOnStart;
+		float ratio = (Game.roundInfo.NaughtyChildrenCountOnStart - Game.roundInfo.NaughtyChildren.Count() + 1f) /
+					  Game.roundInfo.NaughtyChildrenCountOnStart;
 		SetIntensity(m_maxIntensity * ratio);
 		SetSplitToning(ratio);
 	}
