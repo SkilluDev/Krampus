@@ -61,7 +61,7 @@ public class MainGameInfo : LevelInfo {
 
 	
 
-	public bool Ballin => CurrentState == State.Game;
+	public virtual bool Ballin => CurrentState == State.Game;
 
 	public void SetState(State state) {
 		if (state == State.ItemChoosing) {
