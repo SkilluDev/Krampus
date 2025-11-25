@@ -4652,11 +4652,10 @@ GameObject:
   - component: {fileID: 1509226350869686422}
   - component: {fileID: 6889321803152922279}
   - component: {fileID: 6803140620708373658}
-  - component: {fileID: 1426158013190600068}
   - component: {fileID: 3685668887275639933}
   - component: {fileID: 7135343076777320294}
   m_Layer: 5
-  m_Name: GameplayUI
+  m_Name: Backup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4766,11 +4765,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e8bdfd94412dd4d8a8de6e2238a59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_currentSeed: {fileID: 7133720371282186155}
   m_pauseScreen: {fileID: 925146635451654372}
   m_inventoryContainer: {fileID: 1670838662839894106}
   m_inventoryCardPref: {fileID: 7690551474242298512, guid: 73c77238242241c4ba8b4b417bfe1909,
     type: 3}
+  m_timer: {fileID: 7001966568303127224}
+  m_timerDisplay: {fileID: 5340612051506087238}
+  m_timerShakeDuration: 0.5
+  m_timerShakeIntensity: 50
+  m_timerBounceIntensity: 1.3
+  m_childIconImage: {fileID: 2094201919006516398}
+  m_fillBar: {fileID: 5801898832723597714}
+  m_fillUpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.0036755698
+      outSlope: -0.0000009917358
+      tangentMode: 1
+      weightedMode: 2
+      inWeight: 0
+      outWeight: 0.39963505
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.004657691
+      outSlope: -0.004657691
+      tangentMode: 0
+      weightedMode: 1
+      inWeight: 0.69708025
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   m_worldSpaceUI: {fileID: 0}
+  m_niceTimerColor: {r: 0.15362969, g: 0.5471698, b: 0, a: 1}
+  m_naughtyTimerColor: {r: 0.5, g: 0, b: 0, a: 0.5019608}
   m_blackBars: {fileID: 8451316527060737461}
   m_itemChoiceMenuUI: {fileID: 6202593731770767266}
   m_windUpFiller: {fileID: 646270812113815450}
@@ -4781,62 +4814,13 @@ MonoBehaviour:
   m_uiBlockLeft: {fileID: 3784101493357200345}
   m_uiBlockRight: {fileID: 5138685301503632781}
   m_bottomBarTutorialKeys: <binding="UI/QuitTutorial"> Skip intro
-  m_bottomBarLoseKeys: 
-  m_bottomBarWinKeys: 
-  m_topSideBarWinText: 
-  m_topTimerBarText: 
-  m_topSideBarLoseText: 
-  m_effectBar: {fileID: 2726896724242570530}
---- !u!114 &1426158013190600068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7172931892233990810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 999b30ea092006d489c4a69f3e9bbfef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RoundUIManager
-  m_pauseScreen: {fileID: 925146635451654372}
-  m_inventoryContainer: {fileID: 0}
-  m_inventoryCardPref: {fileID: 0}
-  m_worldSpaceUI: {fileID: 0}
-  m_blackBars: {fileID: 8451316527060737461}
-  m_itemChoiceMenuUI: {fileID: 6202593731770767266}
-  m_windUpFiller: {fileID: 0}
-  m_windUpCostBar: {fileID: 0}
-  m_markerRotatorEndPoints: {x: -35, y: -135}
-  m_tutorial: {fileID: 8828571026638506165}
-  m_endScreenHandler: {fileID: 8443022075738394590}
-  m_uiBlockLeft: {fileID: 3784101493357200345}
-  m_uiBlockRight: {fileID: 5138685301503632781}
-  m_bottomBarTutorialKeys: <binding="UI/QuitTutorial"> Skip intro
   m_bottomBarLoseKeys: <binding="UI/Restart"> Replay <binding="UI/RestartAndRegen">
     New Game <binding="UI/MenuReturn"> Main Menu
-  m_bottomBarWinKeys: <currentLevel>/<levels> Cleared!
-  m_topSideBarWinText: 
+  m_bottomBarWinKeys: 
+  m_topSideBarWinText: <currentLevel>/<levels> Cleared!
   m_topTimerBarText: Total elapsed <totalRunTime>
   m_topSideBarLoseText: <currentLevel>/<levels> Failed
-  m_effectBar: {fileID: 0}
-  m_ui: {fileID: 0}
-  m_currentSeed: {fileID: 0}
-  m_timer: {fileID: 0}
-  m_timerDisplay: {fileID: 5340612051506087238}
-  m_timerShakeDuration: 0
-  m_timerShakeIntensity: 0
-  m_timerBounceIntensity: 0
-  m_childIconImage: {fileID: 2094201919006516398}
-  m_fillBar: {fileID: 646270812113815450}
-  m_fillUpCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_niceTimerColor: {r: 0, g: 0, b: 0, a: 0}
-  m_naughtyTimerColor: {r: 0, g: 0, b: 0, a: 0}
+  m_effectBar: {fileID: 2726896724242570530}
 --- !u!95 &3685668887275639933
 Animator:
   serializedVersion: 7
@@ -8276,6 +8260,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &7133720371282186155 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8281132803129475198, guid: 561da59a1c7ae1c4b94c308d18995e7f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1291528728062463957}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7601339220676027646 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8687741882601810731, guid: 561da59a1c7ae1c4b94c308d18995e7f,

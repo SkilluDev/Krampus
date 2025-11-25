@@ -7,6 +7,13 @@ using UnityEngine;
 public class RoundInfo : MainGameInfo
 {
 
+
+	public RoundUIManager UI {
+		get {
+			return (RoundUIManager)m_ui;
+		}
+	}
+
 	public RoomGeneratorBase RoomGenerator => m_roomGenerator;
 	[SerializeField] private RoomGeneratorBase m_roomGenerator;
 

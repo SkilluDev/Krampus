@@ -20,7 +20,7 @@ public class MainGameInfo : LevelInfo {
 	
 
 	public NewUIManager UI => m_ui;
-	[SerializeField] private NewUIManager m_ui;
+	[SerializeField] protected NewUIManager m_ui;
 
 	public ShaderManager ShaderManager => m_shaderManager;
 	[SerializeField] private ShaderManager m_shaderManager;

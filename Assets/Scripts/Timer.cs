@@ -38,8 +38,8 @@ public class Timer : MonoBehaviour {
 		if (!IsLowTime) return;
 		int lastDigit = Mathf.FloorToInt(GameTime) % 10;
 		if (lastDigit != m_lastDigit) {
-			Game.MainGameInfo.UI.TimerDisplay.Popup();
-			Game.MainGameInfo.UI.PopupTimer();
+			Game.roundInfo.UI.TimerDisplay.Popup();
+			Game.roundInfo.UI.PopupTimer();
 			m_lastDigit = lastDigit;
 		}
 	}

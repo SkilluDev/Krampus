@@ -40,13 +40,13 @@ public class EndScreenHandler : MonoBehaviour {
 	public void PreActivate(Ending ending) {
 		switch (ending) {
 			case Ending.Win:
-				Game.MainGameInfo.UI.BlackBars.SetTopBarText(m_winText);
+				Game.roundInfo.UI.BlackBars.SetTopBarText(m_winText);
 				break;
 			case Ending.LoseNun:
-				Game.MainGameInfo.UI.BlackBars.SetTopBarText(m_loseNunText);
+				Game.roundInfo.UI.BlackBars.SetTopBarText(m_loseNunText);
 				break;
 			case Ending.LoseTime:
-				Game.MainGameInfo.UI.BlackBars.SetTopBarText(m_loseTimeText);
+				Game.roundInfo.UI.BlackBars.SetTopBarText(m_loseTimeText);
 				break;
 		}
 
