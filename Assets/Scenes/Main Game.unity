@@ -223,7 +223,6 @@ GameObject:
   - component: {fileID: 358014043}
   - component: {fileID: 358014044}
   - component: {fileID: 358014046}
-  - component: {fileID: 358014047}
   m_Layer: 0
   m_Name: '#INFO'
   m_TagString: Untagged
@@ -426,23 +425,6 @@ MonoBehaviour:
   m_dayTime: 15
   m_isAutomatic: 1
   m_nightTime: 15
---- !u!114 &358014047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358014034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b876098f93a72814ea724bc6ec15159c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DifficultyProgression
-  m_startingTargetCount: 1
-  m_startingTime: 15
-  m_startingSpeed: 12
-  m_difficultyMultiplier: 1.1
-  m_levelStats: []
 --- !u!114 &358014048
 MonoBehaviour:
   m_ObjectHideFlags: 0

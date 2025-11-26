@@ -1,4 +1,4 @@
-using Cinemachine;
+    using Cinemachine;
 using UnityEngine;
 using LitMotion;
 using LitMotion.Extensions;

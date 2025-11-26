@@ -137,7 +137,7 @@ public class PogMan : MonoBehaviour {
 				StartNewGame(m_difficultyAfterTutorial);
 			} else {
 				//TODO add a game completed screen
-				GoBackToMenu();
+				GoBackToLobby();
 			}
 		}
 	}
@@ -161,6 +161,12 @@ public class PogMan : MonoBehaviour {
 		ResetProgress();
 		Game.RoomGenInfo.Regenerate = RoomGenerationType.First;
 		Game.LoadState(Game.State.MainMenu);
+	}
+	public void GoBackToLobby() {
+		m_canGoToNextLevel = false;
+		ResetProgress();
+		Game.RoomGenInfo.Regenerate = RoomGenerationType.First;
+		Game.LoadState(Game.State.Lobby);
 	}
 
 	public void AllowNextLevel() {
@@ -203,6 +209,14 @@ public class PogMan : MonoBehaviour {
 			m_difficultyAfterTutorial = difficulty;
 			SetLevelSet(difficulty);
 		}
+		ResetProgress();
+		SetSeed();
+		Game.LoadState(Game.State.MainGame);
+	}
+
+	public void StartNewGame(LevelSet levelSet) {
+		m_levelSet = levelSet;
+		
 		ResetProgress();
 		SetSeed();
 		Game.LoadState(Game.State.MainGame);
