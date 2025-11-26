@@ -149,7 +149,7 @@ public class PogMan : MonoBehaviour {
 		} else {
 			Game.RoomGenInfo.Regenerate = RoomGenerationType.Old;
 		}
-		StartNewGame(m_difficultyAfterTutorial);
+		StartNewGame(m_levelSet);
 	}
 
 	public void ReloadCurrentLevel() {
@@ -219,6 +219,7 @@ public class PogMan : MonoBehaviour {
 		
 		ResetProgress();
 		SetSeed();
+		m_arcadeMode = false;
 		Game.LoadState(Game.State.MainGame);
 	}
 
