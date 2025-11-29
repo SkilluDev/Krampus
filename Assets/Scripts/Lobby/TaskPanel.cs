@@ -17,6 +17,8 @@ public class TaskPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_DescText;
     [SerializeField] private TextMeshProUGUI m_AText;
 
+    [SerializeField] private TextMeshProUGUI m_GoldText;
+
 
     private void Start() {
      
@@ -38,12 +40,14 @@ public class TaskPanel : MonoBehaviour
     public void ShowDetails(Task task) {
         m_TitleText.text = task.name;
         m_DescText.text = task.m_description;
+        m_GoldText.text = task.goldAmount.ToString();
         highlightedTask = task;
+        
     }
 
     public void StartTask() {
         if(highlightedTask != null) {
-              Game.PogMan.StartNewGame(highlightedTask.levelSet);
+              Game.PogMan.StartNewGame(highlightedTask);
         }
     }
 

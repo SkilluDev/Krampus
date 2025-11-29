@@ -10,8 +10,7 @@ using UnityEngine.UI;
 
 public class RoundUIManager : NewUIManager
 {
-	public RoundUIManager UI => m_ui;
-	[SerializeField] private RoundUIManager m_ui;
+	
    	public NumericDisplay TimerDisplay => m_timerDisplay;
 
 	[SerializeField] private TextMeshProUGUI m_currentSeed;

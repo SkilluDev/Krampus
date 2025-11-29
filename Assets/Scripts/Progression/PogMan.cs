@@ -20,6 +20,9 @@ public class PogMan : MonoBehaviour {
 	private Difficulty m_currentDifficulty;
 	public Difficulty CurrentDifficulty => m_currentDifficulty;
 
+	private Task m_task;
+	public Task CurrentTask => m_task;
+
 	private Difficulty m_difficultyAfterTutorial;
 
 
@@ -56,6 +59,15 @@ public class PogMan : MonoBehaviour {
 	public IReadOnlyList<Item> KrampusItems => krampusItems;
 
 	private float m_timer;
+
+	[Header("")]
+	[SerializeField] private  int m_goldAmount;
+	public int GoldAmount => m_goldAmount;
+
+	[SerializeField] private int m_crystalAmount;
+	public int CrystalAmount => m_crystalAmount;
+
+
 
 	[ShowNativeProperty] public float TotalRunTime { get => m_timer; }
 
@@ -223,12 +235,34 @@ public class PogMan : MonoBehaviour {
 		Game.LoadState(Game.State.MainGame);
 	}
 
+	public void StartNewGame(Task task) {
+		m_task = task;
+		m_levelSet = task.levelSet;
+		
+		ResetProgress();
+		SetSeed();
+		m_arcadeMode = false;
+		Game.LoadState(Game.State.MainGame);
+	}
+
 
 	private void OnSetManChange(string key) {
 		if (key == "Seed Override") {
 			Game.RoomGenInfo.SetInitialSeed();
 		}
 	}
+
+	//Things related to gold
+
+	public void AddGold(int value) {m_goldAmount += value;}
+
+	public bool HasGold(int value){ return GoldAmount >= value;}
+
+	public void PayGold(int value){m_goldAmount -= value;}
+
+	public void PayOff() {
+        AddGold(m_task.goldAmount);
+    }
 
 
 }

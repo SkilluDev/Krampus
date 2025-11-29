@@ -162,6 +162,7 @@ public class RoundInfo : MainGameInfo
 				m_outro.PlayOutro();
 				Game.MusicMan.StopMusic();
 				StartCoroutine(AllowNextLevelAfterSeconds(0.5f));
+				Game.PogMan.PayOff();
 				break;
 			case Ending.LoseNun:
 				Game.MusicMan.StopMusic();

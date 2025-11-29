@@ -9,4 +9,6 @@ public class Task : ScriptableObject
    public string m_description;
 
    public LevelSet levelSet;
+
+   public  int goldAmount;
 }

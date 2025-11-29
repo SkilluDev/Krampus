@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class LobbyUIManager : NewUIManager
@@ -5,6 +6,7 @@ public class LobbyUIManager : NewUIManager
          public enum Panel {
                 None =0,
                 TaskPanel= 1,
+                ItemPanel = 2,
         }
 
 
@@ -12,6 +14,9 @@ public class LobbyUIManager : NewUIManager
         public RectTransform[] m_panels;
         [SerializeField] private TaskPanel m_TaskPanel;
         private Panel currentPanel = Panel.None;
+
+
+        [SerializeField] private TextMeshProUGUI m_goldDisplay;
 
 
         
@@ -24,8 +29,13 @@ public class LobbyUIManager : NewUIManager
                 
         }
 
+        public void UpdateGoldValue() {
+        m_goldDisplay.text = Game.PogMan.GoldAmount.ToString();
+    }
+
         protected override void Ready() {
                 base.Ready();
+                UpdateGoldValue();
                 UIElementsEntryAnimation();
                 ExitPanel();
         }
