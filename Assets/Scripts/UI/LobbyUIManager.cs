@@ -6,13 +6,14 @@ public class LobbyUIManager : NewUIManager
          public enum Panel {
                 None =0,
                 TaskPanel= 1,
-                ItemPanel = 2,
+                EquPanel = 2,
         }
 
 
         public bool isPanelOpen => currentPanel != Panel.None;
         public RectTransform[] m_panels;
         [SerializeField] private TaskPanel m_TaskPanel;
+        [SerializeField] private EquPanel m_EquPanel;
         private Panel currentPanel = Panel.None;
 
 

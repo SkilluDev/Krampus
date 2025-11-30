@@ -1,14 +1,11 @@
-using UnityEngine.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TMPro;
-using LitMotion;
+using UnityEngine.UI;
 
-public class InventoryCard : MonoBehaviour, IPointerExitHandler, IPointerEnterHandler {
-
-
-    //2
-    [SerializeField] private Image m_itemIcon;
+public class ItemEquIcon : MonoBehaviour,IPointerExitHandler, IPointerEnterHandler
+{
+   [SerializeField] private Image m_itemIcon;
 
     [SerializeField] private GameObject m_descBox;
     [SerializeField] private RectTransform m_descBackground;
@@ -18,8 +15,6 @@ public class InventoryCard : MonoBehaviour, IPointerExitHandler, IPointerEnterHa
     [SerializeField] private float m_baseHeight;
 
     [SerializeField] private Animator m_animator;
-
-    [SerializeField] private Item m_item;   
 
 
 
