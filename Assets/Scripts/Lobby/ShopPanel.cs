@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
+using NUnit.Framework;
 
 
 
@@ -12,6 +13,8 @@ public class ShopPanel : MonoBehaviour
     [SerializeField] private RectTransform m_shopContent;
 
     [SerializeField] private ShopCard m_shopCardPref;
+
+    private ShopItem m_highlightedItem;
 
 
     [Header("Description")]
@@ -56,6 +59,23 @@ public class ShopPanel : MonoBehaviour
         m_descText.text = item.Item.Description;
         m_buttonText.text = sold?"SOLD":"BUY";
         m_priceText.text = item.price.ToString();
+        m_highlightedItem = item;
 
+    }
+
+    public void  BuyItem() {
+        if(m_highlightedItem == null) return;
+        
+        if(Game.PogMan.HasGold(m_highlightedItem.price))
+        {
+            Game.PogMan.PayGold(m_highlightedItem.price);
+            Game.PogMan.m_allKrampusItems.Add(m_highlightedItem.Item);
+            UpdateShop();
+            Game.Lobbyinfo.UI.UpdateEqu();
+            ShowDetails(m_highlightedItem, true);
+        }
+        else {
+            //No feed
+        }
     }
 }
