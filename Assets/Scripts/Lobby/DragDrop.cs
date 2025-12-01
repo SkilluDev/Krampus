@@ -1,4 +1,4 @@
-using UnityEngine;
+        using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler {
@@ -15,9 +15,13 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
 	public void OnBeginDrag(PointerEventData eventData) {
         m_canvasGroup.blocksRaycasts = false;
+       
+       
     }
 	public void OnDrag(PointerEventData eventData) {
-        RectTransform.anchoredPosition +=  eventData.delta/canvas.scaleFactor;
+            RectTransform.anchoredPosition +=
+            
+              eventData.delta/canvas.scaleFactor;
     }
 
 	public void OnDrop(PointerEventData eventData) 
@@ -29,6 +33,8 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         
          
          RectTransform.localPosition = Vector2.zero;
+
+
 
     }
 	public void OnPointerDown(PointerEventData eventData) => throw new System.NotImplementedException();

@@ -61,4 +61,8 @@ public class LobbyUIManager : NewUIManager
         public void ShowTaskDetails(Task task) {
                 m_TaskPanel.ShowDetails(task);  
     }
+
+    public void  UpdateEqu() {
+        m_EquPanel.UpdateEqu();
+    }
 }

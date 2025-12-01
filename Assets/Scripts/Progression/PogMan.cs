@@ -56,6 +56,8 @@ public class PogMan : MonoBehaviour {
 
 	public bool IsThereNextLevel => m_currentLevel < LevelStats.Count - 1;
 	public List<Item> krampusItems;
+
+	public List<Item> m_allKrampusItems;
 	public IReadOnlyList<Item> KrampusItems => krampusItems;
 
 	private float m_timer;
@@ -106,11 +108,16 @@ public class PogMan : MonoBehaviour {
 		m_canGoToNextLevel = false;
 		m_currentLevel = m_startingLevel;
 		//			m_krampusItems.Clear();
-		krampusItems = null;
-		m_clearItemsOnLoad = true;
+		
+		ResetItems();
+		//m_clearItemsOnLoad = true;
 		m_timer = 0;
 
 	}
+
+	public void ResetItems() {
+        krampusItems = null;
+    }
 
 	// those essentially move the list in and out without copying it and making sure no reference lives too long.
 	public void Store(List<Item> items) {
@@ -264,5 +271,14 @@ public class PogMan : MonoBehaviour {
         AddGold(m_task.goldAmount);
     }
 
+
+	//All items Unlock Items
+
+
+	public void UnlockItem(Item item) {
+		if(!m_allKrampusItems.Contains(item)){
+       	 m_allKrampusItems.Add(item);
+		}
+    }
 
 }

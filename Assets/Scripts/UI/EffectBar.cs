@@ -17,6 +17,17 @@ public class EffectBar : MonoBehaviour {
         m_effectIcons.Add(item, effectIcon);
     }
 
+    public void ClearAll() {
+
+        int numChildren =transform.childCount;
+
+         for( int i=numChildren-1 ; i>=0 ; i-- )
+        {
+            GameObject.Destroy( transform.GetChild(i).gameObject );
+        }
+        m_effectIcons.Clear();
+    }
+
 
     public void ActivateItem(Krampus krampus, Item item) {
         switch (item.EffectiveType) {

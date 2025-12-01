@@ -48,7 +48,12 @@ public class InventoryCard : MonoBehaviour, IPointerExitHandler, IPointerEnterHa
         m_animator.SetTrigger("Normal");
      }
 
+     public Item GetItem() {
+        return m_item;  
+    }
+
     public void SetInfo(Item item) {
+        m_item = item;
         m_itemIcon.sprite = item.ItemIcon;
         m_titleText.text = item.ItemName;
         m_descriptionText.text = item.Description;

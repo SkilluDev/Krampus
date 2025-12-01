@@ -5,6 +5,8 @@ public class ItemSlot : MonoBehaviour, IDropHandler
 {
     private RectTransform m_rectTransform;
 
+    
+
 	public void Awake() {
 		m_rectTransform = GetComponent<RectTransform>();
 	}
@@ -17,9 +19,16 @@ public class ItemSlot : MonoBehaviour, IDropHandler
             drop.SetParent(m_rectTransform,false); 
               drop.localPosition = Vector2.zero;
             
+
+            
+            
+           
                 
-        }
+        
+
+
+
     }
 
 	
-}
+}}

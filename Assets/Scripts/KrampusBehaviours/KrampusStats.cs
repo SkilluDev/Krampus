@@ -81,10 +81,12 @@ public class KrampusStats : KrampusBehaviour {
     }
 
     private void LoadItems() {
+        Debug.Log("DAWAJ ITEMY KURWO");
         var itemsToAdd = new List<Item>();
         Game.PogMan.Unpack(ref itemsToAdd);
         foreach (var item in itemsToAdd) {
             AddItem(item);
+            Debug.Log("Dodałem item");
         }
     }
     private void StoreItems() {
