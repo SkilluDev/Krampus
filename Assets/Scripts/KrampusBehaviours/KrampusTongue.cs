@@ -38,8 +38,7 @@ public class KrampusTongue : KrampusBehaviour {
 		public AnimationCurve retreatCurve = AnimationCurve.Linear(0, 0, 1, 1);
 	}
 	[SerializeField] private Timings m_sequence;
-
-
+	private bool skip = false;
 	public Vector3 HitPoint => m_tongueDestination;
 	private Vector3 m_tongueDestination;
 	private float m_tongueTime = 0f;
@@ -50,7 +49,6 @@ public class KrampusTongue : KrampusBehaviour {
 	private IInteractable m_hitInteractable;
 	private ITongueable m_hitTonguable;
 	private IKrampable m_hitKrampable;
-
 	public bool HoldsThrowable => m_hitKrampable != null && m_hitKrampable.Type == IKrampable.krampableType.DelayedAiming;
 
 	private List<(float dst, ITongueable component)> m_midwayToungables;
@@ -287,6 +285,9 @@ public class KrampusTongue : KrampusBehaviour {
 				float fullLength = (m_tongueDestination - m_tongueOrigin.position).sqrMagnitude;
 
 				m_midwayToungables = (tongueables?.Where(w => w.tongueable != m_hitTonguable)).EmptyIfNull().ToList();
+                if (m_hitInteractable == null) {
+                    skip = true;
+                }
 				AdvanceState();
 				break;
 
@@ -341,7 +342,12 @@ public class KrampusTongue : KrampusBehaviour {
 						m_hitInteractable = null;
 					}
 				}
-				AdvanceStateIfTime(nameof(Timings.preRetreat));
+				if (!skip) {
+    				AdvanceStateIfTime(nameof(Timings.preRetreat));
+				} else {
+					skip = false;
+   					AdvanceState();
+				}
 				break;
 
 			case State.Retreating: // Tongue goes from the target to visual origin, potentially carrying an krampable
