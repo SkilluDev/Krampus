@@ -7,6 +7,9 @@ public class LobbyUIManager : NewUIManager
                 None =0,
                 TaskPanel= 1,
                 EquPanel = 2,
+                ShopPanel = 3,
+
+
         }
 
 
@@ -14,6 +17,8 @@ public class LobbyUIManager : NewUIManager
         public RectTransform[] m_panels;
         [SerializeField] private TaskPanel m_TaskPanel;
         [SerializeField] private EquPanel m_EquPanel;
+
+        [SerializeField] private ShopPanel m_shopPanel;
         private Panel currentPanel = Panel.None;
 
 
