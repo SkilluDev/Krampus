@@ -8,6 +8,9 @@ public class LobbyInfo :  MainGameInfo
     [SerializeField] int m_numberOfTasks = 3;
     [SerializeField] TaskPool m_taskPool;
 
+    [SerializeField] private ShopScript m_shopScript;
+    public ShopScript ShopScript => m_shopScript;
+
     public Task[] m_tasks {set;get;}
 
     public override bool Ballin => CurrentState == State.Game && (!UI.isPanelOpen);

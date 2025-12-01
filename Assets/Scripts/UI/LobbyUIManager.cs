@@ -19,6 +19,7 @@ public class LobbyUIManager : NewUIManager
         [SerializeField] private EquPanel m_EquPanel;
 
         [SerializeField] private ShopPanel m_shopPanel;
+        public ShopPanel ShopPanel => m_shopPanel;
         private Panel currentPanel = Panel.None;
 
 
@@ -44,6 +45,7 @@ public class LobbyUIManager : NewUIManager
                 UpdateGoldValue();
                 UIElementsEntryAnimation();
                 ExitPanel();
+                m_shopPanel.UpdateShop();
         }
 
         public void ExitPanel() {
@@ -56,6 +58,9 @@ public class LobbyUIManager : NewUIManager
         public void OpenPanel(Panel panel) {
                 m_panels[(int)panel-1].gameObject.SetActive(true);
                 currentPanel = panel;
+                if((int)panel == 3) {
+            m_shopPanel.UpdateShop();
+        }
                 
         }
         public void  PlacePins(int taskNumber) {
