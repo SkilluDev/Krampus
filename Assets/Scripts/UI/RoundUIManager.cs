@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using LitMotion;
@@ -26,6 +27,12 @@ public class RoundUIManager : NewUIManager
     private Color m_originalTimerColor;
 
 	
+
+//====================
+
+
+	[Header("Challange")]
+	[SerializeField] private TextMeshProUGUI m_challangeText;	
 
 
 
@@ -156,6 +163,13 @@ public class RoundUIManager : NewUIManager
 		yield return new WaitForSeconds(3);
 		m_endScreenHandler.Activate(ending);
 	}
+
+
+	public void UpdateChallangeText(string text, bool mActive) {
+        m_challangeText.text = text;
+		m_challangeText.color = mActive ? Color.white : Color.red;	
+		
+    }
 
 
 }

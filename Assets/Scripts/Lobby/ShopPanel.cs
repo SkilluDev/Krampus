@@ -73,6 +73,7 @@ public class ShopPanel : MonoBehaviour
             UpdateShop();
             Game.Lobbyinfo.UI.UpdateEqu();
             ShowDetails(m_highlightedItem, true);
+            Game.Lobbyinfo.UI.UpdateGoldValue();
         }
         else {
             //No feed

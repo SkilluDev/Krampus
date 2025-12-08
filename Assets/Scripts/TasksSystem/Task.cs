@@ -1,4 +1,5 @@
 using System;
+using System.Security.Claims;
 using UnityEngine;
 
 
@@ -11,4 +12,16 @@ public class Task : ScriptableObject
    public LevelSet levelSet;
 
    public  int goldAmount;
+
+   [SerializeField] private Challange[] challanges;
+
+   public Challange[] Challanges => challanges;
+
+
+   public void ClaimRewards() {
+        Game.PogMan.AddGold(goldAmount);
+        foreach(Challange c in challanges) {
+            c.Claim();
+        }
+    }
 }

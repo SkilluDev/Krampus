@@ -73,7 +73,15 @@ public class RoundInfo : MainGameInfo
     private void Ready() {
 		if (m_useLevelModifer && Game.PogMan.NextLevelModifier != null) {
 			Game.PogMan.NextLevelModifier.UpdateLevel();
+			
+		
 		}
+		RegisterChallanges();
+	}
+
+	void RegisterChallanges()
+	{
+			Game.PogMan.RegisterChallanges();
 	}
 
 	public RoomData GetRoomData(Room r) {

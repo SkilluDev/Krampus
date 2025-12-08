@@ -254,7 +254,7 @@ public class PogMan : MonoBehaviour {
 
 
 	private void OnSetManChange(string key) {
-		if (key == "Seed Override") {
+		if (key == "Seed Override") {	
 			Game.RoomGenInfo.SetInitialSeed();
 		}
 	}
@@ -268,8 +268,10 @@ public class PogMan : MonoBehaviour {
 	public void PayGold(int value){m_goldAmount -= value;}
 
 	public void PayOff() {
-        AddGold(m_task.goldAmount);
+        m_task.ClaimRewards();
     }
+
+
 
 
 	//All items Unlock Items
@@ -279,6 +281,14 @@ public class PogMan : MonoBehaviour {
 		if(!m_allKrampusItems.Contains(item)){
        	 m_allKrampusItems.Add(item);
 		}
+    }
+
+
+	public void RegisterChallanges() {
+        foreach(Challange challange in m_task.Challanges) {
+			challange.Reset();
+            challange.Register();
+        }
     }
 
 }

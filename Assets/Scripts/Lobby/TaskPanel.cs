@@ -19,6 +19,9 @@ public class TaskPanel : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI m_GoldText;
 
+    [SerializeField] private TextMeshProUGUI m_ChalangeText;
+    [SerializeField] private TextMeshProUGUI m_ChalangeRewardText;
+
 
     private void Start() {
      
@@ -42,6 +45,17 @@ public class TaskPanel : MonoBehaviour
         m_DescText.text = task.m_description;
         m_GoldText.text = task.goldAmount.ToString();
         highlightedTask = task;
+        if(task.Challanges != null && task.Challanges.Length >0 ) 
+        {
+            Challange a = task.Challanges[0];
+            m_ChalangeRewardText.text = a.GoldReward.ToString();
+            m_ChalangeText.text = a.Description + " " + a.Value + " times";
+        }else {
+
+            m_ChalangeRewardText.text = "";
+            m_ChalangeText.text = "";
+        
+        }
         
     }
 
