@@ -8,7 +8,6 @@ using UnityEngine;
 
 namespace KrampUtils {
 
-    [SerializeField]
     public interface ITArray {
         public Array2D<T> Cast<T>();
         public Array2D<T> GetArray<T>();
