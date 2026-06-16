@@ -34,14 +34,15 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 
 	private bool m_hasPositionTarget = false;
 	private Room m_selectedRoom;
-	private Room m_lastKrampusSpotted;
+	protected Room m_lastKrampusSpotted;
 
-	private float m_timeout = 0;
+	protected float m_timeout = 0;
 
 	private ChildType m_type;
 	private Transform m_modelTransform;
 	public bool IsNaughty => Type != Game.roundInfo.NiceChildType;
 
+	public virtual bool m_CanBeConsumed => true;
 
 
 
@@ -66,7 +67,7 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
         SetChildType(Game.MainGameInfo.Types.UnityRandomElement());
     } */
 
-	private void Ready() {
+	protected virtual void Ready() {
 		Game.roundInfo.RegisterChild(this);
 
 		m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.transform;
@@ -83,7 +84,7 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 		NavMesh.SetAreaCost(NavMesh.GetAreaFromName("Kramped"), 99f);
 	}
 
-	private void SelectPositionInRoomAwayFromKrampy() {
+	protected void SelectPositionInRoomAwayFromKrampy() {
 		if (m_hasPositionTarget) return;
 		var passages = Game.roundInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
 		m_selectedRoom = passages.First().Other(CurrentRoom);
@@ -159,9 +160,7 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 				SetVelocity(Vector3.zero);
 				m_timeout -= Time.deltaTime;
 				if (m_timeout <= 0) {
-					m_lastKrampusSpotted = CurrentRoom;
-					Game.roundInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
-					SelectPositionInRoomAwayFromKrampy();
+					StunOut();
 					SwitchState(State.InitialPanic);
 				}
 				break;
@@ -245,12 +244,17 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 	}
 
 	public void Hit(Krampus krampus) {
-		if(CanConusme(krampus)){
+			if(!m_CanBeConsumed)
+				return;
+
 			SwitchState(State.Dead);
-		}
+		
 	}
 
-	private void SwitchState(State next) {
+	
+	
+
+	protected void SwitchState(State next) {
 		if (next == CurrentState) return;
 		m_currentDetectionTime = 0f;
 		onStateChanged?.Invoke(CurrentState, next);
@@ -262,9 +266,7 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 		m_lastStateBeforeKilling = CurrentState;
 	}
 
-	public bool CanConusme(Krampus krampus) {
-		return CurrentState == State.Stunned;
-	}
+	
 
 	public void AttachToTongue(Krampus krampus, Vector3 position, Quaternion rotation, float progress) {
 		transform.position = position - transform.InverseTransformPoint(m_pinTarget.position);
@@ -277,17 +279,23 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 	}
 
 	public void Alert(RoomData roomData, Vector3 place, ICharacter actor) {
-		if (actor is not Krampus || CurrentState != State.Idle) return;
+		if (actor is not Krampus || 	CurrentState != State.Idle) return;
 		//SwitchState(State.Stunned);
 		m_timeout = m_stunDuration;
 		SetDestination(place);
 		SetFacingDirection(place);
 	}
 
-	public void Stun(float duration) {
+	public virtual void Stun(float duration) {
 		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
 		m_timeout = duration;
 		SwitchState(State.Stunned);
+	}
+
+	protected virtual void StunOut() {
+		m_lastKrampusSpotted = CurrentRoom;
+		Game.roundInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+		SelectPositionInRoomAwayFromKrampy();
 	}
 
 	public void React(DayNightCycle.CyclePhase oldPhase, DayNightCycle.CyclePhase newPhase) {
