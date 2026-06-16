@@ -246,8 +246,11 @@ public class KrampusTongue : KrampusBehaviour {
 									.Select(w => w.interactable);
 
 				m_hitInteractable = interactables?.FirstOrDefault();
-
+				
 				if (m_hitInteractable is IKrampable krampable) {
+					
+					if(krampable.CanConusme(Kramp)) {
+						
 					m_hitKrampable = krampable;
 					try {
 						m_hitKrampable.Prepare(Kramp);
@@ -255,6 +258,7 @@ public class KrampusTongue : KrampusBehaviour {
 						LogException(e, m_hitKrampable);
 						m_hitKrampable = null;
 						m_hitInteractable = null;
+					}
 					}
 				}
 				if (m_hitInteractable == null) {
@@ -308,7 +312,10 @@ public class KrampusTongue : KrampusBehaviour {
 			case State.Full:
 				if (m_hitInteractable != null) {
 					try {
-						m_hitInteractable.Interact(Kramp);
+						
+							m_hitInteractable.Interact(Kramp);
+
+
 						//if (m_hitInteractable is Child) {
 						Kramp.Kontroller.SetCanDash(true);
 						Kramp.Kontroller.SetDashTarget(m_hitInteractable);
@@ -334,6 +341,9 @@ public class KrampusTongue : KrampusBehaviour {
 			case State.PreRetreat: // Tongue still attached to the hit object
 				if (m_hitKrampable != null) {
 					try {
+						if(m_hitKrampable.CanConusme(Kramp)){
+							SwitchState(State.Retreating);	
+						}
 						m_hitKrampable.AttachToTongue(Kramp, GetTonguePositions().end, transform.rotation, 0);
 					} catch (Exception e) {
 						LogException(e, m_hitTonguable);

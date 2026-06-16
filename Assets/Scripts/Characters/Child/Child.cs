@@ -245,7 +245,9 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 	}
 
 	public void Hit(Krampus krampus) {
-		SwitchState(State.Dead);
+		if(CanConusme(krampus)){
+			SwitchState(State.Dead);
+		}
 	}
 
 	private void SwitchState(State next) {
@@ -258,6 +260,10 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 	public void Prepare(Krampus krampus) {
 		//  Game.MainGameInfo.UnregisterChild(this);
 		m_lastStateBeforeKilling = CurrentState;
+	}
+
+	public bool CanConusme(Krampus krampus) {
+		return CurrentState == State.Stunned;
 	}
 
 	public void AttachToTongue(Krampus krampus, Vector3 position, Quaternion rotation, float progress) {

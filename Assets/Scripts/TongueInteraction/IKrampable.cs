@@ -11,9 +11,14 @@ public interface IKrampable : IInteractable {
     public void Hit(Krampus krampus);
     public void AttachToTongue(Krampus krampus, Vector3 position, Quaternion rotation, float progress);
     public void Consume(Krampus krampus, Vector3 position, Quaternion rotation);
+
     public krampableType Type => krampableType.Instant;
 
     IInteractor.Type IInteractable.InteractorMask => IInteractor.Type.Player;
+
+    public bool  CanConusme(Krampus krampus) {
+        return true;
+    }
 
     void IInteractable.Interact(IInteractor interactor) {
         Hit(interactor.AsPlayer());
