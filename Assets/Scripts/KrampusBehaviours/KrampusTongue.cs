@@ -248,7 +248,7 @@ public class KrampusTongue : KrampusBehaviour {
 				
 				if (m_hitInteractable is IKrampable krampable) {
 					
-					if(krampable.CanConusme(Kramp)) {
+					if(krampable.m_CanBeConsumed) {
 						
 					m_hitKrampable = krampable;
 					try {
@@ -342,9 +342,9 @@ public class KrampusTongue : KrampusBehaviour {
 			case State.PreRetreat: // Tongue still attached to the hit object
 				if (m_hitKrampable != null) {
 					try {
-						if(m_hitKrampable.CanConusme(Kramp)){
+						
 							SwitchState(State.Retreating);	
-						}
+						
 						m_hitKrampable.AttachToTongue(Kramp, GetTonguePositions().end, transform.rotation, 0);
 					} catch (Exception e) {
 						LogException(e, m_hitTonguable);
