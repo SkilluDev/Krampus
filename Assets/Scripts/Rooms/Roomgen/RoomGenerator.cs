@@ -38,7 +38,7 @@ public class RoomGenerator : RoomGeneratorBase {
 
 
 	// TEMPORARY
-	[SerializeField] private GameObject m_nunPrefab, m_childPrefab;
+	[SerializeField] private GameObject m_nunPrefab, m_childPrefab, m_jackedChildPrefab;
 
 	public override IReadOnlyCollection<Room> Rooms => m_placedRooms;
 
@@ -195,42 +195,14 @@ public class RoomGenerator : RoomGeneratorBase {
 		}
 
 		void GenerateNunsAndKids() {
-			int niceKidCount = m_currentLevelStats.NiceCount;
-			for (int i = 0; i < niceKidCount; i++) {
-				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
-				if (room.HasTag(m_kidProof)) {
-					Debug.LogWarning("[Roomgen]" + room.name + "is Kid-Proof - cannot spawn Child.");
-					i--;
-					continue;
-				}
+			//nice kids
+			SpawnKids(m_currentLevelStats.NiceCount, m_niceChildType, m_childPrefab);
+			SpawnKids(m_currentLevelStats.NiceJackedCount, m_niceChildType, m_jackedChildPrefab);
 
-				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 0.2f, NavMesh.AllAreas)) {
-					var child = Instantiate(m_childPrefab, hit.position, Quaternion.identity);
-					child.GetComponent<Child>().SetChildType(m_niceChildType);
-				} else {
-					Debug.LogWarning("[Roomgen] Could not spawn Child in " + room.name);
-					i--;
-					continue;
-				}
-			}
-			int naughtyKidCount = m_currentLevelStats.NaughtyCount;
-			for (int i = 0; i < naughtyKidCount; i++) {
-				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
-				if (room.HasTag(m_kidProof)) {
-					Debug.LogWarning("[Roomgen]" + room.name + "is Kid-Proof - cannot spawn Child.");
-					i--;
-					continue;
-				}
+			SpawnKids(m_currentLevelStats.NaughtyCount, m_naughtyChildType, m_childPrefab);
+			SpawnKids(m_currentLevelStats.NaughtyJackedCount, m_naughtyChildType, m_jackedChildPrefab);
 
-				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 0.2f, NavMesh.AllAreas)) {
-					var child = Instantiate(m_childPrefab, hit.position, Quaternion.identity);
-					child.GetComponent<Child>().SetChildType(m_naughtyChildType);
-				} else {
-					Debug.LogWarning("[Roomgen] Could not spawn Child in " + room.name);
-					i--;
-					continue;
-				}
-			}
+
 			int nunCount = m_currentLevelStats.NunCount;
 			for (int i = 0; i < nunCount; i++) {
 				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
@@ -250,6 +222,27 @@ public class RoomGenerator : RoomGeneratorBase {
 				}
 			}
 
+		}
+
+		void SpawnKids(int kidCount, ChildType childType, GameObject childPrefab) {
+	
+			for (int i = 0; i < kidCount; i++) {
+				var room = m_placedRooms[Random.Range(0, m_placedRooms.Count)];
+				if (room.HasTag(m_kidProof)) {
+					Debug.LogWarning("[Roomgen]" + room.name + "is Kid-Proof - cannot spawn Child.");
+					i--;
+					continue;
+				}
+
+				if (NavMesh.SamplePosition(room.GetRandomPointOnFloor(), out var hit, 0.2f, NavMesh.AllAreas)) {
+					var child = Instantiate(childPrefab, hit.position, Quaternion.identity);
+					child.GetComponent<Child>().SetChildType(childType);
+				} else {
+					Debug.LogWarning("[Roomgen] Could not spawn Child in " + room.name);
+					i--;
+					continue;
+				}
+			}
 		}
 
 		void GenerateDoors() {

@@ -5,12 +5,25 @@ using UnityEngine;
 [Serializable]
 public class LevelStats {
 
+	[Header("Naughty Kids")]	
 	[SerializeField] private int m_naughtyCount;
 	public int NaughtyCount => m_naughtyCount;
 
+	[SerializeField] private int m_naughtyJackedCount;
+	public int NaughtyJackedCount=> m_naughtyJackedCount;
+
+
+	[Header("Nice Kids")]
 	[SerializeField] private int m_niceCount;
 	public int NiceCount => m_niceCount;
 
+	[SerializeField] private int m_niceJackedCount;
+	public int NiceJackedCount=>  m_niceJackedCount;
+
+
+
+
+	[Header("Nuns")]
 	[SerializeField] private int m_nunCount;
 	public int NunCount => m_nunCount;
 
