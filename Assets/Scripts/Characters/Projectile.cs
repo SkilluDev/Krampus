@@ -9,7 +9,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
     [SerializeField] protected float m_speed = 14;
     [SerializeField] protected float m_turningSpeed = 15;
-    [SerializeField] protected bool m_activateToungables = true;
+    [SerializeField] protected Tag m_pushableTag;
     [SerializeField] protected LayerMask m_destroyedBy;
     [SerializeField] protected Tag[] m_targetGroups;
 
@@ -51,7 +51,6 @@ public class Projectile : MonoBehaviour {
     }
 
     protected virtual void Shoot(Transform target) {
-        Debug.Break();
         m_target = target;
         m_sexShoot.Play(transform.position);
         if (m_fxShoot != null) Instantiate(m_fxShoot, transform.position, transform.rotation);
@@ -97,13 +96,13 @@ public class Projectile : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (!m_isActive) return;
+
+        if (other.HasTag(m_pushableTag) && other.gameObject.TryGetComponent<Rigidbody>(out var t)) {
+            t.AddForce(transform.forward, ForceMode.Impulse);
+        }
+
         if (m_destroyedBy.IsLayerMasked(other.gameObject.layer)) {
             Miss(other);
-        }
-        // && other.gameObject.TryGetComponent<ITongueable>(out var t)
-        if (m_activateToungables) {
-            print("projectile passby " + other.gameObject.name);
-            // t.TonguePassBy(null, transform.position, 0); //bad!
         }
 
         if (other.gameObject.HasAnyTag(m_targetGroups)) {

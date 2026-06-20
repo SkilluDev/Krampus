@@ -49,7 +49,7 @@ Shader "Test/ColorBlit"
             float _OutlineThickness;
             float _DepthSensitivity;
 
-            float4 _CameraDepthTexture_TexelSize;
+            // float4 _CameraDepthTexture_TexelSize;
 
             float GetLinearEyeDepth(float2 uv)
             {
