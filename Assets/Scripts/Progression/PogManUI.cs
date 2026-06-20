@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,22 +13,22 @@ public class PogManUI : MonoBehaviour {
 
 
     [Header("======[Map]=====")]
-    [BoxGroup("Map")][SerializeField] private RectTransform m_mapContainer;
-    [BoxGroup("Map")][SerializeField] private Button m_mapButtonPref;
-    [BoxGroup("Map")][SerializeField] private Sprite m_currentLevelSprite;
-    [BoxGroup("Map")][SerializeField] private Sprite m_doneLevelSprtie;
-    [BoxGroup("Map")][SerializeField] private Sprite m_futureLevelSprtie;
+    [Layout("Map", ELayout.FoldoutBox)][SerializeField] private RectTransform m_mapContainer;
+    [Layout("Map", ELayout.FoldoutBox)][SerializeField] private Button m_mapButtonPref;
+    [Layout("Map", ELayout.FoldoutBox)][SerializeField] private Sprite m_currentLevelSprite;
+    [Layout("Map", ELayout.FoldoutBox)][SerializeField] private Sprite m_doneLevelSprtie;
+    [Layout("Map", ELayout.FoldoutBox)][SerializeField] private Sprite m_futureLevelSprtie;
 
 
     [Header("======[Modifiers]=====")]
-    [BoxGroup("Modifiers")][SerializeField] private LevelModifiersPool m_pool;
-    [BoxGroup("Modifiers")][SerializeField] private ChallangeModifierUI[] m_challangeModifierUIs;
+    [Layout("Modifiers", ELayout.FoldoutBox)][SerializeField] private LevelModifiersPool m_pool;
+    [Layout("Modifiers", ELayout.FoldoutBox)][SerializeField] private ChallangeModifierUI[] m_challangeModifierUIs;
 
     private LevelModifier[] m_levelModifiers;
     private LevelModifier m_selectedModifier;
 
 
-    [BoxGroup("Start")][SerializeField] private Button m_startButton;
+    [Layout("Start", ELayout.FoldoutBox)][SerializeField] private Button m_startButton;
 
     private void Start() {
         GenerateMap();
@@ -61,7 +62,7 @@ public class PogManUI : MonoBehaviour {
     }
 
     public void SelectCard(int i) {
-         if (!m_startButton.gameObject.activeSelf) { m_startButton.gameObject.SetActive(true); }
+        if (!m_startButton.gameObject.activeSelf) { m_startButton.gameObject.SetActive(true); }
         foreach (var a in m_challangeModifierUIs) {
 
             a.Deselect();
@@ -87,12 +88,12 @@ public class PogManUI : MonoBehaviour {
 
 
 
-        m_levelModifiers = m_pool.getRandom(m_challangeModifierUIs.Length,m_CurrentLevel);
+        m_levelModifiers = m_pool.getRandom(m_challangeModifierUIs.Length, m_CurrentLevel);
 
 
         for (int i = 0; i < m_levelModifiers.Length; i++) {
             var t = m_levelModifiers[i];
             m_challangeModifierUIs[i].SetInfo(t.ModifierName, t.Description);
-         }
-     }
+        }
+    }
 }

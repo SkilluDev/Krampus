@@ -1,7 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.Android;
@@ -51,7 +52,7 @@ public class PogMan : MonoBehaviour {
 
 	private float m_timer;
 
-	[ShowNativeProperty] public float TotalRunTime { get => m_timer; }
+	[ShowInInspector] public float TotalRunTime { get => m_timer; }
 
 	private void Ready() {
 		if (Game.BootFromMainGame) {

@@ -1,4 +1,5 @@
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Sound;
 using UnityEngine;
 
@@ -8,10 +9,11 @@ public class NunAnimator : MonoBehaviour {
 	[SerializeField] private Transform m_modelTransform;
 	[SerializeField] private float m_turningSpeed = 5f;
 	[SerializeField] private float m_minimalVelocity = 0.5f;
-	[BoxGroup("Animator Properties")][SerializeField][AnimatorParam(nameof(m_animator))] private int m_propertySpeed, m_propertyListening, m_propertyAttack, m_propertyStunned, m_propertyShocked, m_propertyUlt;
-	[BoxGroup("State Sprites")][SerializeField] private StatusSprite m_spriteRenderer;
-	[BoxGroup("State Sprites")][SerializeField] private Sprite m_spriteLookingForKrampus, m_spriteListening, m_spriteStunned, m_spriteChasingKrampus;
-	[BoxGroup("Sounds")][SerializeField] private Sex m_soundListen, m_soundFoundKrampus, m_soundPatrol, m_soundNotFoundKrampus;
+	[Layout("Animator Properties", ELayout.FoldoutBox)][SerializeField][AnimatorParam(nameof(m_animator))] private int m_propertySpeed, m_propertyListening, m_propertyAttack, m_propertyStunned, m_propertyShocked, m_propertyUlt;
+	[Layout("State Sprites", ELayout.FoldoutBox)][SerializeField] private StatusSprite m_spriteRenderer;
+	[Layout("State Sprites", ELayout.FoldoutBox)][SerializeField] private Sprite m_spriteLookingForKrampus, m_spriteListening, m_spriteStunned, m_spriteChasingKrampus;
+	[Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_soundListen, m_soundFoundKrampus, m_soundPatrol, m_soundNotFoundKrampus;
+
 
 	private void Start() {
 		m_nun.onStateChanged += MovementStateChanged;

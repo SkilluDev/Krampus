@@ -1,5 +1,6 @@
 using System.Reflection;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using TMPro;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class StateDisplay : MonoBehaviour {
     [SerializeField] private TextMeshPro m_statusText;
 
     [SerializeField] private MonoBehaviour m_toInspect;
-	[BoxGroup("StateSprites")]
+    [Layout("StateSprites", ELayout.FoldoutBox)]
     private PropertyInfo m_stateField;
 
     private void Awake() {

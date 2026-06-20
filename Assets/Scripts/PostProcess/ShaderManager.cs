@@ -1,6 +1,7 @@
 using System.Linq;
 using LitMotion;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -25,7 +26,7 @@ public class ShaderManager : MonoBehaviour {
 
 
 
-	[NaughtyAttributes.Button("Toggle Shader")]
+	[Button("Toggle Shader")]
 	public void ToggleShader() {
 		m_shaderOn = !m_shaderOn;
 		foreach (var feature in m_universalRendererData.rendererFeatures) {
@@ -39,15 +40,15 @@ public class ShaderManager : MonoBehaviour {
 		m_splitToning.balance.value = m_minSplitToning;
 	}
 	// Start is called before the first frame update
-	[NaughtyAttributes.Button("Test Set Intensity")]
+	[Button("Test Set Intensity")]
 	public void SetIntensity() {
 		SetIntensity(m_testValue);
 	}
 	private void SetIntensity(float intensity) {
 		//Debug.Log(intensity+"intensity");
-		LMotion.Create(0,intensity, m_shaderDurationIn).WithEase(m_shaderCurveIn).WithOnComplete(
-			()=>LMotion.Create(intensity, 0, m_shaderDurationOut).WithEase(m_shaderCurveOut).Bind(f=>m_material.SetFloat("_Intensity", f))
-		).Bind(f=>m_material.SetFloat("_Intensity", f));
+		LMotion.Create(0, intensity, m_shaderDurationIn).WithEase(m_shaderCurveIn).WithOnComplete(
+			() => LMotion.Create(intensity, 0, m_shaderDurationOut).WithEase(m_shaderCurveOut).Bind(f => m_material.SetFloat("_Intensity", f))
+		).Bind(f => m_material.SetFloat("_Intensity", f));
 	}
 
 	//[NaughtyAttributes.Button("Set Split Toning")]

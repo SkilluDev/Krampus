@@ -1,5 +1,6 @@
 using LitMotion;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -37,8 +38,8 @@ public class PostProcessHandler : MonoBehaviour {
         m_vol.profile.TryGet(out m_aberration);
         m_vol.profile.TryGet(out m_blur);
 
-		SetBlur();
-		Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
+        SetBlur();
+        Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
 
         m_vignette.color.Override(m_originalVignetteColor);
 
@@ -48,29 +49,29 @@ public class PostProcessHandler : MonoBehaviour {
         Game.GlobalEvents.onChildEaten.AddListener(OnChildEaten);
     }
 
-	private void Unready() {
-		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
-	}
+    private void Unready() {
+        Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
+    }
 
-	private void SetBlur() {
-		bool b = Game.SetMan.GetValue<bool>("Motion Blur");
-		m_blur.active = b;
-	}
+    private void SetBlur() {
+        bool b = Game.SetMan.GetValue<bool>("Motion Blur");
+        m_blur.active = b;
+    }
 
 
-	private void OnSetManChange(string key) {
-		if (key == "Motion Blur") {
-			SetBlur();
-		}
-	}
+    private void OnSetManChange(string key) {
+        if (key == "Motion Blur") {
+            SetBlur();
+        }
+    }
 
     [Button]
-    private void EatNiceChild(){
+    private void EatNiceChild() {
         var child = new Child();
         child.SetChildType(Game.MainGameInfo.NiceChildType);
         OnChildEaten(Game.MainGameInfo.Krampus, child);
     }
-	private void OnChildEaten(Krampus krampus, Child child) {
+    private void OnChildEaten(Krampus krampus, Child child) {
         if (child.IsNaughty) return;
 
         /* //Aberr
@@ -84,27 +85,27 @@ public class PostProcessHandler : MonoBehaviour {
         //EndAberr */
 
         //Vignette
-        LMotion.Create(m_originalVignetteColor, m_flashVignetteColor, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
-            ()=>LMotion.Create(m_flashVignetteColor, m_originalVignetteColor, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).Bind(c=>m_vignette.color.Override(c))
-        ).Bind(c=>m_vignette.color.Override(c));
+        LMotion.Create(m_originalVignetteColor, m_flashVignetteColor, m_vignetteFlashDuration / 2).WithEase(Ease.OutCubic).WithOnComplete(
+            () => LMotion.Create(m_flashVignetteColor, m_originalVignetteColor, m_vignetteFlashDuration / 2).WithEase(Ease.OutCubic).Bind(c => m_vignette.color.Override(c))
+        ).Bind(c => m_vignette.color.Override(c));
 
-        LMotion.Create(m_originalMinVignetteIntensity, m_originalMinVignetteIntensity+m_vignetteFlashIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
-            ()=>LMotion.Create(m_originalMinVignetteIntensity+m_vignetteFlashIntensity, m_originalMinVignetteIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).Bind(i=>m_minVignetteIntensity=i)
-        ).Bind(i=>m_minVignetteIntensity=i);
+        LMotion.Create(m_originalMinVignetteIntensity, m_originalMinVignetteIntensity + m_vignetteFlashIntensity, m_vignetteFlashDuration / 2).WithEase(Ease.OutCubic).WithOnComplete(
+            () => LMotion.Create(m_originalMinVignetteIntensity + m_vignetteFlashIntensity, m_originalMinVignetteIntensity, m_vignetteFlashDuration / 2).WithEase(Ease.OutCubic).Bind(i => m_minVignetteIntensity = i)
+        ).Bind(i => m_minVignetteIntensity = i);
 
-        LMotion.Create(m_originalMaxVignetteIntensity, m_originalMaxVignetteIntensity+m_vignetteFlashIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).WithOnComplete(
-            ()=>LMotion.Create(m_originalMaxVignetteIntensity+m_vignetteFlashIntensity, m_originalMaxVignetteIntensity, m_vignetteFlashDuration/2).WithEase(Ease.OutCubic).Bind(i=>m_maxVignetteIntensity=i)
-        ).Bind(i=>m_maxVignetteIntensity=i);
+        LMotion.Create(m_originalMaxVignetteIntensity, m_originalMaxVignetteIntensity + m_vignetteFlashIntensity, m_vignetteFlashDuration / 2).WithEase(Ease.OutCubic).WithOnComplete(
+            () => LMotion.Create(m_originalMaxVignetteIntensity + m_vignetteFlashIntensity, m_originalMaxVignetteIntensity, m_vignetteFlashDuration / 2).WithEase(Ease.OutCubic).Bind(i => m_maxVignetteIntensity = i)
+        ).Bind(i => m_maxVignetteIntensity = i);
         //EndVignette
     }
 
-	private void Update() {
-        if(Game.IsLoading) return;
+    private void Update() {
+        if (Game.IsLoading) return;
         m_distanceToClosest = Game.MainGameInfo.Krampus.ChildSensor.Dist;
         float deltaDistance = Mathf.Clamp01((m_minDistance - m_distanceToClosest) / m_minDistance);
 
-        m_vignette.intensity.value = math.remap(0,1, m_minVignetteIntensity, m_maxVignetteIntensity, deltaDistance);
-        m_aberration.intensity.value = math.remap(0,1, m_minAberrationIntensity, m_maxAberrationIntensity, deltaDistance);
+        m_vignette.intensity.value = math.remap(0, 1, m_minVignetteIntensity, m_maxVignetteIntensity, deltaDistance);
+        m_aberration.intensity.value = math.remap(0, 1, m_minAberrationIntensity, m_maxAberrationIntensity, deltaDistance);
 
     }
 }

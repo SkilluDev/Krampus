@@ -3,7 +3,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using LitMotion;
 using LitMotion.Extensions;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using UnityEngine;
 
 public class MenuCredits : MonoBehaviour {

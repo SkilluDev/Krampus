@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Cinemachine;
 
 // Based on @WalkanFL's camera
@@ -17,15 +18,15 @@ public class CameraController : MonoBehaviour {
 	[SerializeField] private AnimationCurve m_zoomCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
 	[SerializeField] private Vector3 m_baseOffset = Vector3.one * 10;
-	[BoxGroup("Movement")][SerializeField] private float m_lookAheadStrength;
+	[Layout("Movement", ELayout.FoldoutBox)][SerializeField] private float m_lookAheadStrength;
 
-	[BoxGroup("Zoom")][SerializeField] private float m_zoomedOrtoSize = 20;
-	[BoxGroup("Zoom")][SerializeField] private float m_unzoomedOrtoSize = 25;
-	[BoxGroup("Camera Smoothing")][SerializeField] private float m_cameraSpeed = 0.125f;
-	[BoxGroup("Zoom")][SerializeField] private float m_zoomSpeed = 0.2f;
-	[BoxGroup("Zoom")][SerializeField] private float m_zoomBuffer = 0.75f;
-	[BoxGroup("Zoom")][SerializeField] private float m_unzoomSpeed = 1f;
-	[BoxGroup("Zoom")][SerializeField] private float m_aimZoomSpeed = 1f;
+	[Layout("Zoom", ELayout.FoldoutBox)][SerializeField] private float m_zoomedOrtoSize = 20;
+	[Layout("Zoom", ELayout.FoldoutBox)][SerializeField] private float m_unzoomedOrtoSize = 25;
+	[Layout("Camera Smoothing", ELayout.FoldoutBox)][SerializeField] private float m_cameraSpeed = 0.125f;
+	[Layout("Zoom", ELayout.FoldoutBox)][SerializeField] private float m_zoomSpeed = 0.2f;
+	[Layout("Zoom", ELayout.FoldoutBox)][SerializeField] private float m_zoomBuffer = 0.75f;
+	[Layout("Zoom", ELayout.FoldoutBox)][SerializeField] private float m_unzoomSpeed = 1f;
+	[Layout("Zoom", ELayout.FoldoutBox)][SerializeField] private float m_aimZoomSpeed = 1f;
 	private float m_zoomFactor = 1;
 	[SerializeField] private float m_ortoChangeSpeed = 1f;
 
@@ -47,7 +48,7 @@ public class CameraController : MonoBehaviour {
 		m_unzoomToZoomStartRatio = m_unzoomedOrtoSize / m_zoomedOrtoSize;
 		//Debug.Log("ratio" + m_unzoomToZoomStartRatio);
 
-		
+
 	}
 
 	private void OnDestroy() {
@@ -90,10 +91,10 @@ public class CameraController : MonoBehaviour {
 	private void ChangeOrto(Krampus krampus, float diff) {
 		if (diff >= 0) {
 			m_ortoZoomBaseToAdd += diff;
-			m_ortoUnzoomBaseToAdd += diff*m_unzoomToZoomStartRatio;
+			m_ortoUnzoomBaseToAdd += diff * m_unzoomToZoomStartRatio;
 		} else {
 			m_ortoZoomBaseToSubstract -= diff;
-			m_ortoUnzoomBaseToSubstract -= diff*m_unzoomToZoomStartRatio;
+			m_ortoUnzoomBaseToSubstract -= diff * m_unzoomToZoomStartRatio;
 		}
 	}
 

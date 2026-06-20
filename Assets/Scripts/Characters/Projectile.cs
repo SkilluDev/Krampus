@@ -1,5 +1,6 @@
 using KrampUtils;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Sound;
 using UnityEngine;
 
@@ -11,24 +12,24 @@ public class Projectile : MonoBehaviour {
     [SerializeField] protected LayerMask m_destroyedBy;
     [SerializeField] protected Tag[] m_targetGroups;
 
-    [BoxGroup("Components")][SerializeField] protected Rigidbody m_rigidbody;
-    [BoxGroup("Components")][SerializeField] protected AudioSource m_audioSource;
-    [BoxGroup("Components")][SerializeField] protected Animator m_animator;
-    [BoxGroup("Sounds")][SerializeField] protected Sex m_sexShoot;
-    [BoxGroup("Sounds")][SerializeField] protected Sex m_sexHit;
-    [BoxGroup("Sounds")][SerializeField] protected Sex m_sexMiss;
-    [BoxGroup("Effects")][SerializeField] protected GameObject m_fxShoot;
-    [BoxGroup("Effects")][SerializeField] protected GameObject m_fxHit;
-    [BoxGroup("Effects")][SerializeField] protected GameObject m_fxMiss;
-    [BoxGroup("Auto Destroy")][SerializeField] protected bool m_dieOnMiss;
-    [BoxGroup("Auto Destroy")][EnableIf("m_dieOnMiss")][SerializeField] protected float m_timeMiss;
-    [BoxGroup("Auto Destroy")][SerializeField] protected bool m_dieOnHit;
-    [BoxGroup("Auto Destroy")][EnableIf("m_dieOnHit")][SerializeField] protected float m_timeHit;
+    [Layout("Components", ELayout.FoldoutBox)][SerializeField] protected Rigidbody m_rigidbody;
+    [Layout("Components", ELayout.FoldoutBox)][SerializeField] protected AudioSource m_audioSource;
+    [Layout("Components", ELayout.FoldoutBox)][SerializeField] protected Animator m_animator;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] protected Sex m_sexShoot;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] protected Sex m_sexHit;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] protected Sex m_sexMiss;
+    [Layout("Effects", ELayout.FoldoutBox)][SerializeField] protected GameObject m_fxShoot;
+    [Layout("Effects", ELayout.FoldoutBox)][SerializeField] protected GameObject m_fxHit;
+    [Layout("Effects", ELayout.FoldoutBox)][SerializeField] protected GameObject m_fxMiss;
+    [Layout("Auto Destroy", ELayout.FoldoutBox)][SerializeField] protected bool m_dieOnMiss;
+    [Layout("Auto Destroy")][EnableIf("m_dieOnMiss", ELayout.FoldoutBox)][SerializeField] protected float m_timeMiss;
+    [Layout("Auto Destroy", ELayout.FoldoutBox)][SerializeField] protected bool m_dieOnHit;
+    [Layout("Auto Destroy")][EnableIf("m_dieOnHit", ELayout.FoldoutBox)][SerializeField] protected float m_timeHit;
 
 
-    [ShowIf("HasAnimator")][BoxGroup("Animations")][SerializeField][AnimatorParam("m_animator")] protected int m_animShoot;
-    [ShowIf("HasAnimator")][BoxGroup("Animations")][SerializeField][AnimatorParam("m_animator")] protected int m_animHit;
-    [ShowIf("HasAnimator")][BoxGroup("Animations")][SerializeField][AnimatorParam("m_animator")] protected int m_animMiss;
+    [ShowIf("HasAnimator")][Layout("Animations", ELayout.FoldoutBox)][SerializeField][AnimatorParam("m_animator")] protected int m_animShoot;
+    [ShowIf("HasAnimator")][Layout("Animations", ELayout.FoldoutBox)][SerializeField][AnimatorParam("m_animator")] protected int m_animHit;
+    [ShowIf("HasAnimator")][Layout("Animations", ELayout.FoldoutBox)][SerializeField][AnimatorParam("m_animator")] protected int m_animMiss;
 
     protected bool HasAnimator => m_animator != null;
     protected bool HasAudioSource => m_audioSource != null;

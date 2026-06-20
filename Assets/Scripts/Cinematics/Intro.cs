@@ -1,5 +1,6 @@
-	using Cinemachine;
-using NaughtyAttributes;
+using Cinemachine;
+using SaintsField;
+using SaintsField.Playa;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -13,7 +14,7 @@ public class Intro : MonoBehaviour {
         Game.MainGameInfo.Krampus.Kamera.Rendering.GetComponent<CinemachineBrain>().ActiveBlend = null;
         Game.MainGameInfo.Krampus.Kontroller.MoveTo(m_spawnPoint.position);
         Game.MainGameInfo.Krampus.Animator.SetTargetView(m_spawnPoint.forward);
-//
+        //
         m_director.Play();
     }
 
@@ -25,13 +26,13 @@ public class Intro : MonoBehaviour {
         }
 
         if (!Game.IsLoading && InputSubscribe.Raw.UI.QuitTutorial.WasPerformedThisFrame()) {
-	        if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Intro) {
-		        Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
-		        Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
-		        Game.MainGameInfo.UI.HideBlackBars();
-	        }
+            if (Game.MainGameInfo.CurrentState == MainGameInfo.State.Intro) {
+                Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
+                Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
+                Game.MainGameInfo.UI.HideBlackBars();
+            }
 
-	        m_director.Stop();
+            m_director.Stop();
 
             m_spawnPoint.gameObject.SetActive(false);
             m_vcam.enabled = false;
@@ -39,9 +40,9 @@ public class Intro : MonoBehaviour {
     }
 
     public void SetSecondPartOfIntro() {
-	    Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
-	    Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
-	    Game.MainGameInfo.UI.HideBlackBars();
+        Game.MainGameInfo.SetState(MainGameInfo.State.WaitingToStart);
+        Game.MainGameInfo.Krampus.Animator.SetEnableModel(true);
+        Game.MainGameInfo.UI.HideBlackBars();
 
 
 

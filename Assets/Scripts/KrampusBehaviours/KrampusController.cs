@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using KrampUtils;
 using LitMotion;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -10,7 +11,7 @@ using UnityEngine.VFX;
 using static KrampusStats;
 
 public class KrampusController : KrampusBehaviour {
-	[ShowNativeProperty] public State CurrentState { get; private set; }
+	[ShowInInspector] public State CurrentState { get; private set; }
 	public Vector3 VelocityVector => m_rigidbody.linearVelocity;
 	public float RunSpeed => Kramp.Stats.GetFinalStat(Stat.Speed);
 	public float Velocity => VelocityVector.magnitude;
@@ -21,19 +22,19 @@ public class KrampusController : KrampusBehaviour {
 	public UnityAction<KrampusController.State, KrampusController.State, KrampusController.StateChangeReason> onStateChanged;
 
 	[SerializeField] private Rigidbody m_rigidbody;
-	[BoxGroup("Speed Control")][SerializeField] private float m_weightedRunMultiplier = 0.8f;
-	[BoxGroup("Speed Control")][SerializeField] private float m_sneakSpeed = 5f;
-	[BoxGroup("Movement Assist")][SerializeField] private int m_assistValue = 45;
-	[BoxGroup("Movement Assist")][SerializeField] private int m_assistCheckLength = 1;
-	[BoxGroup("Movement Assist")][SerializeField] private LayerMask m_avoidableObjects;
-	[BoxGroup("Acceleration")][SerializeField] private float m_accelerationTime = 0.2f;
-	[BoxGroup("Acceleration")][SerializeField] private AnimationCurve m_accelerationCurve = AnimationCurve.Linear(0, 0, 1, 1);
-	[BoxGroup("Acceleration")][SerializeField] private float m_movementThreshold = 0.5f;
-	[BoxGroup("Acceleration")][SerializeField][FormerlySerializedAs("m_veloIdleThreshhold")] private float m_veloIdleThreshold = 120f;
-	[BoxGroup("Acceleration")][SerializeField] private float m_timeIdleThreshold = 0.2f;
-	[BoxGroup("Acceleration")][SerializeField] private float m_deltaIdleThreshold = 100f;
-	[BoxGroup("Acceleration")][SerializeField] private float m_startRunSpeed = 2f;
-	[BoxGroup("Intro")][SerializeField] private float m_getUpDuration = 1f;
+	[Layout("Speed Control", ELayout.FoldoutBox)][SerializeField] private float m_weightedRunMultiplier = 0.8f;
+	[Layout("Speed Control", ELayout.FoldoutBox)][SerializeField] private float m_sneakSpeed = 5f;
+	[Layout("Movement Assist", ELayout.FoldoutBox)][SerializeField] private int m_assistValue = 45;
+	[Layout("Movement Assist", ELayout.FoldoutBox)][SerializeField] private int m_assistCheckLength = 1;
+	[Layout("Movement Assist", ELayout.FoldoutBox)][SerializeField] private LayerMask m_avoidableObjects;
+	[Layout("Acceleration", ELayout.FoldoutBox)][SerializeField] private float m_accelerationTime = 0.2f;
+	[Layout("Acceleration", ELayout.FoldoutBox)][SerializeField] private AnimationCurve m_accelerationCurve = AnimationCurve.Linear(0, 0, 1, 1);
+	[Layout("Acceleration", ELayout.FoldoutBox)][SerializeField] private float m_movementThreshold = 0.5f;
+	[Layout("Acceleration", ELayout.FoldoutBox)][SerializeField][FormerlySerializedAs("m_veloIdleThreshhold")] private float m_veloIdleThreshold = 120f;
+	[Layout("Acceleration", ELayout.FoldoutBox)][SerializeField] private float m_timeIdleThreshold = 0.2f;
+	[Layout("Acceleration", ELayout.FoldoutBox)][SerializeField] private float m_deltaIdleThreshold = 100f;
+	[Layout("Acceleration", ELayout.FoldoutBox)][SerializeField] private float m_startRunSpeed = 2f;
+	[Layout("Intro", ELayout.FoldoutBox)][SerializeField] private float m_getUpDuration = 1f;
 
 
 	//Dashing
@@ -42,15 +43,15 @@ public class KrampusController : KrampusBehaviour {
 	private float m_timeHoldingInput = 0f;
 	private float m_previousFrameVelocity = 0f;
 	private float m_dashTime;
-	[BoxGroup("Dash")][SerializeField] private float m_dashSpeedMultiplier = 4f;
-	[BoxGroup("Dash")][SerializeField] private float m_dashCurveEvalSpeed;
+	[Layout("Dash", ELayout.FoldoutBox)][SerializeField] private float m_dashSpeedMultiplier = 4f;
+	[Layout("Dash", ELayout.FoldoutBox)][SerializeField] private float m_dashCurveEvalSpeed;
 
-	[BoxGroup("Dash")][SerializeField] private AnimationCurve m_dashCurve = AnimationCurve.Linear(0, 0, 1, 1);
+	[Layout("Dash", ELayout.FoldoutBox)][SerializeField] private AnimationCurve m_dashCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
 	private bool m_canDash = false;
 
 	public bool CanDash => m_canDash;
-	[BoxGroup("Dash")][SerializeField] private float m_windUpDashCost;
+	[Layout("Dash", ELayout.FoldoutBox)][SerializeField] private float m_windUpDashCost;
 	public float WindUpDashCost => m_windUpDashCost;
 	private IInteractable m_dashTarget;
 
@@ -61,7 +62,7 @@ public class KrampusController : KrampusBehaviour {
 
 
 
-	[BoxGroup("Lock In")][SerializeField] private float m_lockInThreshold;
+	[Layout("Lock In", ELayout.FoldoutBox)][SerializeField] private float m_lockInThreshold;
 	public float LockInThreshold => m_lockInThreshold;
 
 

@@ -1,5 +1,6 @@
 using LitMotion;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Sound;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -14,20 +15,20 @@ public class KrampusAnimator : KrampusBehaviour {
 
     [SerializeField] private VisualEffect m_runningEffect;
 
-    [BoxGroup("Sounds")][SerializeField] private Sex m_catchSoundBite;
-    [BoxGroup("Sounds")][SerializeField] private Sex m_tongueSoundBite;
-    [BoxGroup("Sounds")][SerializeField] private Sex m_windupSoundBite;
-    [BoxGroup("Sounds")][SerializeField] private Sex m_crackSoundBite;
-    [BoxGroup("Sounds")][SerializeField] private Sex m_deathSoundBite;
-    [BoxGroup("Sounds")][SerializeField] private Sex m_dashSound;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_catchSoundBite;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_tongueSoundBite;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_windupSoundBite;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_crackSoundBite;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_deathSoundBite;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_dashSound;
 
 
     [SerializeField][AnimatorParam(nameof(m_animator))] private int m_speedProperty, m_stopProperty, m_tongueOutProperty, m_tongueReadyProperty, m_tongueShouldEatProperty, m_deathProperty, m_wakeupProperty, m_shootProperty;
 
-    [BoxGroup("Lock in")][SerializeField] private GameObject m_lockInMarker;
-    [BoxGroup("Lock in")][SerializeField] private SpriteRenderer m_lockInCircle;
-    [BoxGroup("Sounds")][SerializeField] private Color m_unreadylockInCircleColor = new Color(255f, 0f, 0f, 0.5f);
-    [BoxGroup("Sounds")][SerializeField] private Color m_readylockInCircleColor = new Color(73f, 255f, 0f, 0.9f);
+    [Layout("Lock in", ELayout.FoldoutBox)][SerializeField] private GameObject m_lockInMarker;
+    [Layout("Lock in", ELayout.FoldoutBox)][SerializeField] private SpriteRenderer m_lockInCircle;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Color m_unreadylockInCircleColor = new Color(255f, 0f, 0f, 0.5f);
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Color m_readylockInCircleColor = new Color(73f, 255f, 0f, 0.9f);
     private bool m_inLockInAnimation = false;
     private MotionHandle m_lockInAnimation;
     private MotionHandle m_lockInAnimation_2;
@@ -175,7 +176,7 @@ public class KrampusAnimator : KrampusBehaviour {
 
     public void SetEnableModel(bool b) {
         m_modelTransform.gameObject.SetActive(b);
-		Kramp.Tongue.SetTongueLineRenderer(b);
+        Kramp.Tongue.SetTongueLineRenderer(b);
         m_lockInMarker.SetActive(b);
     }
 

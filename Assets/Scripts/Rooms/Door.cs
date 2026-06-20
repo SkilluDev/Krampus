@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Sound;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -10,18 +11,18 @@ public class Door : Passage, IInteractable {
 
 	private bool IsClosingSwiftly => m_animator.GetBool("IsClosingSwiftly");
 
-	[BoxGroup("Animator")][SerializeField] private Animator m_animator;
-	[BoxGroup("Collider")][SerializeField] private Collider m_blocking;
-	[BoxGroup("Sound")][SerializeField] private Sex m_doorClose;
-	[BoxGroup("Sound")][SerializeField] private Sex m_doorOpen;
+	[Layout("Animator", ELayout.FoldoutBox)][SerializeField] private Animator m_animator;
+	[Layout("Collider", ELayout.FoldoutBox)][SerializeField] private Collider m_blocking;
+	[Layout("Sound", ELayout.FoldoutBox)][SerializeField] private Sex m_doorClose;
+	[Layout("Sound", ELayout.FoldoutBox)][SerializeField] private Sex m_doorOpen;
 	[SerializeField] private float m_fastOpenObjectVelocity = 6f;
 	[SerializeField] private float m_noiseDistance = 15f;
 	[SerializeField][AnimatorParam(nameof(m_animator))] private int m_openProperty, m_openSuddenProperty, m_invertProperty;
 	[SerializeField] private Transform m_flap1, m_flap2;
-	[BoxGroup("Stun")][SerializeField] private float m_stunDuration;
-	[BoxGroup("Stun")][SerializeField] private float m_stunLinger = 0.3f;
-	[BoxGroup("Box")][SerializeField] private float m_boxSpeedDamp = 2f;
-	[BoxGroup("VFX")][SerializeField] private VisualEffect m_doorBurst;
+	[Layout("Stun", ELayout.FoldoutBox)][SerializeField] private float m_stunDuration;
+	[Layout("Stun", ELayout.FoldoutBox)][SerializeField] private float m_stunLinger = 0.3f;
+	[Layout("Box", ELayout.FoldoutBox)][SerializeField] private float m_boxSpeedDamp = 2f;
+	[Layout("VFX", ELayout.FoldoutBox)][SerializeField] private VisualEffect m_doorBurst;
 
 	private List<ICharacter> m_charactersInDoor = new List<ICharacter>();
 	public IInteractor.Type InteractorMask => IInteractor.Type.Player;
@@ -35,7 +36,7 @@ public class Door : Passage, IInteractable {
 
 	public Vector3 InteractionPoint => m_hitRight ? m_flap1.position : m_flap2.position;
 
-	[BoxGroup("Priority")][SerializeField] private static int m_basePriority = 2;
+	[Layout("Priority", ELayout.FoldoutBox)][SerializeField] private static int m_basePriority = 2;
 	public int Priority => m_charactersInDoor.Any(w => w is Nun) ? 20 : m_basePriority;
 
 	private void Start() {

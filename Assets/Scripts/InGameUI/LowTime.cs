@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using UnityEngine;
 using UnityEngine.VFX.Utility;
 
 public class LowTime : MonoBehaviour {
 
-    [BoxGroup("Sprite")][SerializeField] private RectTransform m_topKramp;
-    [BoxGroup("Sprite")][SerializeField] private RectTransform m_bottomKramp;
-    [BoxGroup("Time")][SerializeField] private float m_lowTime;
-    [BoxGroup("Time")][SerializeField] private float m_jawSpeed;
-    [BoxGroup("Time")][SerializeField] private float m_upwardMultiplier;
+    [Layout("Sprite", ELayout.FoldoutBox)][SerializeField] private RectTransform m_topKramp;
+    [Layout("Sprite", ELayout.FoldoutBox)][SerializeField] private RectTransform m_bottomKramp;
+    [Layout("Time", ELayout.FoldoutBox)][SerializeField] private float m_lowTime;
+    [Layout("Time", ELayout.FoldoutBox)][SerializeField] private float m_jawSpeed;
+    [Layout("Time", ELayout.FoldoutBox)][SerializeField] private float m_upwardMultiplier;
     private Vector2 m_jawMovementMultiplier;
     private Vector2 m_initialJawHeights;
     private Vector2 m_initialTopVector;
@@ -18,30 +19,30 @@ public class LowTime : MonoBehaviour {
     private Vector2 m_wantedTopPos;
     private Vector2 m_wantedBottomPos;
 
-	private void Awake() {
-		m_initialTopVector = m_topKramp.anchoredPosition;
-		m_initialBottomVector = m_bottomKramp.anchoredPosition;
-		m_initialJawHeights = new Vector2(m_initialTopVector.y, m_initialBottomVector.y);
-		m_jawMovementMultiplier = new Vector2(m_initialJawHeights.x / m_lowTime, m_initialJawHeights.y / m_lowTime);
-		m_wantedTopPos = m_initialTopVector;
-		m_wantedBottomPos = m_initialBottomVector;
+    private void Awake() {
+        m_initialTopVector = m_topKramp.anchoredPosition;
+        m_initialBottomVector = m_bottomKramp.anchoredPosition;
+        m_initialJawHeights = new Vector2(m_initialTopVector.y, m_initialBottomVector.y);
+        m_jawMovementMultiplier = new Vector2(m_initialJawHeights.x / m_lowTime, m_initialJawHeights.y / m_lowTime);
+        m_wantedTopPos = m_initialTopVector;
+        m_wantedBottomPos = m_initialBottomVector;
     }
     private void Update() {
         if (Game.Balling) {
-        	float currentTime = Game.MainGameInfo.Timer.GameTime;
+            float currentTime = Game.MainGameInfo.Timer.GameTime;
             if (currentTime > m_lowTime) {
-				m_wantedTopPos = m_initialTopVector;
-				m_wantedBottomPos = m_initialBottomVector;
-			} else {
-				m_wantedTopPos = new Vector2(m_initialTopVector.x, currentTime * m_jawMovementMultiplier.x);
-				m_wantedBottomPos = new Vector2(m_initialBottomVector.x, currentTime * m_jawMovementMultiplier.y);
-			}
+                m_wantedTopPos = m_initialTopVector;
+                m_wantedBottomPos = m_initialBottomVector;
+            } else {
+                m_wantedTopPos = new Vector2(m_initialTopVector.x, currentTime * m_jawMovementMultiplier.x);
+                m_wantedBottomPos = new Vector2(m_initialBottomVector.x, currentTime * m_jawMovementMultiplier.y);
+            }
         }
     }
     private void FixedUpdate() {
         if (Game.Balling) {
             if (m_topKramp.anchoredPosition != m_wantedTopPos || m_bottomKramp.anchoredPosition != m_wantedBottomPos) {
-				Debug.Log($"Top Position: {m_topKramp.anchoredPosition}, Wanted Top Position: {m_wantedTopPos}");
+                Debug.Log($"Top Position: {m_topKramp.anchoredPosition}, Wanted Top Position: {m_wantedTopPos}");
                 float desiredSpeed = m_jawSpeed * (m_wantedTopPos.y < m_initialTopVector.y ? 1 : m_upwardMultiplier);
                 m_topKramp.anchoredPosition = Vector2.Lerp(m_topKramp.anchoredPosition, m_wantedTopPos, desiredSpeed);
                 m_bottomKramp.anchoredPosition = Vector2.Lerp(m_bottomKramp.anchoredPosition, m_wantedBottomPos, desiredSpeed);

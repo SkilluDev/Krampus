@@ -1,9 +1,10 @@
 using System.Linq;
 using UnityEngine;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 
 public class KrampusChildSensor : KrampusBehaviour {
-	[ShowNativeProperty] public float Dist { get; set; } = float.MaxValue;
+	[ShowInInspector] public float Dist { get; set; } = float.MaxValue;
 	private Child m_closestChild;
 
 	public Child ClosestChild => m_closestChild;

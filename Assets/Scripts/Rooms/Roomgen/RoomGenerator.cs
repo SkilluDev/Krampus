@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KrampUtils;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.AI;
@@ -22,12 +23,12 @@ public class RoomGenerator : RoomGeneratorBase {
 	[SerializeField] private List<Room> m_placedRooms;
 	//[SerializeField] private int m_minSpacesOnMap;
 
-	/* [BoxGroup("EntityGen")][SerializeField] private int m_maxChildrenPerRoom;
-	[BoxGroup("EntityGen")][SerializeField] private int m_minChildrenPerRoom;
-	[BoxGroup("EntityGen")][SerializeField] private int m_maxNuns;
-	[BoxGroup("EntityGen")][SerializeField] private int m_minNuns; */
-	[BoxGroup("Tags")][SerializeField] private Tag m_kidProof;
-	[BoxGroup("Tags")][SerializeField] private Tag m_nunProof;
+	/* [Layout("EntityGen", ELayout.FoldoutBox)][SerializeField] private int m_maxChildrenPerRoom;
+	[Layout("EntityGen", ELayout.FoldoutBox)][SerializeField] private int m_minChildrenPerRoom;
+	[Layout("EntityGen", ELayout.FoldoutBox)][SerializeField] private int m_maxNuns;
+	[Layout("EntityGen", ELayout.FoldoutBox)][SerializeField] private int m_minNuns; */
+	[Layout("Tags", ELayout.FoldoutBox)][SerializeField] private Tag m_kidProof;
+	[Layout("Tags", ELayout.FoldoutBox)][SerializeField] private Tag m_nunProof;
 
 	private LevelStats m_currentLevelStats;
 
@@ -308,7 +309,7 @@ public class RoomGenerator : RoomGeneratorBase {
 		int filledSpaces = 0;
 		bool foundSpawn = false;
 		int regenCounter = 1;
-		while (filledSpaces <= (m_width+m_length) || !foundSpawn) {
+		while (filledSpaces <= (m_width + m_length) || !foundSpawn) {
 			Status = "Creating layout attempt" + regenCounter;
 			Init();
 			CreateGrid();

@@ -1,10 +1,11 @@
-    using System;
+using System;
 using System.Collections;
 using System.Linq;
 using System.Net.Mime;
 using LitMotion;
 using LitMotion.Extensions;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Roomgen;
 using TMPro;
 using Unity.Mathematics;
@@ -22,8 +23,8 @@ public class NewUIManager : MonoBehaviour {
 
 
 
-	[BoxGroup("Inventory")][SerializeField] private RectTransform m_inventoryContainer;
-	[BoxGroup("Inventory")][SerializeField] private InventoryCard m_inventoryCardPref;
+	[Layout("Inventory", ELayout.FoldoutBox)][SerializeField] private RectTransform m_inventoryContainer;
+	[Layout("Inventory", ELayout.FoldoutBox)][SerializeField] private InventoryCard m_inventoryCardPref;
 
 	[SerializeField] private Transform m_timer;
 	[SerializeField] private NumericDisplay m_timerDisplay;
@@ -60,29 +61,29 @@ public class NewUIManager : MonoBehaviour {
 	private bool m_uiOn = false;
 
 
-	[BoxGroup("Wind-up")][SerializeField] private Image m_windUpFiller;
-	[BoxGroup("Wind-up")][SerializeField] private RectTransform m_windUpCostBar;
-	[BoxGroup("Wind-up")][SerializeField] private Vector2 m_markerRotatorEndPoints;
+	[Layout("Wind-up", ELayout.FoldoutBox)][SerializeField] private Image m_windUpFiller;
+	[Layout("Wind-up", ELayout.FoldoutBox)][SerializeField] private RectTransform m_windUpCostBar;
+	[Layout("Wind-up", ELayout.FoldoutBox)][SerializeField] private Vector2 m_markerRotatorEndPoints;
 
-	[BoxGroup("Tutorial")][SerializeField] private TutorialHandler m_tutorial;
+	[Layout("Tutorial", ELayout.FoldoutBox)][SerializeField] private TutorialHandler m_tutorial;
 
-	[BoxGroup("End Screen")][SerializeField] private EndScreenHandler m_endScreenHandler;
-
-
-	[BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockLeft;
-	[BoxGroup("UI Blocks")][SerializeField] private RectTransform m_uiBlockRight;
-	[ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarTutorialKeys;
-	[ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarLoseKeys;
-	[ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_bottomBarWinKeys;
-
-	[ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topSideBarWinText;
-	[ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topTimerBarText;
-	[ResizableTextArea][BoxGroup("Prompts")][SerializeField] private string m_topSideBarLoseText;
+	[Layout("End Screen", ELayout.FoldoutBox)][SerializeField] private EndScreenHandler m_endScreenHandler;
 
 
+	[Layout("UI Blocks", ELayout.FoldoutBox)][SerializeField] private RectTransform m_uiBlockLeft;
+	[Layout("UI Blocks", ELayout.FoldoutBox)][SerializeField] private RectTransform m_uiBlockRight;
+	[ResizableTextArea][Layout("Prompts", ELayout.FoldoutBox)][SerializeField] private string m_bottomBarTutorialKeys;
+	[ResizableTextArea][Layout("Prompts", ELayout.FoldoutBox)][SerializeField] private string m_bottomBarLoseKeys;
+	[ResizableTextArea][Layout("Prompts", ELayout.FoldoutBox)][SerializeField] private string m_bottomBarWinKeys;
+
+	[ResizableTextArea][Layout("Prompts", ELayout.FoldoutBox)][SerializeField] private string m_topSideBarWinText;
+	[ResizableTextArea][Layout("Prompts", ELayout.FoldoutBox)][SerializeField] private string m_topTimerBarText;
+	[ResizableTextArea][Layout("Prompts", ELayout.FoldoutBox)][SerializeField] private string m_topSideBarLoseText;
 
 
-	[BoxGroup("Effect Bar")][SerializeField] private EffectBar m_effectBar;
+
+
+	[Layout("Effect Bar", ELayout.FoldoutBox)][SerializeField] private EffectBar m_effectBar;
 	public EffectBar EffectBar => m_effectBar;
 
 
@@ -306,7 +307,7 @@ public class NewUIManager : MonoBehaviour {
 
 	public void SameSeed() {
 		Game.PogMan.LoadFirstLevel(false);
-	 }
+	}
 
 
 }

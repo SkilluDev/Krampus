@@ -1,12 +1,13 @@
 using LitMotion;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using UnityEngine;
 
 public class Timer : MonoBehaviour {
-	[BoxGroup("Timer")][SerializeField] private int m_timeBonus;
-	[BoxGroup("Timer")][SerializeField] private int m_timePenalty;
+	[Layout("Timer", ELayout.FoldoutBox)][SerializeField] private int m_timeBonus;
+	[Layout("Timer", ELayout.FoldoutBox)][SerializeField] private int m_timePenalty;
 
-	[ShowNativeProperty] public float GameTime { get; private set; } = 60f;
+	[ShowInInspector] public float GameTime { get; private set; } = 60f;
 	[SerializeField] private float m_changeDuration;
 	[SerializeField] private float m_lowTime = 10;
 
@@ -55,5 +56,5 @@ public class Timer : MonoBehaviour {
 
 	public void SetGameTime(float timer) {
 		GameTime = timer;
-	 }
+	}
 }

@@ -5,7 +5,8 @@ using System.Linq;
 using System.Threading;
 using LitMotion;
 using LitMotion.Extensions;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -32,10 +33,10 @@ public class EndScreenHandler : MonoBehaviour {
 	[SerializeField] private ChildMeter m_childMeter;
 
 
-	[BoxGroup("Ending playables")][SerializeField] private PlayableDirector m_wonDirector, m_lostDirector;
-	[BoxGroup("Ending texts")][SerializeField] private string m_winText;
-	[BoxGroup("Ending texts")][SerializeField] private string m_loseNunText;
-	[BoxGroup("Ending texts")][SerializeField] private string m_loseTimeText;
+	[Layout("Ending playables", ELayout.FoldoutBox)][SerializeField] private PlayableDirector m_wonDirector, m_lostDirector;
+	[Layout("Ending texts", ELayout.FoldoutBox)][SerializeField] private string m_winText;
+	[Layout("Ending texts", ELayout.FoldoutBox)][SerializeField] private string m_loseNunText;
+	[Layout("Ending texts", ELayout.FoldoutBox)][SerializeField] private string m_loseTimeText;
 
 	public void PreActivate(Ending ending) {
 		switch (ending) {

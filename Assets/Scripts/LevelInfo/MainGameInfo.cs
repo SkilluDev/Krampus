@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using KrampUtils;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Roomgen;
 using Sound;
 using UnityEngine;
@@ -16,7 +17,7 @@ using Random = UnityEngine.Random;
 /// De-facto game controller for the main gaame scene
 /// </summary>
 public class MainGameInfo : LevelInfo {
-	[ShowNativeProperty] public State CurrentState { get; private set; }
+	[ShowInInspector] public State CurrentState { get; private set; }
 	public RoomGeneratorBase RoomGenerator => m_roomGenerator;
 	[SerializeField] private RoomGeneratorBase m_roomGenerator;
 
@@ -34,12 +35,12 @@ public class MainGameInfo : LevelInfo {
 	[SerializeField] private Krampus m_krampus;
 
 	public float WindUpGainFromChildren => m_windUpGainFromChildren;
-	[BoxGroup("Wind-up")][SerializeField] private float m_windUpGainFromChildren;
+	[Layout("Wind-up", ELayout.FoldoutBox)][SerializeField] private float m_windUpGainFromChildren;
 	public float MaxWindUpPoints => m_maxWindUpPoints;
-	[BoxGroup("Wind-up")][SerializeField] private float m_maxWindUpPoints = 100.0f;
+	[Layout("Wind-up", ELayout.FoldoutBox)][SerializeField] private float m_maxWindUpPoints = 100.0f;
 
 
-	[BoxGroup("Item Pool")][SerializeField] private ItemPool m_itemPool;
+	[Layout("Item Pool", ELayout.FoldoutBox)][SerializeField] private ItemPool m_itemPool;
 	public ItemPool ItemPool => m_itemPool;
 
 
@@ -107,13 +108,13 @@ public class MainGameInfo : LevelInfo {
 		CurrentState = state;
 		Game.GlobalEvents.onLevelStateChanged.Invoke(previous, CurrentState);
 	}
-	[NaughtyAttributes.Button("Press To Win")]
+	[Button("Press To Win")]
 	public void DebugWinButton() {
 		ProcessEndGame(Ending.Win);
 		//Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);
 	}
 
-	[NaughtyAttributes.Button("Press To Lose")]
+	[Button("Press To Lose")]
 	public void DebugLoseButton() {
 		ProcessEndGame(Ending.LoseNun);
 		//Krampus.Kramp.Kontroller.KrampTermination(Ending.Win);

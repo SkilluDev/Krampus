@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using KrampUtils;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.AI;
@@ -24,7 +25,7 @@ public class Nun : NPC {
     public UnityAction<Nun.State> onAttack;
     public UnityAction<Nun.State> onFire;
     [SerializeField] private float m_interactionDistance = 8;
-    [BoxGroup("Detection")][SerializeField] private float m_detectionRange = 4;
+    [Layout("Detection", ELayout.FoldoutBox)][SerializeField] private float m_detectionRange = 4;
     public State CurrentState { get; private set; }
 
 
@@ -48,31 +49,31 @@ public class Nun : NPC {
     private void Ready() {
         Game.MainGameInfo.RegisterNun(this);
 
-		SpeedChange();
+        SpeedChange();
 
-		Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
+        Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
 
         CreatePatrolPath();
         m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.transform;
         m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
     }
 
-	private void OnSetManChange(string key) {
-		if (key == "Nun Speed") {
-			SpeedChange();
-		}
-	}
+    private void OnSetManChange(string key) {
+        if (key == "Nun Speed") {
+            SpeedChange();
+        }
+    }
 
-	private void SpeedChange() {
-		m_runSpeed = (float)Game.SetMan.GetValue<long>("Nun Speed");
-	}
+    private void SpeedChange() {
+        m_runSpeed = (float)Game.SetMan.GetValue<long>("Nun Speed");
+    }
 
     public void SetModel() {
-		m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
-	}
+        m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
+    }
 
     private void Unready() {
-		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
+        Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);
         Game.MainGameInfo.UnregisterNun(this);
     }
 

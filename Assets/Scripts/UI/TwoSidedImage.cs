@@ -5,7 +5,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using LitMotion;
 using LitMotion.Extensions;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Sound;
 using Unity.Collections;
 using UnityEngine;
@@ -48,7 +49,7 @@ public class TwoSidedImage : MonoBehaviour {
 			m_handle.Cancel();
 		}
 		m_handle = LSequence.Create()
-		.Append(LMotion.Create(0, 0, m_delay!=0?m_delay:0.01f).WithOnComplete(() => FlipSound.sound.Play(transform.position, FlipSound.vol)).RunWithoutBinding())
+		.Append(LMotion.Create(0, 0, m_delay != 0 ? m_delay : 0.01f).WithOnComplete(() => FlipSound.sound.Play(transform.position, FlipSound.vol)).RunWithoutBinding())
 		.Append(LMotion.Create(m_image.transform.localRotation, m_image.transform.localRotation * Quaternion.Euler(new Vector3(0f, 90f, 0f)), m_flipDuration / 2).WithEase(Ease.InCubic).WithImmediateBind(false).WithOnComplete(SwitchSprites).BindToRotation(m_image.transform))
 		.Join(LMotion.Create(m_image.transform.localScale, m_image.transform.localScale * m_scaleBounceFactor, m_flipDuration / 2).WithEase(Ease.OutCubic).WithImmediateBind(false).Bind(x => m_image.transform.localScale = x))
 		.Append(LMotion.Create(m_image.transform.localRotation * Quaternion.Euler(new Vector3(0f, 90f, 0f)), m_image.transform.localRotation * Quaternion.Euler(new Vector3(0f, 180f, 0f)), m_flipDuration / 2).WithEase(Ease.OutCubic).WithImmediateBind(false).BindToRotation(m_image.transform))

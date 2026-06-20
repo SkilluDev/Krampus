@@ -5,7 +5,8 @@ using System.Runtime.Serialization.Formatters;
 using KrampUtils;
 using LitMotion;
 using LitMotion.Extensions;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Sound;
 using TMPro;
 using UnityEngine;
@@ -26,28 +27,28 @@ public class BlackBars : MonoBehaviour {
 
 
 	[Header("======[Map]=====")]
-	[BoxGroup("Map")][SerializeField] private RectTransform m_mapContainer;
-	[BoxGroup("Map")][SerializeField] private TwoSidedImage m_mapButtonPref;
+	[Layout("Map", ELayout.FoldoutBox)][SerializeField] private RectTransform m_mapContainer;
+	[Layout("Map", ELayout.FoldoutBox)][SerializeField] private TwoSidedImage m_mapButtonPref;
 
-	[BoxGroup("Map")][SerializeField] private Sprite m_doneLevelSprite;
-	[BoxGroup("Map")][SerializeField] private Sprite m_currentLevelSprite;
-	[BoxGroup("Map")][SerializeField] private Sprite m_futureLevelSprite;
-	[BoxGroup("Map")][SerializeField] private Sprite m_failedLevelSprite;
+	[Layout("Map", ELayout.FoldoutBox)][SerializeField] private Sprite m_doneLevelSprite;
+	[Layout("Map", ELayout.FoldoutBox)][SerializeField] private Sprite m_currentLevelSprite;
+	[Layout("Map", ELayout.FoldoutBox)][SerializeField] private Sprite m_futureLevelSprite;
+	[Layout("Map", ELayout.FoldoutBox)][SerializeField] private Sprite m_failedLevelSprite;
 
 
 	//============================================================================
 
-	[BoxGroup("Animation")][SerializeField] private RectTransform m_resultContainer;
-	[BoxGroup("Animation")][SerializeField] private Vector3 m_popScale;
+	[Layout("Animation", ELayout.FoldoutBox)][SerializeField] private RectTransform m_resultContainer;
+	[Layout("Animation", ELayout.FoldoutBox)][SerializeField] private Vector3 m_popScale;
 
-	[BoxGroup("Animation")][SerializeField] private float m_popTimer;
-	[BoxGroup("Animation")][SerializeField] private float m_shakeIntensity;
-	[BoxGroup("Animation")][SerializeField] private float m_shakeDuration;
+	[Layout("Animation", ELayout.FoldoutBox)][SerializeField] private float m_popTimer;
+	[Layout("Animation", ELayout.FoldoutBox)][SerializeField] private float m_shakeIntensity;
+	[Layout("Animation", ELayout.FoldoutBox)][SerializeField] private float m_shakeDuration;
 	private float m_yDistanceTop, m_yDistanceBottom;
-	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexBeatenFlip;
-	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexWonFlip;
-	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexLostFlip;
-	[BoxGroup("Map Sounds")][SerializeField] private Sex m_sexFutureFlip;
+	[Layout("Map Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_sexBeatenFlip;
+	[Layout("Map Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_sexWonFlip;
+	[Layout("Map Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_sexLostFlip;
+	[Layout("Map Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_sexFutureFlip;
 
 	private void Awake() {
 		m_yDistanceTop = m_top.sizeDelta.y;

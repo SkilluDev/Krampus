@@ -1,7 +1,7 @@
 using System.Linq;
 using KrampUtils;
 
-using NaughtyAttributes;
+using SaintsField.Playa;
 using Roomgen;
 using Sound;
 using UnityEngine;
@@ -11,7 +11,7 @@ using UnityEngine.VFX;
 
 public class Child : NPC, IKrampable, INoiseReactor {
 	public float RunSpeed => m_runSpeed;
-	[ShowNativeProperty] public State CurrentState { get; private set; }
+	[ShowInInspector] public State CurrentState { get; private set; }
 
 	private State m_lastStateBeforeKilling;
 	public State StateBeforeDeath => m_lastStateBeforeKilling;
@@ -19,13 +19,13 @@ public class Child : NPC, IKrampable, INoiseReactor {
 	public UnityAction<Child.State, Child.State> onStateChanged;
 
 	[SerializeField] private ChildAnimator m_animator;
-	[BoxGroup("Behaviour")][SerializeField] private ViewCone m_viewCone;
-	[BoxGroup("Behaviour")][SerializeField] private float m_detectionTime = 0f;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private ViewCone m_viewCone;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private float m_detectionTime = 0f;
 	private float m_currentDetectionTime;
-	[BoxGroup("Behaviour")][SerializeField] private float m_stoppingDistance = 2;
-	[BoxGroup("Behaviour")][SerializeField] private float m_stunDuration = 0.4f;
-	[BoxGroup("Behaviour")][SerializeField] private float m_reportingDuration = 0.4f;
-	[BoxGroup("Behaviour")][SerializeField] private Transform m_pinTarget;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private float m_stoppingDistance = 2;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private float m_stunDuration = 0.4f;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private float m_reportingDuration = 0.4f;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private Transform m_pinTarget;
 	[SerializeField] private float m_runSpeed = 8;
 
 	private Nun m_selectedNun;

@@ -1,4 +1,5 @@
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using UnityEngine;
 using UnityEngine.Audio;
 using KrampUtils;
@@ -38,7 +39,7 @@ namespace Sound {
                 foreach (var selection in Selection.objects) {
                     if (selection is not AudioClip) continue;
                     var so = ScriptableObject.CreateInstance<ClipSex>();
-                    string assetPath = System.IO.Path.GetDirectoryName(AssetDatabase.GetAssetPath(selection.GetInstanceID()));
+                    string assetPath = System.IO.Path.GetDirectoryName(AssetDatabase.GetAssetPath(selection.GetEntityId()));
                     so.clip = (AudioClip)selection;
                     AssetDatabase.CreateAsset(so, assetPath + "/" + selection.name.ToPrettyCase() + ".asset");
                 }

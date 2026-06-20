@@ -1,5 +1,6 @@
 using KrampUtils;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,7 +16,7 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
     public float Velocity => VelocityVector.magnitude;
     public float VelocitySqr => VelocityVector.sqrMagnitude;
     public Room CurrentRoom { get; set; }
-    [ShowNativeProperty] public float FacingAngle { get; private set; }
+    [ShowInInspector] public float FacingAngle { get; private set; }
 
 
     [SerializeField] protected float m_baseMovementSpeed = 4;
@@ -59,7 +60,7 @@ public class NPC : MonoBehaviour, IInteractor, ICharacter {
 
         OverridePathCosts();
         if (!NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, m_currentPath)) {
-			if(Game.Balling) Debug.LogError($"[NPC] {name} Could not form path");
+            if (Game.Balling) Debug.LogError($"[NPC] {name} Could not form path");
             return false;
         }
         CurrentDestination = destination;

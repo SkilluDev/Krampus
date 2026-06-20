@@ -1,5 +1,6 @@
 using System;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using UnityEngine;
 
 [Serializable]
@@ -10,7 +11,7 @@ public class EffectInEditor {
 
 	public Effect ToEffect(string itemName, Sprite itemIcon) {
 		if (m_duration > 0) {
-			return new Effect(m_stat, m_modifier, m_duration, itemName+"_"+m_stat, itemIcon);
+			return new Effect(m_stat, m_modifier, m_duration, itemName + "_" + m_stat, itemIcon);
 		}
 
 		return new Effect(m_stat, m_modifier, itemName + "_" + m_stat, itemIcon);
@@ -76,6 +77,6 @@ public class Effect {
 	public void ResetTimer() {
 		m_timer = m_duration;
 		m_isExpired = false;
-	 }
-
 	}
+
+}

@@ -2,7 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,13 +12,13 @@ using UnityEngine;
 
 
 [Serializable]
-public class SerializedEnumDictionary<TKey, TValue>: ISerializationCallbackReceiver, IReadOnlyDictionary<TKey, TValue> where TKey : Enum where TValue : ValueConnectedToEnum<TKey>, new() {
+public class SerializedEnumDictionary<TKey, TValue> : ISerializationCallbackReceiver, IReadOnlyDictionary<TKey, TValue> where TKey : Enum where TValue : ValueConnectedToEnum<TKey>, new() {
 
 	[SerializeField] private List<TValue> m_values = new List<TValue>();
 
 	private Dictionary<TKey, TValue> m_dictionary;
 
-	public IEnumerable<TKey> Keys => m_values.Select(v=>v.Key);
+	public IEnumerable<TKey> Keys => m_values.Select(v => v.Key);
 
 	public IEnumerable<TValue> Values => m_values;
 
@@ -106,7 +107,7 @@ public class SerializedEnumDictionary<TKey, TValue>: ISerializationCallbackRecei
 	}
 
 	public bool ContainsKey(TKey key) => m_dictionary.ContainsKey(key);
-	public bool TryGetValue(TKey key, out TValue value) => m_dictionary.TryGetValue(key,out value);
+	public bool TryGetValue(TKey key, out TValue value) => m_dictionary.TryGetValue(key, out value);
 	public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => m_dictionary.GetEnumerator();
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	public void OnBeforeSerialize() => Validate();
@@ -116,23 +117,23 @@ public class SerializedEnumDictionary<TKey, TValue>: ISerializationCallbackRecei
 #if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(SerializedEnumDictionary<,>), true)]
 public class SerializedEnumDictDrawer : PropertyDrawer {
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-        EditorGUI.BeginProperty(position, label, property);
+	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+		EditorGUI.BeginProperty(position, label, property);
 
-        SerializedProperty values = property.FindPropertyRelative("m_values");
+		SerializedProperty values = property.FindPropertyRelative("m_values");
 
-        if (values != null) {
-            EditorGUI.PropertyField(position, values, label, true);
-        } else {
-            EditorGUI.LabelField(position, "No values found.");
-        }
+		if (values != null) {
+			EditorGUI.PropertyField(position, values, label, true);
+		} else {
+			EditorGUI.LabelField(position, "No values found.");
+		}
 
-        EditorGUI.EndProperty();
-    }
+		EditorGUI.EndProperty();
+	}
 
-    public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-        SerializedProperty values = property.FindPropertyRelative("m_values");
-        return values != null ? EditorGUI.GetPropertyHeight(values, true) : base.GetPropertyHeight(property, label);
-    }
+	public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
+		SerializedProperty values = property.FindPropertyRelative("m_values");
+		return values != null ? EditorGUI.GetPropertyHeight(values, true) : base.GetPropertyHeight(property, label);
+	}
 }
 #endif

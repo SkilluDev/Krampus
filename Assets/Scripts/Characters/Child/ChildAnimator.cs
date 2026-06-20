@@ -1,4 +1,5 @@
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Sound;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -9,19 +10,19 @@ public class ChildAnimator : MonoBehaviour {
     [SerializeField] private Transform m_model;
     [SerializeField] private float m_turningSpeed = 5f;
     [SerializeField] private SpriteRenderer m_shapeSprite;
-    [BoxGroup("Particles")][SerializeField] private VisualEffect m_goreParticle;
-    [BoxGroup("Particles")][SerializeField] private VisualEffect m_vanishParticle;
-    [BoxGroup("Particles")][SerializeField] private VisualEffect m_stunEffect;
-    [BoxGroup("Animator Properties")][SerializeField][AnimatorParam(nameof(m_animator))] private int m_propertySpeed, m_propertyShock, m_propertyPanic, m_propertyReporting, m_propertyDeath,m_propertyStun;
-    [BoxGroup("State Sprites")][SerializeField] private StatusSprite m_spriteRenderer;
-    [BoxGroup("State Sprites")][SerializeField] private Sprite m_panicSprite;
-    [BoxGroup("State Sprites")][SerializeField] private Sprite m_alertedSprite;
-    [BoxGroup("State Sprites")][SerializeField] private Sprite m_stunSprite;
-    [BoxGroup("Sounds")][SerializeField] private float m_screamVolume = 0.6f;
-    [BoxGroup("Sounds")][SerializeField] private AudioSource m_screamSource;
-    [BoxGroup("Sounds")][SerializeField] private Sex m_soundShock;
-    [BoxGroup("Sounds")][SerializeField] private Sex m_soundKill;
-    [BoxGroup("Sounds")][SerializeField] private Sex m_soundWrongKill;
+    [Layout("Particles", ELayout.FoldoutBox)][SerializeField] private VisualEffect m_goreParticle;
+    [Layout("Particles", ELayout.FoldoutBox)][SerializeField] private VisualEffect m_vanishParticle;
+    [Layout("Particles", ELayout.FoldoutBox)][SerializeField] private VisualEffect m_stunEffect;
+    [Layout("Animator Properties", ELayout.FoldoutBox)][SerializeField][AnimatorParam(nameof(m_animator))] private int m_propertySpeed, m_propertyShock, m_propertyPanic, m_propertyReporting, m_propertyDeath, m_propertyStun;
+    [Layout("State Sprites", ELayout.FoldoutBox)][SerializeField] private StatusSprite m_spriteRenderer;
+    [Layout("State Sprites", ELayout.FoldoutBox)][SerializeField] private Sprite m_panicSprite;
+    [Layout("State Sprites", ELayout.FoldoutBox)][SerializeField] private Sprite m_alertedSprite;
+    [Layout("State Sprites", ELayout.FoldoutBox)][SerializeField] private Sprite m_stunSprite;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private float m_screamVolume = 0.6f;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private AudioSource m_screamSource;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_soundShock;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_soundKill;
+    [Layout("Sounds", ELayout.FoldoutBox)][SerializeField] private Sex m_soundWrongKill;
 
     private void Start() {
         m_child.onStateChanged += ChildStateChanged;
@@ -61,7 +62,7 @@ public class ChildAnimator : MonoBehaviour {
                 break;
             case (_, Child.State.Reporting):
                 break;
-            case (_,Child.State.Stunned):
+            case (_, Child.State.Stunned):
                 m_spriteRenderer.SetSprite(m_stunSprite, 2);
                 break;
             case (_, Child.State.Alerted):

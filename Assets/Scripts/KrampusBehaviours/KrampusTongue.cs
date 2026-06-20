@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using KrampUtils;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using Roomgen;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,22 +11,22 @@ using UnityEngine.Events;
 public class KrampusTongue : KrampusBehaviour {
 
 	public UnityAction<KrampusTongue.State, KrampusTongue.State> onStateChanged;
-	[BoxGroup("Visual")][SerializeField] private LineRenderer m_tongueRenderer;
-	[BoxGroup("Visual")][SerializeField] private Transform m_tongueVisualOrigin;
-	[BoxGroup("Visual")][SerializeField] private Transform m_inMouthOrigin;
-	[BoxGroup("Visual")][SerializeField] private SkinnedMeshRenderer m_tongueAimIndicator;
+	[Layout("Visual", ELayout.FoldoutBox)][SerializeField] private LineRenderer m_tongueRenderer;
+	[Layout("Visual", ELayout.FoldoutBox)][SerializeField] private Transform m_tongueVisualOrigin;
+	[Layout("Visual", ELayout.FoldoutBox)][SerializeField] private Transform m_inMouthOrigin;
+	[Layout("Visual", ELayout.FoldoutBox)][SerializeField] private SkinnedMeshRenderer m_tongueAimIndicator;
 
-	[BoxGroup("Physics")][SerializeField] private LayerMask m_interactionSearchMask = int.MaxValue;
-	[BoxGroup("Physics")][SerializeField] private LayerMask m_interactionBlockerMask = int.MaxValue;
-	[BoxGroup("Physics")][SerializeField] private Transform m_tongueOrigin;
+	[Layout("Physics", ELayout.FoldoutBox)][SerializeField] private LayerMask m_interactionSearchMask = int.MaxValue;
+	[Layout("Physics", ELayout.FoldoutBox)][SerializeField] private LayerMask m_interactionBlockerMask = int.MaxValue;
+	[Layout("Physics", ELayout.FoldoutBox)][SerializeField] private Transform m_tongueOrigin;
 	private float TongueLength => Kramp.Stats.GetFinalStat(KrampusStats.Stat.TongueRange);
 	private float m_previousTongueLength;
-	[BoxGroup("Physics")][SerializeField] private float m_tongueHitRadius = 0.5f;
-	[BoxGroup("Controls")][SerializeField] private float m_inputMinimumDrag = 0.4f;
-	[BoxGroup("Controls")][SerializeField] private float m_inputMinimumMouseDistance = 1f;
-	//[BoxGroup("Controls")][SerializeField] private float m_inputMaximumMouseDistance = 4f;
-	[BoxGroup("Controls")][SerializeField] private float m_inputDragSmoothing = 12f;
-	[BoxGroup("Controls")][SerializeField] private float m_inputMousePlaneY = 1f;
+	[Layout("Physics", ELayout.FoldoutBox)][SerializeField] private float m_tongueHitRadius = 0.5f;
+	[Layout("Controls", ELayout.FoldoutBox)][SerializeField] private float m_inputMinimumDrag = 0.4f;
+	[Layout("Controls", ELayout.FoldoutBox)][SerializeField] private float m_inputMinimumMouseDistance = 1f;
+	//[Layout("Controls", ELayout.FoldoutBox)][SerializeField] private float m_inputMaximumMouseDistance = 4f;
+	[Layout("Controls", ELayout.FoldoutBox)][SerializeField] private float m_inputDragSmoothing = 12f;
+	[Layout("Controls", ELayout.FoldoutBox)][SerializeField] private float m_inputMousePlaneY = 1f;
 
 	[Serializable]
 	private class Timings : TimedSequence<Timings> {

@@ -1,6 +1,5 @@
 #if UNITY_EDITOR
 using KrampUtils;
-using NaughtyAttributes.Editor;
 using UnityEditor;
 #endif
 
@@ -14,7 +13,7 @@ public abstract class KrampusBehaviour : MonoBehaviour {
 #if UNITY_EDITOR
 
 [CustomEditor(typeof(KrampusBehaviour), true)]
-public class KrampusBehaviourEditor : NaughtyInspector {
+public class KrampusBehaviourEditor : Editor {
     private KrampusBehaviour Target => (KrampusBehaviour)target;
     public override void OnInspectorGUI() {
         if (Target.Kramp == null) {

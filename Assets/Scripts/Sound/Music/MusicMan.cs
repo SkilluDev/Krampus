@@ -1,6 +1,5 @@
 using LitMotion;
 using LitMotion.Extensions;
-using NaughtyAttributes.Test;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -50,15 +49,15 @@ public class MusicMan : MonoBehaviour {
 	}
 
 	public void StopMusic() {
-		if(m_motionHandle1.IsActive()) m_motionHandle1.Cancel();
-		if(m_motionHandle2.IsActive()) m_motionHandle2.Cancel();
+		if (m_motionHandle1.IsActive()) m_motionHandle1.Cancel();
+		if (m_motionHandle2.IsActive()) m_motionHandle2.Cancel();
 		m_motionHandle1 = LMotion.Create(m_gameMusicLayer1.volume, 0, m_fadeOutTime).WithOnComplete(m_gameMusicLayer1.Stop).BindToVolume(m_gameMusicLayer1);
 		m_motionHandle2 = LMotion.Create(m_gameMusicLayer2.volume, 0, m_fadeOutTime).WithOnComplete(m_gameMusicLayer2.Stop).BindToVolume(m_gameMusicLayer2);
 	}
 
 	public void UpdateMixer() {
-		m_mixer.SetFloat("MusicVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("Music Volume"),m_maxMusicVol));
-		m_mixer.SetFloat("SFXVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("SFX Volume"),m_maxSFXVol));
+		m_mixer.SetFloat("MusicVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("Music Volume"), m_maxMusicVol));
+		m_mixer.SetFloat("SFXVolume", ProcessFloatVolume(Game.SetMan.GetValue<long>("SFX Volume"), m_maxSFXVol));
 	}
 
 	private float ProcessFloatVolume(float volume, float max = 0f) {

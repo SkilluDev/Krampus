@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NaughtyAttributes;
+using SaintsField;
+using SaintsField.Playa;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,9 +51,9 @@ public class SpriteSheetAnimator : MonoBehaviour {
             m_frameTimer = 0;
         }
 
-        if (m_colorChange!=ColorChange.NaughtyChild) return;
+        if (m_colorChange != ColorChange.NaughtyChild) return;
 
-        m_colorTimer += Time.deltaTime/2;
+        m_colorTimer += Time.deltaTime / 2;
         if (m_colorTimer > 1 / m_fps) {
             //Debug.Log("dlugosc" + m_colors.Length);
             m_image.color = m_colors[(m_colorCounter++) % m_colors.Length];
