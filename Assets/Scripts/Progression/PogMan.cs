@@ -55,11 +55,7 @@ public class PogMan : MonoBehaviour {
 	[ShowInInspector] public float TotalRunTime { get => m_timer; }
 
 	private void Ready() {
-		if (Game.BootFromMainGame) {
-			Game.LoadState(Game.State.MainMenu);
-		} else {
-			Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
-		}
+		Game.GlobalEvents.onSetManChange.AddListener(OnSetManChange);
 	}
 	private void Unready() {
 		Game.GlobalEvents.onSetManChange.RemoveListener(OnSetManChange);

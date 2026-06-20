@@ -29,25 +29,20 @@ public class MainMenuInfo : LevelInfo {
         }
     }
 
-	private void Ready() {
-		if (Game.BootFromMainGame) {
-			Game.BootFromMainGame = false;
-			Game.PogMan.StartNewGame(PogMan.Difficulty.Normal);
-			return;
-		}
-		m_motions = new MotionHandle[m_canvases.Length];
-		foreach (var c in m_canvases) c.alpha = 0;
-		SetState(State.Default);
-		EventSystem.current.SetSelectedGameObject(null);
-		//Debug.Log("Set state default!");
-	}
+    private void Ready() {
+        m_motions = new MotionHandle[m_canvases.Length];
+        foreach (var c in m_canvases) c.alpha = 0;
+        SetState(State.Default);
+        EventSystem.current.SetSelectedGameObject(null);
+        //Debug.Log("Set state default!");
+    }
 
     private void Unready() {
-		//Debug.Log("Kill motions");
-		if (m_motions == null) return;
+        //Debug.Log("Kill motions");
+        if (m_motions == null) return;
         for (int i = 0; i < m_motions.Length; i++) {
-			m_motions[i].TryCancel();
-		}
+            m_motions[i].TryCancel();
+        }
     }
 
     public void SetState(State state) {
@@ -77,14 +72,14 @@ public class MainMenuInfo : LevelInfo {
     }
 
     public void TutorialLevel() {
-		if(CurrentState == State.Transitioning ) return;
+        if (CurrentState == State.Transitioning) return;
         LoadGameScene(PogMan.Difficulty.Normal);
-     }
+    }
 
     public void NotTutorialLevel() {
-		if(CurrentState == State.Transitioning ) return;
+        if (CurrentState == State.Transitioning) return;
         LoadGameScene(PogMan.Difficulty.Hard);
-     }
+    }
 
     // bad code ahead!
     private void UpdateGroups() {

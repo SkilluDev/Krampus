@@ -37,11 +37,10 @@ public class GameLoader : MonoBehaviour {
         var load = SceneManager.LoadSceneAsync((int)Game.DestinationState, LoadSceneMode.Additive);
         load.allowSceneActivation = false;
 
-        while (!unload.isDone && load.progress < 0.9f) {
+        while ((unload != null && !unload.isDone) && load.progress < 0.9f) {
             Progress = (unload.progress + load.progress) / 2f;
             yield return null;
         }
-
         load.allowSceneActivation = true;
 
         while (!load.isDone) yield return null;
