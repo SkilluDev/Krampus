@@ -97,6 +97,7 @@ public class Projectile : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (!m_isActive) return;
 
+
         if (other.HasTag(m_pushableTag) && other.gameObject.TryGetComponent<Rigidbody>(out var t)) {
             t.AddForce(transform.forward, ForceMode.Impulse);
         }
