@@ -9,6 +9,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
     [SerializeField] protected float m_speed = 14;
     [SerializeField] protected float m_turningSpeed = 15;
+    [SerializeField] protected bool m_activateToungables = true;
     [SerializeField] protected LayerMask m_destroyedBy;
     [SerializeField] protected Tag[] m_targetGroups;
 
@@ -22,14 +23,14 @@ public class Projectile : MonoBehaviour {
     [Layout("Effects", ELayout.FoldoutBox)][SerializeField] protected GameObject m_fxHit;
     [Layout("Effects", ELayout.FoldoutBox)][SerializeField] protected GameObject m_fxMiss;
     [Layout("Auto Destroy", ELayout.FoldoutBox)][SerializeField] protected bool m_dieOnMiss;
-    [Layout("Auto Destroy")][EnableIf("m_dieOnMiss", ELayout.FoldoutBox)][SerializeField] protected float m_timeMiss;
+    [Layout("Auto Destroy", ELayout.FoldoutBox)][EnableIf("m_dieOnMiss")][SerializeField] protected float m_timeMiss;
     [Layout("Auto Destroy", ELayout.FoldoutBox)][SerializeField] protected bool m_dieOnHit;
-    [Layout("Auto Destroy")][EnableIf("m_dieOnHit", ELayout.FoldoutBox)][SerializeField] protected float m_timeHit;
+    [Layout("Auto Destroy", ELayout.FoldoutBox)][EnableIf("m_dieOnHit")][SerializeField] protected float m_timeHit;
 
 
-    [ShowIf("HasAnimator")][Layout("Animations", ELayout.FoldoutBox)][SerializeField][AnimatorParam("m_animator")] protected int m_animShoot;
-    [ShowIf("HasAnimator")][Layout("Animations", ELayout.FoldoutBox)][SerializeField][AnimatorParam("m_animator")] protected int m_animHit;
-    [ShowIf("HasAnimator")][Layout("Animations", ELayout.FoldoutBox)][SerializeField][AnimatorParam("m_animator")] protected int m_animMiss;
+    [LayoutShowIf(nameof(HasAnimator))][Layout("Animations", ELayout.FoldoutBox)][SerializeField][AnimatorParam("m_animator")] protected int m_animShoot;
+    [ShowIf(nameof(HasAnimator))][Layout("Animations", ELayout.FoldoutBox)][SerializeField][AnimatorParam("m_animator")] protected int m_animHit;
+    [ShowIf(nameof(HasAnimator))][Layout("Animations", ELayout.FoldoutBox)][SerializeField][AnimatorParam("m_animator")] protected int m_animMiss;
 
     protected bool HasAnimator => m_animator != null;
     protected bool HasAudioSource => m_audioSource != null;
@@ -50,6 +51,7 @@ public class Projectile : MonoBehaviour {
     }
 
     protected virtual void Shoot(Transform target) {
+        Debug.Break();
         m_target = target;
         m_sexShoot.Play(transform.position);
         if (m_fxShoot != null) Instantiate(m_fxShoot, transform.position, transform.rotation);
@@ -97,6 +99,11 @@ public class Projectile : MonoBehaviour {
         if (!m_isActive) return;
         if (m_destroyedBy.IsLayerMasked(other.gameObject.layer)) {
             Miss(other);
+        }
+        // && other.gameObject.TryGetComponent<ITongueable>(out var t)
+        if (m_activateToungables) {
+            print("projectile passby " + other.gameObject.name);
+            // t.TonguePassBy(null, transform.position, 0); //bad!
         }
 
         if (other.gameObject.HasAnyTag(m_targetGroups)) {
