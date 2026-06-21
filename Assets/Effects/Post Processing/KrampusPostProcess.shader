@@ -81,9 +81,9 @@ Shader "Krampus/KrampusPostProcess"
                 float depthRight  = GetCombinedDepth(uv + float2(texelSize.x * _OutlineThickness, 0));
 
                 
-                float depthDiffH = abs(depthRight - depthLeft);
-                float depthDiffV = abs(depthUp - depthDown);
-                float depthEdge  = sqrt(depthDiffH * depthDiffH + depthDiffV * depthDiffV) * _OutlineDepthSensitivity; 
+                float laplacianH = depthLeft + depthRight - 2.0 * centerDepth;
+                float laplacianV = depthUp + depthDown - 2.0 * centerDepth;
+                float depthEdge = (abs(laplacianH) + abs(laplacianV)) / max(centerDepth, 0.0001) * _OutlineDepthSensitivity;
                 
                 float edgeFactor = saturate(depthEdge);
                 float minNeighborDepth = min(min(depthUp, depthDown), min(depthLeft, depthRight));
