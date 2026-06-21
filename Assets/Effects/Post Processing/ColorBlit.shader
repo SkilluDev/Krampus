@@ -2,13 +2,14 @@ Shader "Test/ColorBlit"
 {
     Properties
     {
+        _MainTex ("Color Texture", 2D) = "white" {}
+        _TransparentDepthTexture ("Transparent Depth Texture", 2D) = "black" {}
+
         _Intensity ("Intensity", Range(0.0, 5.0)) = 1.0 
-        _MainTex ("Texture", 2D) = "white" {}
         _Levels ("Levels", Float) = 20.0
         _OutlineColor ("Outline Color", Color) = (0, 0, 0, 1) // Black outline
         _OutlineThickness ("Outline Thickness", Range(0, 5.0)) = 1.0
         _DepthSensitivity ("Depth Sensitivity", Range(0.0, 100.0)) = 10.0 // Controls how sensitive depth difference is
-        _TransparentDepthTexture ("Transparent Depth Source", 2D) = "black" {}
     }
     SubShader
     {
@@ -49,8 +50,6 @@ Shader "Test/ColorBlit"
             float _OutlineThickness;
             float _DepthSensitivity;
 
-            // float4 _CameraDepthTexture_TexelSize;
-
             float GetLinearEyeDepth(float2 uv)
             {
                 // SampleSceneDepth samples the platform-specific depth texture 
@@ -85,18 +84,6 @@ Shader "Test/ColorBlit"
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
                 float2 uv = input.texcoord;
-                //float depth = SampleSceneDepth(uv);
-
-                //float rawTransparentDepth = SAMPLE_TEXTURE2D_X(_TransparentDepthTexture, sampler_TransparentDepthTexture, uv).r;
-                //return half4(rawTransparentDepth.xxx, 1.0); // Output raw depth as grayscale
-
-
-                // --- VISUALIZE the raw depth value ---
-
-                // Option A: Grayscale depth (0=near, 1=far)
-                // Requires knowing the far plane (_ProjectionParams.z)
-                //return frac(depth*100); 
-
                 float2 texelSize = _CameraDepthTexture_TexelSize.xy; 
                 float centerDepth = GetLinearEyeDepth(uv);
                 float depthUp    = GetLinearEyeDepth(uv + float2(0, texelSize.y * _OutlineThickness));
@@ -113,12 +100,11 @@ Shader "Test/ColorBlit"
                 float depthEpsilon = minNeighborDepth * 0.005;
                 edgeFactor *= step(centerDepth, minNeighborDepth + depthEpsilon);
                 
-                // Sample the color from the input texture
                 float4 color = SAMPLE_TEXTURE2D_X(_BlitTexture, sampler_BlitTexture, input.texcoord);
                 color.rgb = floor(color.rgb * _Levels) / _Levels;
                 color.rgb *= 2;
                 color.rgb = saturate(color);
-                // Output the color from the texture, with the green value set to the chosen intensity
+
                 half4 finalColor = lerp(color, _OutlineColor, saturate(edgeFactor * _Intensity));
                 finalColor.a = color.a;
                 finalColor.a = finalColor.a*_Intensity;
