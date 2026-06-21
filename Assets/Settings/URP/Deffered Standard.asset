@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: FullScreenPassRendererFeature
+  m_Name: Krampus Post Processing
   m_EditorClassIdentifier: 
   m_Active: 1
   injectionPoint: 550
   fetchColorBuffer: 1
-  requirements: 0
-  passMaterial: {fileID: 2100000, guid: 51fdc0ca846a23149bc6c6efe6f9bcd7, type: 2}
+  requirements: 1
+  passMaterial: {fileID: 2100000, guid: fbefe4ca3b8833295bd9a512d24afe9b, type: 2}
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
@@ -46,8 +46,9 @@ MonoBehaviour:
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
   - {fileID: 1104411276663089400}
+  - {fileID: 6663038811227378923}
   - {fileID: -3740910827274188345}
-  m_RendererFeatureMap: f868706734a8530fc7c9e83b6c9d15cc
+  m_RendererFeatureMap: f868706734a8530feb54d91b7fde775cc7c9e83b6c9d15cc
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 3
@@ -116,3 +117,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   m_Material: {fileID: 2100000, guid: 846071a68e80a9d4ead286cf7a29bf2b, type: 2}
+--- !u!114 &6663038811227378923
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33274d5738d99384698d894f6fdfb9d7, type: 3}
+  m_Name: WallDepthRendererFeature
+  m_EditorClassIdentifier: Assembly-CSharp::Shaders.WallDepthRendererFeature
+  m_Active: 1
+  m_overrideMaterial: {fileID: 2100000, guid: e1e0d86298ab8cb6381181d46791007c, type: 2}
+  m_wallLayerMask:
+    serializedVersion: 2
+    m_Bits: 6
+  m_renderPassEvent: 300
