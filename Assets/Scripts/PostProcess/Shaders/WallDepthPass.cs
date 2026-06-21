@@ -67,7 +67,6 @@ namespace Shaders {
                 builder.AllowGlobalStateModification(true);
 
                 builder.SetRenderFunc((PassData data, RasterGraphContext context) => {
-                    Debug.Log("WallDepthPass: SetRenderFunc executing, submitting DrawRendererList");
                     context.cmd.DrawRendererList(data.rendererList);
                 });
 
