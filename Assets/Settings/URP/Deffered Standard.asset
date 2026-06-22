@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3740910827274188345
+--- !u!114 &-6162739500106978631
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,17 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: Krampus Post Processing
-  m_EditorClassIdentifier: 
+  m_Script: {fileID: 11500000, guid: 63dd8fddb57a34b13b08211ca8c0de8f, type: 3}
+  m_Name: KrampusEffectsRendererFeature
+  m_EditorClassIdentifier: Assembly-CSharp::Shaders.KrampusEffectsRendererFeature
   m_Active: 1
-  injectionPoint: 550
-  fetchColorBuffer: 1
-  requirements: 1
-  passMaterial: {fileID: 2100000, guid: fbefe4ca3b8833295bd9a512d24afe9b, type: 2}
-  passIndex: 0
-  bindDepthStencilAttachment: 0
-  m_Version: 1
+  m_postProcessMaterial: {fileID: 2100000, guid: fbefe4ca3b8833295bd9a512d24afe9b, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,8 +41,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 1104411276663089400}
   - {fileID: 6663038811227378923}
-  - {fileID: -3740910827274188345}
-  m_RendererFeatureMap: f868706734a8530feb54d91b7fde775cc7c9e83b6c9d15cc
+  - {fileID: -6162739500106978631}
+  m_RendererFeatureMap: f868706734a8530feb54d91b7fde775cb9eada84138d79aa
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 3
@@ -134,4 +128,3 @@ MonoBehaviour:
   m_wallLayerMask:
     serializedVersion: 2
     m_Bits: 6
-  m_renderPassEvent: 300

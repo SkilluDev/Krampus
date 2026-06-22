@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.Experimental.Rendering;
 
 namespace Shaders {
-    public class WallDepthPass : ScriptableRenderPass {
+    internal class WallDepthPass : ScriptableRenderPass {
         private readonly Material m_overrideMaterial;
         private readonly LayerMask m_layerMask;
         private const string PASS_NAME = "WallDepthPass";
