@@ -33,14 +33,16 @@ public class Child : NPC, IKrampable, INoiseReactor {
 	private Vector3 m_selectedPosition;
 
 	private bool m_hasPositionTarget = false;
-	private Room m_selectedRoom;
-	private Room m_lastKrampusSpotted;
+	protected Room m_selectedRoom;
+	protected Room m_lastKrampusSpotted;
 
-	private float m_timeout = 0;
+	protected float m_timeout = 0;
 
 	private ChildType m_type;
 	private Transform m_modelTransform;
 	public bool IsNaughty => Type != Game.MainGameInfo.NiceChildType;
+
+	public virtual bool m_CanBeConsumed => true;
 
 
 
@@ -66,7 +68,7 @@ public class Child : NPC, IKrampable, INoiseReactor {
         SetChildType(Game.MainGameInfo.Types.UnityRandomElement());
     } */
 
-	private void Ready() {
+	protected virtual void Ready() {
 		Game.MainGameInfo.RegisterChild(this);
 
 		m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.transform;
@@ -83,7 +85,7 @@ public class Child : NPC, IKrampable, INoiseReactor {
 		NavMesh.SetAreaCost(NavMesh.GetAreaFromName("Kramped"), 99f);
 	}
 
-	private void SelectPositionInRoomAwayFromKrampy() {
+	protected void SelectPositionInRoomAwayFromKrampy() {
 		if (m_hasPositionTarget) return;
 		var passages = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
 		m_selectedRoom = passages.First().Other(CurrentRoom);
@@ -253,7 +255,7 @@ public class Child : NPC, IKrampable, INoiseReactor {
 		}
 	}
 
-	private void SwitchState(State next) {
+	protected void SwitchState(State next) {
 		//Debug.Log("SWITCHTO:" + next);
 		if (next == CurrentState) return;
 		m_currentDetectionTime = 0f;
@@ -267,7 +269,7 @@ public class Child : NPC, IKrampable, INoiseReactor {
 	}
 
 	public bool CanConusme(Krampus krampus) {
-		return CurrentState == State.Stunned;
+		return m_CanBeConsumed;
 	}
 
 	public void AttachToTongue(Krampus krampus, Vector3 position, Quaternion rotation, float progress) {
@@ -289,9 +291,14 @@ public class Child : NPC, IKrampable, INoiseReactor {
 		SetFacingDirection(place);
 	}
 
-	public void Stun(float duration) {
+	public virtual void Stun(float duration) {
 		Game.MainGameInfo.Krampus.Kamera.DefaultShake.GenerateImpulse();
 		m_timeout = duration;
 		SwitchState(State.Stunned);
+	}
+	protected virtual void StunOut() {
+		m_lastKrampusSpotted = CurrentRoom;
+		Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+		SelectPositionInRoomAwayFromKrampy();
 	}
 }
