@@ -1,7 +1,7 @@
 using System.Linq;
 using KrampUtils;
 
-using NaughtyAttributes;
+using SaintsField.Playa;
 using Roomgen;
 using Sound;
 using UnityEngine;
@@ -9,9 +9,9 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.VFX;
 
-public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
+public class Child : NPC, IKrampable, INoiseReactor {
 	public float RunSpeed => m_runSpeed;
-	[ShowNativeProperty] public State CurrentState { get; private set; }
+	[ShowInInspector] public State CurrentState { get; private set; }
 
 	private State m_lastStateBeforeKilling;
 	public State StateBeforeDeath => m_lastStateBeforeKilling;
@@ -19,13 +19,13 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 	public UnityAction<Child.State, Child.State> onStateChanged;
 
 	[SerializeField] private ChildAnimator m_animator;
-	[BoxGroup("Behaviour")][SerializeField] private ViewCone m_viewCone;
-	[BoxGroup("Behaviour")][SerializeField] private float m_detectionTime = 0f;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private ViewCone m_viewCone;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private float m_detectionTime = 0f;
 	private float m_currentDetectionTime;
-	[BoxGroup("Behaviour")][SerializeField] private float m_stoppingDistance = 2;
-	[BoxGroup("Behaviour")][SerializeField] private float m_stunDuration = 0.4f;
-	[BoxGroup("Behaviour")][SerializeField] private float m_reportingDuration = 0.4f;
-	[BoxGroup("Behaviour")][SerializeField] private Transform m_pinTarget;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private float m_stoppingDistance = 2;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private float m_stunDuration = 0.4f;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private float m_reportingDuration = 0.4f;
+	[Layout("Behaviour", ELayout.FoldoutBox)][SerializeField] private Transform m_pinTarget;
 	[SerializeField] private float m_runSpeed = 8;
 
 	private Nun m_selectedNun;
@@ -40,7 +40,7 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 
 	private ChildType m_type;
 	private Transform m_modelTransform;
-	public bool IsNaughty => Type != Game.roundInfo.NiceChildType;
+	public bool IsNaughty => Type != Game.MainGameInfo.NiceChildType;
 
 	public virtual bool m_CanBeConsumed => true;
 
@@ -68,14 +68,14 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
     } */
 
 	protected virtual void Ready() {
-		Game.roundInfo.RegisterChild(this);
+		Game.MainGameInfo.RegisterChild(this);
 
 		m_viewCone.trackedObject = Game.MainGameInfo.Krampus.Kramp.transform;
 		m_modelTransform = transform.GetComponentInChildren<Animator>().transform;
 	}
 
 	private void Unready() {
-		Game.roundInfo.UnregisterChild(this);
+		Game.MainGameInfo.UnregisterChild(this);
 	}
 
 
@@ -86,7 +86,7 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 
 	protected void SelectPositionInRoomAwayFromKrampy() {
 		if (m_hasPositionTarget) return;
-		var passages = Game.roundInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
+		var passages = Game.MainGameInfo.GetRoomData(CurrentRoom).Passages.OrderBy(w => Vector3.Dot(Game.MainGameInfo.Krampus.transform.position - transform.position, w.transform.position - transform.position));
 		m_selectedRoom = passages.First().Other(CurrentRoom);
 		m_selectedPosition = m_selectedRoom.GetRandomPointOnFloor().OnNavMesh(5);
 		SetDestination(m_selectedPosition);
@@ -94,8 +94,8 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 	}
 
 	private void SelectRandomNun() {
-		m_selectedNun = (Nun)Game.roundInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun);
-		if (m_selectedNun == null) m_selectedNun = (Nun)Game.roundInfo.Nuns.UnityRandomElement();
+		m_selectedNun = (Nun)Game.MainGameInfo.GetRoomData(CurrentRoom).Characters.FirstOrDefault(w => w is Nun);
+		if (m_selectedNun == null) m_selectedNun = (Nun)Game.MainGameInfo.Nuns.UnityRandomElement();
 		if (m_selectedNun != null) {
 			m_selectedPosition = m_selectedNun.transform.position;
 		} else {
@@ -150,7 +150,7 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 				m_timeout -= Time.deltaTime;
 				if (m_timeout <= 0) {
 					m_lastKrampusSpotted = CurrentRoom;
-					Game.roundInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+					Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
 					SelectPositionInRoomAwayFromKrampy();
 					SwitchState(State.InitialPanic);
 				}
@@ -166,20 +166,20 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 				break;
 
 			case State.InitialPanic: // basically run away franticlly from krampus, however, given the opportunity to go to a nun without turning around, use it
-				if (!Game.roundInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
+				if (!Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Krampus>()) {
 					SelectRandomNunAndSetDestination();
 					SwitchState(State.Panic);
 				} else if (NearDestination(m_stoppingDistance)) {
 					SelectRandomNunAndSetDestination();
 					if (Vector3.Dot(GetPathDirection(), Game.MainGameInfo.Krampus.transform.position - transform.position) > 0f) {
 						m_lastKrampusSpotted = CurrentRoom;
-						Game.roundInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
-						Game.roundInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
+						Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+						Game.MainGameInfo.RoomGenerator.NavMeshSurface.BuildNavMesh();
 						SelectPositionInRoomAwayFromKrampy();
 					} else {
 						SwitchState(State.Panic);
 					}
-				} else if (Game.roundInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
+				} else if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
 					SelectRandomNunAndSetDestination();
 					SwitchState(State.Panic);
 				}
@@ -188,7 +188,7 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 				SetFacingDirection(GetPathDirection());
 				break;
 			case State.Panic: // regular panic. just go to the nun and report
-				if (Game.roundInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
+				if (Game.MainGameInfo.GetRoomData(CurrentRoom).Contains<Nun>()) {
 					SelectRandomNun();
 				}
 				SetVelocity(GetPathDirection() * m_runSpeed);
@@ -230,7 +230,7 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 		SetDestination(m_selectedPosition);
 	}
 	public void Consume(Krampus krampus, Vector3 position, Quaternion rotation) {
-		Game.roundInfo.UnregisterChild(this);
+		Game.MainGameInfo.UnregisterChild(this);
 		Game.GlobalEvents.onChildEaten.Invoke(krampus, this);
 
 		if (IsNaughty) {
@@ -294,17 +294,9 @@ public class Child : NPC, IKrampable, INoiseReactor, IDayNightCycleReactor {
 
 	protected virtual void StunOut() {
 		m_lastKrampusSpotted = CurrentRoom;
-		Game.roundInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+		Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
 		SelectPositionInRoomAwayFromKrampy();
 	}
 
-	public void React(DayNightCycle.CyclePhase oldPhase, DayNightCycle.CyclePhase newPhase) {
-		if (newPhase == DayNightCycle.CyclePhase.Night) {
-			Debug.Log("[Child] Night time - going idle");
-			m_viewCone.ToggleRange(false);
-			SwitchState(State.Idle);
-        } else if (newPhase == DayNightCycle.CyclePhase.Day) {
-			Debug.Log("[Child] Day time - going wild");
-			m_viewCone.ToggleRange(true);
-		}
-	}}
+	
+	}

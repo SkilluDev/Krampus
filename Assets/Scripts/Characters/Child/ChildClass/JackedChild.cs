@@ -38,7 +38,7 @@ public class JackedChild : Child
         }else {
             
             m_lastKrampusSpotted = CurrentRoom;
-            Game.roundInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
+           Game.MainGameInfo.GetRoomData(m_lastKrampusSpotted).MarkKramped(true);
             SelectPositionInRoomAwayFromKrampy();
         }
 	}
