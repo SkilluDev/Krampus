@@ -16,7 +16,9 @@ public interface IKrampable : IInteractable {
 
     IInteractor.Type IInteractable.InteractorMask => IInteractor.Type.Player;
 
-    public  bool m_CanBeConsumed => true;
+    public bool  CanConusme(Krampus krampus) {
+        return true;
+    }
 
     void IInteractable.Interact(IInteractor interactor) {
         Hit(interactor.AsPlayer());
