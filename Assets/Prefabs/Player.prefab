@@ -433,6 +433,7 @@ Transform:
   - {fileID: 8320024670651621678}
   - {fileID: 9109736146601849968}
   - {fileID: 1140092252710583627}
+  - {fileID: 5594035703661575040}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &7069810453768087152
@@ -504,6 +505,7 @@ MonoBehaviour:
   m_abilities: {fileID: 5147430426476772345}
   m_stats: {fileID: 1376265350818594481}
   m_krampusEvents: {fileID: 1316778976212434275}
+  m_gadget: {fileID: 4899335030956743374}
   m_childSensor: {fileID: 3684771875840887165}
 --- !u!114 &1698299321934093973
 MonoBehaviour:
@@ -1016,6 +1018,54 @@ MonoBehaviour:
   m_smoothTime: 5
   m_offsetDistance: 2
   m_fadeOriginRayLength: 10
+--- !u!1 &5366181690068139894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5594035703661575040}
+  - component: {fileID: 4899335030956743374}
+  m_Layer: 0
+  m_Name: Gadget_Mark_Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5594035703661575040
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5366181690068139894}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8745913504507751508}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4899335030956743374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5366181690068139894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91b68b65cecedab4d8430c634d923a7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gadget_Playback
+  m_gadgetName: Mark
+  m_windupCost: 0
+  m_cooldown: 1
+  m_markPrefabe: {fileID: 8348454932208679299, guid: bb80795f795c59146aa8df6246e8695f, type: 3}
 --- !u!1 &6203699023233265420
 GameObject:
   m_ObjectHideFlags: 0

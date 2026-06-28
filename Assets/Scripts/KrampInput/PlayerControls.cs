@@ -156,6 +156,15 @@ namespace KrampInput
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Gadget_1"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a6b9713-f407-44d3-bc16-f33858f577aa"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -409,6 +418,17 @@ namespace KrampInput
                     ""processors"": """",
                     ""groups"": "";PC"",
                     ""action"": ""Special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb95f533-9b95-46fe-9c45-dd0f8dd49f59"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";PC"",
+                    ""action"": ""Gadget_1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -864,6 +884,7 @@ namespace KrampInput
             m_Player_BeginAiming = m_Player.FindAction("Begin Aiming", throwIfNotFound: true);
             m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
             m_Player_Special = m_Player.FindAction("Special", throwIfNotFound: true);
+            m_Player_Gadget_1 = m_Player.FindAction("Gadget_1", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
@@ -962,6 +983,7 @@ namespace KrampInput
         private readonly InputAction m_Player_BeginAiming;
         private readonly InputAction m_Player_Shoot;
         private readonly InputAction m_Player_Special;
+        private readonly InputAction m_Player_Gadget_1;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1001,6 +1023,10 @@ namespace KrampInput
             /// Provides access to the underlying input action "Player/Special".
             /// </summary>
             public InputAction @Special => m_Wrapper.m_Player_Special;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/Gadget_1".
+            /// </summary>
+            public InputAction @Gadget_1 => m_Wrapper.m_Player_Gadget_1;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1048,6 +1074,9 @@ namespace KrampInput
                 @Special.started += instance.OnSpecial;
                 @Special.performed += instance.OnSpecial;
                 @Special.canceled += instance.OnSpecial;
+                @Gadget_1.started += instance.OnGadget_1;
+                @Gadget_1.performed += instance.OnGadget_1;
+                @Gadget_1.canceled += instance.OnGadget_1;
             }
 
             /// <summary>
@@ -1080,6 +1109,9 @@ namespace KrampInput
                 @Special.started -= instance.OnSpecial;
                 @Special.performed -= instance.OnSpecial;
                 @Special.canceled -= instance.OnSpecial;
+                @Gadget_1.started -= instance.OnGadget_1;
+                @Gadget_1.performed -= instance.OnGadget_1;
+                @Gadget_1.canceled -= instance.OnGadget_1;
             }
 
             /// <summary>
@@ -1381,6 +1413,13 @@ namespace KrampInput
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSpecial(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Gadget_1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnGadget_1(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

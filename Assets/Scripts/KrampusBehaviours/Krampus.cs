@@ -1,3 +1,4 @@
+using System;
 using Roomgen;
 using UnityEngine;
 
@@ -33,6 +34,10 @@ public class Krampus : KrampusBehaviour, IInteractor, ICharacter {
 
     [SerializeField] private KrampusEvents m_krampusEvents;
     public KrampusEvents KrampusEvents => m_krampusEvents;
+
+
+    [SerializeField] private Gadget m_gadget;
+	public Gadget Gadget => m_gadget;
 
     
 

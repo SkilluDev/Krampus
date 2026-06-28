@@ -75,6 +75,12 @@ public class KrampusController : KrampusBehaviour {
 
 
 
+	//Gadget
+	
+
+
+
+
 	private void Start() {
 		Game.MainGameInfo.UI.SetWindUpCostBar(m_windUpDashCost);
 		Kramp.KrampusEvents.onNaughtyChildEaten.AddListener(OnNaughtyChildEaten);
@@ -188,6 +194,10 @@ public class KrampusController : KrampusBehaviour {
 
 		if (CanDash && InputSubscribe.Special) {
 			Dash();
+		}
+
+		if(InputSubscribe.Gadget) {
+			UseGadget();
 		}
 	}
 
@@ -334,4 +344,11 @@ public class KrampusController : KrampusBehaviour {
 		if (m_dashTarget == null) return;
 		Game.MainGameInfo.UI.WorldSpaceUI.SetDashIconPosition(m_dashTarget);
 	}
+
+
+	//==== Gadget Usage
+	public void UseGadget() {
+		Kramp.Gadget.UseGadget(Kramp);
+	}
+
 }

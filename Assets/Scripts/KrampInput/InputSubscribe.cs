@@ -29,7 +29,10 @@ public class InputSubscribe : MonoBehaviour {
 	public static Vector2 UITilt => Raw.UI.Tilt.ReadValue<Vector2>();
 	public static bool Sneaking => Raw.Player.Crouch.IsPressed();
 
-	public static bool Special=>Raw.Player.Special.IsPressed();
+	public static bool Special=>Raw.Player.Special.IsPressed();	
+
+	public static bool Gadget=>Raw.Player.Gadget_1.IsPressed();
+
 	private static bool m_shouldCursorBeVisible = true;
 
 	public static bool ShouldCursorBeVisible {get => m_shouldCursorBeVisible; set => m_shouldCursorBeVisible = value;}
